@@ -16,6 +16,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity                             // for postgres
+@Table(name = "bootstrap")         // for postgres
 public class BootstrapEntity {
     @Id
     @GeneratedValue
