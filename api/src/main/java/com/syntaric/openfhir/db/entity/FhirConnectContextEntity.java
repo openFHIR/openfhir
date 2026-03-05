@@ -26,6 +26,8 @@ import org.hibernate.annotations.UuidGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity                             // for postgres
+@Table(name = "fhir_connect_context")         // for postgres
 public class FhirConnectContextEntity extends UserBasedEntity {
     @Id
     @GeneratedValue
