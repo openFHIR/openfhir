@@ -1,0 +1,91 @@
+name: Run API Tests (Newman)
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  newman-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build application
+        run: mvn -B -q clean package -DskipTests
+
+      - name: Install mongosh
+        run: |
+          wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+          sudo apt-get update -qq
+          sudo apt-get install -y mongodb-mongosh
+
+      - name: Check MongoDB is running
+        run: |
+          docker ps -a
+          mongosh --eval "db.runCommand({ ping: 1 })"
+
+      - name: Initialise MongoDB
+        run: mongosh --file init-mongo.js
+
+      - name: Start application
+        run: |
+          java -jar engine/target/open-fhir-engine-*.jar \
+            --spring.data.mongodb.uri=mongodb://openfhir:openfhir@localhost:27017/openfhir \
+            > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Wait for application to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/health; then
+              echo "Application is ready"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+          echo "Application failed to start - startup log:"
+          cat app.log
+          exit 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run collection 1 - openFHIR Tests
+        run: |
+          newman run tests/e2e/1_openFHIR_Test.postman_collection.json \
+            --reporters cli,junit \
+            --reporter-junit-export results-1.xml
+
+      - name: Stop application
+        if: always()
+        run: kill $(cat app.pid) 2>/dev/null || true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-results
+          path: results-*.xml

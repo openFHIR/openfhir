@@ -1,0 +1,328 @@
+{
+  "_type": "COMPOSITION",
+  "name": {
+    "_type": "DV_TEXT",
+    "value": "Person"
+  },
+  "archetype_details": {
+    "archetype_id": {
+      "value": "openEHR-EHR-COMPOSITION.person.v0"
+    },
+    "template_id": {
+      "value": "KDS_Person"
+    },
+    "rm_version": "1.0.4"
+  },
+  "language": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_639-1"
+    },
+    "code_string": "de"
+  },
+  "territory": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_3166-1"
+    },
+    "code_string": "DE"
+  },
+  "category": {
+    "_type": "DV_CODED_TEXT",
+    "value": "event",
+    "defining_code": {
+      "_type": "CODE_PHRASE",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "openehr"
+      },
+      "code_string": "433"
+    }
+  },
+  "composer": {
+    "_type": "PARTY_SELF"
+  },
+  "context": {
+    "_type": "EVENT_CONTEXT",
+    "start_time": {
+      "_type": "DV_DATE_TIME",
+      "value": "2026-02-18T17:45:21.014115976+01:00"
+    },
+    "setting": {
+      "_type": "DV_CODED_TEXT",
+      "value": "other care",
+      "defining_code": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "openehr"
+        },
+        "code_string": "238"
+      }
+    },
+    "other_context": {
+      "_type": "ITEM_TREE",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Item tree"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Patient ID"
+          },
+          "value": {
+            "_type": "DV_IDENTIFIER",
+            "issuer": "https://www.charite.de/fhir/sid/patientenidentifikation",
+            "assigner": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier::Charité",
+            "id": "147725268",
+            "type": "http://terminology.hl7.org/CodeSystem/v2-0203::MR"
+          },
+          "archetype_node_id": "at0004"
+        }
+      ],
+      "archetype_node_id": "at0003"
+    }
+  },
+  "content": [
+    {
+      "_type": "ADMIN_ENTRY",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Versicherungsinformationen"
+      },
+      "archetype_details": {
+        "archetype_id": {
+          "value": "openEHR-EHR-ADMIN_ENTRY.versicherungsinformationen.v0"
+        },
+        "rm_version": "1.0.4"
+      },
+      "language": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de"
+      },
+      "encoding": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8"
+      },
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "data": {
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Baum"
+        },
+        "items": [
+          {
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Versicherungsnummer"
+            },
+            "value": {
+              "_type": "DV_IDENTIFIER",
+              "issuer": "http://fhir.de/sid/gkv/kvid-10",
+              "assigner": "http://fhir.de/sid/arge-ik/iknr::123456789",
+              "id": "B234567890",
+              "type": "http://fhir.de/CodeSystem/identifier-type-de-basis::KVZ10"
+            },
+            "archetype_node_id": "at0006"
+          }
+        ],
+        "archetype_node_id": "at0001"
+      },
+      "archetype_node_id": "openEHR-EHR-ADMIN_ENTRY.versicherungsinformationen.v0"
+    },
+    {
+      "_type": "EVALUATION",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Geschlecht"
+      },
+      "archetype_details": {
+        "archetype_id": {
+          "value": "openEHR-EHR-EVALUATION.gender.v1"
+        },
+        "rm_version": "1.0.4"
+      },
+      "language": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de"
+      },
+      "encoding": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8"
+      },
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "data": {
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "*Tree(en)"
+        },
+        "items": [
+          {
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Administratives Geschlecht"
+            },
+            "value": {
+              "_type": "DV_CODED_TEXT",
+              "value": "other",
+              "defining_code": {
+                "_type": "CODE_PHRASE",
+                "terminology_id": {
+                  "_type": "TERMINOLOGY_ID",
+                  "value": "ValueSet/$expand?url=http://terminology.hl7.org/ValueSet/v2-0001"
+                },
+                "code_string": "other"
+              }
+            },
+            "archetype_node_id": "at0022"
+          },
+          {
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Anderes Geschlecht amtlich"
+            },
+            "value": {
+              "_type": "DV_CODED_TEXT",
+              "value": "D",
+              "defining_code": {
+                "_type": "CODE_PHRASE",
+                "terminology_id": {
+                  "_type": "TERMINOLOGY_ID",
+                  "value": "http://fhir.de/CodeSystem/gender-amtlich-de"
+                },
+                "code_string": "D"
+              }
+            },
+            "archetype_node_id": "at0014"
+          }
+        ],
+        "archetype_node_id": "at0002"
+      },
+      "archetype_node_id": "openEHR-EHR-EVALUATION.gender.v1"
+    },
+    {
+      "_type": "ADMIN_ENTRY",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Personendaten"
+      },
+      "archetype_details": {
+        "archetype_id": {
+          "value": "openEHR-EHR-ADMIN_ENTRY.person_data.v0"
+        },
+        "rm_version": "1.0.4"
+      },
+      "language": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de"
+      },
+      "encoding": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8"
+      },
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "data": {
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Baum"
+        },
+        "items": [
+          {
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Daten zur Geburt"
+            },
+            "archetype_details": {
+              "archetype_id": {
+                "value": "openEHR-EHR-CLUSTER.person_birth_data_iso.v0"
+              },
+              "rm_version": "1.0.4"
+            },
+            "items": [
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Geburtsdatum"
+                },
+                "value": {
+                  "_type": "DV_DATE",
+                  "value": "2000-06-30"
+                },
+                "archetype_node_id": "at0001"
+              }
+            ],
+            "archetype_node_id": "openEHR-EHR-CLUSTER.person_birth_data_iso.v0"
+          },
+          {
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Angaben zum Tod"
+            },
+            "items": [
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Verstorben?"
+                },
+                "value": {
+                  "_type": "DV_BOOLEAN",
+                  "value": true
+                },
+                "archetype_node_id": "at0025"
+              }
+            ],
+            "archetype_node_id": "at0024"
+          }
+        ],
+        "archetype_node_id": "at0001"
+      },
+      "archetype_node_id": "openEHR-EHR-ADMIN_ENTRY.person_data.v0"
+    }
+  ],
+  "archetype_node_id": "openEHR-EHR-COMPOSITION.person.v0"
+}

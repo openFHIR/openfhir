@@ -1,0 +1,116 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "encounter-id-1245"
+              }
+            ]
+          },
+          {
+            "resourceType": "Organization",
+            "id": "2",
+            "identifier": [
+              {
+                "system": "http://hospital.org/organizations",
+                "value": "ORG-001"
+              }
+            ],
+            "name": "Example Hospital"
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "3",
+            "identifier": [
+              {
+                "system": "http://hospital.org/specimens",
+                "value": "SP-987654"
+              }
+            ],
+            "accessionIdentifier": {
+              "system": "http://hospital.org/specimens",
+              "value": "SP-987654"
+            },
+            "collection": {
+              "collector": {
+                "identifier": {
+                  "value": "example-practitioner"
+                }
+              },
+              "collectedDateTime": "2024-08-24T11:00:00+02:00"
+            }
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "system": "https://fhir.acme.org/identifiers/patient",
+            "value": "123456-0_KH",
+            "assigner": {
+              "identifier": {
+                "system": "http://openehr.org/identifier/assigner",
+                "value": "Example Laboratory"
+              },
+              "display": "Example Laboratory"
+            }
+          }
+        ],
+        "status": "completed",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "2345-7",
+              "display": "Blood Glucose Test"
+            }
+          ],
+          "text": "Blood Glucose Test"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "authoredOn": "2024-08-24T00:00:00+02:00",
+        "requester": {
+          "reference": "#2"
+        },
+        "specimen": [
+          {
+            "reference": "#3"
+          }
+        ],
+        "note": [
+          {
+            "text": "Sample collected in the morning."
+          }
+        ]
+      }
+    }
+  ]
+}

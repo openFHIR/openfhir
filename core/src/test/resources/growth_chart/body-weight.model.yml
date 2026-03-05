@@ -1,0 +1,66 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "OBSERVATION.body_weight.v2"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.body_weight.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  hierarchy:
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0002]/events[at0003]"
+    split:
+      fhir:
+        create: "resource"
+
+  fhirCondition:
+    targetRoot: "$resource"
+    targetAttribute: "category.coding.code"
+    operator: "one of"
+    criteria: "weight"
+
+mappings:
+
+  - name: "weight"
+    with:
+      fhir: "$resource.value"
+      openehr: "$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]"
+      
+  - name: "time"
+    with:
+      fhir: "$resource.effective"
+      openehr: "$archetype/data[at0002]/events[at0003]/time"
+      
+  - name: "comment"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0024]"
+      
+
+  - name: "stateOfDress"
+    with:
+      fhir: "$resource.component.value"
+      openehr: "$archetype/data[at0002]/events[at0003]/state[at0008]/items[at0009]"
+      
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "9999-9"
+  - name: "code"
+    unidirectional: "openehr->fhir"
+    with:
+      fhir: "$resource.code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code"
+            value: "29463-7"

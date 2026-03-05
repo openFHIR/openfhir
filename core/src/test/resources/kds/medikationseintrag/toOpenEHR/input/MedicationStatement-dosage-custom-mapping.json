@@ -1,0 +1,86 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationStatement"
+      },
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "ms-dosage-custom-1",
+        "status": "active",
+        "subject": {
+          "reference": "Patient/p1"
+        },
+        "medicationReference": {
+          "reference": "Medication/med-1"
+        },
+        "dosage": [
+          {
+            "text": "Dalbavancin 1500 mg als 30-min\u00fctige Infusion",
+            "timing": {
+              "event": [
+                "2024-02-16"
+              ]
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1500,
+                  "code": "mg",
+                  "system": "http://unitsofmeasure.org",
+                  "unit": "mg"
+                },
+                "rateRatio": {
+                  "numerator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 1500,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "denominator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 30,
+                    "code": "min",
+                    "unit": "Minuten"
+                  }
+                }
+              }
+            ],
+            "maxDosePerAdministration": {
+              "system": "http://unitsofmeasure.org",
+              "value": 1500,
+              "code": "mg",
+              "unit": "mg"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "resource": {
+        "resourceType": "Medication",
+        "id": "med-1",
+        "code": {
+          "text": "Dalbavancin"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      },
+      "resource": {
+        "resourceType": "Patient",
+        "id": "p1"
+      }
+    }
+  ]
+}

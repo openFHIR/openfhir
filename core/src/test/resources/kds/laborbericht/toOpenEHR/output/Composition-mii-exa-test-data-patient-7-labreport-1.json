@@ -1,0 +1,863 @@
+{
+  "_type": "COMPOSITION",
+  "name": {
+    "_type": "DV_TEXT",
+    "value": "Laborbericht"
+  },
+  "archetype_details": {
+    "archetype_id": {
+      "value": "openEHR-EHR-COMPOSITION.report-result.v1"
+    },
+    "template_id": {
+      "value": "KDS_Laborbericht"
+    },
+    "rm_version": "1.0.4"
+  },
+  "language": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_639-1"
+    },
+    "code_string": "en"
+  },
+  "territory": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_3166-1"
+    },
+    "code_string": "DE"
+  },
+  "category": {
+    "_type": "DV_CODED_TEXT",
+    "value": "event",
+    "defining_code": {
+      "_type": "CODE_PHRASE",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "openehr"
+      },
+      "code_string": "433"
+    }
+  },
+  "composer": {
+    "_type": "PARTY_SELF"
+  },
+  "context": {
+    "_type": "EVENT_CONTEXT",
+    "start_time": {
+      "_type": "DV_DATE_TIME",
+      "value": "2024-01-10T08:15:00"
+    },
+    "setting": {
+      "_type": "DV_CODED_TEXT",
+      "value": "other care",
+      "defining_code": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "openehr"
+        },
+        "code_string": "238"
+      }
+    },
+    "other_context": {
+      "_type": "ITEM_TREE",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "ID"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "LDR_000007"
+          },
+          "archetype_node_id": "at0002"
+        },
+        {
+          "_type": "ELEMENT",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "final",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "ValueSet/$expand?url=http://hl7.org/fhir/ValueSet/diagnostic-report-status"
+              },
+              "code_string": "final"
+            }
+          },
+          "archetype_node_id": "at0005"
+        },
+        {
+          "_type": "CLUSTER",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Case identification"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.case_identification.v0"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Case identifier"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "MII_0000008",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern"
+                  },
+                  "code_string": "MII_0000008"
+                }
+              },
+              "archetype_node_id": "at0001"
+            }
+          ],
+          "archetype_node_id": "openEHR-EHR-CLUSTER.case_identification.v0"
+        }
+      ],
+      "archetype_node_id": "at0001"
+    }
+  },
+  "content": [
+    {
+      "_type": "OBSERVATION",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Laborbefund"
+      },
+      "archetype_details": {
+        "archetype_id": {
+          "value": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1"
+        },
+        "rm_version": "1.0.4"
+      },
+      "language": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "en"
+      },
+      "encoding": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8"
+      },
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "data": {
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Event Series"
+        },
+        "origin": {
+          "_type": "DV_DATE_TIME",
+          "value": "2024-01-10T08:15:00"
+        },
+        "events": [
+          {
+            "_type": "POINT_EVENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Any event"
+            },
+            "time": {
+              "_type": "DV_DATE_TIME",
+              "value": "2024-01-10T08:15:00"
+            },
+            "data": {
+              "_type": "ITEM_TREE",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Tree"
+              },
+              "items": [
+                {
+                  "_type": "ELEMENT",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Labortest-Bezeichnung"
+                  },
+                  "value": {
+                    "_type": "DV_CODED_TEXT",
+                    "value": "Laboratory report",
+                    "defining_code": {
+                      "_type": "CODE_PHRASE",
+                      "terminology_id": {
+                        "_type": "TERMINOLOGY_ID",
+                        "value": "http://loinc.org"
+                      },
+                      "code_string": "11502-2"
+                    }
+                  },
+                  "archetype_node_id": "at0005"
+                },
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Probenmaterial"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.specimen.v1"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Specimen type"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Blood specimen with edetic acid (specimen)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "445295009"
+                        }
+                      },
+                      "archetype_node_id": "at0029"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "External identifier"
+                      },
+                      "value": {
+                        "_type": "DV_IDENTIFIER",
+                        "issuer": "https://www.charite.de/fhir/sid/Bioproben",
+                        "id": "BP_000012"
+                      },
+                      "archetype_node_id": "at0088"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Körperstelle"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Left upper arm structure (body structure)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "368208006"
+                        }
+                      },
+                      "archetype_node_id": "at0087"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Collection date/time"
+                      },
+                      "value": {
+                        "_type": "DV_DATE_TIME",
+                        "value": "2024-01-10T07:30:00"
+                      },
+                      "archetype_node_id": "at0015"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Adequacy for testing"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Satisfactory ",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "local"
+                          },
+                          "code_string": "at0062"
+                        }
+                      },
+                      "archetype_node_id": "at0041"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.specimen.v1"
+                },
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Probenmaterial"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.specimen.v1"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Specimen type"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Serum specimen (specimen)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "119364003"
+                        }
+                      },
+                      "archetype_node_id": "at0029"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "External identifier"
+                      },
+                      "value": {
+                        "_type": "DV_IDENTIFIER",
+                        "issuer": "https://www.charite.de/fhir/sid/Bioproben",
+                        "id": "BP_000013"
+                      },
+                      "archetype_node_id": "at0088"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Körperstelle"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Right upper arm structure (body structure)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "368209003"
+                        }
+                      },
+                      "archetype_node_id": "at0087"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Collection date/time"
+                      },
+                      "value": {
+                        "_type": "DV_DATE_TIME",
+                        "value": "2024-01-10T07:30:00"
+                      },
+                      "archetype_node_id": "at0015"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Adequacy for testing"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Satisfactory ",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "local"
+                          },
+                          "code_string": "at0062"
+                        }
+                      },
+                      "archetype_node_id": "at0041"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.specimen.v1"
+                },
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Pro Laboranalyt"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Analyte name"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Leukocytes [#/volume] in Blood",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://loinc.org"
+                          },
+                          "code_string": "26464-8"
+                        }
+                      },
+                      "archetype_node_id": "at0024"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Messwert"
+                      },
+                      "value": {
+                        "_type": "DV_QUANTITY",
+                        "units": "/nL",
+                        "magnitude": 15.2
+                      },
+                      "archetype_node_id": "at0001"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Interpretation"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "High",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          },
+                          "code_string": "H"
+                        }
+                      },
+                      "archetype_node_id": "at0004"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Test method"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Electrical impedance technique (qualifier value)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "703452004"
+                        }
+                      },
+                      "archetype_node_id": "at0028"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Result status"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Final",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "local"
+                          },
+                          "code_string": "at0018"
+                        }
+                      },
+                      "archetype_node_id": "at0005"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Result status time"
+                      },
+                      "value": {
+                        "_type": "DV_DATE_TIME",
+                        "value": "2024-01-10T10:00:00"
+                      },
+                      "archetype_node_id": "at0006"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Probe ID"
+                      },
+                      "value": {
+                        "_type": "DV_IDENTIFIER",
+                        "issuer": "https://www.charite.de/fhir/sid/Bioproben",
+                        "id": "BP_000012"
+                      },
+                      "archetype_node_id": "at0026"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Comment"
+                      },
+                      "value": {
+                        "_type": "DV_TEXT",
+                        "value": "Erhöhte Leukozyten bei Infektion"
+                      },
+                      "archetype_node_id": "at0003"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
+                },
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Pro Laboranalyt"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Analyte name"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Hemoglobin [Mass/volume] in Blood",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://loinc.org"
+                          },
+                          "code_string": "718-7"
+                        }
+                      },
+                      "archetype_node_id": "at0024"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Messwert"
+                      },
+                      "value": {
+                        "_type": "DV_QUANTITY",
+                        "units": "g/dL",
+                        "magnitude": 13.2
+                      },
+                      "archetype_node_id": "at0001"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Interpretation"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Normal",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          },
+                          "code_string": "N"
+                        }
+                      },
+                      "archetype_node_id": "at0004"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Test method"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Photometry technique (qualifier value)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "83561000052101"
+                        }
+                      },
+                      "archetype_node_id": "at0028"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Result status"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Final",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "local"
+                          },
+                          "code_string": "at0018"
+                        }
+                      },
+                      "archetype_node_id": "at0005"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Result status time"
+                      },
+                      "value": {
+                        "_type": "DV_DATE_TIME",
+                        "value": "2024-01-10T10:00:00"
+                      },
+                      "archetype_node_id": "at0006"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Probe ID"
+                      },
+                      "value": {
+                        "_type": "DV_IDENTIFIER",
+                        "issuer": "https://www.charite.de/fhir/sid/Bioproben",
+                        "id": "BP_000012"
+                      },
+                      "archetype_node_id": "at0026"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
+                },
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Pro Laboranalyt"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Analyte name"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "C reactive protein [Mass/volume] in Serum or Plasma",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://loinc.org"
+                          },
+                          "code_string": "1988-5"
+                        }
+                      },
+                      "archetype_node_id": "at0024"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Messwert"
+                      },
+                      "value": {
+                        "_type": "DV_QUANTITY",
+                        "units": "mg/L",
+                        "magnitude": 25.6
+                      },
+                      "archetype_node_id": "at0001"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Interpretation"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "High",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          },
+                          "code_string": "H"
+                        }
+                      },
+                      "archetype_node_id": "at0004"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Test method"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Photometry technique (qualifier value)",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://snomed.info/sct (20230731)"
+                          },
+                          "code_string": "83561000052101"
+                        }
+                      },
+                      "archetype_node_id": "at0028"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Result status"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Final",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "local"
+                          },
+                          "code_string": "at0018"
+                        }
+                      },
+                      "archetype_node_id": "at0005"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Result status time"
+                      },
+                      "value": {
+                        "_type": "DV_DATE_TIME",
+                        "value": "2024-01-10T10:00:00"
+                      },
+                      "archetype_node_id": "at0006"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Probe ID"
+                      },
+                      "value": {
+                        "_type": "DV_IDENTIFIER",
+                        "issuer": "https://www.charite.de/fhir/sid/Bioproben",
+                        "id": "BP_000012"
+                      },
+                      "archetype_node_id": "at0026"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1"
+                },
+                {
+                  "_type": "ELEMENT",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Conclusion"
+                  },
+                  "value": {
+                    "_type": "DV_TEXT",
+                    "value": "Akute bakterielle Infektion: Leukozytose (15,2/nL) und stark erhöhtes CRP (25,6 mg/L) bei akuter Bronchitis. Antibiotische Therapie indiziert."
+                  },
+                  "archetype_node_id": "at0057"
+                }
+              ],
+              "archetype_node_id": "at0003"
+            },
+            "archetype_node_id": "at0002"
+          }
+        ],
+        "archetype_node_id": "at0001"
+      },
+      "archetype_node_id": "openEHR-EHR-OBSERVATION.laboratory_test_result.v1"
+    }
+  ],
+  "archetype_node_id": "openEHR-EHR-COMPOSITION.report-result.v1"
+}

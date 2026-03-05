@@ -1,0 +1,398 @@
+
+package com.syntaric.openfhir.fc.schema.model;
+
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.syntaric.openfhir.fc.schema.model.Condition;
+import com.syntaric.openfhir.fc.schema.model.FhirConnectReference;
+import com.syntaric.openfhir.fc.schema.model.FollowedBy;
+import com.syntaric.openfhir.fc.schema.terminology.Terminology;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.Setter;
+
+
+/**
+ * Model Mapping
+ * <p>
+ */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "name",
+        "extension",
+        "appendTo",
+        "with",
+        "unidirectional",
+        "mappingCode",
+        "manual",
+        "fhirCondition",
+        "openehrCondition",
+        "followedBy",
+        "reference",
+        "terminology"
+})
+public class Mapping {
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("extension")
+    private ModelExtension extension;
+    @JsonProperty("appendTo")
+    private String appendTo;
+    @JsonProperty("slotArchetype")
+    private String slotArchetype;
+    /**
+     * (Required)
+     */
+    @JsonProperty("with")
+    private With with;
+    @JsonProperty("unidirectional")
+    private String unidirectional;
+    @JsonProperty("mappingCode")
+    private String mappingCode;
+    @JsonProperty("manual")
+    private List<Manual> manual;
+    @JsonProperty("fhirCondition")
+    private Condition fhirCondition;
+    @Getter
+    @Setter
+    private List<Condition> typeConditions; // just a helper, not actually de/serialized
+    @Getter
+    @Setter
+    private String prefixConcat; // just a helper, not actually de/serialized
+    @Getter
+    @Setter
+    private String suffixConcat; // just a helper, not actually de/serialized
+
+    @JsonProperty("openehrCondition")
+    private Condition openehrCondition;
+    @JsonProperty("followedBy")
+    private FollowedBy followedBy;
+    @JsonProperty("reference")
+    private FhirConnectReference reference;
+    @JsonProperty("terminology")
+    private Terminology terminology;
+
+    public Mapping copy() {
+        final Mapping mapping = new Mapping();
+        mapping.setName(name);
+        mapping.setExtension(extension);
+        mapping.setAppendTo(appendTo);
+        mapping.setSlotArchetype(slotArchetype);
+        mapping.setWith(with == null ? null : with.copy());
+        mapping.setManual(manual == null ? null : manual.stream().map(e -> e.copy())
+                .collect(Collectors.toList()));
+        mapping.setFhirCondition(fhirCondition == null ? null : fhirCondition.copy());
+        mapping.setOpenehrCondition(openehrCondition == null ? null : openehrCondition.copy());
+        mapping.setFollowedBy(followedBy == null ? null : followedBy.copy());
+        mapping.setReference(reference == null ? null : reference.copy());
+        mapping.setTerminology(terminology == null ? null : terminology.doCopy());
+        mapping.setUnidirectional(unidirectional);
+        mapping.setTypeConditions(typeConditions == null ? null : typeConditions.stream().map(e -> e.copy())
+                .collect(Collectors.toList()));
+        mapping.setPrefixConcat(prefixConcat);
+        mapping.setMappingCode(mappingCode);
+        mapping.setSuffixConcat(suffixConcat);
+        return mapping;
+    }
+
+    public Mapping copyOverWith(final Mapping copyingFrom) {
+        this.setName(copyingFrom.getName());
+        this.setExtension(copyingFrom.getExtension());
+        this.setSlotArchetype(copyingFrom.getSlotArchetype());
+        this.setAppendTo(copyingFrom.getAppendTo());
+        this.setWith(copyingFrom.getWith());
+        this.setFhirCondition(copyingFrom.getFhirCondition());
+        this.setOpenehrCondition(copyingFrom.getOpenehrCondition());
+        this.setFollowedBy(copyingFrom.getFollowedBy());
+        this.setReference(copyingFrom.getReference());
+        this.setTerminology(copyingFrom.getTerminology());
+        this.setManual(copyingFrom.getManual());
+        this.setUnidirectional(copyingFrom.getUnidirectional());
+        this.setTypeConditions(copyingFrom.getTypeConditions());
+        this.setSuffixConcat(copyingFrom.getSuffixConcat());
+        this.setPrefixConcat(copyingFrom.getPrefixConcat());
+        this.setMappingCode(copyingFrom.getMappingCode());
+
+        return this;
+    }
+
+    public Mapping addTypeCondition(final Condition condition) {
+        if (this.typeConditions == null) {
+            this.typeConditions = new ArrayList<>();
+        }
+        this.typeConditions.add(condition);
+        return this;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Mapping withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @JsonProperty("manual")
+    public List<Manual> getManual() {
+        return manual;
+    }
+
+    @JsonProperty("manual")
+    public void setManual(List<Manual> manual) {
+        this.manual = manual;
+    }
+
+    public Mapping withManual(List<Manual> manual) {
+        this.manual = manual;
+        return this;
+    }
+
+    @JsonProperty("terminology")
+    public Terminology getTerminology() {
+        return terminology;
+    }
+
+
+    @JsonProperty("terminology")
+    public void setTerminology(Terminology terminology) {
+        this.terminology = terminology;
+    }
+
+    public Mapping withTerminology(Terminology terminology) {
+        this.terminology = terminology;
+        return this;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("appendTo")
+    public String getAppendTo() {
+        return appendTo;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("appendTo")
+    public void setAppendTo(String appendTo) {
+        this.appendTo = appendTo;
+    }
+
+    public Mapping withAppendTo(String appendTo) {
+        this.appendTo = name;
+        return this;
+    }
+
+    @JsonProperty("unidirectional")
+    public String getUnidirectional() {
+        return unidirectional;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("unidirectional")
+    public void setUnidirectional(String unidirectional) {
+        this.unidirectional = unidirectional;
+    }
+
+    public Mapping withUnidirectional(String unidirectional) {
+        this.unidirectional = unidirectional;
+        return this;
+    }
+
+    @JsonProperty("extension")
+    public ModelExtension getExtension() {
+        return extension;
+    }
+
+    @JsonProperty("extension")
+    public void setExtension(ModelExtension extension) {
+        this.extension = extension;
+    }
+
+    public Mapping withExtension(ModelExtension extension) {
+        this.extension = extension;
+        return this;
+    }
+
+
+    @JsonProperty("reference")
+    public FhirConnectReference getReference() {
+        return reference;
+    }
+
+
+    @JsonProperty("reference")
+    public void setReference(FhirConnectReference reference) {
+        this.reference = reference;
+    }
+
+    public Mapping withReference(FhirConnectReference reference) {
+        this.reference = reference;
+        return this;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("with")
+    public With getWith() {
+        return with;
+    }
+
+    /**
+     * (Required)
+     */
+    @JsonProperty("with")
+    public void setWith(With with) {
+        this.with = with;
+    }
+
+    public Mapping withWith(With with) {
+        this.with = with;
+        return this;
+    }
+
+    @JsonProperty("fhirCondition")
+    public Condition getFhirCondition() {
+        return fhirCondition;
+    }
+
+    @JsonProperty("fhirCondition")
+    public void setFhirCondition(Condition fhirCondition) {
+        this.fhirCondition = fhirCondition;
+    }
+
+    public Mapping withFhirCondition(Condition fhirCondition) {
+        this.fhirCondition = fhirCondition;
+        return this;
+    }
+
+    @JsonProperty("openehrCondition")
+    public Condition getOpenehrCondition() {
+        return openehrCondition;
+    }
+
+    @JsonProperty("openehrCondition")
+    public void setOpenehrCondition(Condition openehrCondition) {
+        this.openehrCondition = openehrCondition;
+    }
+
+    public Mapping withOpenehrCondition(Condition openehrCondition) {
+        this.openehrCondition = openehrCondition;
+        return this;
+    }
+
+    @JsonProperty("followedBy")
+    public FollowedBy getFollowedBy() {
+        return followedBy;
+    }
+
+    @JsonProperty("followedBy")
+    public void setFollowedBy(FollowedBy followedBy) {
+        this.followedBy = followedBy;
+    }
+
+    public Mapping withFollowedBy(FollowedBy followedBy) {
+        this.followedBy = followedBy;
+        return this;
+    }
+
+    @JsonProperty("slotArchetype")
+    public String getSlotArchetype() {
+        return slotArchetype;
+    }
+
+    @JsonProperty("slotArchetype")
+    public void setSlotArchetype(String slotArchetype) {
+        this.slotArchetype = slotArchetype;
+    }
+
+    public Mapping withSlotArchetype(String slotArchetype) {
+        this.slotArchetype = slotArchetype;
+        return this;
+    }
+
+    @JsonProperty("mappingCode")
+    public String getMappingCode() {
+        return mappingCode;
+    }
+
+    @JsonProperty("mappingCode")
+    public void setMappingCode(String mappingCode) {
+        this.mappingCode = mappingCode;
+    }
+
+    public Mapping withMappingCode(String mappingCode) {
+        this.mappingCode = mappingCode;
+        return this;
+    }
+
+    public enum ModelExtension {
+
+        ADD("add"),
+        APPEND("append"),
+        OVERWRITE("overwrite");
+        private final String value;
+        private final static Map<String, ModelExtension> CONSTANTS = new HashMap<String, ModelExtension>();
+
+        static {
+            for (ModelExtension c : values()) {
+                CONSTANTS.put(c.value, c);
+            }
+        }
+
+        ModelExtension(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @JsonValue
+        public String value() {
+            return this.value;
+        }
+
+        @JsonCreator
+        public static ModelExtension fromValue(String value) {
+            ModelExtension constant = CONSTANTS.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            } else {
+                return constant;
+            }
+        }
+
+    }
+
+}

@@ -1,0 +1,82 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient"
+          ]
+        },
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "system": "https://www.medizininformatik-initiative.de/fhir/sid/patienten",
+            "value": "321654987",
+            "assigner": {
+              "identifier": {
+                "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+                "value": "Charité"
+              },
+              "display": "Charité"
+            }
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/identifier-type-de-basis",
+                  "code": "KVZ10"
+                }
+              ]
+            },
+            "system": "http://fhir.de/sid/gkv/kvid-10",
+            "value": "G678901234",
+            "assigner": {
+              "identifier": {
+                "system": "http://fhir.de/sid/arge-ik/iknr",
+                "value": "345678901"
+              },
+              "display": "345678901"
+            }
+          }
+        ],
+        "name": [
+          {
+            "use": "maiden",
+            "family": "Klein",
+            "given": [
+              "Petra",
+              "Elisabeth"
+            ]
+          },
+          {
+            "family": "Fischer"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1981-12-03",
+        "deceasedBoolean": false,
+        "address": [
+          {
+            "type": "both",
+            "line": [
+              "Müllerstraße 23"
+            ],
+            "city": "Dresden",
+            "postalCode": "01067"
+          }
+        ]
+      }
+    }
+  ]
+}

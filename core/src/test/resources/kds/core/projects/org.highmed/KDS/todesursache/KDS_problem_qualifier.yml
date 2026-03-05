@@ -1,0 +1,18 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name:  KDS_problem_qualifier_todesursache
+  version: 0.0.1-alpha 
+spec: 
+  system: FHIR
+  version: R4
+  extends: CLUSTER.problem_qualifier.v2
+
+mappings:
+  - name: "clinicalStatus"
+    extension: "add"
+    with:
+      fhir: "$resource.clinicalStatus"
+      openehr: "$archetype/items[at0003]"
+
+

@@ -1,0 +1,467 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-3",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:51:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationStatement"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationStatement/mii-exa-test-data-patient-3-medstatement-4",
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "mii-exa-test-data-patient-3-medstatement-4",
+        "meta": {
+          "security": [
+            {
+              "code": "HTEST",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "display": "test health data"
+            }
+          ],
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000026"
+          }
+        ],
+        "category": {
+          "coding": [
+            {
+              "system": "http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung",
+              "code": "E200",
+              "display": "stationärer Aufenthalt"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient"
+            }
+          ]
+        },
+        "effectivePeriod": {
+          "start": "2022-04-14T13:43:00+01:00",
+          "end": "2022-04-14T14:43:00+01:00"
+        },
+        "dosage": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "system": "http://unitsofmeasure.org",
+                  "value": 50,
+                  "code": "mg/kg",
+                  "unit": "mg/kilogram"
+                }
+              }
+            ],
+            "timing": {
+              "repeat": {
+                "frequency": 1,
+                "period": 4,
+                "periodUnit": "wk"
+              }
+            },
+            "route": {
+              "coding": [
+                {
+                  "code": "20045000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Intravenous use"
+                }
+              ]
+            },
+            "text": "Doxorubicin (Caelyx) 50 mg je Quadratmeter Koerperoberflaeche alle vier Wochen per intravenoeser Tropfinfusion"
+          }
+        ],
+        "status": "completed",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-rezeptur-doxorubicin"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-3-encounter-1"
+        },
+        "dateAsserted": "2022-04-14"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-rezeptur-doxorubicin",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-rezeptur-doxorubicin",
+        "code": {
+          "text": "Infusion bestehend aus 85mg Doxorubicin aufgeloest zur Verabreichung in 250ml 5-%iger (50 mg/ml) Glucose-Infusionsloesung"
+        },
+        "ingredient": [
+          {
+            "strength": {
+              "denominator": {
+                "value": 250,
+                "code": "mL",
+                "system": "http://unitsofmeasure.org",
+                "unit": "milliliter"
+              },
+              "numerator": {
+                "value": 85,
+                "code": "mg",
+                "system": "http://unitsofmeasure.org",
+                "unit": "mg"
+              }
+            },
+            "isActive": true,
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "code": "L01DB01",
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "version": "2023",
+                  "display": "Doxorubicin"
+                }
+              ]
+            }
+          },
+          {
+            "isActive": true,
+            "itemReference": {
+              "reference": "Medication/mii-exa-test-data-medication-glucoseloesung"
+            }
+          }
+        ],
+        "form": {
+          "coding": [
+            {
+              "code": "11210000",
+              "system": "http://standardterms.edqm.eu",
+              "display": "Solution for infusion"
+            }
+          ]
+        },
+        "status": "active"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-3-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-3-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000003"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0100"
+            }
+          ]
+        },
+        "period": {
+          "start": "2022-04-02",
+          "end": "2022-04-22"
+        },
+        "diagnosis": [
+          {
+            "use": {
+              "coding": [
+                {
+                  "code": "referral-diagnosis",
+                  "system": "http://fhir.de/CodeSystem/KontaktDiagnoseProzedur",
+                  "display": "Überweisungsdiagnose"
+                },
+                {
+                  "code": "AD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Admission diagnosis"
+                }
+              ]
+            },
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-3-diagnose-1"
+            },
+            "rank": 1
+          }
+        ],
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "02",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Behandlung regulär beendet, nachstationäre Behandlung vorgesehen"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "2",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "arbeitsunfähig entlassen"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "E",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Einweisung durch einen Arzt"
+              }
+            ]
+          }
+        },
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Condition/mii-exa-test-data-patient-3-diagnose-1",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "mii-exa-test-data-patient-3-diagnose-1",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+              "code": "C21.8",
+              "version": "2022"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+              "code": "I29975",
+              "version": "2022",
+              "display": "Bösartige anorektale Neubildung"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "447886005",
+              "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+              "display": "Adenocarcinoma of anorectum (disorder)"
+            }
+          ]
+        },
+        "note": [
+          {
+            "text": "Bösartige anorektale Neubildung"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "281088000",
+                "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                "display": "Structure of anus and/or rectum (body structure)"
+              }
+            ]
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "code": "confirmed",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "recordedDate": "2022-04-02"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-glucoseloesung",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-glucoseloesung",
+        "code": {
+          "coding": [
+            {
+              "code": "03705422",
+              "system": "http://fhir.de/CodeSystem/ifa/pzn",
+              "display": "Glucose 5% B.braun Ecoflac Plus"
+            },
+            {
+              "code": "V06DC01",
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "version": "2023",
+              "display": "Glucose"
+            },
+            {
+              "code": "V06DC01",
+              "system": "http://www.whocc.no/atc",
+              "version": "2023",
+              "display": "glucose"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "code": "12829",
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "display": "Glucose"
+                },
+                {
+                  "code": "50-99-7",
+                  "system": "urn:oid:2.16.840.1.113883.6.61",
+                  "display": "Glucose"
+                },
+                {
+                  "code": "5SL0G7R0OK",
+                  "system": "http://fdasis.nlm.nih.gov",
+                  "display": "ANHYDROUS DEXTROSE"
+                },
+                {
+                  "code": "67079006",
+                  "system": "http://snomed.info/sct",
+                  "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                  "display": "Glucose (substance)"
+                }
+              ]
+            },
+            "strength": {
+              "denominator": {
+                "value": 1000,
+                "code": "ml",
+                "system": "http://unitsofmeasure.org",
+                "unit": "ml"
+              },
+              "numerator": {
+                "value": 50,
+                "code": "g",
+                "system": "http://unitsofmeasure.org",
+                "unit": "g"
+              }
+            },
+            "isActive": true
+          },
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "code": "00343",
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "display": "Wasser für Injektionszwecke"
+                },
+                {
+                  "code": "7732-18-5",
+                  "system": "urn:oid:2.16.840.1.113883.6.61",
+                  "display": "WATER"
+                },
+                {
+                  "code": "059QF0KO0R",
+                  "system": "http://fdasis.nlm.nih.gov",
+                  "display": "WATER"
+                },
+                {
+                  "code": "11713004",
+                  "system": "http://snomed.info/sct",
+                  "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                  "display": "Water (substance)"
+                }
+              ]
+            },
+            "isActive": false
+          }
+        ],
+        "form": {
+          "coding": [
+            {
+              "code": "11210000",
+              "system": "http://standardterms.edqm.eu",
+              "display": "Solution for infusion"
+            }
+          ]
+        },
+        "status": "active"
+      }
+    }
+  ]
+}

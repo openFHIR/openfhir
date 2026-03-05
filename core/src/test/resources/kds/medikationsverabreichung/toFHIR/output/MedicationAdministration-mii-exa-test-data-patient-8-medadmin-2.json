@@ -1,0 +1,115 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Medication",
+            "id": "1",
+            "form": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "10221000",
+                  "display": "Film-coated tablet"
+                }
+              ],
+              "text": "Film-coated tablet"
+            },
+            "ingredient": [
+              {
+                "strength": {
+                  "numerator": {
+                    "value": 50.0,
+                    "unit": "mg",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mg"
+                  },
+                  "denominator": {
+                    "value": 1.0,
+                    "unit": "1",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "1"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "resourceType": "Encounter",
+            "id": "2",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000009"
+              }
+            ]
+          },
+          {
+            "resourceType": "MedicationRequest",
+            "id": "3",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+                "value": "MO_0000021"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationAdministrations",
+            "value": "MA_0000018"
+          }
+        ],
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-admin-category",
+              "code": "inpatient",
+              "display": "Inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "#1"
+        },
+        "context": {
+          "reference": "#2"
+        },
+        "effectiveDateTime": "2023-11-12T09:00:00+01:00",
+        "request": {
+          "reference": "#3"
+        },
+        "dosage": {
+          "text": "Metoprolol 50mg oral",
+          "route": {
+            "coding": [
+              {
+                "system": "http://standardterms.edqm.eu",
+                "code": "20053000",
+                "display": "Oral use"
+              }
+            ],
+            "text": "Oral use"
+          },
+          "dose": {
+            "value": 50.0,
+            "unit": "mg",
+            "system": "http://unitsofmeasure.org",
+            "code": "mg"
+          }
+        }
+      }
+    }
+  ]
+}

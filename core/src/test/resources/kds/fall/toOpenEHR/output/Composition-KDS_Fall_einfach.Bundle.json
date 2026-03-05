@@ -1,0 +1,556 @@
+{
+  "_type" : "COMPOSITION",
+  "name" : {
+    "_type" : "DV_TEXT",
+    "value" : "KDS_Fall_einfach"
+  },
+  "archetype_details" : {
+    "archetype_id" : {
+      "value" : "openEHR-EHR-COMPOSITION.fall.v1"
+    },
+    "template_id" : {
+      "value" : "KDS_Fall_einfach"
+    },
+    "rm_version" : "1.0.4"
+  },
+  "language" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_639-1"
+    },
+    "code_string" : "de"
+  },
+  "territory" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_3166-1"
+    },
+    "code_string" : "DE"
+  },
+  "category" : {
+    "_type" : "DV_CODED_TEXT",
+    "value" : "event",
+    "defining_code" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "openehr"
+      },
+      "code_string" : "433"
+    }
+  },
+  "composer" : {
+    "_type" : "PARTY_SELF"
+  },
+  "context" : {
+    "_type" : "EVENT_CONTEXT",
+    "start_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2022-02-03T05:05:06"
+    },
+    "end_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2022-04-03T06:05:06"
+    },
+    "setting" : {
+      "_type" : "DV_CODED_TEXT",
+      "value" : "other care",
+      "defining_code" : {
+        "_type" : "CODE_PHRASE",
+        "terminology_id" : {
+          "_type" : "TERMINOLOGY_ID",
+          "value" : "openehr"
+        },
+        "code_string" : "238"
+      }
+    },
+    "other_context" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Baum"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fallklasse"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "ambulatory",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            },
+            "code_string" : "AMB"
+          }
+        },
+        "archetype_node_id" : "at0004"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fallstatus"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "finished",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/ValueSet/EncounterStatusDe"
+            },
+            "code_string" : "finished"
+          }
+        },
+        "archetype_node_id" : "at0010"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fall-ID"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "VN-encounter-id-12345",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://hospital.smarthealthit.org"
+            },
+            "code_string" : "VN-encounter-id-12345"
+          }
+        },
+        "archetype_node_id" : "at0003"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "KontaktTyp"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.kontakttyp.v0"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "KontaktArt"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "Begleitperson",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://fhir.de/CodeSystem/kontaktart-de"
+              },
+              "code_string" : "begleitperson"
+            }
+          },
+          "archetype_node_id" : "at0002"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.kontakttyp.v0"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Organisationseinheit"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.organization.v0"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Organisationsschlüssel"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "Innere Medizin",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "local_terms"
+              },
+              "code_string" : "dept"
+            }
+          },
+          "archetype_node_id" : "at0024"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.organization.v0"
+      } ],
+      "archetype_node_id" : "at0001"
+    }
+  },
+  "content" : [ {
+    "_type" : "ADMIN_ENTRY",
+    "name" : {
+      "_type" : "DV_TEXT",
+      "value" : "Institutionsaufenthalt"
+    },
+    "archetype_details" : {
+      "archetype_id" : {
+        "value" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0"
+      },
+      "rm_version" : "1.0.4"
+    },
+    "language" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "ISO_639-1"
+      },
+      "code_string" : "de"
+    },
+    "encoding" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "IANA_character-sets"
+      },
+      "code_string" : "UTF-8"
+    },
+    "subject" : {
+      "_type" : "PARTY_SELF"
+    },
+    "data" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Item tree"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmedatum"
+        },
+        "value" : {
+          "_type" : "DV_DATE_TIME",
+          "value" : "2022-02-03T05:05:06"
+        },
+        "archetype_node_id" : "at0004"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmegrund - ErsteUndZweiteStelle"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Krankenhausbehandlung, vollstationär",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/dkgev/AufnahmegrundErsteUndZweiteStelle"
+            },
+            "code_string" : "01"
+          }
+        },
+        "archetype_node_id" : "at0008"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmegrund - Dritte Stelle"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Anderes",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/dkgev/AufnahmegrundDritteStelle"
+            },
+            "code_string" : "0"
+          }
+        },
+        "archetype_node_id" : "at0008"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmegrund - Vierte Stelle"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Normalfall",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/dkgev/AufnahmegrundVierteStelle"
+            },
+            "code_string" : "1"
+          }
+        },
+        "archetype_node_id" : "at0008"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmekategorie"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Einweisung durch einen Arzt",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass"
+            },
+            "code_string" : "E"
+          }
+        },
+        "archetype_node_id" : "at0009"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Entlassungsdatum"
+        },
+        "value" : {
+          "_type" : "DV_DATE_TIME",
+          "value" : "2022-04-03T06:05:06"
+        },
+        "archetype_node_id" : "at0002"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Standort"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.location.v1"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Zimmer"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "zimmer-1-identifier",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID"
+              },
+              "code_string" : "zimmer-1-identifier"
+            }
+          },
+          "archetype_node_id" : "at0029"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Status"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "active",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://hl7.org/fhir/ValueSet/encounter-location-status"
+              },
+              "code_string" : "active"
+            }
+          },
+          "archetype_node_id" : "at0046"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.location.v1"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Standort"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.location.v1"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Bettstellplatz"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "bett-1-identifier",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID"
+              },
+              "code_string" : "bett-1-identifier"
+            }
+          },
+          "archetype_node_id" : "at0034"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Status"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "active",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://hl7.org/fhir/ValueSet/encounter-location-status"
+              },
+              "code_string" : "active"
+            }
+          },
+          "archetype_node_id" : "at0046"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.location.v1"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Standort"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.location.v1"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Station"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "station-1-identifier",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID"
+              },
+              "code_string" : "station-1-identifier"
+            }
+          },
+          "archetype_node_id" : "at0027"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Status"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "active",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://hl7.org/fhir/ValueSet/encounter-location-status"
+              },
+              "code_string" : "active"
+            }
+          },
+          "archetype_node_id" : "at0046"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.location.v1"
+      } ],
+      "archetype_node_id" : "at0001"
+    },
+    "archetype_node_id" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0"
+  }, {
+    "_type" : "EVALUATION",
+    "name" : {
+      "_type" : "DV_TEXT",
+      "value" : "Problem/Diagnose"
+    },
+    "archetype_details" : {
+      "archetype_id" : {
+        "value" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1"
+      },
+      "rm_version" : "1.0.4"
+    },
+    "language" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "ISO_639-1"
+      },
+      "code_string" : "de"
+    },
+    "encoding" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "IANA_character-sets"
+      },
+      "code_string" : "UTF-8"
+    },
+    "subject" : {
+      "_type" : "PARTY_SELF"
+    },
+    "data" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Structure"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Name des Problems/ der Diagnose"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "ref_Malignant neoplasm of upper lobe, bronchus or lung",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+            },
+            "code_string" : "ref_C34.1"
+          }
+        },
+        "archetype_node_id" : "at0002"
+      } ],
+      "archetype_node_id" : "at0001"
+    },
+    "archetype_node_id" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1"
+  } ],
+  "archetype_node_id" : "openEHR-EHR-COMPOSITION.fall.v1"
+}

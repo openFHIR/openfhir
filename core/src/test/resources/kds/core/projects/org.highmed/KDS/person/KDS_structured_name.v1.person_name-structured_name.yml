@@ -1,0 +1,109 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name: KDS_structured_name.v1.person_name-structured_name
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: CLUSTER.structured_name.v1
+
+mappings:
+
+  - name: "prefix"
+    extension: "overwrite"
+    with:
+      fhir: "$fhirRoot.prefix.extension.value"
+      openehr: "$archetype/items[at0006]"
+    fhirCondition:
+      targetRoot: "$fhirRoot.prefix.extension"
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier"
+    followedBy:
+      mappings:
+        - name: "staticExtensionUrl"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "url"
+              fhir:
+                - path: "url"
+                  value: "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier"
+
+  - name: "familyName"
+    extension: "overwrite"
+    with:
+      fhir: "$resource.family"
+      openehr: "$archetype"
+    followedBy:
+      mappings:
+        - name: "family"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "items[at0005 and name/value='Familienname']"
+#          fhirCondition:
+#            targetRoot: "$fhirRoot"
+#            targetAttribute: "extension" #todo: else person/personendaten/person/name:0/familienname is not populated fhir->openehr in PersonToOpenEHRTest
+#            operator: "empty"
+
+        - name: "familiennameZusatz"
+          with:
+            fhir: "extension"
+            openehr: "items[at0005 and name/value='Familienname-Namenszusatz']"
+          fhirCondition:
+            targetRoot: "extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "http://fhir.de/StructureDefinition/humanname-namenszusatz"
+          followedBy:
+            mappings:
+              - name: "staticExtensionUrl"
+                with:
+                  fhir: "$fhirRoot"
+                manual:
+                  - name: "staticUrl"
+                    fhir:
+                      - path: "url"
+                        value: "http://fhir.de/StructureDefinition/humanname-namenszusatz"
+
+
+        - name: "nachnameOhneZusätze"
+          with:
+            fhir: "extension"
+            openehr: "items[at0005 and name/value='Familienname-Nachname']"
+          fhirCondition:
+            targetRoot: "extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "http://hl7.org/fhir/StructureDefinition/humanname-own-name"
+          followedBy:
+            mappings:
+              - name: "staticExtensionUrl"
+                with:
+                  fhir: "$fhirRoot"
+                manual:
+                  - name: "staticUrl"
+                    fhir:
+                      - path: "url"
+                        value: "http://hl7.org/fhir/StructureDefinition/humanname-own-name"
+
+        - name: "vorsatzwort"
+          with:
+            fhir: "extension"
+            openehr: "items[at0005 and name/value='Familienname-Vorsatzwort']"
+          fhirCondition:
+            targetRoot: "extension"
+            targetAttribute: "url"
+            operator: "one of"
+            criteria: "http://hl7.org/fhir/StructureDefinition/humanname-own-prefix"
+          followedBy:
+            mappings:
+              - name: "staticExtensionUrl"
+                with:
+                  fhir: "$fhirRoot"
+                manual:
+                  - name: "staticUrl"
+                    fhir:
+                      - path: "url"
+                        value: "http://hl7.org/fhir/StructureDefinition/humanname-own-prefix"

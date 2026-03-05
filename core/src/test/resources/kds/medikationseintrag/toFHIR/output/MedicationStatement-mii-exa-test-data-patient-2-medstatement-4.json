@@ -1,0 +1,78 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Medication",
+            "id": "1",
+            "meta": {
+              "profile": [
+                "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication"
+              ]
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "version": "2023",
+                  "code": "B05AX01",
+                  "display": "Erythrozyten"
+                }
+              ],
+              "text": "Erythrozyten"
+            }
+          }
+        ],
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000004"
+          }
+        ],
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient",
+              "display": "inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "#1"
+        },
+        "effectiveDateTime": "2022-08-01T00:00:00+02:00",
+        "dateAsserted": "2022-08-01T00:00:00+02:00",
+        "dosage": [
+          {
+            "route": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "20045000",
+                  "display": "Intravenous use"
+                },
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "47625008",
+                  "display": "Intravenous route (qualifier value)"
+                }
+              ],
+              "text": "Intravenous use"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

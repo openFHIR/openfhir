@@ -1,0 +1,130 @@
+grammar: FHIRConnect/v0.9.0
+type: model
+metadata:
+  name:  EVALUATION.cause_of_death.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.cause_of_death.v1
+    revision: 1.0.2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Condition
+
+mappings:
+  - name: "contextStartTime"
+    with:
+      fhir: "$resource.recordedDate"
+      openehr: "$composition/context/start_time"
+      
+
+#  - name: "participations"
+#    with:
+#      fhir: "$resource.asserter"
+#      openehr: "$composition/context/participations"  # reference to part
+#      type: "NONE"
+#    followedBy:
+#      mappings:
+#        - name : "participationFunction"
+#          with:
+#            fhir: "$fhirRoot"
+#            openehr: "$openEHRRoot"
+#          manual:
+#            - name: "function"
+#              openehr:
+#                - path: "function"
+#                  value: "asserter"
+#        - name: "performer"
+#          with:
+#            fhir: "$fhirRoot"
+#            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+#
+#reference to party identified, unsupported
+#  - name: "composer"
+#    with:
+#      fhir: "$resource.recorder"
+#      openehr: "$composition/composer"
+#
+#  - name: "other_participations"
+#    with:
+#      fhir: "$resource.asserter"
+#      openehr: "$archetype/other_participations"  # reference to part
+#      type: "NONE"
+#    followedBy:
+#      mappings:
+#        - name : "participationFunction"
+#          with:
+#            fhir: "$fhirRoot"
+#            openehr: "$openEHRRoot"
+#          manual:
+#            - name: "function"
+#              openehr:
+#                - path: "function"
+#                  value: "asserter"
+#        - name: "performer"
+#          with:
+#            fhir: "$fhirRoot"
+#            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+# reference to party identified, unsupported
+#  - name: "provider"
+#    with:
+#      fhir: "$resource.recorder"
+#      openehr: "$archetype/provider"
+
+  - name: "status" #clincalStatus
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]"
+    slotArchetype: "CLUSTER.problem_qualifier.v2"
+
+  - name: "causeOfDeath"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/data[at0001]/items[at0002]"
+      
+
+  - name: "category"
+    with:
+      fhir: "$resource.category"
+      openehr: "$archetype"
+    unidirectional: "openEHR->fhir"
+    followedBy:
+      mappings:
+        - name: "category_code_coding_loinc"
+          with:
+            fhir: "coding"
+            openehr: "$archetype"
+          manual:
+            - name: "loinc_code"
+              fhir:
+                - path: "code"
+                  value: "79378-6"
+
+            - name: "loinc_system"
+              fhir:
+                - path: "system"
+                  value: "http://loinc.org"
+
+
+        - name: "category_code_coding_snomed"
+          with:
+            fhir: "coding"
+            openehr: "$archetype"
+          manual:
+            - name: "snomed_code"
+              fhir:
+                - path: "code"
+                  value: "16100001"
+
+            - name: "snomed_system"
+              fhir:
+                - path: "system"
+                  value: "http://snomed.info/sct"
+
+
+  - name: "comment"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0013]"
+

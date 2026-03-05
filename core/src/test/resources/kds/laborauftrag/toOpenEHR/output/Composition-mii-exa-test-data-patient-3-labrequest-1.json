@@ -1,0 +1,352 @@
+{
+  "_type": "COMPOSITION",
+  "name": {
+    "_type": "DV_TEXT",
+    "value": "Leistungsanforderung"
+  },
+  "archetype_details": {
+    "archetype_id": {
+      "value": "openEHR-EHR-COMPOSITION.request.v1"
+    },
+    "template_id": {
+      "value": "KDS_Laborauftrag"
+    },
+    "rm_version": "1.0.4"
+  },
+  "language": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_639-1"
+    },
+    "code_string": "de"
+  },
+  "territory": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_3166-1"
+    },
+    "code_string": "DE"
+  },
+  "category": {
+    "_type": "DV_CODED_TEXT",
+    "value": "event",
+    "defining_code": {
+      "_type": "CODE_PHRASE",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "openehr"
+      },
+      "code_string": "433"
+    }
+  },
+  "composer": {
+    "_type": "PARTY_SELF"
+  },
+  "context": {
+    "_type": "EVENT_CONTEXT",
+    "start_time": {
+      "_type": "DV_DATE_TIME",
+      "value": "2022-04-05T07:30:00"
+    },
+    "setting": {
+      "_type": "DV_CODED_TEXT",
+      "value": "other care",
+      "defining_code": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "openehr"
+        },
+        "code_string": "238"
+      }
+    },
+    "other_context": {
+      "_type": "ITEM_TREE",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "CLUSTER",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Fallidentifikation"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.case_identification.v0"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Fall-Kennung"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "MII_0000003",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern"
+                  },
+                  "code_string": "MII_0000003"
+                }
+              },
+              "archetype_node_id": "at0001"
+            }
+          ],
+          "archetype_node_id": "openEHR-EHR-CLUSTER.case_identification.v0"
+        }
+      ],
+      "archetype_node_id": "at0001"
+    }
+  },
+  "content": [
+    {
+      "_type": "INSTRUCTION",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Laborleistung"
+      },
+      "archetype_details": {
+        "archetype_id": {
+          "value": "openEHR-EHR-INSTRUCTION.service_request.v1"
+        },
+        "rm_version": "1.0.4"
+      },
+      "language": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de"
+      },
+      "encoding": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8"
+      },
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "protocol": {
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Tree"
+        },
+        "items": [
+          {
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Auftrags-ID des anfordernden/einsendenden Systems (PLAC)"
+            },
+            "value": {
+              "_type": "DV_IDENTIFIER",
+              "issuer": "https://www.charite.de/fhir/sid/lab-requests",
+              "assigner": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier::Charité",
+              "id": "LAB_000003",
+              "type": "http://terminology.hl7.org/CodeSystem/v2-0203::PLAC"
+            },
+            "archetype_node_id": "at0010"
+          },
+          {
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Einsender"
+            },
+            "archetype_details": {
+              "archetype_id": {
+                "value": "openEHR-EHR-CLUSTER.organisation.v1"
+              },
+              "rm_version": "1.0.4"
+            },
+            "items": [
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Namenszeile"
+                },
+                "value": {
+                  "_type": "DV_TEXT",
+                  "value": "Rahel Hirsch"
+                },
+                "archetype_node_id": "at0001"
+              }
+            ],
+            "archetype_node_id": "openEHR-EHR-CLUSTER.organisation.v1"
+          },
+          {
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Status der Anfrage"
+            },
+            "value": {
+              "_type": "DV_CODED_TEXT",
+              "value": "Completed",
+              "defining_code": {
+                "_type": "CODE_PHRASE",
+                "terminology_id": {
+                  "_type": "TERMINOLOGY_ID",
+                  "value": "http://hl7.org/fhir/ValueSet/request-status"
+                },
+                "code_string": "completed"
+              }
+            },
+            "archetype_node_id": "at0127"
+          }
+        ],
+        "archetype_node_id": "at0008"
+      },
+      "narrative": {
+        "_type": "DV_TEXT",
+        "value": "<none>"
+      },
+      "activities": [
+        {
+          "_type": "ACTIVITY",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Aktuelle Aktivität"
+          },
+          "description": {
+            "_type": "ITEM_TREE",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Tree"
+            },
+            "items": [
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Name der Laborleistung"
+                },
+                "value": {
+                  "_type": "DV_CODED_TEXT",
+                  "value": "58410-2",
+                  "defining_code": {
+                    "_type": "CODE_PHRASE",
+                    "terminology_id": {
+                      "_type": "TERMINOLOGY_ID",
+                      "value": "http://loinc.org"
+                    },
+                    "code_string": "58410-2"
+                  }
+                },
+                "archetype_node_id": "at0121"
+              },
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Art der Laborleistung (Kategorie)"
+                },
+                "value": {
+                  "_type": "DV_CODED_TEXT",
+                  "value": "Laboratory",
+                  "defining_code": {
+                    "_type": "CODE_PHRASE",
+                    "terminology_id": {
+                      "_type": "TERMINOLOGY_ID",
+                      "value": "http://terminology.hl7.org/ValueSet/observation-category"
+                    },
+                    "code_string": "laboratory"
+                  }
+                },
+                "archetype_node_id": "at0148"
+              },
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Intention"
+                },
+                "value": {
+                  "_type": "DV_CODED_TEXT",
+                  "value": "Order",
+                  "defining_code": {
+                    "_type": "CODE_PHRASE",
+                    "terminology_id": {
+                      "_type": "TERMINOLOGY_ID",
+                      "value": "http://hl7.org/fhir/request-intent"
+                    },
+                    "code_string": "order"
+                  }
+                },
+                "archetype_node_id": "at0065"
+              },
+              {
+                "_type": "CLUSTER",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Probe"
+                },
+                "archetype_details": {
+                  "archetype_id": {
+                    "value": "openEHR-EHR-CLUSTER.specimen.v1"
+                  },
+                  "rm_version": "1.0.4"
+                },
+                "items": [
+                  {
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Laborprobenidentifikator"
+                    },
+                    "value": {
+                      "_type": "DV_IDENTIFIER",
+                      "issuer": "https://www.charite.de/fhir/sid/Bioproben",
+                      "id": "BP_000004"
+                    },
+                    "archetype_node_id": "at0001"
+                  },
+                  {
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Zeitpunkt der Probenentnahme"
+                    },
+                    "value": {
+                      "_type": "DV_DATE_TIME",
+                      "value": "2022-04-05T07:15:00"
+                    },
+                    "archetype_node_id": "at0015"
+                  }
+                ],
+                "archetype_node_id": "openEHR-EHR-CLUSTER.specimen.v1"
+              }
+            ],
+            "archetype_node_id": "at0009"
+          },
+          "timing": {
+            "_type": "DV_PARSABLE",
+            "value": "R1",
+            "formalism": "timing"
+          },
+          "action_archetype_id": "/.*/",
+          "archetype_node_id": "at0001"
+        }
+      ],
+      "archetype_node_id": "openEHR-EHR-INSTRUCTION.service_request.v1"
+    }
+  ],
+  "archetype_node_id": "openEHR-EHR-COMPOSITION.request.v1"
+}

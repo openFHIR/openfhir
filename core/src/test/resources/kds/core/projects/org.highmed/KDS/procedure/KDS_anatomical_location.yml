@@ -1,0 +1,23 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name:  KDS_anatomical_location_prozedur
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: CLUSTER.anatomical_location.v1
+
+mappings:
+  - name: "bodySiteCoded"
+    extension: "overwrite"
+    with:
+      fhir: "$fhirRoot.bodySite"
+      openehr: "$archetype/items[at0001]" #Name of body site
+
+  - name: "seitenlokalisationFromOpsCode"
+    unidirectional: "fhir->openehr"
+    extension: "add"
+    with:
+      fhir: "$resource.code.coding.extension.value"
+      openehr: "$archetype/items[at0002]"

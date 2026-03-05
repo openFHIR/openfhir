@@ -1,0 +1,342 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-2",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:53:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationStatement"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationStatement/mii-exa-test-data-patient-2-medstatement-3",
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "mii-exa-test-data-patient-2-medstatement-3",
+        "meta": {
+          "security": [
+            {
+              "code": "HTEST",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "display": "test health data"
+            }
+          ],
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000009"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "MedicationRequest/mii-exa-test-data-patient-2-medrequest-3"
+          }
+        ],
+        "category": {
+          "coding": [
+            {
+              "system": "http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung",
+              "code": "E200",
+              "display": "stationärer Aufenthalt"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient"
+            }
+          ]
+        },
+        "effectivePeriod": {
+          "start": "2024-03-07T10:30:00+01:00",
+          "end": "2024-03-07T13:30:00+01:00"
+        },
+        "dosage": [
+          {
+            "route": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "20045000",
+                  "display": "Intravenous use"
+                }
+              ]
+            },
+            "doseAndRate": [
+              {
+                "rateRatio": {
+                  "numerator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 175,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "denominator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 3,
+                    "code": "h",
+                    "unit": "h"
+                  }
+                },
+                "doseQuantity": {
+                  "system": "http://unitsofmeasure.org",
+                  "value": 175,
+                  "code": "mg",
+                  "unit": "mg"
+                }
+              }
+            ],
+            "text": "Paclitaxel 175mg IV über 3 Stunden"
+          }
+        ],
+        "status": "completed",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-paclitaxel"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-2"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-2-encounter-1"
+        },
+        "dateAsserted": "2024-03-07"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationRequest/mii-exa-test-data-patient-2-medrequest-3",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mii-exa-test-data-patient-2-medrequest-3",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+            "value": "MO_0000008"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "doseAndRate": [
+              {
+                "rateRatio": {
+                  "numerator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 175,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "denominator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 3,
+                    "code": "h",
+                    "unit": "h"
+                  }
+                },
+                "doseQuantity": {
+                  "value": 175,
+                  "code": "mg",
+                  "system": "http://unitsofmeasure.org",
+                  "unit": "mg"
+                }
+              }
+            ],
+            "text": "Paclitaxel 175mg IV über 3 Stunden",
+            "route": {
+              "coding": [
+                {
+                  "code": "20045000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Intravenous use"
+                }
+              ]
+            }
+          }
+        ],
+        "substitution": {
+          "allowedBoolean": false
+        },
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-paclitaxel"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-2"
+        },
+        "encounter": {
+          "reference": "Encounter/mii-exa-test-data-patient-2-encounter-1"
+        },
+        "authoredOn": "2024-03-07T10:30:00+01:00"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-paclitaxel",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-paclitaxel",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "L01CD01",
+              "version": "2024",
+              "display": "Paclitaxel"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "code": "26509"
+                }
+              ]
+            },
+            "strength": {
+              "numerator": {
+                "value": 175,
+                "code": "mg",
+                "system": "http://unitsofmeasure.org",
+                "unit": "mg"
+              },
+              "denominator": {
+                "value": 29,
+                "code": "ml",
+                "system": "http://unitsofmeasure.org",
+                "unit": "ml"
+              }
+            }
+          }
+        ],
+        "form": {
+          "coding": [
+            {
+              "code": "11210000",
+              "system": "http://standardterms.edqm.eu",
+              "display": "Solution for infusion"
+            }
+          ]
+        },
+        "status": "active"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-2-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-2-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000004"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0500"
+            }
+          ]
+        },
+        "period": {
+          "start": "2024-03-02",
+          "end": "2024-03-13"
+        },
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "07",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Tod"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "9",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "keine Angabe"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "E",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Einweisung durch einen Arzt"
+              }
+            ]
+          }
+        },
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-2"
+        }
+      }
+    }
+  ]
+}

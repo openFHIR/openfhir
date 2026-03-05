@@ -1,0 +1,99 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000003"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
+            "valueCoding": {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "262202000",
+              "display": "Therapeutic"
+            }
+          },
+          {
+            "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
+            "valueDateTime": "2022-04-08T07:30:00+02:00"
+          }
+        ],
+        "status": "completed",
+        "statusReason": {
+          "text": "completed"
+        },
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "387713003",
+              "display": "387713003"
+            }
+          ],
+          "text": "387713003"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "265414003",
+              "display": "265414003"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "code": "5-485.02"
+            },
+            {} // a fix for now, not blocking issue
+          ],
+          "text": "265414003"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "performedPeriod": {
+          "start": "2022-04-08T07:30:00+02:00",
+          "end": "2022-04-08T13:45:00"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "version": "20230731",
+                "code": "34402009",
+                "display": "34402009"
+              }
+            ],
+            "text": "34402009"
+          }
+        ],
+        "note": [
+          {
+            "text": "Radikale Rektumresektion mit totaler mesorektaler Exzision"
+          }
+        ]
+      }
+    }
+  ]
+}

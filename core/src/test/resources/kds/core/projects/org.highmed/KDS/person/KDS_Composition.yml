@@ -1,0 +1,47 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name: KDS_composition_person.v0
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: COMPOSITION.person.v0
+
+mappings: # does create duplicates since content is iterated thats why this is excluded and not used
+  - name: "pid"
+    extension: "add"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition/context/other_context[at0003]/items[at0004]"
+    fhirCondition:
+      targetRoot: "$resource.identifier"
+      targetAttribute: "system"
+      operator: "not of"
+      criteria: "http://fhir.de/sid/gkv/kvid-10"
+
+  - name: "personData"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]"
+    slotArchetype: "ADMIN_ENTRY.person_data.v0"
+
+  - name: "gender"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$composition/content[openEHR-EHR-EVALUATION.gender.v1]"
+    slotArchetype: "EVALUATION.gender.v1"
+
+  - name: "versicherungsInformationen"
+    extension: "add"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition/content[openEHR-EHR-ADMIN_ENTRY.versicherungsinformationen.v0]"
+    fhirCondition:
+      targetRoot: "$resource.identifier"
+      targetAttribute: "system"
+      operator: "one of"
+      criteria: "http://fhir.de/sid/gkv/kvid-10"
+    slotArchetype: "ADMIN_ENTRY.versicherungsinformationen.v0"

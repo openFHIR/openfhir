@@ -1,0 +1,136 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Medication",
+            "id": "1",
+            "meta": {
+              "profile": [
+                "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication"
+              ]
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "version": "2024",
+                  "code": "N02BE01",
+                  "display": "Paracetamol"
+                }
+              ],
+              "text": "Paracetamol"
+            },
+            "form": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "10219000",
+                  "display": "Tablet"
+                }
+              ],
+              "text": "Tablet"
+            },
+            "ingredient": [
+              {
+                "strength": {
+                  "numerator": {
+                    "value": 500.0,
+                    "unit": "mg",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "mg"
+                  },
+                  "denominator": {
+                    "value": 1.0,
+                    "unit": "1",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "1"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "resourceType": "Encounter",
+            "id": "2",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000010"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000019"
+          }
+        ],
+        "status": "active",
+        "category": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient",
+              "display": "Inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "#1"
+        },
+        "context": {
+          "reference": "#2"
+        },
+        "effectiveDateTime": "2024-02-22T16:00:00+01:00",
+        "dateAsserted": "2024-02-22T16:00:00+01:00",
+        "dosage": [
+          {
+
+            "route": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "20053000",
+                  "display": "Oral use"
+                }
+              ],
+              "text": "Oral use"
+            }
+          },
+          {
+            "text": "Paracetamol 500mg bei Bedarf",
+            "timing": {
+              "repeat": {
+                "frequency": 4,
+                "period": 1.0,
+                "periodUnit": "d"
+              }
+            },
+            "asNeededBoolean": true,
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 500.0,
+                  "unit": "mg",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

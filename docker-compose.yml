@@ -1,0 +1,22 @@
+services:
+  openfhir:
+    build: .
+    container_name: openfhir
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/home/user/Documents/openFHIR/openfhir-bootstrap/:/app/bootstrap/"
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb://openfhir:openfhir@mongodb:27017/openfhir"
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "admin"
+      MONGO_INITDB_DATABASE: "openfhir"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
