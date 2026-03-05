@@ -36,6 +36,11 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y mongodb-mongosh
 
+      - name: Check MongoDB is running
+        run: |
+          docker ps -a
+          mongosh --eval "db.runCommand({ ping: 1 })"
+
       - name: Initialise MongoDB
         run: mongosh --file init-mongo.js
 
