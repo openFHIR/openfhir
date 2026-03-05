@@ -19,4 +19,6 @@ jobs:
           java-version: '21'
 
       - name: Build
+        env:
+          TZ: Europe/Ljubljana
         run: mvn clean verify
