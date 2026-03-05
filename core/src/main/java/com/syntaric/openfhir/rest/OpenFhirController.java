@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ConditionalOnMissingBean(OpenFhirControllerMarker.class)
 @Slf4j
 @Tag(name = "openFHIR API", description = "Operations related to openFHIR (mapping between openEHR and FHIR)")
-public class OpenFhirController implements OpenFhirControllerMarker {
+public class OpenFhirController {
 
     private final OpenFhirEngine openFhirEngine;
 

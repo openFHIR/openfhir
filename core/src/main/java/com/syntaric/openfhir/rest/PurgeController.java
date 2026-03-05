@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ConditionalOnMissingBean(PurgeControllerMarker.class)
 @Tag(name = "Purging", description = "Operations related purging the state of the engine")
-public class PurgeController implements PurgeControllerMarker {
+public class PurgeController {
 
 
     private final OptRepository optRepository;

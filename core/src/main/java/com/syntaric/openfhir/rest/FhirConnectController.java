@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ConditionalOnMissingBean(FhirConnectControllerMarker.class)
 @Tag(name = "FHIR Connect API", description = "Operations related to FHIR Connect models (context and model mappings)")
-public class FhirConnectController implements FhirConnectControllerMarker {
+public class FhirConnectController {
 
     private final FhirConnectService service;
 

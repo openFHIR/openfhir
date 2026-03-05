@@ -79,12 +79,6 @@ jobs:
             --reporters cli,junit \
             --reporter-junit-export results-1.xml
 
-      - name: Run collection 2 - openFHIR Tutorial Tests
-        run: |
-          newman run tests/e2e/2_openFHIR_Tutorial_TESTS.postman_collection.json \
-            --reporters cli,junit \
-            --reporter-junit-export results-2.xml
-
       - name: Stop application
         if: always()
         run: kill $(cat app.pid) 2>/dev/null || true

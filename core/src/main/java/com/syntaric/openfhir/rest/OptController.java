@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ConditionalOnMissingBean(OptControllerMarker.class)
 @Tag(name = "Operational Template (openEHR) API", description = "Operations related to Operational Template as one of the states of the engine (if engine isn't integrated with an openEHR CDR directly)")
-public class OptController implements OptControllerMarker {
+public class OptController {
 
     private final OptService optService;
 
