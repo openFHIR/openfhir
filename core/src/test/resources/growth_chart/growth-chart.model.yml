@@ -1,0 +1,90 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "openEHR-EHR-COMPOSITION.growth_chart.v0"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-COMPOSITION.growth_chart.v0"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Bundle
+
+mappings:
+
+  - name: "heightParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.height.v2]/data[at0002]/events[at0003]"
+    followedBy:
+      mappings:
+        - name: "iterateHeight"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "heightSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.height.v2]"
+                slotArchetype: "openEHR-EHR-OBSERVATION.height.v2"
+
+  - name: "weightParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]"
+    followedBy:
+      mappings:
+        - name: "iterateWeight"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "weightSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]"
+                slotArchetype: "openEHR-EHR-OBSERVATION.body_weight.v2"
+
+  - name: "bmiParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0002]/events[at0003]"
+    followedBy:
+      mappings:
+        - name: "iterateBmi"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "bmiSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]"
+                slotArchetype: "openEHR-EHR-OBSERVATION.body_mass_index.v2"
+
+  - name: "headCircumferenceParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0002]/events[at0003]"
+    followedBy:
+      mappings:
+        - name: "iterateHead"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "headCircumferenceSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]"
+                slotArchetype: "openEHR-EHR-OBSERVATION.head_circumference.v1"

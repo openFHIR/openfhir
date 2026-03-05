@@ -1,0 +1,33 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "OBSERVATION.body_temperature.v2-nhealth"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.body_temperature.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "[$snomed.276885007,$loinc.8310-5]" #need to add support for adding two codes
+    - targetRoot: "$resource"
+      targetAttribute: "status"
+      operator: "one of"
+      criteria: "final"
+    - targetRoot: "$resource"
+      targetAttribute: "category.coding.code"
+      operator: "one of"
+      criteria: "vital-signs"
+
+mappings:
+  - name: "value"
+    with:
+      fhir: "$resource.value"
+      openehr: "$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]"

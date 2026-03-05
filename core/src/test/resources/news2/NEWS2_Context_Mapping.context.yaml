@@ -1,0 +1,24 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: "NEWS2 Encounter Parent"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "Bundle"
+  template:
+    id: "NEWS2 Encounter Parent"
+  archetypes:
+    - "OBSERVATION.news2.v1"
+    - "OBSERVATION.acvpu.v1"
+    - "OBSERVATION.blood_pressure.v3"
+    - "OBSERVATION.body_temperature.v2"
+    - "OBSERVATION.pulse.v2"
+    - "OBSERVATION.respiration.v2"
+    - "OBSERVATION.pulse_oximetry.v1"
+    - "openEHR-EHR-COMPOSITION.encounter.v1"
+  start: "openEHR-EHR-COMPOSITION.encounter.v1"

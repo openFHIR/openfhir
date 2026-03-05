@@ -1,0 +1,109 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-7",
+  "meta": {
+    "security": [
+      {
+        "code": "HTEST",
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+        "display": "test health data"
+      }
+    ]
+  },
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:57:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Patient/mii-exa-test-data-patient-7",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "mii-exa-test-data-patient-7",
+        "meta": {
+          "security": [
+            {
+              "code": "HTEST",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "display": "test health data"
+            }
+          ],
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "identifier": {
+                "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+                "value": "Charité"
+              },
+              "display": "Charité - Universitätsmedizin Berlin"
+            },
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "use": "usual",
+            "system": "https://www.medizininformatik-initiative.de/fhir/sid/patienten",
+            "value": "789456321"
+          },
+          {
+            "assigner": {
+              "identifier": {
+                "use": "official",
+                "value": "567890123",
+                "system": "http://fhir.de/sid/arge-ik/iknr"
+              }
+            },
+            "use": "official",
+            "type": {
+              "coding": [
+                {
+                  "code": "KVZ10",
+                  "system": "http://fhir.de/CodeSystem/identifier-type-de-basis"
+                }
+              ]
+            },
+            "system": "http://fhir.de/sid/gkv/kvid-10",
+            "value": "E456789012"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Anna"
+            ],
+            "use": "official",
+            "family": "Hoffmann"
+          },
+          {
+            "use": "maiden",
+            "family": "Schmidt"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Gartenstraße 56"
+            ],
+            "type": "both",
+            "city": "Köln",
+            "postalCode": "50667",
+            "country": "DE"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1992-07-15",
+        "deceasedBoolean": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+#  Copyright 2022 Better Ltd (www.better.care)
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name:  OBSERVATION.blood_pressure.v2
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-OBSERVATION.blood_pressure.v2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  hierarchy:
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]"
+    split:
+      fhir:
+        create: "resource"
+
+# Actual mapping points:
+mappings:
+  - name: "systolic"
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]"
+
+    fhirCondition:
+      # One of the codings has to be the matching LOINC or SNOMED code.
+      # incl. implicit handling of arrays, as ".coding" is a set of codings.
+      # -> Here the backwards direction is ambiguous. The program will interpret "one of"
+      # as "put those in the target resource" if the direction is openEHR->FHIR.
+      targetRoot: "$resource.component"                       # Scope of object for 'condition'
+      targetAttribute: "code.coding.code" # Actual attribute to check for 'condition'
+      operator: "one of"
+      criteria: "8480-6"
+    followedBy:
+      mappings:
+        - name: "value"
+          with:
+            fhir: "value"
+            openehr: "items[at0004]"
+        - name: "loincCode"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype"
+          manual:
+            - name: "loincCodeManual"
+              fhir:
+                - path: "code.coding.code"
+                  value: "8480-6"
+
+  - name: "diastolic"
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]"
+    fhirCondition:
+      targetRoot: "$resource.component"                       # Scope of object for 'condition'
+      targetAttribute: "code.coding.code" # Actual attribute to check for 'condition'
+      operator: "one of"
+      criteria: "8462-4"
+    followedBy:
+      mappings:
+        - name: "value"
+          with:
+            fhir: "value"
+            openehr: "items[at0005]"
+        - name: "loincCode"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype"
+          manual:
+            - name: "loincCodeManual"
+              fhir:
+                - path: "code.coding.code"
+                  value: "8462-4"
+
+  - name: "clinicalInterpretation"
+    with:
+      fhir: "$resource.component.interpretation.text"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]/items[at1059]"
+
+
+  - name: "description"
+    with:
+      fhir: "$resource.code.text"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]/items[at0033]"
+
+  - name: "position"
+    with:
+      openehr: "$archetype/data[at0001]/events[at1042]/state[at0007]/items[at0008]"
+      fhir: "$resource"
+    manual:
+      - name: "position"
+        openehr:
+          - path: "terminology_id"
+            value: "openehr"
+          - path: "value"
+            value: "at1000"
+          - path: "defining_code"
+            value: "at1000"
+
+
+  - name: "confoundingFactors"
+    with:
+      openehr: "$archetype/data[at0001]/events[at1042]/state[at0007]/items[at1052]"
+      fhir: "$resource"
+    manual:
+      - name: "position"
+        openehr:
+          - path: "$openehrRoot"
+            value: "confounding factor"
+
+
+  - name: "performerHardcodedInFhir"
+    with:
+      fhir: "$resource.performer.as(Reference).display"
+      openehr: "$archetype"
+    manual:
+      - name: "position"
+        fhir:
+          - path: "$fhirRoot"
+            value: "John Doe"
+      
+
+  - name: "location"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/protocol[at0011]"
+    fhirCondition:
+      targetRoot: "$resource.bodySite"
+      targetAttribute: "text"
+      operator: "one of"
+      criteria: "THIS IS LOCATION OF MEASUREMENT"
+    followedBy:
+      mappings:
+        - name: "coding"
+          with:
+            fhir: "coding"
+            openehr: "items[at0014]"
+        - name: "fhirTextManual"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype"
+          manual:
+            - name: "textManual"
+              fhir:
+                - path: "text"
+                  value: "THIS IS LOCATION OF MEASUREMENT"

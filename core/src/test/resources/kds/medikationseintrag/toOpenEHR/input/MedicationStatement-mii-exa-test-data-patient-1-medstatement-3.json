@@ -1,0 +1,667 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-1",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:51:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationStatement"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationStatement/mii-exa-test-data-patient-1-medstatement-3",
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "mii-exa-test-data-patient-1-medstatement-3",
+        "meta": {
+          "security": [
+            {
+              "code": "HTEST",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "display": "test health data"
+            }
+          ],
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000003"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "MedicationRequest/mii-exa-test-data-patient-1-medrequest-3"
+          }
+        ],
+        "category": {
+          "coding": [
+            {
+              "system": "http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung",
+              "code": "E200",
+              "display": "stationärer Aufenthalt"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient"
+            }
+          ]
+        },
+        "effectivePeriod": {
+          "start": "2024-02-20T09:55:00+01:00"
+        },
+        "dosage": [
+          {
+            "route": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "20045000",
+                  "display": "Intravenous use"
+                },
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "47625008",
+                  "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                  "display": "Intravenous route (qualifier value)"
+                }
+              ]
+            },
+            "doseAndRate": [
+              {
+                "rateQuantity": {
+                  "system": "http://unitsofmeasure.org",
+                  "value": 5,
+                  "code": "mg/min"
+                }
+              }
+            ]
+          }
+        ],
+        "status": "entered-in-error",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-propofol"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-1-encounter-1"
+        },
+        "dateAsserted": "2024-02-20"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationRequest/mii-exa-test-data-patient-1-medrequest-3",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mii-exa-test-data-patient-1-medrequest-3",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+            "value": "MO_0000003"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "timing": {
+              "event": [
+                "2024-02-20T10:00:00+01:00"
+              ]
+            },
+            "doseAndRate": [
+              {
+                "rateQuantity": {
+                  "system": "http://unitsofmeasure.org",
+                  "value": 5,
+                  "code": "mg/min"
+                }
+              }
+            ],
+            "text": "Propofol 6.5 mg/min IV via Perfusor",
+            "route": {
+              "coding": [
+                {
+                  "code": "20045000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Intravenous use"
+                }
+              ]
+            },
+            "method": {
+              "coding": [
+                {
+                  "code": "129331004",
+                  "system": "http://snomed.info/sct",
+                  "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                  "display": "Perfusion - action (qualifier value)"
+                }
+              ]
+            }
+          }
+        ],
+        "status": "cancelled",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-propofol"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "encounter": {
+          "reference": "Encounter/mii-exa-test-data-patient-1-encounter-2"
+        },
+        "authoredOn": "2024-02-20T09:55:00+01:00"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-propofol",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-propofol",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "N01AX10",
+              "version": "2023",
+              "display": "Propofol"
+            }
+          ]
+        },
+        "form": {
+          "coding": [
+            {
+              "system": "http://standardterms.edqm.eu",
+              "code": "50021000",
+              "display": "Emulsion for injection/infusion"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "code": "22898",
+                  "display": "Propofol"
+                },
+                {
+                  "system": "http://fdasis.nlm.nih.gov",
+                  "code": "YI7VU623SF"
+                },
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/CAS",
+                  "code": "2078-54-8"
+                },
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "387423006",
+                  "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                  "display": "Propofol (substance)"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-1-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-1-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000001"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0100"
+            }
+          ]
+        },
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "ErsteUndZweiteStelle",
+                "valueCoding": {
+                  "code": "01",
+                  "system": "http://fhir.de/CodeSystem/dkgev/AufnahmegrundErsteUndZweiteStelle",
+                  "display": "Krankenhausbehandlung, vollstationär"
+                }
+              },
+              {
+                "url": "DritteStelle",
+                "valueCoding": {
+                  "code": "0",
+                  "system": "http://fhir.de/CodeSystem/dkgev/AufnahmegrundDritteStelle",
+                  "display": "Anderes"
+                }
+              },
+              {
+                "url": "VierteStelle",
+                "valueCoding": {
+                  "code": "1",
+                  "system": "http://fhir.de/CodeSystem/dkgev/AufnahmegrundVierteStelle",
+                  "display": "Normalfall"
+                }
+              }
+            ],
+            "url": "http://fhir.de/StructureDefinition/Aufnahmegrund"
+          }
+        ],
+        "period": {
+          "start": "2024-02-14",
+          "end": "2024-02-22"
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-1-diagnose-1"
+            },
+            "use": {
+              "coding": [
+                {
+                  "code": "AD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Admission diagnosis"
+                }
+              ]
+            },
+            "rank": 1
+          },
+          {
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-1-todesursache-1"
+            },
+            "use": {
+              "coding": [
+                {
+                  "code": "DD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Discharge diagnosis"
+                }
+              ]
+            },
+            "rank": 2
+          }
+        ],
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "07",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Tod"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "9",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "keine Angabe"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "E",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Einweisung durch einen Arzt"
+              }
+            ]
+          }
+        },
+        "location": [
+          {
+            "location": {
+              "identifier": {
+                "system": "https://www.charite.de/fhir/sid/Zimmernummern",
+                "value": "RHC-06-210b"
+              },
+              "display": "RHC-06-210b"
+            },
+            "status": "active",
+            "physicalType": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code": "ro"
+                }
+              ]
+            }
+          },
+          {
+            "location": {
+              "identifier": {
+                "system": "https://www.charite.de/fhir/sid/Bettennummern",
+                "value": "RHC-06-210b-02"
+              },
+              "display": "RHC-06-210b-02"
+            },
+            "status": "active",
+            "physicalType": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code": "bd"
+                }
+              ]
+            }
+          },
+          {
+            "location": {
+              "identifier": {
+                "system": "https://www.charite.de/fhir/sid/Stationsnummern",
+                "value": "RHC-06"
+              },
+              "display": "RHC-06"
+            },
+            "status": "active",
+            "physicalType": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code": "wa"
+                }
+              ]
+            }
+          }
+        ],
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Condition/mii-exa-test-data-patient-1-diagnose-1",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "mii-exa-test-data-patient-1-diagnose-1",
+        "code": {
+          "coding": [
+            {
+              "extension": [
+                {
+                  "url": "http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen",
+                  "valueCoding": {
+                    "code": "†",
+                    "system": "http://fhir.de/CodeSystem/icd-10-gm-mehrfachcodierungs-kennzeichen"
+                  }
+                },
+                {
+                  "url": "http://fhir.de/StructureDefinition/seitenlokalisation",
+                  "valueCoding": {
+                    "code": "B",
+                    "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ICD_SEITENLOKALISATION",
+                    "display": "beiderseits"
+                  }
+                },
+                {
+                  "url": "http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit",
+                  "valueCoding": {
+                    "code": "G",
+                    "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ICD_DIAGNOSESICHERHEIT",
+                    "display": "gesicherte Diagnose"
+                  }
+                }
+              ],
+              "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+              "code": "B05.3",
+              "version": "2023"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+              "code": "I29578",
+              "version": "2023",
+              "display": "Masern mit Otitis"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13420004",
+              "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+              "display": "Post measles otitis media (disorder)"
+            }
+          ]
+        },
+        "note": [
+          {
+            "text": "Masernotitis"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "25342003",
+                "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                "display": "Middle ear structure (body structure)"
+              }
+            ]
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "code": "confirmed",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "recordedDate": "2024-02-21",
+        "onsetDateTime": "2024-02-21"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Condition/mii-exa-test-data-patient-1-todesursache-1",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "mii-exa-test-data-patient-1-todesursache-1",
+        "code": {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/sid/icd-10",
+              "code": "A15.0",
+              "version": "2019"
+            }
+          ]
+        },
+        "note": [
+          {
+            "text": "Tuberkulose einschließlich ihrer Folgezustände"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "16100001"
+              },
+              {
+                "system": "http://loinc.org",
+                "code": "79378-6"
+              }
+            ]
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "code": "confirmed",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "recordedDate": "2024-02-22"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-1-encounter-2",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-1-encounter-2",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000002"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "versorgungsstellenkontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "operation"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "2000"
+            }
+          ]
+        },
+        "period": {
+          "start": "2024-02-20T10:00:00+01:00",
+          "end": "2024-02-20T13:00:00+01:00"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "partOf": {
+          "reference": "Encounter/mii-exa-test-data-patient-1-encounter-1"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Consent",
+        "status": "active",
+        "dateTime": "2024-08-22T10:30:00+02:00",
+        "provision": {
+          "period": {
+            "start": "2023-07-22T10:30:00+02:00",
+            "end": "2024-08-22T10:30:00+02:00"
+          }
+        }
+      }
+    }
+  ]
+}

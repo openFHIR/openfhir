@@ -1,0 +1,58 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name:  KDS_cluster_person.v1
+  version: 0.0.1-alpha 
+spec: 
+  system: FHIR
+  version: R4
+  extends: CLUSTER.person.v1
+
+mappings:
+  - name: "name"
+    extension: "overwrite"
+    with:
+      fhir: "$resource.name"
+      openehr: "$archetype/items[openEHR-EHR-CLUSTER.structured_name.v1 and name/value='Name']"
+    slotArchetype: "CLUSTER.structured_name.v1"
+    fhirCondition:
+      targetRoot: "$resource.name"
+      targetAttribute: "use"
+      operator: "one of"
+      criteria: "official"
+
+  - name: "geburtsname"
+    extension: "add"
+    with:
+      fhir: "$resource.name"
+      openehr: "$archetype/items[openEHR-EHR-CLUSTER.structured_name.v1 and name/value='Geburtsname']"
+    slotArchetype: "CLUSTER.structured_name.v1"
+    fhirCondition:
+      targetRoot: "$resource.name"
+      targetAttribute: "use"
+      operator: "one of"
+      criteria: "maiden"
+
+  - name: "address" #Straßenanschrift
+    extension: "overwrite"
+    with:
+      fhir: "$resource.address"
+      openehr: "$archetype/items[openEHR-EHR-CLUSTER.address.v1 and name/value='Straßenanschrift']"
+    slotArchetype: "CLUSTER.address.v1"
+    fhirCondition:
+      targetRoot: "address"
+      targetAttribute: "type"
+      operator: "one of"
+      criteria: "both"
+
+  - name: "addressPostfach"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/items[openEHR-EHR-CLUSTER.address.v1 and name/value='Postfach']"
+    slotArchetype: "CLUSTER.address.v1"
+    fhirCondition:
+      targetRoot: "address"
+      targetAttribute: "type"
+      operator: "one of"
+      criteria: "postal"

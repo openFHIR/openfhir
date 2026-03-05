@@ -1,0 +1,20 @@
+grammar: FHIRConnect/v0.9.0
+type: model
+metadata:
+  name: CLUSTER.death_details.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-CLUSTER.death_details.v1
+    revision: 1.0.3
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/DateTime
+
+mappings:
+
+  - name: "deathDate"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$archetype/items[at0001]"

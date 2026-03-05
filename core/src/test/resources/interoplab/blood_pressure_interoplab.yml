@@ -1,0 +1,263 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: OBSERVATION.blood_pressure.acp
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-OBSERVATION.blood_pressure.v2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: code.coding.code
+      operator: one of
+      criteria: 85354-9
+
+mappings:
+  - name: id
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    manual:
+      - name: "id"
+        fhir:
+          - path: "id"
+            value: "nl-core-BloodPressure-01"
+
+  - name: meta
+    with:
+      fhir: "$resource.meta"
+      openehr: "$archetype"
+    manual:
+      - name: "profile"
+        fhir:
+          - path: "profile"
+            value: "http://nictiz.nl/fhir/StructureDefinition/nl-core-BloodPressure"
+
+  - name: method
+    with:
+      fhir: "$resource.method"
+      openehr: "$archetype/protocol[at0011]/items[at1035]"
+#      type: CODEABLECONCEPT
+
+
+  - name: manualLoincCode
+    with:
+      fhir: "$resource.code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "coding"
+        fhir:
+          - path: "code"
+            value: "85354-9"
+          - path: "system"
+            value: "http://loinc.org"
+          - path: "display"
+            value: "Blood pressure panel with all children optional"
+
+  - name: observationCategory
+    with:
+      fhir: "$resource.category.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "category"
+        fhir:
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/observation-category"
+          - path: "code"
+            value: "vital-signs"
+          - path: "display"
+            value: "Vital Signs"
+
+  - name: bodySite
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/protocol[at0011]/items[at0014]"
+#      type: CODEABLECONCEPT
+
+
+  - name: position
+    with:
+      fhir: "$resource.extension.value"
+      openehr: "$archetype/data[at0001]/events[at0006]/state[at0007]/items[at0008]"
+#      type: CODEABLECONCEPT
+
+    fhirCondition:
+      targetRoot: "$resource.extension"
+      targetAttribute: "url"
+      operator: one of
+      criteria: "http://hl7.org/fhir/StructureDefinition/observation-bodyPosition"
+
+  - name: dateTime
+    with:
+      fhir: "$resource.effective"
+      openehr: "$archetype/data[at0001]/events[at0006]"
+#      type: DATETIME
+
+
+  - name: componentParent
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/data[at0001]/events[at0006]"
+    followedBy:
+      mappings:
+        - name: systolicParent
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot"
+          fhirCondition:
+            targetRoot: "$fhirRoot"
+            targetAttribute: "code.coding.code"
+            operator: "one of"
+            criteria: "8480-6"
+          followedBy:
+            mappings:
+              - name: systolic
+                with:
+                  fhir: "value"
+                  openehr: "data[at0003]/items[at0004]"
+#                  type: QUANTITY
+
+              - name: "harcdcodingComponentCodeSystolic"
+                with:
+                  fhir: "code.coding"
+                  openehr: "$openehrRoot"
+                manual:
+                  - name: "coding"
+                    fhir:
+                      - path: "code"
+                        value: "8480-6"
+                      - path: "system"
+                        value: "http://loinc.org"
+                      - path: "display"
+                        value: "Systolic blood pressure"
+        - name: diastolicParent
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot"
+          fhirCondition:
+            targetRoot: "$fhirRoot"
+            targetAttribute: "code.coding.code"
+            operator: "one of"
+            criteria: "8462-6"
+          followedBy:
+            mappings:
+              - name: diastolic
+                with:
+                  fhir: "value"
+                  openehr: "data[at0003]/items[at0005]"
+#                  type: QUANTITY
+
+              - name: "harcdcodingComponentCodeDiastolic"
+                with:
+                  fhir: "code.coding"
+                  openehr: "$openehrRoot"
+                manual:
+                  - name: "coding"
+                    fhir:
+                      - path: "code"
+                        value: "8462-6"
+                      - path: "system"
+                        value: "http://loinc.org"
+                      - path: "display"
+                        value: "Diastolic blood pressure"
+
+        - name: averageBloodPressureParent
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot"
+          fhirCondition:
+            targetRoot: "$fhirRoot"
+            targetAttribute: "code.coding.code"
+            operator: "one of"
+            criteria: "6797001"
+          followedBy:
+            mappings:
+              - name: averageBloodPressure
+                with:
+                  fhir: "value"
+                  openehr: "data[at0003]/items[at1006]"
+#                  type: QUANTITY
+
+              - name: "harcdcodingComponentCodeAverageBloodPressure"
+                with:
+                  fhir: "code.coding"
+                  openehr: "$openehrRoot"
+                manual:
+                  - name: "coding"
+                    fhir:
+                      - path: "code"
+                        value: "6797001"
+                      - path: "system"
+                        value: "http://snomed.info/sct"
+                      - path: "display"
+                        value: "gemiddelde bloeddruk (waarneembare entiteit)"
+
+  - name: cuffTypeParent
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/protocol[at0011]/items[at0013]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: one of
+      criteria: '70665002'
+    followedBy:
+      mappings:
+        - name: cufftype
+          with:
+#            fhir: "value"
+            fhir: "value.as(CodeableConcept)"
+            openehr: "$openehrRoot"
+#            type: CODEABLECONCEPT
+
+        - name: "harcdcodingComponentCodeCuffType"
+          with:
+            fhir: "code.coding"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "coding"
+              fhir:
+                - path: "code"
+                  value: "70665002"
+                - path: "system"
+                  value: "http://snomed.info/sct"
+                - path: "display"
+                  value: "Blood pressure cuff"
+
+  - name: diastolicEndpointParent
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/protocol[at0011]/items[at1010]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: one of
+      criteria: '85549003'
+    followedBy:
+      mappings:
+        - name: diastolicEndpoint
+          with:
+#            fhir: "value"
+            fhir: "value.as(CodeableConcept)"
+            openehr: "$openehrRoot"
+#            type: CODEABLECONCEPT
+
+        - name: "harcdcodingComponentCodeDiastolicEndpoint"
+          with:
+            fhir: "code.coding"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "coding"
+              fhir:
+                - path: "code"
+                  value: "85549003"
+                - path: "system"
+                  value: "http://snomed.info/sct"
+                - path: "display"
+                  value: "Korotkofftonen (waarneembare entiteit)"

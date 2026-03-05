@@ -1,0 +1,23 @@
+grammar: FHIRConnect/v0.0.1
+type: extension
+metadata:
+  name: NL_problem_diagnosis
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: EVALUATION.problem_diagnosis.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips
+
+mappings:
+  - name: "narrativeText"
+    extension: "add"
+    with:
+      fhir: "$resource.text"
+      openehr: "$archetype"
+    manual:
+      - name: "divText"
+        fhir:
+          - path: "status"
+            value: "generated"

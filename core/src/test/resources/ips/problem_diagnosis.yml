@@ -1,0 +1,119 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: EVALUATION.problem_diagnosis.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.problem_diagnosis.v1
+    revision: 1.4.1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Condition
+
+preprocessor:
+  fhirCondition:
+    targetRoot: "$resource.verificationStatus" # exclude all conditions with entered-in-error or refuted
+    targetAttribute: "coding.code"
+    operator: "not of"
+    criterias:
+      - "entered-in-error"
+      - "refuted" # This can be mapped to exclusion archetype but we cannot expect that this is part of most templates
+      # Extension mapping can be used to map to exclusion archetype
+
+mappings:
+
+  - name: "contextStartTime"
+    with:
+      fhir: "$resource.recordedDate"
+      openehr: "$composition/context/start_time"
+
+  - name: "participations"
+    with:
+      fhir: "$resource.asserter"
+      openehr: "$composition/context/participations"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "asserter"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot/performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out#
+  - name: "composer"
+    with:
+      fhir: "$resource.recorder"
+      openehr: "$composition/composer" # often required therefore simplified mapping engine is to resolve Reference -> Composer
+
+
+  - name: "other_participations"
+    with:
+      fhir: "$resource.asserter"
+      openehr: "$archetype/other_participations"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "asserter"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+
+  - name: "provider"
+    with:
+      fhir: "$resource.recorder"
+      openehr: "$archetype/provider"  # often required therefore simplified mapping engine is to resolve Reference -> Participations
+
+  - name: "problemDiagnose"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/data[at0001]/items[at0002]" # FHIR "code" is mapped to openEHR "Problem/Diagnosis name"
+
+  - name: "verificationStatus"
+    with:
+      fhir: "$resource.verificationStatus"
+      openehr: "$archetype/data[at0001]/items[at0073]" #Verification Status maps to Diagnostic Certainty
+
+  - name: "clinicalStatusSlot"
+    with:
+      fhir: "$resource.clinicalStatus"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]" #Clinical Status Slot
+    slotArchetype: "CLUSTER.problem_qualifier.v2"
+
+  - name: "note"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0069]" # FHIR "note.text" is mapped to openEHR "Comment"
+
+  - name: "dateTime"
+    with:
+      fhir: "$resource.onset"
+      openehr: "$archetype/data[at0001]/items[at0077]" # FHIR "onsetDateTime" is mapped to openEHR "Date/time of onset"
+
+  - name: "bodySiteCluster"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.anatomical_location.v1]"
+    slotArchetype: "CLUSTER.anatomical_location.v1"
+
+  - name: "severity"
+    with:
+      fhir: "$resource.severity"
+      openehr: "$archetype/data[at0001]/items[at0005]" # FHIR "severity" is mapped to openEHR "Severity"

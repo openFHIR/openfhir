@@ -1,0 +1,15 @@
+mongock:
+  migration-scan-package:
+    - com.syntaric.openfhir.db.repository.mongodb.migrations
+
+spring:
+  application:
+    name: open-fhir-impl
+db:
+  type: mongo
+
+server:
+  error:
+    include-stacktrace: never
+    include-message: always
+  port: 8080

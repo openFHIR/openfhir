@@ -1,0 +1,101 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000008"
+              }
+            ]
+          },
+          {
+            "resourceType": "Organization",
+            "id": "2",
+            "name": "Rahel Hirsch"
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "3",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000013"
+              }
+            ],
+            "accessionIdentifier": {
+              "system": "https://www.charite.de/fhir/sid/Bioproben",
+              "value": "BP_000013"
+            },
+            "collection": {
+              "collectedDateTime": "2024-01-10T07:30:00+01:00"
+            }
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "PLAC"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/sid/lab-requests",
+            "value": "LAB_000007",
+            "assigner": {
+              "identifier": {
+                "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+                "value": "Charité"
+              },
+              "display": "Charité"
+            }
+          }
+        ],
+        "status": "completed",
+        "intent": "order",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "55429-5",
+              "display": "55429-5"
+            }
+          ],
+          "text": "55429-5"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "authoredOn": "2024-01-10T07:45:00+01:00",
+        "requester": {
+          "reference": "#2"
+        },
+        "specimen": [
+          {
+            "reference": "#3"
+          }
+        ]
+      }
+    }
+  ]
+}

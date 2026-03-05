@@ -1,0 +1,466 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-3",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:51:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationStatement"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationStatement/mii-exa-test-data-patient-3-medstatement-1",
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "id": "mii-exa-test-data-patient-3-medstatement-1",
+        "meta": {
+          "security": [
+            {
+              "code": "HTEST",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "display": "test health data"
+            }
+          ],
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000006"
+          }
+        ],
+        "basedOn": [
+          {
+            "reference": "MedicationRequest/mii-exa-test-data-patient-3-medrequest-1"
+          }
+        ],
+        "category": {
+          "coding": [
+            {
+              "system": "http://ihe-d.de/CodeSystems/FallkontextBeiDokumentenerstellung",
+              "code": "E200",
+              "display": "stationärer Aufenthalt"
+            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient"
+            }
+          ]
+        },
+        "effectivePeriod": {
+          "start": "2022-04-12T11:32:00+01:00"
+        },
+        "dosage": [
+          {
+            "route": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "20053000",
+                  "display": "Oral use"
+                }
+              ]
+            },
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "low": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 500,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "high": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 1000,
+                    "code": "mg",
+                    "unit": "mg"
+                  }
+                }
+              }
+            ],
+            "maxDosePerPeriod": {
+              "numerator": {
+                "system": "http://unitsofmeasure.org",
+                "value": 5000,
+                "code": "mg",
+                "unit": "mg"
+              },
+              "denominator": {
+                "system": "http://unitsofmeasure.org",
+                "value": 24,
+                "code": "h",
+                "unit": "Stunden"
+              }
+            },
+            "maxDosePerAdministration": {
+              "system": "http://unitsofmeasure.org",
+              "value": 1000,
+              "code": "mg",
+              "unit": "mg"
+            },
+            "asNeededBoolean": true
+          }
+        ],
+        "status": "unknown",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-metamizol"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-3-encounter-1"
+        },
+        "dateAsserted": "2022-04-12"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationRequest/mii-exa-test-data-patient-3-medrequest-1",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mii-exa-test-data-patient-3-medrequest-1",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+            "value": "MO_0000005"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "low": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 500,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "high": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 1000,
+                    "code": "mg",
+                    "unit": "mg"
+                  }
+                }
+              }
+            ],
+            "maxDosePerPeriod": {
+              "numerator": {
+                "system": "http://unitsofmeasure.org",
+                "value": 5000,
+                "code": "mg",
+                "unit": "mg"
+              },
+              "denominator": {
+                "system": "http://unitsofmeasure.org",
+                "value": 24,
+                "code": "h",
+                "unit": "Stunden"
+              }
+            },
+            "maxDosePerAdministration": {
+              "system": "http://unitsofmeasure.org",
+              "value": 1000,
+              "code": "mg",
+              "unit": "mg"
+            },
+            "text": "Die Einzeldosis 500-1000 mg, Tageshöchstdosis 5000 mg",
+            "asNeededBoolean": true,
+            "route": {
+              "coding": [
+                {
+                  "code": "20053000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Oral use"
+                }
+              ]
+            }
+          }
+        ],
+        "substitution": {
+          "allowedBoolean": true
+        },
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-metamizol"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "encounter": {
+          "reference": "Encounter/mii-exa-test-data-patient-3-encounter-1"
+        },
+        "authoredOn": "2022-04-12T11:32:00+01:00"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-metamizol",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-metamizol",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/ifa/pzn",
+              "code": "00651306",
+              "display": "Metamizol HEXAL® 500 mg"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "N02BB02",
+              "version": "2023",
+              "display": "Metamizol-Natrium"
+            }
+          ]
+        },
+        "form": {
+          "coding": [
+            {
+              "system": "http://standardterms.edqm.eu",
+              "code": "10221000",
+              "display": "Film-coated tablet"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "code": "12915",
+                  "display": "Metamizol-Natrium"
+                }
+              ]
+            },
+            "strength": {
+              "numerator": {
+                "value": 500,
+                "code": "mg",
+                "system": "http://unitsofmeasure.org",
+                "unit": "milligram"
+              },
+              "denominator": {
+                "value": 1,
+                "code": "10221000",
+                "system": "http://standardterms.edqm.eu",
+                "unit": "Film-coated tablet"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-3-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-3-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000003"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0100"
+            }
+          ]
+        },
+        "period": {
+          "start": "2022-04-02",
+          "end": "2022-04-22"
+        },
+        "diagnosis": [
+          {
+            "use": {
+              "coding": [
+                {
+                  "code": "referral-diagnosis",
+                  "system": "http://fhir.de/CodeSystem/KontaktDiagnoseProzedur",
+                  "display": "Überweisungsdiagnose"
+                },
+                {
+                  "code": "AD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Admission diagnosis"
+                }
+              ]
+            },
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-3-diagnose-1"
+            },
+            "rank": 1
+          }
+        ],
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "02",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Behandlung regulär beendet, nachstationäre Behandlung vorgesehen"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "2",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "arbeitsunfähig entlassen"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "E",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Einweisung durch einen Arzt"
+              }
+            ]
+          }
+        },
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Condition"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Condition/mii-exa-test-data-patient-3-diagnose-1",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "mii-exa-test-data-patient-3-diagnose-1",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+              "code": "C21.8",
+              "version": "2022"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+              "code": "I29975",
+              "version": "2022",
+              "display": "Bösartige anorektale Neubildung"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "447886005",
+              "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+              "display": "Adenocarcinoma of anorectum (disorder)"
+            }
+          ]
+        },
+        "note": [
+          {
+            "text": "Bösartige anorektale Neubildung"
+          }
+        ],
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "281088000",
+                "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                "display": "Structure of anus and/or rectum (body structure)"
+              }
+            ]
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "code": "active",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "code": "confirmed",
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "recordedDate": "2022-04-02"
+      }
+    }
+  ]
+}

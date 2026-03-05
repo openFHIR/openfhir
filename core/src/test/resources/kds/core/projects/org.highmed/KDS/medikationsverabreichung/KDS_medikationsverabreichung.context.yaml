@@ -1,0 +1,31 @@
+grammar: FHIRConnect/v0.9.0
+type: context
+metadata:
+  name:  KDS_medikationsverabreichung.context
+  version: 0.0.1a 
+spec: 
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration"
+    version: "2025.0.0"
+  template:
+    id: "KDS_Medikamentenverabreichungen"
+    sem_ver: "5.0.1"
+  archetypes:
+    - "ACTION.medication.v1"
+    - "CLUSTER.medication.v2"
+    - "CLUSTER.dosage.v2.BackboneElement"
+    - "CLUSTER.case_identification.v0"
+    - "CLUSTER.medication.v2.substance"
+  extensions:
+    - "KDS_medikamentenverabreichung"
+    - "KDS_medication.v2.substance"
+  start: "ACTION.medication.v1"
+
+#todo: should we extend also CLUSTER.medication.v2.medication-to-medication
+# because currently it doesn't map Medication.ingredient, as there are no corresponding
+# openehr paths available in this template (bestandteil.bestandteil)
+

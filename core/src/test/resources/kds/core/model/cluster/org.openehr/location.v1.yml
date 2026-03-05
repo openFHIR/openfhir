@@ -1,0 +1,137 @@
+grammar: FHIRConnect/v0.9.0
+type: model
+metadata:
+  name:  CLUSTER.location.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-CLUSTER.location.v1
+    revision: 2.0.2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+
+  - name: "stationRoot"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$fhirRoot"
+      targetAttribute: "physicalType.coding.code"
+      operator: "one of"
+      criteria: "wa"
+    followedBy:
+      mappings:
+        - name: "station"
+          with:
+            fhir: "location.identifier"
+            openehr: "items[at0027]"
+        - name: "hardcodingStationSystem"
+          with:
+            fhir: "physicalType.coding"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "physicalType"
+              fhir:
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/location-physical-type"
+                - path: "code"
+                  value: "wa"
+          openehrCondition:
+            targetRoot: "$archetype"
+            targetAttribute: "items[at0027]"
+            operator: "not empty"
+        - name: "status"
+          with:
+            fhir: "status"
+            openehr: "items[at0046]"
+          openehrCondition:
+            targetRoot: "$openehrRoot"
+            targetAttribute: "items[at0027]"
+            operator: "not empty"
+
+  - name: "roomRoot"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$fhirRoot"
+      targetAttribute: "physicalType.coding.code"
+      operator: "one of"
+      criteria: "ro"
+    followedBy:
+      mappings:
+        - name: "room"
+          with:
+            fhir: "location.identifier"
+            openehr: "items[at0029]"
+        - name: "hardcodingRoomSystem"
+          with:
+            fhir: "physicalType.coding"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "physicalType"
+              fhir:
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/location-physical-type"
+                - path: "code"
+                  value: "ro"
+          openehrCondition:
+            targetRoot: "$archetype"
+            targetAttribute: "items[at0029]"
+            operator: "not empty"
+
+        - name: "status"
+          with:
+            fhir: "status"
+            openehr: "items[at0046]"
+          openehrCondition:
+            targetRoot: "$openehrRoot"
+            targetAttribute: "items[at0029]"
+            operator: "not empty"
+
+  - name: "bedRoot"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$fhirRoot"
+      targetAttribute: "physicalType.coding.code"
+      operator: "one of"
+      criteria: "bd"
+    followedBy:
+      mappings:
+        - name: "station"
+          with:
+            fhir: "location.identifier"
+            openehr: "items[at0034]"
+        - name: "hardcodingBedSystem"
+          with:
+            fhir: "physicalType.coding"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "physicalType"
+              fhir:
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/location-physical-type"
+                - path: "code"
+                  value: "bd"
+          openehrCondition:
+            targetRoot: "$archetype"
+            targetAttribute: "items[at0034]"
+            operator: "not empty"
+
+        - name: "status"
+          with:
+            fhir: "status"
+            openehr: "items[at0046]"
+          openehrCondition:
+            targetRoot: "$openehrRoot"
+            targetAttribute: "items[at0034]"
+            operator: "not empty"

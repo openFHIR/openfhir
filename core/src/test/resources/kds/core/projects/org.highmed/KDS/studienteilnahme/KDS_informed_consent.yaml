@@ -1,0 +1,13 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name:  KDS_informed_consent
+  version: 0.0.1a 
+spec: 
+  system: FHIR
+  version: R4
+  extends: ACTION.informed_consent.v0
+
+
+mappings:
+#empty waiting for template update

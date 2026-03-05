@@ -1,0 +1,29 @@
+grammar: FHIRConnect/v0.9.0
+type: context
+metadata:
+  name:  KDS_diagnose.context
+  version: 0.0.1a 
+spec: 
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose"
+    version: "2025.0.0"
+  template:
+    id: "KDS_Diagnose"
+  archetypes:
+    - "CLUSTER.multiple_coding_icd10gm.v1"
+    - "EVALUATION.problem_diagnosis.v1"
+    - "CLUSTER.problem_qualifier.v2"
+    - "CLUSTER.lebensphase.v0"
+    - "CLUSTER.case_identification.v0"
+    - "CLUSTER.anatomical_location.v1"
+  extensions:
+    - "KDS_problem_diagnose" #they overload the vanilla mappings, no version = take the latest
+    - "KDS_problem_qualifier"
+    - "KDS_lebensphase"
+    - "KDS_anatomical_location"
+  start: "EVALUATION.problem_diagnosis.v1"
+

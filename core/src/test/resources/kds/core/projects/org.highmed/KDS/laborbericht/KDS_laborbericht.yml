@@ -1,0 +1,124 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name: KDS_laborbericht
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: OBSERVATION.laboratory_test_result.v1
+
+mappings:
+  - name: "metaURL"
+    extension: "add"
+    unidirectional: "openEHR->fhir"
+    with:
+      fhir: "$resource.meta"
+    manual:
+      - name: "profileUrl"
+        fhir:
+          - path: "profile"
+            value: "https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab"
+
+
+  - name: "resultAppendToParent" #/data[at0001]/events[at0002] add new for each laboratory analyte.
+    extension: "append"
+    appendTo: "eventParent"
+    followedBy:
+      mappings:
+        - name: "result"
+          with:
+            fhir: "result"
+            openehr: "data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+          followedBy:
+            mappings:
+              - name: "observationReference"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$reference"
+                reference:
+                  resourceType: "Observation"
+                  mappings:
+                    - name: "observationRecurring"
+                      with:
+                        fhir: "$fhirRoot"
+                        openehr: "$openehrRoot"
+                      slotArchetype: "CLUSTER.laboratory_test_analyte.v1"
+
+  - name: "fallIdentifikationIdentifier"
+    extension: "add"
+    with:
+      fhir: "$resource.encounter.as(Reference).identifier"
+      openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
+    slotArchetype: "CLUSTER.case_identification.v0"
+
+  - name: "fallIdentifikationReference" # if reference is accessible overwrite fallIdentifikationIdentifier
+    extension: "add"
+    with:
+      fhir: "$resource.encounter"
+      openehr: "$reference"
+    reference: #type None
+      resourceType: "Encounter"
+      mappings:
+        - name: "identifierInReference"
+          with:
+            fhir: "$fhirRoot.identifier"
+            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
+          slotArchetype: "CLUSTER.case_identification.v0"
+  #        - name: "encounterMapping" # link mappings not suppoorted
+  #          with:
+  #            fhir: "$fhirRoot"
+  #            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
+  #            openehrLink:
+  #              meaning: "the case this composition relates to"
+  #              type: "case"
+
+
+  - name: "status" #TODO @deprecated needs to go once mapping is updated
+    extension: "overwrite"
+    with:
+      fhir: "$resource.status"
+      openehr: "$composition/context/other_context[at0001]/items[at0005]"
+      
+
+#TODO does not work
+#  - name: "eventTime" #TODO @deprecated needs to go once mapping is updated
+#    extension: "overwrite"
+#    with:
+#      fhir: "$resource.effective.as(DateTime)"
+#      openEHR: "$archetype/data[at0001]/events[at0002]/time" # period -> interval event, datetime to pointInTime event
+
+  - name: "berichtIdParent"
+    extension: "add"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition/context/other_context[at0001]/items[at0002]"
+    fhirCondition:
+      targetRoot: "$resource.identifier"
+      targetAttribute: "type.coding.code"
+      operator: "one of"
+      criteria: "FILL"
+    followedBy:
+      mappings:
+        - name: "type"
+          with:
+            fhir: "type.coding"
+          manual:
+            - name: "fill"
+              fhir:
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/v2-0203"
+                - path: "code"
+                  value: "FILL"
+        - name: "berichtId"
+          extension: "add"
+          with:
+            fhir: "value"
+            openehr: "$composition/context/other_context[at0001]/items[at0002]"
+            
+
+
+
+
+
+

@@ -1,0 +1,28 @@
+grammar: FHIRConnect/v0.9.0
+type: context
+metadata:
+  name:  KDS_Person.context
+  version: 0.0.1a 
+spec: 
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
+    version: "2025.0.0"
+  template:
+    id: "KDS_Person_Pseudonymisiert"
+    sem_ver: "63.0.0"
+  archetypes:
+    - "EVALUATION.gender.v1"
+    - "ADMIN_ENTRY.person_data.v0"
+    - "CLUSTER.person.v1"
+    - "CLUSTER.address.v1"
+    - "CLUSTER.person_birth_data_iso.v0"
+  extensions:
+    - "KDS_address_pseudo"
+    - "KDS_admin_entry_perso_pseudo"
+    - "KDS_person_pseudo_cluster.v1"
+    - "KDS_gender.v1"
+  start: "EVALUATION.gender.v1"

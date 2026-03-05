@@ -1,0 +1,55 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name:  KDS_lebensphase
+  version: 0.0.1-alpha 
+spec: 
+  system: FHIR
+  version: R4
+  extends: CLUSTER.lebensphase.v0
+
+mappings:
+  - name: "periodOnsetStart"  # if append name needs to be the same we are appending to
+    extension: "add"
+    with:
+      fhir: "$fhirRoot.start.extension"
+      openehr: "$archetype/items[at0001]"
+      
+    fhirCondition:
+      targetRoot: "$fhirRoot.start.extension" #parent selector from jsonpath-plus its like ..
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://fhir.de/StructureDefinition/lebensphase"
+    followedBy:
+      mappings:
+        - name: "extension"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "physicalType"
+              fhir:
+                - path: "url"
+                  value: "http://fhir.de/StructureDefinition/lebensphase"
+
+  - name: "periodOnsetEnd"
+    extension: "add"
+    with:
+      fhir: "$fhirRoot.end.extension"
+      openehr: "$archetype/items[at0002]"
+      
+    fhirCondition:
+      targetRoot: "$fhirRoot.end.extension" #parent selector from jsonpath-plus
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://fhir.de/StructureDefinition/lebensphase"
+    followedBy:
+      mappings:
+        - name: "extension"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "physicalType"
+              fhir:
+                - path: "url"
+                  value: "http://fhir.de/StructureDefinition/lebensphase"
+

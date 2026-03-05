@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FHIRConnect Context Schema",
+  "type": "object",
+  "properties": {
+    "grammar": {
+      "type": "string",
+      "pattern": "^FHIRConnect/v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "context"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ]
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "type": "string",
+          "enum": [
+            "FHIR"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "enum": [
+            "R4"
+          ]
+        }
+      },
+      "required": [
+        "system",
+        "version"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        },
+        "template": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "sem_ver": {
+              "type": "string"
+            }
+          }
+        },
+        "archetypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "start": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "profile",
+        "template",
+        "archetypes",
+        "start"
+      ]
+    }
+  },
+  "required": [
+    "grammar",
+    "type",
+    "metadata",
+    "spec",
+    "context"
+  ]
+}

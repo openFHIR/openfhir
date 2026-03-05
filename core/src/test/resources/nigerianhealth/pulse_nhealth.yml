@@ -1,0 +1,72 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: "OBSERVATION.pulse.v2-nhealth"
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.pulse.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "8867-4" # pulse
+
+mappings:
+  - name: "value"
+    with:
+      fhir: "$resource.value"
+      openehr: "$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]"
+    terminology:
+      type: "inline"
+      mappings:
+        - openehr:
+            code: "/min"
+          fhir:
+            code: "beats/min"
+
+  - name: "time"
+    with:
+      fhir: "$resource.effective"
+      openehr: "$archetype/data[at0002]/events[at0003]/time"
+
+  - name: "category"
+    with:
+      fhir: "$resource.category.coding"
+    manual:
+      - name: "vitalSigns"
+        fhir:
+          - path: "code"
+            value: "vital-signs"
+          - path: "display"
+            value: "Vital Signs"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/observation-category"
+
+  - name: "code"
+    with:
+      fhir: "$resource.code.coding"
+    manual:
+      - name: "heartRateLoinc"
+        fhir:
+          - path: "code"
+            value: "8867-4"
+          - path: "display"
+            value: "Heart rate"
+          - path: "system"
+            value: "http://loinc.org"
+
+  - name: "status"
+    with:
+      fhir: "$resource"
+    manual:
+      - name: "finalStatus"
+        fhir:
+          - path: "status"
+            value: "final"
