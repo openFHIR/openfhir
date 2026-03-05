@@ -43,7 +43,7 @@ jobs:
         run: |
           java -jar engine/target/open-fhir-engine-*.jar \
             --spring.data.mongodb.uri=mongodb://openfhir:openfhir@localhost:27017/openfhir \
-            &
+            > app.log 2>&1 &
           echo $! > app.pid
 
       - name: Wait for application to be ready
@@ -56,8 +56,8 @@ jobs:
             echo "Waiting... ($i/30)"
             sleep 2
           done
-          echo "Application failed to start"
-          cat app.log 2>/dev/null || true
+          echo "Application failed to start - startup log:"
+          cat app.log
           exit 1
 
       - name: Setup Node
