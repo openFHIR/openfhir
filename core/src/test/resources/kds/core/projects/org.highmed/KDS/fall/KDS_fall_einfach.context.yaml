@@ -1,0 +1,30 @@
+grammar: FHIRConnect/v0.9.0
+type: context
+metadata:
+  name:  KDS_fall_einfach.context
+  version: 0.0.1a 
+spec: 
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung"
+    version: "2025.0.0"
+  template:
+    id: "KDS_Fall_einfach"
+    sem_ver: "8.0.0"
+  archetypes:
+    - "EVALUATION.problem_diagnosis.v1"
+    - "ADMIN_ENTRY.episode_institution_local.v0"
+    - "CLUSTER.kontakttyp.v0"
+    - "CLUSTER.diagnosetyp.v0"
+    - "CLUSTER.organization.v0"
+    - "CLUSTER.location.v1"
+    # need to reference also all those from problem diagnose?
+    - "CLUSTER.anatomical_location.v1"
+  extensions:
+    - "KDS_episode_institution_local"
+    - "KDS_fall_problem_diagnose"
+    - "KDS_anatomical_location"
+  start: "ADMIN_ENTRY.episode_institution_local.v0"

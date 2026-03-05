@@ -1,0 +1,96 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000010"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
+            "valueCoding": {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "261004008",
+              "display": "Diagnostic intent"
+            }
+          },
+          {
+            "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
+            "valueDateTime": "2024-02-23T10:00:00+01:00"
+          }
+        ],
+        "status": "completed",
+        "statusReason": {
+          "text": "completed"
+        },
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "165197003",
+              "display": "165197003"
+            }
+          ],
+          "text": "165197003"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "73632009",
+              "display": "73632009"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "code": "1-694"
+            },
+            {} // a fix for now, not blocking issue
+          ],
+          "text": "73632009"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "performedDateTime": "2024-02-23T10:00:00+01:00",
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "version": "20230731",
+                "code": "20304007",
+                "display": "20304007"
+              }
+            ],
+            "text": "20304007"
+          }
+        ],
+        "note": [
+          {
+            "text": "Laparoskopische Abklärung der Ovarialzyste"
+          }
+        ]
+      }
+    }
+  ]
+}

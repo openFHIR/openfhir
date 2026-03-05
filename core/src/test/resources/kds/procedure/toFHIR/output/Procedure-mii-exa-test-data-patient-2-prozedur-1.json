@@ -1,0 +1,108 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000004"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
+            "valueCoding": {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "262202000",
+              "display": "Therapeutic"
+            }
+          },
+          {
+            "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
+            "valueDateTime": "2024-03-05T08:00:00+01:00"
+          }
+        ],
+        "status": "completed",
+        "statusReason": {
+          "text": "completed"
+        },
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "387713003",
+              "display": "387713003"
+            }
+          ],
+          "text": "387713003"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "726428009",
+              "display": "726428009"
+            },
+            {
+              "extension": [
+                {
+                  "url": "http://fhir.de/StructureDefinition/seitenlokalisation",
+                  "valueCoding": {
+                    "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ICD_SEITENLOKALISATION",
+                    "code": "R",
+                    "display": "R"
+                  }
+                }
+              ],
+              "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "code": "5-322.d1"
+            }
+          ],
+          "text": "726428009"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "performedPeriod": {
+          "start": "2024-03-05T08:00:00+01:00",
+          "end": "2024-03-05T12:30:00"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "version": "20230731",
+                "code": "39607008",
+                "display": "39607008"
+              }
+            ],
+            "text": "39607008"
+          }
+        ],
+        "note": [
+          {
+            "text": "Thorakotomie mit Lobektomie des rechten Oberlappens bei Lungenkarzinom"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,328 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-8",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:58:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationAdministration"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationAdministration/mii-exa-test-data-patient-8-medadmin-3",
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "id": "mii-exa-test-data-patient-8-medadmin-3",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationAdministrations",
+            "value": "MA_0000021"
+          }
+        ],
+        "dosage": {
+          "site": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "74262004",
+                "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                "display": "Oral cavity structure (body structure)"
+              }
+            ]
+          },
+          "route": {
+            "coding": [
+              {
+                "system": "http://standardterms.edqm.eu",
+                "code": "20053000",
+                "display": "Oral use"
+              }
+            ]
+          },
+          "dose": {
+            "system": "http://unitsofmeasure.org",
+            "value": 80,
+            "unit": "mg",
+            "code": "mg"
+          },
+          "text": "Atorvastatin 80mg oral zur Nacht"
+        },
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "code": "inpatient",
+              "system": "http://terminology.hl7.org/CodeSystem/medication-admin-category",
+              "display": "Inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-atorvastatin"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-8"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-8-encounter-1"
+        },
+        "effectiveDateTime": "2023-11-12T20:00:00+01:00",
+        "request": {
+          "reference": "MedicationRequest/mii-exa-test-data-patient-8-medrequest-3"
+        },
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration"
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-atorvastatin",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-atorvastatin",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "C10AA05",
+              "version": "2024",
+              "display": "Atorvastatin"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "code": "28860"
+                }
+              ]
+            },
+            "strength": {
+              "numerator": {
+                "value": 40,
+                "code": "mg",
+                "system": "http://unitsofmeasure.org",
+                "unit": "mg"
+              },
+              "denominator": {
+                "value": 1,
+                "code": "1",
+                "system": "http://unitsofmeasure.org",
+                "unit": "1"
+              }
+            }
+          }
+        ],
+        "form": {
+          "coding": [
+            {
+              "code": "10221000",
+              "system": "http://standardterms.edqm.eu",
+              "display": "Film-coated tablet"
+            }
+          ]
+        },
+        "status": "active"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-8-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-8-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000009"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0300"
+            }
+          ]
+        },
+        "period": {
+          "start": "2023-11-10",
+          "end": "2023-11-15"
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-8-todesursache-1"
+            },
+            "use": {
+              "coding": [
+                {
+                  "code": "DD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Discharge diagnosis"
+                }
+              ]
+            },
+            "rank": 1
+          }
+        ],
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "07",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Tod"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "9",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "keine Angabe"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "N",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Notfall"
+              }
+            ]
+          }
+        },
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-8"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationRequest/mii-exa-test-data-patient-8-medrequest-3",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mii-exa-test-data-patient-8-medrequest-3",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+            "value": "MO_0000022"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 40,
+                  "code": "mg",
+                  "system": "http://unitsofmeasure.org",
+                  "unit": "mg"
+                }
+              }
+            ],
+            "timing": {
+              "repeat": {
+                "when": [
+                  "EVE"
+                ],
+                "frequency": 1,
+                "period": 1,
+                "periodUnit": "d"
+              }
+            },
+            "text": "Atorvastatin 40mg 1x täglich abends",
+            "route": {
+              "coding": [
+                {
+                  "code": "20053000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Oral use"
+                }
+              ]
+            }
+          }
+        ],
+        "substitution": {
+          "allowedBoolean": true
+        },
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-atorvastatin"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-8"
+        },
+        "encounter": {
+          "reference": "Encounter/mii-exa-test-data-patient-8-encounter-1"
+        },
+        "authoredOn": "2023-11-12T09:00:00+01:00"
+      }
+    }
+  ]
+}

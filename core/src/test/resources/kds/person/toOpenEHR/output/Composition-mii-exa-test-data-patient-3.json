@@ -1,0 +1,511 @@
+{
+  "archetype_details": {
+    "rm_version": "1.0.4",
+    "archetype_id": {
+      "value": "openEHR-EHR-COMPOSITION.person.v0"
+    },
+    "template_id": {
+      "value": "KDS_Person"
+    }
+  },
+  "archetype_node_id": "openEHR-EHR-COMPOSITION.person.v0",
+  "composer": {
+    "_type": "PARTY_SELF"
+  },
+  "_type": "COMPOSITION",
+  "name": {
+    "_type": "DV_TEXT",
+    "value": "Person"
+  },
+  "context": {
+    "start_time": {
+      "_type": "DV_DATE_TIME"
+    },
+    "other_context": {
+      "archetype_node_id": "at0003",
+      "_type": "ITEM_TREE",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Item tree"
+      },
+      "items": [
+        {
+          "archetype_node_id": "at0004",
+          "_type": "ELEMENT",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Patient ID"
+          },
+          "value": {
+            "_type": "DV_IDENTIFIER",
+            "assigner": "https:\/\/www.medizininformatik-initiative.de\/fhir\/core\/CodeSystem\/core-location-identifier::Charité",
+            "id": "42285243",
+            "type": "http:\/\/terminology.hl7.org\/CodeSystem\/v2-0203::MR",
+            "issuer": "https:\/\/www.medizininformatik-initiative.de\/fhir\/sid\/patienten"
+          }
+        }
+      ]
+    },
+    "_type": "EVENT_CONTEXT",
+    "setting": {
+      "defining_code": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "openehr"
+        },
+        "code_string": "238",
+        "_type": "CODE_PHRASE"
+      },
+      "_type": "DV_CODED_TEXT",
+      "value": "other care"
+    }
+  },
+  "language": {
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_639-1"
+    },
+    "code_string": "de",
+    "_type": "CODE_PHRASE"
+  },
+  "category": {
+    "defining_code": {
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "openehr"
+      },
+      "code_string": "433",
+      "_type": "CODE_PHRASE"
+    },
+    "_type": "DV_CODED_TEXT",
+    "value": "event"
+  },
+  "content": [
+    {
+      "archetype_details": {
+        "rm_version": "1.0.4",
+        "archetype_id": {
+          "value": "openEHR-EHR-ADMIN_ENTRY.versicherungsinformationen.v0"
+        }
+      },
+      "data": {
+        "archetype_node_id": "at0001",
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Baum"
+        },
+        "items": [
+          {
+            "archetype_node_id": "at0006",
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Versicherungsnummer"
+            },
+            "value": {
+              "_type": "DV_IDENTIFIER",
+              "assigner": "http:\/\/fhir.de\/sid\/arge-ik\/iknr::109519005",
+              "id": "Z234567890",
+              "type": "http:\/\/fhir.de\/CodeSystem\/identifier-type-de-basis::KVZ10",
+              "issuer": "http:\/\/fhir.de\/sid\/gkv\/kvid-10"
+            }
+          }
+        ]
+      },
+      "archetype_node_id": "openEHR-EHR-ADMIN_ENTRY.versicherungsinformationen.v0",
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "_type": "ADMIN_ENTRY",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Versicherungsinformationen"
+      },
+      "language": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de",
+        "_type": "CODE_PHRASE"
+      },
+      "encoding": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8",
+        "_type": "CODE_PHRASE"
+      }
+    },
+    {
+      "archetype_details": {
+        "rm_version": "1.0.4",
+        "archetype_id": {
+          "value": "openEHR-EHR-EVALUATION.gender.v1"
+        }
+      },
+      "data": {
+        "archetype_node_id": "at0002",
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "*Tree(en)"
+        },
+        "items": [
+          {
+            "archetype_node_id": "at0022",
+            "_type": "ELEMENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Administratives Geschlecht"
+            },
+            "value": {
+              "defining_code": {
+                "terminology_id": {
+                  "_type": "TERMINOLOGY_ID",
+                  "value": "ValueSet\/$expand?url=http:\/\/terminology.hl7.org\/ValueSet\/v2-0001"
+                },
+                "code_string": "female",
+                "_type": "CODE_PHRASE"
+              },
+              "_type": "DV_CODED_TEXT",
+              "value": "female"
+            }
+          }
+        ]
+      },
+      "archetype_node_id": "openEHR-EHR-EVALUATION.gender.v1",
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "_type": "EVALUATION",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Geschlecht"
+      },
+      "language": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de",
+        "_type": "CODE_PHRASE"
+      },
+      "encoding": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8",
+        "_type": "CODE_PHRASE"
+      }
+    },
+    {
+      "archetype_details": {
+        "rm_version": "1.0.4",
+        "archetype_id": {
+          "value": "openEHR-EHR-ADMIN_ENTRY.person_data.v0"
+        }
+      },
+      "data": {
+        "archetype_node_id": "at0001",
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Baum"
+        },
+        "items": [
+          {
+            "archetype_details": {
+              "rm_version": "1.0.4",
+              "archetype_id": {
+                "value": "openEHR-EHR-CLUSTER.person.v1"
+              }
+            },
+            "archetype_node_id": "openEHR-EHR-CLUSTER.person.v1",
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Person"
+            },
+            "items": [
+              {
+                "archetype_details": {
+                  "rm_version": "1.0.4",
+                  "archetype_id": {
+                    "value": "openEHR-EHR-CLUSTER.structured_name.v1"
+                  }
+                },
+                "archetype_node_id": "openEHR-EHR-CLUSTER.structured_name.v1",
+                "_type": "CLUSTER",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Name"
+                },
+                "items": [
+                  {
+                    "archetype_node_id": "at0001",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Prefix"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "official"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0002",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Vorname"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Clara"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0002",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Vorname"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Josephine"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0005",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Familienname"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Schumann"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0005",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Familienname-Nachname"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Schumann"
+                    }
+                  }
+                ]
+              },
+              {
+                "archetype_details": {
+                  "rm_version": "1.0.4",
+                  "archetype_id": {
+                    "value": "openEHR-EHR-CLUSTER.structured_name.v1"
+                  }
+                },
+                "archetype_node_id": "openEHR-EHR-CLUSTER.structured_name.v1",
+                "_type": "CLUSTER",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Geburtsname"
+                },
+                "items": [
+                  {
+                    "archetype_node_id": "at0001",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Prefix"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "maiden"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0005",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Familienname"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Wieck"
+                    }
+                  }
+                ]
+              },
+              {
+                "archetype_details": {
+                  "rm_version": "1.0.4",
+                  "archetype_id": {
+                    "value": "openEHR-EHR-CLUSTER.address.v1"
+                  }
+                },
+                "archetype_node_id": "openEHR-EHR-CLUSTER.address.v1",
+                "_type": "CLUSTER",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Straßenanschrift"
+                },
+                "items": [
+                  {
+                    "archetype_node_id": "at0001",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Adresszeile"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Schöneberger Ufer 22"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0002",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Stadtteil \/ Stadt \/ Gemeindeschlüssel"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "Berlin"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0005",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Postleitzahl"
+                    },
+                    "value": {
+                      "_type": "DV_TEXT",
+                      "value": "10785"
+                    }
+                  },
+                  {
+                    "archetype_node_id": "at0010",
+                    "_type": "ELEMENT",
+                    "name": {
+                      "_type": "DV_TEXT",
+                      "value": "Adresstyp"
+                    },
+                    "value": {
+                      "defining_code": {
+                        "terminology_id": {
+                          "_type": "TERMINOLOGY_ID",
+                          "value": "ValueSet\/$expand?url=http:\/\/hl7.org\/fhir\/address-type"
+                        },
+                        "code_string": "both",
+                        "_type": "CODE_PHRASE"
+                      },
+                      "_type": "DV_CODED_TEXT",
+                      "value": "both"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "archetype_details": {
+              "rm_version": "1.0.4",
+              "archetype_id": {
+                "value": "openEHR-EHR-CLUSTER.person_birth_data_iso.v0"
+              }
+            },
+            "archetype_node_id": "openEHR-EHR-CLUSTER.person_birth_data_iso.v0",
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Daten zur Geburt"
+            },
+            "items": [
+              {
+                "archetype_node_id": "at0001",
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Geburtsdatum"
+                },
+                "value": {
+                  "_type": "DV_DATE",
+                  "value": "1968-09-13"
+                }
+              }
+            ]
+          },
+          {
+            "archetype_node_id": "at0024",
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Angaben zum Tod"
+            },
+            "items": [
+              {
+                "archetype_node_id": "at0025",
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Verstorben?"
+                },
+                "value": {
+                  "_type": "DV_BOOLEAN",
+                  "value": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "archetype_node_id": "openEHR-EHR-ADMIN_ENTRY.person_data.v0",
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "_type": "ADMIN_ENTRY",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Personendaten"
+      },
+      "language": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de",
+        "_type": "CODE_PHRASE"
+      },
+      "encoding": {
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8",
+        "_type": "CODE_PHRASE"
+      }
+    }
+  ],
+  "territory": {
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_3166-1"
+    },
+    "code_string": "DE",
+    "_type": "CODE_PHRASE"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Consent",
+        "status": "active",
+        "dateTime": "2022-03-08T11:45:00+01:00",
+        "provision": {
+          "period": {
+            "start": "2022-03-08T00:00:00+01:00",
+            "end": "2052-03-31T00:00:00+01:00"
+          }
+        }
+      }
+    }
+  ]
+}

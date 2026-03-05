@@ -1,0 +1,103 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "encounter-id-1245"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
+            "valueCoding": {
+              "system": "Durchfuehrungsabsicht",
+              "code": "durchführungsabsicht",
+              "display": "valuedurchführungsabsicht"
+            }
+          },
+          {
+            "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
+            "valueDateTime": "2024-08-20T16:00:00+02:00"
+          }
+        ],
+        "status": "completed",
+        "statusReason": {
+          "text": "completed"
+        },
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "103693007",
+              "display": "Diagnostic procedure"
+            }
+          ],
+          "text": "Diagnostic procedure"
+        },
+        "code": {
+          "coding": [
+            {
+              "extension": [
+                {
+                  "url": "http://fhir.de/StructureDefinition/seitenlokalisation",
+                  "valueCoding": {
+                    "system": "https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_ICD_SEITENLOKALISATION",
+                    "code": "B",
+                    "display": "beiderseits"
+                  }
+                }
+              ],
+              "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "version": "20200131",
+              "code": "5-470",
+              "display": "Appendectomy"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "80146002",
+              "display": "Appendectomy"
+            }
+          ],
+          "text": "Appendectomy"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "performedDateTime": "2024-08-20T16:00:00+02:00",
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "818981001",
+                "display": "Abdomen"
+              }
+            ],
+            "text": "Abdomen"
+          }
+        ],
+        "note": [
+          {
+            "text": "Procedure completed successfully with no complications."
+          }
+        ]
+      }
+    }
+  ]
+}

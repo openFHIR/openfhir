@@ -1,0 +1,34 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "OBSERVATION.acvpu.v1"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.acvpu.v1"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "1104441000000107"
+    - targetRoot: "$resource"
+      targetAttribute: "status"
+      operator: "one of"
+      criteria: "final"
+    - targetRoot: "$resource"
+      targetAttribute: "category.coding.code"
+      operator: "one of"
+      criteria: "survey"
+
+mappings:
+  - name: "ACVPU"
+    with:
+      fhir: "$resource.value"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+      

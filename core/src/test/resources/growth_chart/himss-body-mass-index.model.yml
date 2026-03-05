@@ -1,0 +1,49 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "OBSERVATION.body_mass_index.v2"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.body_mass_index.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  hierarchy:
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/events[at0002]"
+    split:
+      fhir:
+        create: "resource"
+  fhirCondition:
+    targetRoot: "$resource"
+    targetAttribute: "category.coding.code"
+    operator: "one of"
+    criteria: "bmi"
+
+mappings:
+  - name: "bmi"
+    with:
+      fhir: "$resource.value"
+      openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+
+  - name: "time"
+    with:
+      fhir: "$resource.effective"
+      openehr: "$archetype/data[at0001]/events[at0002]/time"
+
+  - name: "code"
+    unidirectional: "openehr->fhir"
+    with:
+      fhir: "$resource.code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code"
+            value: "39156-5"
+      

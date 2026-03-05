@@ -1,0 +1,99 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000003"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
+            "valueCoding": {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "262202000",
+              "display": "Therapeutic"
+            }
+          },
+          {
+            "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
+            "valueDateTime": "2022-04-25T10:00:00+02:00"
+          }
+        ],
+        "status": "completed",
+        "statusReason": {
+          "text": "completed"
+        },
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "18629005",
+              "display": "18629005"
+            }
+          ],
+          "text": "18629005"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "724159000",
+              "display": "724159000"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "code": "6-001.h4"
+            },
+            {} // a fix for now, not blocking issue
+          ],
+          "text": "724159000"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "performedPeriod": {
+          "start": "2022-04-25T10:00:00+02:00",
+          "end": "2022-07-20T16:00:00"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "version": "20230731",
+                "code": "734748008",
+                "display": "734748008"
+              }
+            ],
+            "text": "734748008"
+          }
+        ],
+        "note": [
+          {
+            "text": "Adjuvante Chemotherapie mit FOLFOX-Schema"
+          }
+        ]
+      }
+    }
+  ]
+}

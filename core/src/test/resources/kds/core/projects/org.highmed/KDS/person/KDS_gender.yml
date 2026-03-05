@@ -1,0 +1,83 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name: KDS_gender.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: EVALUATION.gender.v1
+
+mappings:
+  - name: "metaURL"
+    extension: "add"
+    unidirectional: "openEHR->fhir"
+    with:
+      fhir: "$resource.meta"
+    manual:
+      - name: "profileUrl"
+        fhir:
+          - path: "profile"
+            value: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient"
+
+  - name: "adminEntryPerson"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]"
+    slotArchetype: "ADMIN_ENTRY.person_data.v0"
+
+  - name: "pid"
+    extension: "add"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition/context/other_context[at0003]/items[at0004]"
+    fhirCondition:
+      targetRoot: "$resource.identifier"
+      targetAttribute: "system"
+      operator: "not of"
+      criteria: "http://fhir.de/sid/gkv/kvid-10"
+
+  - name: "versicherungsInformationen"
+    extension: "add"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition/content[openEHR-EHR-ADMIN_ENTRY.versicherungsinformationen.v0]"
+    slotArchetype: "ADMIN_ENTRY.versicherungsinformationen.v0"
+    fhirCondition:
+      targetRoot: "$resource.identifier"
+      targetAttribute: "system"
+      operator: "one of"
+      criteria: "http://fhir.de/sid/gkv/kvid-10"
+
+  - name: "other-amtlich"
+    extension: "append"
+    appendTo: "gender"
+    followedBy:
+      mappings:
+        - name: "genderAppended"
+          with:
+            fhir: "extension"
+            openehr: "$openehrRoot"
+          openehrCondition:
+            targetRoot: "$openehrRoot"
+            targetAttribute: "defining_code/code_string" # only if gender is oher
+            operator: "one of"
+            criteria: "other"
+
+          followedBy:
+            mappings:
+              - name: "staticExtensionUrl"
+                with:
+                  fhir: "$fhirRoot"
+                manual:
+                  - name: "staticUrl"
+                    fhir:
+                      - path: "url"
+                        value: "http://fhir.de/StructureDefinition/gender-amtlich-de"
+
+              - name: "otherAmtlichValueCoding"
+                with:
+                  fhir: "value"
+                  openehr: "$archetype/data[at0002]/items[at0014]"
+                  type: "CODING"

@@ -1,0 +1,147 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "openEHR-EHR-COMPOSITION.encounter.v1"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-COMPOSITION.encounter.v1"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Bundle
+
+mappings:
+
+  - name: "news2Parent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.news2.v1]/data[at0001]/events[at0002]"
+    followedBy:
+      mappings:
+        - name: "iterateNews2"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "news2Slot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.news2.v1]"
+                slotArchetype: "OBSERVATION.news2.v1"
+
+  - name: "acvpuParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.acvpu.v1]/data[at0001]/events[at0002]"
+    followedBy:
+      mappings:
+        - name: "iterateAcvpu"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "acvpuSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.acvpu.v1]"
+                slotArchetype: "OBSERVATION.acvpu.v1"
+
+  - name: "bloodPressureParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]"
+    followedBy:
+      mappings:
+        - name: "iterateBloodPressure"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "bloodPressureSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]"
+                slotArchetype: "OBSERVATION.blood_pressure.v3"
+
+  - name: "bodyTemperatureParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_temperature.v2]/data[at0002]/events[at0003]"
+    followedBy:
+      mappings:
+        - name: "iterateBodyTemperature"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "bodyTemperatureSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_temperature.v2]"
+                slotArchetype: "OBSERVATION.body_temperature.v2"
+
+  - name: "pulseParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.pulse.v2]/data[at0002]/events[at0003]"
+    followedBy:
+      mappings:
+        - name: "iteratePulse"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "pulseSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.pulse.v2]"
+                slotArchetype: "OBSERVATION.pulse.v2"
+
+  - name: "respirationParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.respiration.v2]/data[at0001]/events[at0002]"
+    followedBy:
+      mappings:
+        - name: "iterateRespiration"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "respirationSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.respiration.v2]"
+                slotArchetype: "OBSERVATION.respiration.v2"
+
+  - name: "pulseOximetryParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.pulse_oximetry.v1]/data[at0001]/events[at0002]"
+    followedBy:
+      mappings:
+        - name: "iteratePulseOximetry"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "pulseOximetrySlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.pulse_oximetry.v1]"
+                slotArchetype: "OBSERVATION.pulse_oximetry.v1"

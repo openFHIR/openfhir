@@ -1,0 +1,126 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "contained": [
+          {
+            "resourceType": "Condition",
+            "id": "1",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/icd-10",
+                  "version": "2019",
+                  "code": "I21.9",
+                  "display": "I21.9"
+                }
+              ],
+              "text": "I21.9"
+            },
+            "note": [
+              {
+                "text": "Akuter Herzinfarkt"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000009"
+          }
+        ],
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "IMP",
+          "display": "IMP"
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktebene",
+                "code": "einrichtungskontakt",
+                "display": "einrichtungskontakt"
+              },
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer",
+                "display": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0300",
+              "display": "0300"
+            }
+          ]
+        },
+        "period": {
+          "start": "2023-11-10T00:00:00+01:00",
+          "end": "2023-11-15T00:00:00+01:00"
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "#1"
+            },
+            "use": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "code": "DD",
+                  "display": "Discharge diagnosis"
+                }
+              ]
+            }
+          }
+        ],
+        "hospitalization": {
+          "admitSource": {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "code": "N",
+                "display": "Notfall"
+              }
+            ]
+          },
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund",
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "code": "07",
+                      "display": "Tod"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Procedure"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000009"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
+            "valueCoding": {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "261004008",
+              "display": "Diagnostic intent"
+            }
+          },
+          {
+            "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
+            "valueDateTime": "2023-11-12T07:30:00+01:00"
+          }
+        ],
+        "status": "completed",
+        "statusReason": {
+          "text": "completed"
+        },
+        "category": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "165197003",
+              "display": "165197003"
+            }
+          ],
+          "text": "165197003"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "version": "20230731",
+              "code": "33367005",
+              "display": "33367005"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "code": "1-275.2"
+            },
+            {} // a fix for now, not blocking issue
+          ],
+          "text": "33367005"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "performedDateTime": "2023-11-12T07:30:00+01:00",
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "version": "20230731",
+                "code": "41801008",
+                "display": "41801008"
+              }
+            ],
+            "text": "41801008"
+          }
+        ],
+        "note": [
+          {
+            "text": "Notfall-Koronarangiographie bei akutem STEMI"
+          }
+        ]
+      }
+    }
+  ]
+}

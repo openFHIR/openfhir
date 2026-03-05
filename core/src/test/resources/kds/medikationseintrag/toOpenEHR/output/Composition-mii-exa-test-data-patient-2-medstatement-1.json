@@ -1,0 +1,540 @@
+{
+  "_type": "COMPOSITION",
+  "name": {
+    "_type": "DV_TEXT",
+    "value": "Medikamentenliste"
+  },
+  "archetype_details": {
+    "archetype_id": {
+      "value": "openEHR-EHR-COMPOSITION.medication_list.v1"
+    },
+    "template_id": {
+      "value": "KDS_Medikationseintrag"
+    },
+    "rm_version": "1.0.4"
+  },
+  "language": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_639-1"
+    },
+    "code_string": "de"
+  },
+  "territory": {
+    "_type": "CODE_PHRASE",
+    "terminology_id": {
+      "_type": "TERMINOLOGY_ID",
+      "value": "ISO_3166-1"
+    },
+    "code_string": "DE"
+  },
+  "category": {
+    "_type": "DV_CODED_TEXT",
+    "value": "event",
+    "defining_code": {
+      "_type": "CODE_PHRASE",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "openehr"
+      },
+      "code_string": "433"
+    }
+  },
+  "composer": {
+    "_type": "PARTY_SELF"
+  },
+  "context": {
+    "_type": "EVENT_CONTEXT",
+    "start_time": {
+      "_type": "DV_DATE_TIME",
+      "value": "2024-03-06T00:00:00"
+    },
+    "end_time": {
+      "_type": "DV_DATE_TIME",
+      "value": "2024-03-13T10:00:00"
+    },
+    "setting": {
+      "_type": "DV_CODED_TEXT",
+      "value": "other care",
+      "defining_code": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "openehr"
+        },
+        "code_string": "238"
+      }
+    },
+    "other_context": {
+      "_type": "ITEM_TREE",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "CLUSTER",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Fallidentifikation"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.case_identification.v0"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Fall-Kennung"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "MII_0000004",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern"
+                  },
+                  "code_string": "MII_0000004"
+                }
+              },
+              "archetype_node_id": "at0001"
+            },
+            {
+              "_type": "ELEMENT",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Status"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "active",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "http://hl7.org/fhir/CodeSystem/medication-statement-status"
+                  },
+                  "code_string": "active"
+                }
+              },
+              "archetype_node_id": "at0003"
+            }
+          ],
+          "archetype_node_id": "openEHR-EHR-CLUSTER.case_identification.v0"
+        }
+      ],
+      "archetype_node_id": "at0005"
+    }
+  },
+  "content": [
+    {
+      "_type": "OBSERVATION",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Aussage zur Medikamenteneinnahme"
+      },
+      "archetype_details": {
+        "archetype_id": {
+          "value": "openEHR-EHR-OBSERVATION.medication_statement.v0"
+        },
+        "rm_version": "1.0.4"
+      },
+      "language": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "ISO_639-1"
+        },
+        "code_string": "de"
+      },
+      "encoding": {
+        "_type": "CODE_PHRASE",
+        "terminology_id": {
+          "_type": "TERMINOLOGY_ID",
+          "value": "IANA_character-sets"
+        },
+        "code_string": "UTF-8"
+      },
+      "subject": {
+        "_type": "PARTY_SELF"
+      },
+      "protocol": {
+        "_type": "ITEM_TREE",
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "Item tree"
+        },
+        "items": [
+          {
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Kategorie des Eintrags"
+            },
+            "archetype_details": {
+              "archetype_id": {
+                "value": "openEHR-EHR-CLUSTER.entry_category.v0"
+              },
+              "rm_version": "1.0.4"
+            },
+            "items": [
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Kategorie der Medikation"
+                },
+                "value": {
+                  "_type": "DV_CODED_TEXT",
+                  "value": "inpatient",
+                  "defining_code": {
+                    "_type": "CODE_PHRASE",
+                    "terminology_id": {
+                      "_type": "TERMINOLOGY_ID",
+                      "value": "http://terminology.hl7.org/CodeSystem/medication-statement-category"
+                    },
+                    "code_string": "inpatient"
+                  }
+                },
+                "archetype_node_id": "at0002"
+              }
+            ],
+            "archetype_node_id": "openEHR-EHR-CLUSTER.entry_category.v0"
+          },
+          {
+            "_type": "CLUSTER",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Identifier"
+            },
+            "archetype_details": {
+              "archetype_id": {
+                "value": "openEHR-EHR-CLUSTER.identifier_fhir.v0"
+              },
+              "rm_version": "1.0.4"
+            },
+            "items": [
+              {
+                "_type": "ELEMENT",
+                "name": {
+                  "_type": "DV_TEXT",
+                  "value": "Identifier"
+                },
+                "value": {
+                  "_type": "DV_IDENTIFIER",
+                  "issuer": "https://www.charite.de/fhir/sid/MedicationStatements",
+                  "id": "MS_0000007"
+                },
+                "archetype_node_id": "at0001"
+              }
+            ],
+            "archetype_node_id": "openEHR-EHR-CLUSTER.identifier_fhir.v0"
+          }
+        ],
+        "archetype_node_id": "at0004"
+      },
+      "data": {
+        "name": {
+          "_type": "DV_TEXT",
+          "value": "History"
+        },
+        "origin": {
+          "_type": "DV_DATE_TIME",
+          "value": "2024-03-06T08:00:00"
+        },
+        "events": [
+          {
+            "_type": "INTERVAL_EVENT",
+            "name": {
+              "_type": "DV_TEXT",
+              "value": "Beliebiges Ereignis"
+            },
+            "time": {
+              "_type": "DV_DATE_TIME",
+              "value": "2024-03-06T08:00:00"
+            },
+            "data": {
+              "_type": "ITEM_TREE",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Tree"
+              },
+              "items": [
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Arzneimittel"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.medication.v2"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Arzneimittel-Name"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Morphin",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://fhir.de/CodeSystem/bfarm/atc (2024)"
+                          },
+                          "code_string": "N02AA01"
+                        }
+                      },
+                      "archetype_node_id": "at0132"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Darreichungsform"
+                      },
+                      "value": {
+                        "_type": "DV_CODED_TEXT",
+                        "value": "Tablet",
+                        "defining_code": {
+                          "_type": "CODE_PHRASE",
+                          "terminology_id": {
+                            "_type": "TERMINOLOGY_ID",
+                            "value": "http://standardterms.edqm.eu"
+                          },
+                          "code_string": "10219000"
+                        }
+                      },
+                      "archetype_node_id": "at0071"
+                    },
+                    {
+                      "_type": "CLUSTER",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Bestandteil"
+                      },
+                      "archetype_details": {
+                        "archetype_id": {
+                          "value": "openEHR-EHR-CLUSTER.medication.v2"
+                        },
+                        "rm_version": "1.0.4"
+                      },
+                      "items": [
+                        {
+                          "_type": "ELEMENT",
+                          "name": {
+                            "_type": "DV_TEXT",
+                            "value": "Wirkstofftyp"
+                          },
+                          "value": {
+                            "_type": "DV_CODED_TEXT",
+                            "value": "07651",
+                            "defining_code": {
+                              "_type": "CODE_PHRASE",
+                              "terminology_id": {
+                                "_type": "TERMINOLOGY_ID",
+                                "value": "http://fhir.de/CodeSystem/ask"
+                              },
+                              "code_string": "07651"
+                            }
+                          },
+                          "archetype_node_id": "at0142"
+                        },
+                        {
+                          "_type": "CLUSTER",
+                          "name": {
+                            "_type": "DV_TEXT",
+                            "value": "Bestandteil-Menge"
+                          },
+                          "items": [
+                            {
+                              "_type": "ELEMENT",
+                              "name": {
+                                "_type": "DV_TEXT",
+                                "value": "Zähler"
+                              },
+                              "value": {
+                                "_type": "DV_QUANTITY",
+                                "units": "mg",
+                                "magnitude": 10.0
+                              },
+                              "archetype_node_id": "at0153"
+                            },
+                            {
+                              "_type": "ELEMENT",
+                              "name": {
+                                "_type": "DV_TEXT",
+                                "value": "Nenner"
+                              },
+                              "value": {
+                                "_type": "DV_QUANTITY",
+                                "units": "1",
+                                "magnitude": 1.0
+                              },
+                              "archetype_node_id": "at0157"
+                            }
+                          ],
+                          "archetype_node_id": "at0152"
+                        }
+                      ],
+                      "archetype_node_id": "openEHR-EHR-CLUSTER.medication.v2"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.medication.v2"
+                },
+                {
+                  "_type": "CLUSTER",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Dosierung"
+                  },
+                  "archetype_details": {
+                    "archetype_id": {
+                      "value": "openEHR-EHR-CLUSTER.dosage.v2"
+                    },
+                    "rm_version": "1.0.4"
+                  },
+                  "items": [
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Dosis"
+                      },
+                      "value": {
+                        "_type": "DV_QUANTITY",
+                        "units": "mg",
+                        "magnitude": 10.0
+                      },
+                      "archetype_node_id": "at0144"
+                    },
+                    {
+                      "_type": "ELEMENT",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Dosierung Freitext"
+                      },
+                      "value": {
+                        "_type": "DV_TEXT",
+                        "value": "Morphin 10mg alle 6 Stunden bei Bedarf"
+                      },
+                      "archetype_node_id": "at0178"
+                    },
+                    {
+                      "_type": "CLUSTER",
+                      "name": {
+                        "_type": "DV_TEXT",
+                        "value": "Tägliche Dosierung"
+                      },
+                      "archetype_details": {
+                        "archetype_id": {
+                          "value": "openEHR-EHR-CLUSTER.timing_daily.v1"
+                        },
+                        "rm_version": "1.0.4"
+                      },
+                      "items": [
+                        {
+                          "_type": "ELEMENT",
+                          "name": {
+                            "_type": "DV_TEXT",
+                            "value": "Frequenz"
+                          },
+                          "value": {
+                            "_type": "DV_QUANTITY",
+                            "units": "1/d",
+                            "magnitude": 4.0
+                          },
+                          "archetype_node_id": "at0003"
+                        },
+                        {
+                          "_type": "ELEMENT",
+                          "name": {
+                            "_type": "DV_TEXT",
+                            "value": "Periode"
+                          },
+                          "value": {
+                            "_type": "DV_DURATION",
+                            "value": "P1D"
+                          },
+                          "archetype_node_id": "at0014"
+                        },
+                        {
+                          "_type": "ELEMENT",
+                          "name": {
+                            "_type": "DV_TEXT",
+                            "value": "Bei Bedarf"
+                          },
+                          "value": {
+                            "_type": "DV_BOOLEAN",
+                            "value": true
+                          },
+                          "archetype_node_id": "at0024"
+                        }
+                      ],
+                      "archetype_node_id": "openEHR-EHR-CLUSTER.timing_daily.v1"
+                    }
+                  ],
+                  "archetype_node_id": "openEHR-EHR-CLUSTER.dosage.v2"
+                },
+                {
+                  "_type": "ELEMENT",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Art der Verabreichung"
+                  },
+                  "value": {
+                    "_type": "DV_CODED_TEXT",
+                    "value": "Oral use",
+                    "defining_code": {
+                      "_type": "CODE_PHRASE",
+                      "terminology_id": {
+                        "_type": "TERMINOLOGY_ID",
+                        "value": "http://standardterms.edqm.eu"
+                      },
+                      "code_string": "20053000"
+                    }
+                  },
+                  "archetype_node_id": "at0030"
+                }
+              ],
+              "archetype_node_id": "at0003"
+            },
+            "width": {
+              "_type": "DV_DURATION",
+              "value": "PT170H"
+            },
+            "math_function": {
+              "_type": "DV_CODED_TEXT",
+              "value": "actual",
+              "defining_code": {
+                "_type": "CODE_PHRASE",
+                "terminology_id": {
+                  "_type": "TERMINOLOGY_ID",
+                  "value": "openehr"
+                },
+                "code_string": "640"
+              }
+            },
+            "archetype_node_id": "at0002"
+          }
+        ],
+        "archetype_node_id": "at0001"
+      },
+      "archetype_node_id": "openEHR-EHR-OBSERVATION.medication_statement.v0"
+    }
+  ],
+  "archetype_node_id": "openEHR-EHR-COMPOSITION.medication_list.v1"
+}

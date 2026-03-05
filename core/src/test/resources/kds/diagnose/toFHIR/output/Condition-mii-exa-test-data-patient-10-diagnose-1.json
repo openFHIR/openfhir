@@ -1,0 +1,91 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose"
+          ]
+        },
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "active"
+            }
+          ],
+          "text": "active"
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+              "version": "2019",
+              "code": "G43.9",
+              "display": "G43.9",
+              "extension": [
+                {
+                  "url": "http://fhir.de/StructureDefinition/seitenlokalisation",
+                  "valueCodeableConcept": {
+                    "coding": [
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "281231009",
+                        "display": "Vascular structure of head (body structure)",
+                        "version": "20230731"
+                      }
+                    ],
+                    "text": "Vascular structure of head (body structure)"
+                  }
+                }
+              ]
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+              "code": "I18412",
+              "display": "Migräne"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "37796009",
+              "display": "Migraine (disorder)"
+            }
+          ],
+          "text": "G43.9"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "281231009",
+                "display": "Vascular structure of head (body structure)",
+                "version": "20230731"
+              }
+            ],
+            "text": "Vascular structure of head (body structure)"
+          }
+        ],
+        "recordedDate": "2019-05-14T00:00:00+02:00",
+        "note": [
+          {
+            "text": "Migräne, nicht näher bezeichnet"
+          }
+        ]
+      }
+    }
+  ]
+}

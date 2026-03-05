@@ -1,0 +1,324 @@
+{
+  "_type" : "COMPOSITION",
+  "name" : {
+    "_type" : "DV_TEXT",
+    "value" : "KDS_Fall_einfach"
+  },
+  "archetype_details" : {
+    "archetype_id" : {
+      "value" : "openEHR-EHR-COMPOSITION.fall.v1"
+    },
+    "template_id" : {
+      "value" : "KDS_Fall_einfach"
+    },
+    "rm_version" : "1.0.4"
+  },
+  "language" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_639-1"
+    },
+    "code_string" : "de"
+  },
+  "territory" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_3166-1"
+    },
+    "code_string" : "DE"
+  },
+  "category" : {
+    "_type" : "DV_CODED_TEXT",
+    "value" : "event",
+    "defining_code" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "openehr"
+      },
+      "code_string" : "433"
+    }
+  },
+  "composer" : {
+    "_type" : "PARTY_SELF"
+  },
+  "context" : {
+    "_type" : "EVENT_CONTEXT",
+    "start_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2023-07-10T00:00:00"
+    },
+    "end_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2023-07-18T00:00:00"
+    },
+    "setting" : {
+      "_type" : "DV_CODED_TEXT",
+      "value" : "other care",
+      "defining_code" : {
+        "_type" : "CODE_PHRASE",
+        "terminology_id" : {
+          "_type" : "TERMINOLOGY_ID",
+          "value" : "openehr"
+        },
+        "code_string" : "238"
+      }
+    },
+    "other_context" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Baum"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fallklasse"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "IMP",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            },
+            "code_string" : "IMP"
+          }
+        },
+        "archetype_node_id" : "at0004"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fallstatus"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "finished",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/ValueSet/EncounterStatusDe"
+            },
+            "code_string" : "finished"
+          }
+        },
+        "archetype_node_id" : "at0010"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fall-ID"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "MII_0000006",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern"
+            },
+            "code_string" : "MII_0000006"
+          }
+        },
+        "archetype_node_id" : "at0003"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "KontaktTyp"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.kontakttyp.v0"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "KontaktEbene"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "einrichtungskontakt",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://fhir.de/CodeSystem/Kontaktebene"
+              },
+              "code_string" : "einrichtungskontakt"
+            }
+          },
+          "archetype_node_id" : "at0001"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "KontaktArt"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "normalstationaer",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://fhir.de/CodeSystem/kontaktart-de"
+              },
+              "code_string" : "normalstationaer"
+            }
+          },
+          "archetype_node_id" : "at0002"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.kontakttyp.v0"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Organisationseinheit"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.organization.v0"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Organisationsschlüssel"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "2400",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel"
+              },
+              "code_string" : "2400"
+            }
+          },
+          "archetype_node_id" : "at0024"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.organization.v0"
+      } ],
+      "archetype_node_id" : "at0001"
+    }
+  },
+  "content" : [ {
+    "_type" : "ADMIN_ENTRY",
+    "name" : {
+      "_type" : "DV_TEXT",
+      "value" : "Institutionsaufenthalt"
+    },
+    "archetype_details" : {
+      "archetype_id" : {
+        "value" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0"
+      },
+      "rm_version" : "1.0.4"
+    },
+    "language" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "ISO_639-1"
+      },
+      "code_string" : "de"
+    },
+    "encoding" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "IANA_character-sets"
+      },
+      "code_string" : "UTF-8"
+    },
+    "subject" : {
+      "_type" : "PARTY_SELF"
+    },
+    "data" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Item tree"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmedatum"
+        },
+        "value" : {
+          "_type" : "DV_DATE_TIME",
+          "value" : "2023-07-10T00:00:00"
+        },
+        "archetype_node_id" : "at0004"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Aufnahmekategorie"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Einweisung durch einen Arzt",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass"
+            },
+            "code_string" : "E"
+          }
+        },
+        "archetype_node_id" : "at0009"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Entlassungsdatum"
+        },
+        "value" : {
+          "_type" : "DV_DATE_TIME",
+          "value" : "2023-07-18T00:00:00"
+        },
+        "archetype_node_id" : "at0002"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "EntlassungsgrundErsteUndZweiteStelle"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Behandlung regulär beendet",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle"
+            },
+            "code_string" : "01"
+          }
+        },
+        "archetype_node_id" : "at0006"
+      } ],
+      "archetype_node_id" : "at0001"
+    },
+    "archetype_node_id" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0"
+  } ],
+  "archetype_node_id" : "openEHR-EHR-COMPOSITION.fall.v1"
+}

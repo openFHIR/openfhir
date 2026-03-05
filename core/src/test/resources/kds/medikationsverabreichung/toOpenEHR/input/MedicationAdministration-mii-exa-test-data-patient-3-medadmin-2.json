@@ -1,0 +1,344 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-3",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:51:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationAdministration"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationAdministration/mii-exa-test-data-patient-3-medadmin-2",
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "id": "mii-exa-test-data-patient-3-medadmin-2",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationAdministrations",
+            "value": "MA_0000007"
+          }
+        ],
+        "effectivePeriod": {
+          "start": "2022-04-25T09:00:00+02:00",
+          "end": "2022-04-27T07:00:00+02:00"
+        },
+        "dosage": {
+          "route": {
+            "coding": [
+              {
+                "system": "http://standardterms.edqm.eu",
+                "code": "20045000",
+                "display": "Intravenous use"
+              }
+            ]
+          },
+          "rateRatio": {
+            "numerator": {
+              "system": "http://unitsofmeasure.org",
+              "value": 1000,
+              "code": "mg",
+              "unit": "mg"
+            },
+            "denominator": {
+              "system": "http://unitsofmeasure.org",
+              "value": 46,
+              "code": "h",
+              "unit": "h"
+            }
+          },
+          "dose": {
+            "system": "http://unitsofmeasure.org",
+            "value": 1000,
+            "code": "mg",
+            "unit": "mg"
+          },
+          "text": "5-FU 1000mg IV über 46 Stunden"
+        },
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "code": "inpatient",
+              "system": "http://terminology.hl7.org/CodeSystem/medication-admin-category",
+              "display": "Inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-5-fluorouracil"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-3-encounter-1"
+        },
+        "request": {
+          "reference": "MedicationRequest/mii-exa-test-data-patient-3-medrequest-2"
+        },
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration"
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-5-fluorouracil",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-5-fluorouracil",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "L01BC02",
+              "version": "2024",
+              "display": "Fluorouracil"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "code": "07374"
+                }
+              ]
+            },
+            "strength": {
+              "numerator": {
+                "value": 1000,
+                "code": "mg",
+                "system": "http://unitsofmeasure.org",
+                "unit": "mg"
+              },
+              "denominator": {
+                "value": 20,
+                "code": "ml",
+                "system": "http://unitsofmeasure.org",
+                "unit": "ml"
+              }
+            }
+          }
+        ],
+        "form": {
+          "coding": [
+            {
+              "code": "11210000",
+              "system": "http://standardterms.edqm.eu",
+              "display": "Solution for infusion"
+            }
+          ]
+        },
+        "status": "active"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-3-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-3-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000003"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0100"
+            }
+          ]
+        },
+        "period": {
+          "start": "2022-04-02",
+          "end": "2022-04-22"
+        },
+        "diagnosis": [
+          {
+            "use": {
+              "coding": [
+                {
+                  "code": "referral-diagnosis",
+                  "system": "http://fhir.de/CodeSystem/KontaktDiagnoseProzedur",
+                  "display": "Überweisungsdiagnose"
+                },
+                {
+                  "code": "AD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Admission diagnosis"
+                }
+              ]
+            },
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-3-diagnose-1"
+            },
+            "rank": 1
+          }
+        ],
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "02",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Behandlung regulär beendet, nachstationäre Behandlung vorgesehen"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "2",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "arbeitsunfähig entlassen"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "E",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Einweisung durch einen Arzt"
+              }
+            ]
+          }
+        },
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationRequest/mii-exa-test-data-patient-3-medrequest-2",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mii-exa-test-data-patient-3-medrequest-2",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+            "value": "MO_0000009"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "doseAndRate": [
+              {
+                "rateRatio": {
+                  "numerator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 1000,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "denominator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 46,
+                    "code": "h",
+                    "unit": "h"
+                  }
+                },
+                "doseQuantity": {
+                  "value": 1000,
+                  "code": "mg",
+                  "system": "http://unitsofmeasure.org",
+                  "unit": "mg"
+                }
+              }
+            ],
+            "text": "5-FU 1000mg/m² IV über 46 Stunden",
+            "route": {
+              "coding": [
+                {
+                  "code": "20045000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Intravenous use"
+                }
+              ]
+            }
+          }
+        ],
+        "substitution": {
+          "allowedBoolean": false
+        },
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-5-fluorouracil"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-3"
+        },
+        "encounter": {
+          "reference": "Encounter/mii-exa-test-data-patient-3-encounter-1"
+        },
+        "authoredOn": "2022-04-25T09:00:00+02:00"
+      }
+    }
+  ]
+}

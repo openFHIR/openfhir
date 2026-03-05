@@ -1,0 +1,58 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name:  KDS_problem_qualifier
+  version: 0.0.1-alpha 
+spec: 
+  system: FHIR
+  version: R4
+  extends: CLUSTER.problem_qualifier.v2
+
+mappings:
+  - name: "clinicalStatus"
+    extension: "add"
+    with:
+      fhir: "$fhirRoot.clinicalStatus"
+      openehr: "$archetype/items[at0003]"
+      
+
+  - name: "referenzPrimaerdiagnose"
+    extension: "add"
+    with:
+      openehr: "$archetype/items[at0063]"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "extension.url"
+      operator: "not of"
+      criteria: "http://hl7.org/fhir/StructureDefinition/condition-related"
+    manual:
+      - name: "maindiagnose"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0064"
+          - path: "value"
+            value: "Hauptdiagnose"
+
+
+
+
+  - name: "referenzNebendiagnose"
+    extension: "add"
+    with:
+      openehr: "$archetype/items[at0063]"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "extension.url"
+      operator: "one of"
+      criteria: "http://hl7.org/fhir/StructureDefinition/condition-related"
+    manual:
+      - name: "nebendiagnose"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0066"
+          - path: "value"
+            value: "Nebendiagnose"

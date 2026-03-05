@@ -1,0 +1,188 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Composition",
+        "date": "2025-12-04T08:44:21+01:00",
+        "section": [
+          {
+            "title": "Active Problems",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11450-4",
+                  "display": "Problem list Reported"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:e9e2a4c0-ab69-461a-b83f-fe3927dcf810"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e9e2a4c0-ab69-461a-b83f-fe3927dcf810",
+      "resource": {
+        "resourceType": "Condition",
+        "text": {
+          "status": "generated"
+        },
+        "contained": [
+          {
+            "resourceType": "Practitioner",
+            "id": "1"
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "local",
+              "code": "at0027",
+              "display": "Inactive"
+            }
+          ],
+          "text": "Inactive"
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "local",
+              "code": "at0076",
+              "display": "Confirmed"
+            }
+          ],
+          "text": "Confirmed"
+        },
+        "severity": {
+          "coding": [
+            {
+              "system": "local",
+              "code": "at0048",
+              "display": "Moderate"
+            }
+          ],
+          "text": "Moderate"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "709044004",
+              "display": "Chronic Kidney Disease"
+            }
+          ],
+          "text": "Chronic Kidney Disease"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "8911002",
+                "display": "Endocardium of right ventricle"
+              }
+            ],
+            "text": "Endocardium of right ventricle"
+          }
+        ],
+        "onsetDateTime": "2025-11-19T12:12:56+01:00",
+        "recordedDate": "2025-12-04T08:44:21+01:00",
+        "recorder": {
+          "reference": "#1"
+        },
+        "note": [
+          {
+            "text": "Comment 9"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "text": {
+          "status": "generated"
+        },
+        "contained": [
+          {
+            "resourceType": "Practitioner",
+            "id": "1"
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "local",
+              "code": "at0027",
+              "display": "Inactive"
+            }
+          ],
+          "text": "Inactive"
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "local",
+              "code": "at0076",
+              "display": "Confirmed"
+            }
+          ],
+          "text": "Confirmed"
+        },
+        "severity": {
+          "coding": [
+            {
+              "system": "local",
+              "code": "at0048",
+              "display": "Moderate"
+            }
+          ],
+          "text": "Moderate"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "709044004",
+              "display": "Chronic Kidney Disease"
+            }
+          ],
+          "text": "Chronic Kidney Disease"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "8911002",
+                "display": "Endocardium of right ventricle"
+              }
+            ],
+            "text": "Endocardium of right ventricle"
+          }
+        ],
+        "onsetDateTime": "2025-11-19T12:12:56+01:00",
+        "recordedDate": "2025-12-04T08:44:21+01:00",
+        "recorder": {
+          "reference": "#1"
+        },
+        "note": [
+          {
+            "text": "Comment 9"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <artifactId>open-fhir</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <groupId>com.syntaric.openfhir</groupId>
+    <packaging>pom</packaging>
+
+    <name>openFHIR</name>
+    <description>An Engine implementing FHIR Connect specification for bi-directional mapping between openEHR and FHIR.</description>
+    <url>https://github.com/openfhir/openfhir</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>gasperr</id>
+            <name>Gasper Andrejc</name>
+            <email>gasper.andrejc@syntaric.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Syntaric d.o.o.</organization>
+        </developer>
+        <developer>
+            <id>sidharth</id>
+            <name>Sidharth Ramesh</name>
+            <email>sidharth@medblocks.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Medblocks Inc.</organization>
+        </developer>
+        <developer>
+            <id>sevkohler</id>
+            <name>Severin Kohler</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>MadineniGunavardhan</id>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>vipinsanthosh</id>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>syp1xd</id>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>chaya-rt</id>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>mancinichannakeshava</id>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/openfhir/openfhir.git</connection>
+        <developerConnection>scm:git:git@github.com:openfhir/openfhir.git</developerConnection>
+        <url>https://github.com/openfhir/openfhir</url>
+    </scm>
+
+    <properties>
+        <java.version>17</java.version> <!--   used by spring   -->
+        <archie.version>3.11.0</archie.version>
+        <hapi-fhir.version>7.2.1</hapi-fhir.version>
+        <jjwt.version>0.12.6</jjwt.version>
+        <ucum.version>1.0.9</ucum.version>
+        <ehrbase.version>2.19.0</ehrbase.version>
+        <json-schema-validator.version>2.2.14</json-schema-validator.version>
+        <junit.version>4.13.2</junit.version>
+        <mongock.version>5.5.1</mongock.version>
+    </properties>
+
+    <modules>
+        <module>fhirconnect</module>
+        <module>api</module>
+        <module>db</module>
+        <module>core</module>
+        <module>engine</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>io.mongock</groupId>
+                <artifactId>mongock-springboot</artifactId>
+                <version>${mongock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.mongock</groupId>
+                <artifactId>mongodb-springdata-v4-driver</artifactId>
+                <version>${mongock.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+
+            <!--         internal -->
+            <dependency>
+                <groupId>com.syntaric.openfhir</groupId>
+                <artifactId>open-fhir-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syntaric.openfhir</groupId>
+                <artifactId>open-fhir-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syntaric.openfhir</groupId>
+                <artifactId>open-fhir-db</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.syntaric.openfhir</groupId>
+                <artifactId>open-fhir-fhir-connect</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Nedap Archie -->
+            <dependency>
+                <groupId>com.nedap.healthcare.archie</groupId>
+                <artifactId>archie-all</artifactId>
+                <version>${archie.version}</version>
+            </dependency>
+
+            <!-- HAPI FHIR -->
+            <dependency>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>hapi-fhir-structures-r4</artifactId>
+                <version>${hapi-fhir.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>hapi-fhir-base</artifactId>
+                <version>${hapi-fhir.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>hapi-fhir-validation-resources-r4</artifactId>
+                <version>${hapi-fhir.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>hapi-fhir-caching-caffeine</artifactId>
+                <version>${hapi-fhir.version}</version>
+            </dependency>
+
+            <!-- UCUM -->
+            <dependency>
+                <groupId>org.fhir</groupId>
+                <artifactId>ucum</artifactId>
+                <version>${ucum.version}</version>
+            </dependency>
+
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <!-- JUnit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- EHRBase -->
+            <dependency>
+                <groupId>org.ehrbase.openehr.sdk</groupId>
+                <artifactId>serialisation</artifactId>
+                <version>${ehrbase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ehrbase.openehr.sdk</groupId>
+                <artifactId>util</artifactId>
+                <version>${ehrbase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ehrbase.openehr.sdk</groupId>
+                <artifactId>example-generator</artifactId>
+                <version>${ehrbase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ehrbase.openehr.sdk</groupId>
+                <artifactId>validation</artifactId>
+                <version>${ehrbase.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.ehrbase.openehr.sdk</groupId>
+                <artifactId>web-template</artifactId>
+                <version>${ehrbase.version}</version>
+            </dependency>
+
+            <!-- JSON Schema Validator -->
+            <dependency>
+                <groupId>com.github.java-json-tools</groupId>
+                <artifactId>json-schema-validator</artifactId>
+                <version>${json-schema-validator.version}</version>
+            </dependency>
+
+
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+
+</project>

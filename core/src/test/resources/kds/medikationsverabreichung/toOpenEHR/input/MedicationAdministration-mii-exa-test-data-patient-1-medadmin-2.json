@@ -1,0 +1,474 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-1",
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:51:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationAdministration"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationAdministration/mii-exa-test-data-patient-1-medadmin-2",
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "id": "mii-exa-test-data-patient-1-medadmin-2",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationAdministrations",
+            "value": "MA_0000002"
+          }
+        ],
+        "partOf": [
+          {
+            "reference": "Procedure/mii-exa-test-data-patient-1-prozedur-2"
+          }
+        ],
+        "effectivePeriod": {
+          "start": "2024-02-16T10:20:00.000+01:00"
+        },
+        "note": [
+          {
+            "text": "abgebrochen fehlerhafte Eingabe"
+          }
+        ],
+        "dosage": {
+          "site": {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "789218009",
+                "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                "display": "Structure of dorsum of left hand (body structure)"
+              }
+            ]
+          },
+          "route": {
+            "coding": [
+              {
+                "system": "http://standardterms.edqm.eu",
+                "code": "20045000",
+                "display": "Intravenous use"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "47625008",
+                "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                "display": "Intravenous route (qualifier value)"
+              }
+            ]
+          },
+          "dose": {
+            "system": "http://unitsofmeasure.org",
+            "value": 1500,
+            "code": "mg",
+            "unit": "mg"
+          },
+          "rateQuantity": {
+            "system": "http://unitsofmeasure.org",
+            "value": 1500,
+            "code": "mg/h",
+            "unit": "mg/Stunde"
+          },
+          "text": "Dalbavancin 1500 mg als 30-minütige Infusion"
+        },
+        "status": "entered-in-error",
+        "category": {
+          "coding": [
+            {
+              "code": "inpatient",
+              "system": "http://terminology.hl7.org/CodeSystem/medication-admin-category",
+              "display": "Inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-dalbavancin"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "context": {
+          "reference": "Encounter/mii-exa-test-data-patient-1-encounter-1"
+        },
+        "request": {
+          "reference": "MedicationRequest/mii-exa-test-data-patient-1-medrequest-1"
+        },
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration"
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Medication"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Medication/mii-exa-test-data-medication-dalbavancin",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "mii-exa-test-data-medication-dalbavancin",
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/ifa/pzn",
+              "code": "15205222",
+              "display": "XYDALBA"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "J01XA04",
+              "version": "2023",
+              "display": "Dalbavancin"
+            }
+          ]
+        },
+        "form": {
+          "coding": [
+            {
+              "system": "http://standardterms.edqm.eu",
+              "code": "50043000",
+              "display": "Powder for concentrate for solution for infusion"
+            }
+          ]
+        },
+        "ingredient": [
+          {
+            "itemCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://fdasis.nlm.nih.gov",
+                  "code": "808UI9MS5K"
+                },
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/CAS",
+                  "code": "171500-79-1"
+                },
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "703917001",
+                  "version": "http://snomed.info/sct/900000000000207008/version/20230731",
+                  "display": "Dalbavancin (substance)"
+                },
+                {
+                  "system": "http://fhir.de/CodeSystem/ask",
+                  "code": "33395",
+                  "display": "Dalbavancin"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "Encounter"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Encounter/mii-exa-test-data-patient-1-encounter-1",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "mii-exa-test-data-patient-1-encounter-1",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+            "value": "MII_0000001"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/Kontaktebene",
+                "code": "einrichtungskontakt"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/kontaktart-de",
+                "code": "normalstationaer"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/dkgev/Fachabteilungsschluessel",
+              "code": "0100"
+            }
+          ]
+        },
+        "extension": [
+          {
+            "extension": [
+              {
+                "url": "ErsteUndZweiteStelle",
+                "valueCoding": {
+                  "code": "01",
+                  "system": "http://fhir.de/CodeSystem/dkgev/AufnahmegrundErsteUndZweiteStelle",
+                  "display": "Krankenhausbehandlung, vollstationär"
+                }
+              },
+              {
+                "url": "DritteStelle",
+                "valueCoding": {
+                  "code": "0",
+                  "system": "http://fhir.de/CodeSystem/dkgev/AufnahmegrundDritteStelle",
+                  "display": "Anderes"
+                }
+              },
+              {
+                "url": "VierteStelle",
+                "valueCoding": {
+                  "code": "1",
+                  "system": "http://fhir.de/CodeSystem/dkgev/AufnahmegrundVierteStelle",
+                  "display": "Normalfall"
+                }
+              }
+            ],
+            "url": "http://fhir.de/StructureDefinition/Aufnahmegrund"
+          }
+        ],
+        "period": {
+          "start": "2024-02-14",
+          "end": "2024-02-22"
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-1-diagnose-1"
+            },
+            "use": {
+              "coding": [
+                {
+                  "code": "AD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Admission diagnosis"
+                }
+              ]
+            },
+            "rank": 1
+          },
+          {
+            "condition": {
+              "reference": "Condition/mii-exa-test-data-patient-1-todesursache-1"
+            },
+            "use": {
+              "coding": [
+                {
+                  "code": "DD",
+                  "system": "http://terminology.hl7.org/CodeSystem/diagnosis-role",
+                  "display": "Discharge diagnosis"
+                }
+              ]
+            },
+            "rank": 2
+          }
+        ],
+        "hospitalization": {
+          "dischargeDisposition": {
+            "extension": [
+              {
+                "extension": [
+                  {
+                    "url": "ErsteUndZweiteStelle",
+                    "valueCoding": {
+                      "code": "07",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundErsteUndZweiteStelle",
+                      "display": "Tod"
+                    }
+                  },
+                  {
+                    "url": "DritteStelle",
+                    "valueCoding": {
+                      "code": "9",
+                      "system": "http://fhir.de/CodeSystem/dkgev/EntlassungsgrundDritteStelle",
+                      "display": "keine Angabe"
+                    }
+                  }
+                ],
+                "url": "http://fhir.de/StructureDefinition/Entlassungsgrund"
+              }
+            ]
+          },
+          "admitSource": {
+            "coding": [
+              {
+                "code": "E",
+                "system": "http://fhir.de/CodeSystem/dgkev/Aufnahmeanlass",
+                "display": "Einweisung durch einen Arzt"
+              }
+            ]
+          }
+        },
+        "location": [
+          {
+            "location": {
+              "identifier": {
+                "system": "https://www.charite.de/fhir/sid/Zimmernummern",
+                "value": "RHC-06-210b"
+              },
+              "display": "RHC-06-210b"
+            },
+            "status": "active",
+            "physicalType": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code": "ro"
+                }
+              ]
+            }
+          },
+          {
+            "location": {
+              "identifier": {
+                "system": "https://www.charite.de/fhir/sid/Bettennummern",
+                "value": "RHC-06-210b-02"
+              },
+              "display": "RHC-06-210b-02"
+            },
+            "status": "active",
+            "physicalType": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code": "bd"
+                }
+              ]
+            }
+          },
+          {
+            "location": {
+              "identifier": {
+                "system": "https://www.charite.de/fhir/sid/Stationsnummern",
+                "value": "RHC-06"
+              },
+              "display": "RHC-06"
+            },
+            "status": "active",
+            "physicalType": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code": "wa"
+                }
+              ]
+            }
+          }
+        ],
+        "serviceProvider": {
+          "identifier": {
+            "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+            "value": "Charité"
+          },
+          "reference": "Organization/mii-exa-test-data-organization-charite",
+          "display": "Charité - Universitätsmedizin Berlin"
+        },
+        "status": "finished",
+        "class": {
+          "code": "IMP",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "MedicationRequest"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/MedicationRequest/mii-exa-test-data-patient-1-medrequest-1",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "mii-exa-test-data-patient-1-medrequest-1",
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationOrders",
+            "value": "MO_0000001"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "timing": {
+              "event": [
+                "2024-02-16"
+              ]
+            },
+            "doseAndRate": [
+              {
+                "rateRatio": {
+                  "numerator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 1500,
+                    "code": "mg",
+                    "unit": "mg"
+                  },
+                  "denominator": {
+                    "system": "http://unitsofmeasure.org",
+                    "value": 30,
+                    "code": "min",
+                    "unit": "Minuten"
+                  }
+                },
+                "doseQuantity": {
+                  "value": 1500,
+                  "code": "mg",
+                  "system": "http://unitsofmeasure.org",
+                  "unit": "mg"
+                }
+              }
+            ],
+            "maxDosePerAdministration": {
+              "system": "http://unitsofmeasure.org",
+              "value": 1500,
+              "code": "mg",
+              "unit": "mg"
+            },
+            "text": "Dalbavancin 1500 mg als 30-minütige Infusion",
+            "route": {
+              "coding": [
+                {
+                  "code": "20045000",
+                  "system": "http://standardterms.edqm.eu",
+                  "display": "Intravenous use"
+                }
+              ]
+            }
+          }
+        ],
+        "substitution": {
+          "allowedBoolean": false
+        },
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/mii-exa-test-data-medication-dalbavancin"
+        },
+        "subject": {
+          "reference": "Patient/mii-exa-test-data-patient-1"
+        },
+        "encounter": {
+          "reference": "Encounter/mii-exa-test-data-patient-1-encounter-1"
+        },
+        "authoredOn": "2024-02-16T08:37:00+01:00"
+      }
+    }
+  ]
+}

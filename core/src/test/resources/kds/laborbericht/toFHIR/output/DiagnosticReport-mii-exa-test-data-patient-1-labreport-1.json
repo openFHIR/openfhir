@@ -1,0 +1,494 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000001"
+              }
+            ]
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "2",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000001"
+              }
+            ],
+            "status": "available",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "122555007",
+                  "display": "Venous blood specimen (specimen)"
+                }
+              ],
+              "text": "Venous blood specimen (specimen)"
+            },
+            "collection": {
+              "collectedDateTime": "2024-02-15T11:05:00+01:00",
+              "method": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "version": "20230731",
+                    "code": "129300006",
+                    "display": "129300006"
+                  }
+                ],
+                "text": "129300006"
+              },
+              "bodySite": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "version": "20230731",
+                    "code": "789218009",
+                    "display": "Structure of dorsum of left hand (body structure)"
+                  }
+                ],
+                "text": "Structure of dorsum of left hand (body structure)"
+              },
+              "fastingStatusCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0916",
+                    "code": "F",
+                    "display": "Patient was fasting prior to the procedure."
+                  }
+                ],
+                "text": "Patient was fasting prior to the procedure."
+              }
+            }
+          },
+          {
+            "resourceType": "Observation",
+            "id": "3",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "26464-8",
+                  "display": "Leukocytes [#/volume] in Blood"
+                }
+              ],
+              "text": "Leukocytes [#/volume] in Blood"
+            },
+            "issued": "2024-02-15T12:00:00.000+01:00",
+            "valueQuantity": {
+              "value": 17.0,
+              "unit": "/nL",
+              "system": "http://unitsofmeasure.org",
+              "code": "/nL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "H",
+                    "display": "High"
+                  }
+                ],
+                "text": "High"
+              }
+            ],
+            "note": [
+              {
+                "text": "Leukozyten EDTA-Blut Impedanzmessung"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "703452004",
+                  "display": "Electrical impedance technique (qualifier value)"
+                }
+              ],
+              "text": "Electrical impedance technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#4"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "4",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000001"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "5",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "26453-1",
+                  "display": "Erythrocytes [#/volume] in Blood"
+                }
+              ],
+              "text": "Erythrocytes [#/volume] in Blood"
+            },
+            "issued": "2024-02-15T12:00:00.000+01:00",
+            "valueQuantity": {
+              "value": 5.0,
+              "unit": "/pL",
+              "system": "http://unitsofmeasure.org",
+              "code": "/pL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "note": [
+              {
+                "text": "Erythrozyten EDTA-Blut Impedanzmessung"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "703452004",
+                  "display": "Electrical impedance technique (qualifier value)"
+                }
+              ],
+              "text": "Electrical impedance technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#6"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "6",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000001"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "7",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "20570-8",
+                  "display": "Hematocrit [Volume Fraction] of Blood by calculation"
+                }
+              ],
+              "text": "Hematocrit [Volume Fraction] of Blood by calculation"
+            },
+            "issued": "2024-02-15T12:00:00.000+01:00",
+            "valueQuantity": {
+              "value": 45.0,
+              "unit": "%",
+              "system": "http://unitsofmeasure.org",
+              "code": "%"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "note": [
+              {
+                "text": "Hämatokrit EDTA-Blut Impedanzmessung"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "703452004",
+                  "display": "Electrical impedance technique (qualifier value)"
+                }
+              ],
+              "text": "Electrical impedance technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#8"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "8",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000001"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "9",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "718-7",
+                  "display": "Hemoglobin [Mass/volume] in Blood"
+                }
+              ],
+              "text": "Hemoglobin [Mass/volume] in Blood"
+            },
+            "issued": "2024-02-15T12:00:00.000+01:00",
+            "valueQuantity": {
+              "value": 45.0,
+              "unit": "g/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "g/dL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "note": [
+              {
+                "text": "Hämoglobin EDTA-Blut Photometrie"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "83561000052101",
+                  "display": "Photometry technique (qualifier value)"
+                }
+              ],
+              "text": "Photometry technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#10"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "10",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000001"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "11",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "26515-7",
+                  "display": "Platelets [#/volume] in Blood"
+                }
+              ],
+              "text": "Platelets [#/volume] in Blood"
+            },
+            "issued": "2024-02-15T12:00:00.000+01:00",
+            "valueQuantity": {
+              "value": 355.0,
+              "unit": "/nL",
+              "system": "http://unitsofmeasure.org",
+              "code": "/nL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "note": [
+              {
+                "text": "Thrombozyten EDTA-Blut Impedanzmessung"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "703452004",
+                  "display": "Electrical impedance technique (qualifier value)"
+                }
+              ],
+              "text": "Electrical impedance technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#12"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "12",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000001"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "13",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "788-0",
+                  "display": "Erythrocyte [DistWidth] in Red Blood Cells by Automated count"
+                }
+              ],
+              "text": "Erythrocyte [DistWidth] in Red Blood Cells by Automated count"
+            },
+            "issued": "2024-02-15T12:00:00.000+01:00"
+//            "dataAbsentReason": {
+//              "coding": [
+//                {
+//                  "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+//                  "code": "unknown"
+//                }
+//              ]
+//            }
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "FILL"
+                }
+              ]
+            },
+            "value": "LDR_000001"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6"
+              },
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "LAB"
+              }
+            ],
+            "text": "laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11502-2",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory report"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "effectiveDateTime": "2024-02-15T12:00:00+01:00",
+        "issued": "2024-02-15T12:00:00.000+01:00",
+        "specimen": [
+          {
+            "reference": "#2"
+          }
+        ],
+        "result": [
+          {
+            "reference": "#3"
+          },
+          {
+            "reference": "#5"
+          },
+          {
+            "reference": "#7"
+          },
+          {
+            "reference": "#9"
+          },
+          {
+            "reference": "#11"
+          },
+          {
+            "reference": "#13"
+          }
+        ],
+        "conclusion": "Leukozyten hoch"
+      }
+    }
+  ]
+}

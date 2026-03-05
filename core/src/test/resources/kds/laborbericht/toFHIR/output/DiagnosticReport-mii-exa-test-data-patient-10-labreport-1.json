@@ -1,0 +1,338 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-labor/StructureDefinition/DiagnosticReportLab"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000011"
+              }
+            ]
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "2",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000018"
+              }
+            ],
+            "status": "available",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "445295009",
+                  "display": "Blood specimen with edetic acid (specimen)"
+                }
+              ],
+              "text": "Blood specimen with edetic acid (specimen)"
+            },
+            "collection": {
+              "collectedDateTime": "2019-05-16T07:45:00+02:00",
+              "bodySite": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "version": "20230731",
+                    "code": "368208006",
+                    "display": "Left upper arm structure (body structure)"
+                  }
+                ],
+                "text": "Left upper arm structure (body structure)"
+              }
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "3",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000019"
+              }
+            ],
+            "status": "available",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "119364003",
+                  "display": "Serum specimen (specimen)"
+                }
+              ],
+              "text": "Serum specimen (specimen)"
+            },
+            "collection": {
+              "collectedDateTime": "2019-05-16T07:45:00+02:00",
+              "bodySite": {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "version": "20230731",
+                    "code": "368209003",
+                    "display": "Right upper arm structure (body structure)"
+                  }
+                ],
+                "text": "Right upper arm structure (body structure)"
+              }
+            }
+          },
+          {
+            "resourceType": "Observation",
+            "id": "4",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "26464-8",
+                  "display": "Leukocytes [#/volume] in Blood"
+                }
+              ],
+              "text": "Leukocytes [#/volume] in Blood"
+            },
+            "issued": "2019-05-16T10:45:00.000+02:00",
+            "valueQuantity": {
+              "value": 8.9,
+              "unit": "/nL",
+              "system": "http://unitsofmeasure.org",
+              "code": "/nL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "703452004",
+                  "display": "Electrical impedance technique (qualifier value)"
+                }
+              ],
+              "text": "Electrical impedance technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#5"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "5",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000018"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "6",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "718-7",
+                  "display": "Hemoglobin [Mass/volume] in Blood"
+                }
+              ],
+              "text": "Hemoglobin [Mass/volume] in Blood"
+            },
+            "issued": "2019-05-16T10:45:00.000+02:00",
+            "valueQuantity": {
+              "value": 14.2,
+              "unit": "g/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "g/dL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "83561000052101",
+                  "display": "Photometry technique (qualifier value)"
+                }
+              ],
+              "text": "Photometry technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#7"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "7",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000018"
+              }
+            ]
+          },
+          {
+            "resourceType": "Observation",
+            "id": "8",
+            "status": "final",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "2160-0",
+                  "display": "Creatinine [Mass/volume] in Serum or Plasma"
+                }
+              ],
+              "text": "Creatinine [Mass/volume] in Serum or Plasma"
+            },
+            "issued": "2019-05-16T10:45:00.000+02:00",
+            "valueQuantity": {
+              "value": 1.1,
+              "unit": "mg/dL",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/dL"
+            },
+            "interpretation": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "code": "N",
+                    "display": "Normal"
+                  }
+                ],
+                "text": "Normal"
+              }
+            ],
+            "method": {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "version": "20230731",
+                  "code": "83561000052101",
+                  "display": "Photometry technique (qualifier value)"
+                }
+              ],
+              "text": "Photometry technique (qualifier value)"
+            },
+            "specimen": {
+              "reference": "#9"
+            }
+          },
+          {
+            "resourceType": "Specimen",
+            "id": "9",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/sid/Bioproben",
+                "value": "BP_000018"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "FILL"
+                }
+              ]
+            },
+            "value": "LDR_000010"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6"
+              },
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "LAB"
+              }
+            ],
+            "text": "laboratory"
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11502-2",
+              "display": "Laboratory report"
+            }
+          ],
+          "text": "Laboratory report"
+        },
+        "encounter": {
+          "reference": "#1"
+        },
+        "effectiveDateTime": "2019-05-16T08:30:00+02:00",
+        "issued": "2019-05-16T08:30:00.000+02:00",
+        "specimen": [
+          {
+            "reference": "#2"
+          },
+          {
+            "reference": "#3"
+          }
+        ],
+        "result": [
+          {
+            "reference": "#4"
+          },
+          {
+            "reference": "#6"
+          },
+          {
+            "reference": "#8"
+          }
+        ],
+        "conclusion": "Unauffällige Routine-Laborwerte bei Migräne-Patientin: Blutbild und Nierenfunktion (Kreatinin 1,1 mg/dL) im Normbereich. Keine sekundäre Ursache der Kopfschmerzen erkennbar."
+      }
+    }
+  ]
+}

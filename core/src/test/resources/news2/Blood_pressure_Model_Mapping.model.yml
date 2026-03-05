@@ -1,0 +1,90 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "OBSERVATION.blood_pressure.v3"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-OBSERVATION.blood_pressure.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+preprocessor:
+  fhirConditions:
+    - targetRoot: "$resource"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "75367002" #need to add support for adding two codes
+    - targetRoot: "$resource"
+      targetAttribute: "status"
+      operator: "one of"
+      criteria: "final"
+    - targetRoot: "$resource"
+      targetAttribute: "category.coding.code"
+      operator: "one of"
+      criteria: "vital-signs"
+
+mappings:
+
+  - name: "componentSystolic"
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "72313002"
+    followedBy:
+      mappings:
+        - name: "value"
+          with:
+            fhir: "value"
+            openehr: "items[at0004]"
+        - name: "loincCode"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype"
+          manual:
+            - name: "loincCodeManual"
+              fhir:
+                - path: "code.coding.code"
+                  value: "72313002"
+
+  - name: "componentDiastolic"
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]"
+    fhirCondition:
+      targetRoot: "$resource.component"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "1091811000000102"
+    followedBy:
+      mappings:
+        - name: "value"
+          with:
+            fhir: "value"
+            openehr: "items[at0005]"
+        - name: "loincCode"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype"
+          manual:
+            - name: "loincCodeManual"
+              fhir:
+                - path: "code.coding.code"
+                  value: "1091811000000102"
+
+  - name: "bodySiteLocationOfMeasurement"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/protocol[at0011]/items[at0014]"
+      
+
+  - name: "clinicalInterpretation"
+    with:
+      fhir: "$resource.component.interpretation.text"
+      openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]/items[at1059]"

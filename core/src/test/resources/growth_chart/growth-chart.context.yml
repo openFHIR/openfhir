@@ -1,0 +1,21 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: "Growth chart"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "Bundle"
+  template:
+    id: "Growth chart"
+  archetypes:
+    - "OBSERVATION.body_weight.v2"
+    - "OBSERVATION.height.v2"
+    - "OBSERVATION.body_mass_index.v2"
+    - "OBSERVATION.head_circumference.v1"
+    - "openEHR-EHR-COMPOSITION.growth_chart.v0"
+  start: "openEHR-EHR-COMPOSITION.growth_chart.v0"

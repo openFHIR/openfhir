@@ -1,0 +1,182 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Encounter",
+            "id": "1",
+            "identifier": [
+              {
+                "system": "http://hospital.smarthealthit.org",
+                "value": "encounter-id-1245"
+              }
+            ]
+          }
+        ],
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+            "valueDateTime": "2025-02-03T05:05:06+01:00"
+          }
+        ],
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "Active"
+            }
+          ],
+          "text": "Active"
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed",
+              "display": "Confirmed"
+            }
+          ]
+        },
+        "severity": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-severity",
+              "code": "24484000",
+              "display": "Severe"
+            }
+          ],
+          "text": "Severe"
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+              "code": "C34.1",
+              "display": "Secondary malignant neoplasm of lymph node",
+              "extension": [
+                {
+                  "valueCoding": {
+                    "system": "http://fhir.de/CodeSystem/dimdi/diagnosesicherheit",
+                    "code": "G",
+                    "display": "Confirmed diagnosis"
+                  },
+                  "url": "http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit"
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://fhir.de/CodeSystem/icd-10-gm-mehrfachcodierungs-kennzeichen",
+                    "code": "!",
+                    "display": "!"
+                  },
+                  "url": "http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen"
+                },
+                {
+                  "valueCoding": {
+                    "system": "http://fhir.de/CodeSystem/dimdi/seitenlokalisation",
+                    "code": "L",
+                    "display": "Left side"
+                  },
+                  "url": "http://fhir.de/StructureDefinition/seitenlokalisation"
+                }
+              ]            },
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+              "code": "C77.0",
+              "display": "Malignant neoplasm of lymph nodes"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+              "code": "057E3",
+              "display": "secondary malignant neoplasm of lymph nodes"
+            },
+            {
+              "system": "http://www.orpha.net",
+              "code": "1777",
+              "display": "lung cancer associated with hereditary syndromes"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "128462008",
+              "display": "Secondary malignant neoplasm of lymph node"
+            }
+          ],
+          "text": "Secondary malignant neoplasm of lymph node"
+        },
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "321667001",
+                "display": "Respiratory tract, Upper lobe, bronchus or lung",
+                "version": "20230131"
+              },
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+                "code": "C34.1",
+                "display": "Upper lobe, bronchus or lung"
+              }
+            ],
+            "text": "Respiratory tract, Upper lobe, bronchus or lung"
+          }
+        ],
+        "encounter": {
+          "reference": "#1"
+        },
+        "onsetPeriod": {
+          "start": "2024-12-24T16:13:43+01:00",
+          "_start": {
+            "extension": [
+              {
+                "url": "http://fhir.de/StructureDefinition/lebensphase",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "41847000",
+                      "display": "Adulthood"
+                    }
+                  ],
+                  "text": "Adulthood"
+                }
+              }
+            ]
+          },
+          "_end": {
+            "extension": [
+              {
+                "url": "http://fhir.de/StructureDefinition/lebensphase",
+                "valueCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://snomed.info/sct",
+                      "code": "271872005",
+                      "display": "Old age"
+                    }
+                  ],
+                  "text": "Old age"
+                }
+              }
+            ]
+          }
+        },
+        "recordedDate": "2022-02-03T01:00:00+01:00",
+        "note": [
+          {
+            "text": "Patient confirmed for secondary malignant neoplasm of lymph node."
+          }
+        ]
+      }
+    }
+  ]
+}

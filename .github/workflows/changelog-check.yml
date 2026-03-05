@@ -1,0 +1,36 @@
+name: Changelog Check
+
+on:
+  pull_request:
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if changelog was modified
+        run: |
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Check if CHANGELOG.md is in changed files
+          if echo "$CHANGED_FILES" | grep -q "^CHANGELOG.md$"; then
+            echo "CHANGELOG.md updated ✔"
+          else
+            echo "ERROR: CHANGELOG.md was not updated."
+            echo "Please add a changelog entry or apply the 'no-changelog' label."
+            exit 1
+          fi
+
+      - name: Skip check if label 'no-changelog' is present
+        if: contains(github.event.pull_request.labels.*.name, 'no-changelog')
+        run: |
+          echo "Skipping changelog requirement due to 'no-changelog' label."

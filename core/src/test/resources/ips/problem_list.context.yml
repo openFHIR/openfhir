@@ -1,0 +1,24 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: Problem_List_NL.context
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition"
+    version: "2.0.0"
+  template:
+    id: "Problem List NL"
+  archetypes:
+    - "EVALUATION.problem_diagnosis.v1"
+    - "CLUSTER.problem_qualifier.v2"
+    - "CLUSTER.anatomical_location.v1"
+    - "COMPOSITION.problem_list.v2"
+  extensions:
+    - "NL_problem_diagnosis"
+    - "NL_problem_list"
+  start: "COMPOSITION.problem_list.v2"

@@ -1,0 +1,110 @@
+{
+  "resourceType": "Bundle",
+  "id": "mii-exa-test-data-bundle-pat-9",
+  "meta": {
+    "security": [
+      {
+        "code": "HTEST",
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+        "display": "test health data"
+      }
+    ]
+  },
+  "type": "transaction",
+  "timestamp": "2025-06-18T13:59:00+02:00",
+  "entry": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      },
+      "fullUrl": "https://www.medizininformatik-initiative.de/Patient/mii-exa-test-data-patient-9",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "mii-exa-test-data-patient-9",
+        "meta": {
+          "security": [
+            {
+              "code": "HTEST",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+              "display": "test health data"
+            }
+          ],
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient"
+          ]
+        },
+        "identifier": [
+          {
+            "assigner": {
+              "identifier": {
+                "system": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier",
+                "value": "Charité"
+              },
+              "display": "Charité - Universitätsmedizin Berlin"
+            },
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "use": "usual",
+            "system": "https://www.medizininformatik-initiative.de/fhir/sid/patienten",
+            "value": "321654987"
+          },
+          {
+            "assigner": {
+              "identifier": {
+                "use": "official",
+                "value": "345678901",
+                "system": "http://fhir.de/sid/arge-ik/iknr"
+              }
+            },
+            "use": "official",
+            "type": {
+              "coding": [
+                {
+                  "code": "KVZ10",
+                  "system": "http://fhir.de/CodeSystem/identifier-type-de-basis"
+                }
+              ]
+            },
+            "system": "http://fhir.de/sid/gkv/kvid-10",
+            "value": "G678901234"
+          }
+        ],
+        "name": [
+          {
+            "given": [
+              "Petra",
+              "Elisabeth"
+            ],
+            "use": "official",
+            "family": "Klein"
+          },
+          {
+            "use": "maiden",
+            "family": "Fischer"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Müllerstraße 23"
+            ],
+            "type": "both",
+            "city": "Dresden",
+            "postalCode": "01067",
+            "country": "DE"
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1981-12-03",
+        "deceasedBoolean": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "MedicationStatement",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+          ]
+        },
+        "contained": [
+          {
+            "resourceType": "Medication",
+            "id": "1",
+            "meta": {
+              "profile": [
+                "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication"
+              ]
+            },
+            "code": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "version": "2024",
+                  "code": "B01AB01",
+                  "display": "Heparin"
+                }
+              ],
+              "text": "Heparin"
+            },
+            "form": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "11201000",
+                  "display": "Solution for injection"
+                }
+              ],
+              "text": "Solution for injection"
+            },
+            "ingredient": [
+              {
+                "strength": {
+                  "numerator": {
+                    "value": 25000.0,
+                    "unit": "[iU]",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "[iU]"
+                  },
+                  "denominator": {
+                    "value": 5.0,
+                    "unit": "ml",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "ml"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "resourceType": "Encounter",
+            "id": "2",
+            "identifier": [
+              {
+                "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
+                "value": "MII_0000009"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "system": "https://www.charite.de/fhir/sid/MedicationStatements",
+            "value": "MS_0000021"
+          }
+        ],
+        "status": "completed",
+        "category": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/medication-statement-category",
+              "code": "inpatient",
+              "display": "inpatient"
+            }
+          ]
+        },
+        "medicationReference": {
+          "reference": "#1"
+        },
+        "context": {
+          "reference": "#2"
+        },
+        "effectivePeriod": {
+          "start": "2023-11-12T08:00:00+01:00",
+          "end": "2023-11-15T14:00:00+01:00"
+        },
+        "dateAsserted": "2023-11-12T00:00:00+01:00",
+        "dosage": [
+          {
+
+            "route": {
+              "coding": [
+                {
+                  "system": "http://standardterms.edqm.eu",
+                  "code": "20066000",
+                  "display": "Subcutaneous use"
+                }
+              ],
+              "text": "Subcutaneous use"
+            }
+          },
+          {
+            "text": "Heparin 5000 IE s.c. alle 12 Stunden",
+            "timing": {
+              "repeat": {
+                "frequency": 2,
+                "period": 1.0,
+                "periodUnit": "d"
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 5000.0,
+                  "unit": "[iU]",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "[iU]"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
