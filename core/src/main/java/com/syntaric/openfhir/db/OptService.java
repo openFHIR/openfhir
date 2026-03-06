@@ -4,6 +4,7 @@ import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.syntaric.openfhir.db.entity.OptEntity;
 import com.syntaric.openfhir.db.repository.OptRepository;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
+import com.syntaric.openfhir.rest.RequestValidationException;
 import com.syntaric.openfhir.util.OpenEhrCachedUtils;
 import java.util.Date;
 import java.util.List;
@@ -60,6 +61,8 @@ public class OptService {
             final OptEntity copied = saved.copy();
             copied.setContent("redacted");
             return copied;
+        } catch (final RequestValidationException e) {
+            throw e;
         } catch (final Exception e) {
             log.error("Couldn't create a template, reqId: {}", reqId, e);
             throw new IllegalArgumentException("Couldn't create a template. " + e.getMessage());
@@ -84,9 +87,9 @@ public class OptService {
         final OptEntity existing = optRepository.findByTemplateIdAndOrganisation(
                 normalizedTemplateId, openFhirUser.getAuthContext().getTenant());
         if (existing != null) {
-            throw new IllegalArgumentException(
+            throw new RequestValidationException(
                     "Template with templateId " + operationaltemplate.getTemplateId() + " (normalized to: "
-                            + normalizedTemplateId + ") already exists.");
+                            + normalizedTemplateId + ") already exists.", null);
         }
     }
 
