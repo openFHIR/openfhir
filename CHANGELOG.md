@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 
 ### Fixed
+- when a duplicate OPT is trying to be created, server now responds with 400 not 500
 
 ## [2.0.0] - 2026-03-01
 Major rewrite of openFHIR, incorporating features from the former commercial version and the open-sourced medblocks/openfhir project, which has now been deprecated in favor of this repository.
