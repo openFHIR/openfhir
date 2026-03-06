@@ -61,6 +61,8 @@ public class OptService {
             final OptEntity copied = saved.copy();
             copied.setContent("redacted");
             return copied;
+        } catch (final RequestValidationException e) {
+            throw e;
         } catch (final Exception e) {
             log.error("Couldn't create a template, reqId: {}", reqId, e);
             throw new IllegalArgumentException("Couldn't create a template. " + e.getMessage());
