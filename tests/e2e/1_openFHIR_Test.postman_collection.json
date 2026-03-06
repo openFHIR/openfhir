@@ -177,7 +177,7 @@
                   "pm.test(\"Status code is 400\", function () {",
                   "    pm.response.to.have.status(400);",
                   "    const response = pm.response.json();",
-                  "    pm.expect(response.message).to.contain('already exists')",
+                  "    pm.expect(response[0]).to.contain('already exists');",
                   "});"
                 ],
                 "type": "text/javascript",
