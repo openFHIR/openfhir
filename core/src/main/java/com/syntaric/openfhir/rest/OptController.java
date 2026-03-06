@@ -57,12 +57,22 @@ public class OptController {
                     }
             )
     )
-    OptEntity newOpt(@RequestBody String opt, @RequestHeader(value = "x-req-id", required = false) final String reqId) {
-        return optService.upsert(opt, null, reqId);
+    ResponseEntity newOpt(@RequestBody String opt,
+                          @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        try {
+            final OptEntity body = optService.upsert(opt, null, reqId);
+            return ResponseEntity.ok(body);
+        } catch (Exception e) {
+            if (e instanceof RequestValidationException) {
+                return ResponseEntity.badRequest().body(((RequestValidationException) e).getMessages());
+            }
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 
-    @PutMapping(value = "/opt/{id}", produces = "application/json", consumes = {"application/xml", "text/xml", "text/plain"})
+    @PutMapping(value = "/opt/{id}", produces = "application/json", consumes = {"application/xml", "text/xml",
+            "text/plain"})
     @Operation(
             summary = "Updates an existing Operational Template",
             description = "Updates an existing Operational Template and returns a 200 OK if operation completely successfully.",
@@ -76,12 +86,20 @@ public class OptController {
                     }
             )
     )
-    OptEntity newOpt(@PathVariable String id, @RequestBody String opt,
-                     @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+    ResponseEntity newOpt(@PathVariable String id, @RequestBody String opt,
+                          @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         if (StringUtils.isEmpty(id)) {
             throw new IllegalArgumentException("Id must no be empty when updating.");
         }
-        return optService.upsert(opt, id, reqId);
+        try {
+            final OptEntity body = optService.upsert(opt, id, reqId);
+            return ResponseEntity.ok(body);
+        } catch (Exception e) {
+            if (e instanceof RequestValidationException) {
+                return ResponseEntity.badRequest().body(((RequestValidationException) e).getMessages());
+            }
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /**
