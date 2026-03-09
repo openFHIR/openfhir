@@ -1,19 +1,20 @@
 package com.syntaric.openfhir.mapping;
 
-import static com.syntaric.openfhir.util.OpenFhirStringUtils.RESOLVE;
-
-import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
-import java.util.List;
-import java.util.Optional;
+import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r4.fhirpath.FHIRPathUtilityClasses;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.ClassTypeInfo;
+
+import java.util.List;
+import java.util.Optional;
+
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RESOLVE;
 
 @Slf4j
 public class BidirectionalMappingEngine {
@@ -78,15 +79,15 @@ public class BidirectionalMappingEngine {
             if (fhirPathType.contains(RESOLVE)) {
                 final String fhirPathAfterResolve = fhirPathType.split(".resolve\\(\\)")[1].substring(1);
                 final Resource resolvedInstance = getReferencedResource((Resource) instance, fhirPathType);
-                final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(resolvedInstance,
+                final Optional<FHIRPathUtilityClasses.ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(resolvedInstance,
                                                                                      fhirPathAfterResolve,
-                                                                                     ClassTypeInfo.class);
+                                                                                     FHIRPathUtilityClasses.ClassTypeInfo.class);
                 return isCorrectType.map(cr -> ((StringType) cr.getProperty(0, "name", false)[0]).getValue()
                                 .equals(fhirCondition.getCriteria()))
                         .orElse(true);
             } else {
-                final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(instance, fhirPathType,
-                                                                                     ClassTypeInfo.class);
+                final Optional<FHIRPathUtilityClasses.ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(instance, fhirPathType,
+                                                                                     FHIRPathUtilityClasses.ClassTypeInfo.class);
                 return isCorrectType.map(cr -> ((StringType) cr.getProperty(0, "name", false)[0]).getValue()
                                 .equals(fhirCondition.getCriteria()))
                         .orElse(true);
