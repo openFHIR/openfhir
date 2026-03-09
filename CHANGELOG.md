@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 ### Changed
+- removed PreAuthorize from openfhir controller (although it didn't have any functionality before either)
 
 ### Fixed
 - when a duplicate OPT is trying to be created, server now responds with 400 not 500

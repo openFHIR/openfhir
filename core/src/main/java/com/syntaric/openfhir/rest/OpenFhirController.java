@@ -10,12 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for the openFHIR Engine; mapping from openEHR to FHIR and vice versa REST endpoints are created here
@@ -85,7 +80,6 @@ public class OpenFhirController {
      *         canonical)
      */
     @PostMapping(value = "/openfhir/toopenehr", produces = "application/json")
-    @PreAuthorize("hasAuthority('SCOPE_openfhir.map')")
     @Operation(
             summary = "Maps incoming FHIR Resource to openEHR Composition",
             description = "Maps incoming FHIR Resource to openEHR Composition according to FHIR Connect state of the engine",
