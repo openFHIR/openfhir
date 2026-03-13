@@ -1,13 +1,16 @@
 package com.syntaric.openfhir.util;
 
+import com.syntaric.openfhir.aql.FhirQueryParam;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -78,6 +81,47 @@ public class OpenFhirMapperUtils {
         final String removed = pathsAsList.subList(0, pathsAsList.size() - 1).stream().collect(
                 Collectors.joining("/"));
         return removeAqlSuffix(removed, detectedType);
+    }
+
+    /**
+     * Parses the FHIR resource type from a URL such as:
+     * http://something.com/fhir/Observation?code=123 → "Observation"
+     * Observation?code=123 → "Observation"
+     */
+    public String parseFhirResourceType(final String fhirFullUrl) {
+        if (StringUtils.isBlank(fhirFullUrl)) {
+            throw new IllegalArgumentException("fhirFullUrl must not be blank");
+        }
+        String relevant = fhirFullUrl;
+        final int lastSlash = fhirFullUrl.lastIndexOf('/');
+        if (lastSlash >= 0) {
+            relevant = fhirFullUrl.substring(lastSlash + 1);
+        }
+        final int questionMark = relevant.indexOf('?');
+        return questionMark >= 0 ? relevant.substring(0, questionMark) : relevant;
+    }
+
+    /**
+     * Parses query parameters from a FHIR URL into a list of FhirQueryParam.
+     * e.g. Observation?code=123&amp;category=456 → [FhirQueryParam(code,123), FhirQueryParam(category,456)]
+     */
+    public List<FhirQueryParam> parseFhirQueryParams(final String fhirFullUrl) {
+        final List<FhirQueryParam> params = new ArrayList<>();
+        if (StringUtils.isBlank(fhirFullUrl)) {
+            return params;
+        }
+        final int questionMark = fhirFullUrl.indexOf('?');
+        if (questionMark < 0 || questionMark == fhirFullUrl.length() - 1) {
+            return params;
+        }
+        final String queryString = fhirFullUrl.substring(questionMark + 1);
+        for (final String pair : queryString.split("&")) {
+            final int eq = pair.indexOf('=');
+            if (eq > 0) {
+                params.add(new FhirQueryParam(pair.substring(0, eq), pair.substring(eq + 1)));
+            }
+        }
+        return params;
     }
 
     public String dateToString(final Date date) {

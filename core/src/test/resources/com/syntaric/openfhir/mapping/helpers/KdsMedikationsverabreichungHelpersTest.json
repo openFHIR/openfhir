@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "effectivePeriodContext",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -35,6 +36,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "effectiveEnd",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -68,6 +70,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "effectiveStart",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -104,6 +107,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "effectiveDateTimeContext",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -137,6 +141,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "effectivePeriod",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -170,6 +175,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "effectiveDateTime",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -203,6 +209,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.outpatient",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -243,6 +250,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.outpatient",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -287,6 +295,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.outpatient",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -327,6 +336,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -357,6 +367,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -397,6 +408,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -437,6 +449,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -477,6 +490,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -517,6 +531,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -557,6 +572,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -597,6 +613,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -637,6 +654,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -677,6 +695,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -720,6 +739,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.inpatient",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -760,6 +780,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.inpatient",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -804,6 +825,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.inpatient",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -844,6 +866,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -874,6 +897,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -914,6 +938,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -954,6 +979,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -994,6 +1020,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1034,6 +1061,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1074,6 +1102,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1114,6 +1143,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1154,6 +1184,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1194,6 +1225,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1237,6 +1269,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.community",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -1277,6 +1310,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.community",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -1321,6 +1355,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category.community",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -1361,6 +1396,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "category",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -1391,6 +1427,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1431,6 +1468,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1471,6 +1509,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.outpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1511,6 +1550,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1551,6 +1591,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1591,6 +1632,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.inpatient",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1631,6 +1673,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1671,6 +1714,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1711,6 +1755,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "category.community",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1754,6 +1799,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "note",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -1787,6 +1833,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "dosage",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -1817,6 +1864,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "route",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1850,6 +1898,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "bodySite",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1883,6 +1932,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "method",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -1916,6 +1966,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.dosage.v2.BackboneElement",
+    "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
     "mappingName" : "doseQuantityValue",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1949,6 +2000,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.dosage.v2.BackboneElement",
+    "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
     "mappingName" : "doseDescription",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1982,6 +2034,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.dosage.v2.BackboneElement",
+    "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
     "mappingName" : "rateQuantity",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2022,6 +2075,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.dosage.v2.BackboneElement",
+    "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
     "mappingName" : "rateRatio",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2063,6 +2117,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "medication",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : "Medication",
@@ -2093,6 +2148,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "medicationReference",
     "generatingResourceType" : "Medication",
     "resolveResourceType" : null,
@@ -2123,6 +2179,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "name",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2156,6 +2213,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "form",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2189,6 +2247,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "amount",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2222,6 +2281,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "batch",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2252,6 +2312,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "id",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2285,6 +2346,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "expirationDate",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2321,6 +2383,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "ingredients",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2351,6 +2414,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "ingredient",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2381,6 +2445,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "itemtext",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2414,6 +2479,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "wirkstofftyp",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2450,6 +2516,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "medication",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : "Medication",
@@ -2480,6 +2547,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "medicationMedicationReference",
           "generatingResourceType" : "Medication",
           "resolveResourceType" : null,
@@ -2516,6 +2584,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "medicationSubstance",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : "Substance",
@@ -2546,6 +2615,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "medicationSubstanceReference",
           "generatingResourceType" : "Substance",
           "resolveResourceType" : null,
@@ -2576,6 +2646,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.medication.v2.substance",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "name",
             "generatingResourceType" : "Substance",
             "resolveResourceType" : null,
@@ -2609,6 +2680,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.medication.v2.substance",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "ingredients",
             "generatingResourceType" : "Substance",
             "resolveResourceType" : null,
@@ -2639,6 +2711,7 @@
             "availableCodings" : [ ],
             "children" : [ {
               "modelMetadataName" : "CLUSTER.medication.v2.substance",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "ingredient",
               "generatingResourceType" : "Substance",
               "resolveResourceType" : null,
@@ -2669,6 +2742,7 @@
               "availableCodings" : [ ],
               "children" : [ {
                 "modelMetadataName" : "CLUSTER.medication.v2.substance",
+                "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
                 "mappingName" : "itemText",
                 "generatingResourceType" : "Substance",
                 "resolveResourceType" : null,
@@ -2702,6 +2776,7 @@
                 "hasSlot" : false
               }, {
                 "modelMetadataName" : "CLUSTER.medication.v2.substance",
+                "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
                 "mappingName" : "wirkstofftyp",
                 "generatingResourceType" : "Substance",
                 "resolveResourceType" : null,
@@ -2738,6 +2813,7 @@
               "hasSlot" : false
             }, {
               "modelMetadataName" : "CLUSTER.medication.v2.substance",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "substanceSubstance",
               "generatingResourceType" : "Substance",
               "resolveResourceType" : "Substance",
@@ -2768,6 +2844,7 @@
               "availableCodings" : [ ],
               "children" : [ {
                 "modelMetadataName" : "CLUSTER.medication.v2.substance",
+                "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
                 "mappingName" : "medicationSubstanceReference",
                 "generatingResourceType" : "Substance",
                 "resolveResourceType" : null,
@@ -2804,6 +2881,7 @@
               "hasSlot" : false
             }, {
               "modelMetadataName" : "CLUSTER.medication.v2.substance",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "quantity",
               "generatingResourceType" : "Substance",
               "resolveResourceType" : null,
@@ -2834,6 +2912,7 @@
               "availableCodings" : [ ],
               "children" : [ {
                 "modelMetadataName" : "CLUSTER.medication.v2.substance",
+                "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
                 "mappingName" : "numerator",
                 "generatingResourceType" : "Substance",
                 "resolveResourceType" : null,
@@ -2867,6 +2946,7 @@
                 "hasSlot" : false
               }, {
                 "modelMetadataName" : "CLUSTER.medication.v2.substance",
+                "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
                 "mappingName" : "denominator",
                 "generatingResourceType" : "Substance",
                 "resolveResourceType" : null,
@@ -2906,6 +2986,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.medication.v2.substance",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "instance",
             "generatingResourceType" : "Substance",
             "resolveResourceType" : null,
@@ -2945,6 +3026,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "strength",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2975,6 +3057,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "numerator",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3008,6 +3091,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "denominator",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3053,6 +3137,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "medicationCode",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3090,6 +3175,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "clinicalIndication",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3123,6 +3209,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "request",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3161,6 +3248,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "request",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3191,6 +3279,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "identifier",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -3229,6 +3318,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : "MedicationRequest",
@@ -3264,6 +3354,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ACTION.medication.v1",
+      "archetype" : "openEHR-EHR-ACTION.medication.v1",
       "mappingName" : "identifierInReference",
       "generatingResourceType" : "MedicationRequest",
       "resolveResourceType" : null,
@@ -3303,6 +3394,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3343,6 +3435,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3387,6 +3480,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3539,6 +3633,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -3681,6 +3776,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -3826,6 +3922,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -3971,6 +4068,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -4116,6 +4214,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -4261,6 +4360,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -4406,6 +4506,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -4554,6 +4655,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -4594,6 +4696,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -4638,6 +4741,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -4790,6 +4894,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -4932,6 +5037,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -5077,6 +5183,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -5222,6 +5329,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -5367,6 +5475,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -5512,6 +5621,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -5657,6 +5767,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -5805,6 +5916,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -5845,6 +5957,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -5889,6 +6002,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -6041,6 +6155,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -6183,6 +6298,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -6328,6 +6444,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -6473,6 +6590,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -6618,6 +6736,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -6763,6 +6882,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -6908,6 +7028,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -7056,6 +7177,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -7096,6 +7218,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -7140,6 +7263,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -7292,6 +7416,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -7434,6 +7559,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -7579,6 +7705,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -7724,6 +7851,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -7869,6 +7997,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -8014,6 +8143,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -8159,6 +8289,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -8307,6 +8438,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -8347,6 +8479,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -8391,6 +8524,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -8543,6 +8677,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -8685,6 +8820,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -8830,6 +8966,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -8975,6 +9112,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -9120,6 +9258,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -9265,6 +9404,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -9410,6 +9550,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -9558,6 +9699,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -9598,6 +9740,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -9642,6 +9785,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -9794,6 +9938,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionFhirToOpenEhr",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -9936,6 +10081,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.in-progress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -10081,6 +10227,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.not-done",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -10226,6 +10373,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.on-hold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -10371,6 +10519,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.completed",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -10516,6 +10665,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.entered-in-error",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -10661,6 +10811,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionFhirToOpenEhr.stopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -10809,6 +10960,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -10849,6 +11001,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -10893,6 +11046,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -11045,6 +11199,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -11187,6 +11342,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -11339,6 +11495,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -11491,6 +11648,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -11643,6 +11801,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -11795,6 +11954,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -11947,6 +12107,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -12099,6 +12260,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -12251,6 +12413,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -12403,6 +12566,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -12555,6 +12719,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -12710,6 +12875,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -12750,6 +12916,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -12794,6 +12961,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -12946,6 +13114,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -13088,6 +13257,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -13240,6 +13410,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -13392,6 +13563,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -13544,6 +13716,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -13696,6 +13869,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -13848,6 +14022,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -14000,6 +14175,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -14152,6 +14328,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -14304,6 +14481,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -14456,6 +14634,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -14611,6 +14790,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -14651,6 +14831,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -14695,6 +14876,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -14847,6 +15029,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -14989,6 +15172,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -15141,6 +15325,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -15293,6 +15478,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -15445,6 +15631,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -15597,6 +15784,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -15749,6 +15937,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -15901,6 +16090,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -16053,6 +16243,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -16205,6 +16396,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -16357,6 +16549,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -16512,6 +16705,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -16552,6 +16746,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -16596,6 +16791,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -16748,6 +16944,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -16890,6 +17087,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17042,6 +17240,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17194,6 +17393,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17346,6 +17546,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17498,6 +17699,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17650,6 +17852,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17802,6 +18005,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -17954,6 +18158,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -18106,6 +18311,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -18258,6 +18464,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -18413,6 +18620,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -18453,6 +18661,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -18497,6 +18706,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -18649,6 +18859,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -18791,6 +19002,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -18943,6 +19155,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -19095,6 +19308,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -19247,6 +19461,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -19399,6 +19614,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -19551,6 +19767,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -19703,6 +19920,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -19855,6 +20073,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -20007,6 +20226,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -20159,6 +20379,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -20314,6 +20535,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -20354,6 +20576,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -20398,6 +20621,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -20550,6 +20774,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -20692,6 +20917,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -20844,6 +21070,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -20996,6 +21223,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -21148,6 +21376,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -21300,6 +21529,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -21452,6 +21682,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -21604,6 +21835,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -21756,6 +21988,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -21908,6 +22141,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -22060,6 +22294,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -22215,6 +22450,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -22255,6 +22491,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -22299,6 +22536,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -22451,6 +22689,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -22593,6 +22832,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -22745,6 +22985,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -22897,6 +23138,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23049,6 +23291,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23201,6 +23444,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23353,6 +23597,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23505,6 +23750,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23657,6 +23903,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23809,6 +24056,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -23961,6 +24209,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -24116,6 +24365,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -24156,6 +24406,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -24200,6 +24451,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -24352,6 +24604,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -24494,6 +24747,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -24646,6 +24900,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -24798,6 +25053,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -24950,6 +25206,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -25102,6 +25359,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -25254,6 +25512,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -25406,6 +25665,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -25558,6 +25818,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -25710,6 +25971,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -25862,6 +26124,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -26017,6 +26280,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -26057,6 +26321,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -26101,6 +26366,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -26253,6 +26519,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -26395,6 +26662,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -26547,6 +26815,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -26699,6 +26968,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -26851,6 +27121,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27003,6 +27274,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27155,6 +27427,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27307,6 +27580,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27459,6 +27733,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27611,6 +27886,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27763,6 +28039,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -27918,6 +28195,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -27958,6 +28236,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -28002,6 +28281,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -28154,6 +28434,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "ISMTransitionOpenEhrToFhir",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -28296,6 +28577,7 @@
   } ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.activeToInProgress",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -28448,6 +28730,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.suspendedToOnHold",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -28600,6 +28883,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.abortedToStopped",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -28752,6 +29036,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.completedToCompleted",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -28904,6 +29189,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.cancelledToNotDone",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29056,6 +29342,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.initialToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29208,6 +29495,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.plannedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29360,6 +29648,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.postponedToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29512,6 +29801,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.scheduledToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29664,6 +29954,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "ISMTransitionOpenEhrToFhir.expiredToUnknown",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29819,6 +30110,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "metaURL",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -29849,6 +30141,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "MedicationAdministration",
     "resolveResourceType" : null,
@@ -29885,6 +30178,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "berichtId",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -29918,6 +30212,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "status",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -29951,6 +30246,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : null,
@@ -29981,6 +30277,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -30011,6 +30308,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -30050,6 +30348,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "ACTION.medication.v1",
+  "archetype" : "openEHR-EHR-ACTION.medication.v1",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "MedicationAdministration",
   "resolveResourceType" : "Encounter",
@@ -30080,6 +30379,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ACTION.medication.v1",
+    "archetype" : "openEHR-EHR-ACTION.medication.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -30110,6 +30410,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -30140,6 +30441,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,

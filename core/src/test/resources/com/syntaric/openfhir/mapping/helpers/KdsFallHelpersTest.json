@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "contextPeriod",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -30,6 +31,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "contextStart",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -63,6 +65,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "contextEnd",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -99,6 +102,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "location",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -129,6 +133,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.location.v1",
+    "archetype" : "openEHR-EHR-CLUSTER.location.v1",
     "mappingName" : "stationRoot",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -166,6 +171,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "station",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -199,6 +205,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "hardcodingStationSystem",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -234,6 +241,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.location.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.location.v1",
         "mappingName" : "hardcodingStationSystem.physicalType",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -272,6 +280,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.location.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.location.v1",
         "mappingName" : "hardcodingStationSystem.physicalType",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -313,6 +322,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "status",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -354,6 +364,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.location.v1",
+    "archetype" : "openEHR-EHR-CLUSTER.location.v1",
     "mappingName" : "roomRoot",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -391,6 +402,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "room",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -424,6 +436,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "hardcodingRoomSystem",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -459,6 +472,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.location.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.location.v1",
         "mappingName" : "hardcodingRoomSystem.physicalType",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -497,6 +511,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.location.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.location.v1",
         "mappingName" : "hardcodingRoomSystem.physicalType",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -538,6 +553,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "status",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -579,6 +595,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.location.v1",
+    "archetype" : "openEHR-EHR-CLUSTER.location.v1",
     "mappingName" : "bedRoot",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -616,6 +633,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "station",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -649,6 +667,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "hardcodingBedSystem",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -684,6 +703,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.location.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.location.v1",
         "mappingName" : "hardcodingBedSystem.physicalType",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -722,6 +742,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.location.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.location.v1",
         "mappingName" : "hardcodingBedSystem.physicalType",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -763,6 +784,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.location.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.location.v1",
       "mappingName" : "status",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -807,6 +829,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "period",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -837,6 +860,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "admissionDate",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -870,6 +894,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "seperationDate",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -903,6 +928,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "bed",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -943,6 +969,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "locationStatus",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -979,6 +1006,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "fallklasse",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -1012,6 +1040,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "fallstatus",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -1045,6 +1074,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "fallIdParent",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -1082,6 +1112,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "vncodingcode",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -1112,6 +1143,7 @@
     "availableCodings" : null,
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "vncodingcode.vncoding",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1145,6 +1177,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "vncodingcode.vncoding",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1184,6 +1217,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "serviceType",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -1214,6 +1248,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.organization.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.organization.v0",
     "mappingName" : "orgaKey",
     "generatingResourceType" : "Coding",
     "resolveResourceType" : null,
@@ -1250,6 +1285,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "kontaktTyp",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -1280,6 +1316,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.kontakttyp.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.kontakttyp.v0",
     "mappingName" : "kontaktEbene",
     "generatingResourceType" : "CodeableConcept",
     "resolveResourceType" : null,
@@ -1317,6 +1354,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.kontakttyp.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.kontakttyp.v0",
       "mappingName" : "kontaktEbeneSystem",
       "generatingResourceType" : "CodeableConcept",
       "resolveResourceType" : null,
@@ -1347,6 +1385,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "CLUSTER.kontakttyp.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.kontakttyp.v0",
         "mappingName" : "kontaktEbeneSystem.kontaktEbeneSystem",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -1386,6 +1425,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.kontakttyp.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.kontakttyp.v0",
     "mappingName" : "kontaktArt",
     "generatingResourceType" : "CodeableConcept",
     "resolveResourceType" : null,
@@ -1423,6 +1463,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.kontakttyp.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.kontakttyp.v0",
       "mappingName" : "kontaktArtSystem",
       "generatingResourceType" : "CodeableConcept",
       "resolveResourceType" : null,
@@ -1453,6 +1494,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "CLUSTER.kontakttyp.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.kontakttyp.v0",
         "mappingName" : "kontaktArtSystem.kontaktArtSystem",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -1495,6 +1537,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "aufnahmegrundExtension",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -1532,6 +1575,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "aufnahmegrund",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -1562,6 +1606,7 @@
     "availableCodings" : null,
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "aufnahmegrund.extension",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1598,6 +1643,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "ersteUndZweiteStelle",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -1635,6 +1681,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "ersteUndZweiteStelleValue",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1668,6 +1715,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "ersteUndZweiteStelleUrl",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1698,6 +1746,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+        "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
         "mappingName" : "ersteUndZweiteStelleUrl.ErsteUndZweiteStelleUrl",
         "generatingResourceType" : "Encounter",
         "resolveResourceType" : null,
@@ -1737,6 +1786,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "dritteStelle",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -1774,6 +1824,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "DritteStelleValue",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1807,6 +1858,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "DritteStelleUrl",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1837,6 +1889,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+        "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
         "mappingName" : "DritteStelleUrl.DritteStelleUrl",
         "generatingResourceType" : "Encounter",
         "resolveResourceType" : null,
@@ -1876,6 +1929,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "vierteStelle",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -1913,6 +1967,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "VierteStelleValue",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1946,6 +2001,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "VierteStelleUrl",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -1976,6 +2032,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+        "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
         "mappingName" : "VierteStelleUrl.VierteStelleUrl",
         "generatingResourceType" : "Encounter",
         "resolveResourceType" : null,
@@ -2018,6 +2075,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "recordingDismissal",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -2053,6 +2111,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "aufnahmekategorie",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -2086,6 +2145,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "entlassungsgrund",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -2123,6 +2183,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "entlassungsgrundUrl",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -2153,6 +2214,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+        "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
         "mappingName" : "entlassungsgrundUrl.extension",
         "generatingResourceType" : "Encounter",
         "resolveResourceType" : null,
@@ -2189,6 +2251,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "entlassungsgrundExtension",
       "generatingResourceType" : "Encounter",
       "resolveResourceType" : null,
@@ -2226,6 +2289,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+        "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
         "mappingName" : "entlassungsgrundExtensionValue",
         "generatingResourceType" : "Encounter",
         "resolveResourceType" : null,
@@ -2259,6 +2323,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+        "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
         "mappingName" : "entlassungsgrundUrl",
         "generatingResourceType" : "Encounter",
         "resolveResourceType" : null,
@@ -2289,6 +2354,7 @@
         "availableCodings" : null,
         "children" : [ {
           "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+          "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
           "mappingName" : "entlassungsgrundUrl.extension",
           "generatingResourceType" : "Encounter",
           "resolveResourceType" : null,
@@ -2334,6 +2400,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+  "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
   "mappingName" : "problemDiagnoseParent",
   "generatingResourceType" : "Encounter",
   "resolveResourceType" : null,
@@ -2364,6 +2431,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "conditionReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : "Condition",
@@ -2394,6 +2462,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
       "mappingName" : "condition",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -2424,6 +2493,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "problemDiagnose",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2464,6 +2534,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "note",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2504,6 +2575,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "dateTime",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2544,6 +2616,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "bodySite",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2584,6 +2657,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "bodySiteCluster",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2621,6 +2695,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.anatomical_location.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.anatomical_location.v1",
           "mappingName" : "bodySiteCoded",
           "generatingResourceType" : "CodeableConcept",
           "resolveResourceType" : null,
@@ -2654,6 +2729,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.anatomical_location.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.anatomical_location.v1",
           "mappingName" : "seitenlokalisation",
           "generatingResourceType" : "CodeableConcept",
           "resolveResourceType" : null,
@@ -2695,6 +2771,7 @@
         "hasSlot" : true
       }, {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "severity",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2735,6 +2812,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "EVALUATION.problem_diagnosis.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
         "mappingName" : "contextStartTime",
         "generatingResourceType" : "Condition",
         "resolveResourceType" : null,
@@ -2781,6 +2859,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.episode_institution_local.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0",
     "mappingName" : "diagnoseTyp",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -2811,6 +2890,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
       "mappingName" : "diagnoseRole",
       "generatingResourceType" : "CodeableConcept",
       "resolveResourceType" : null,
@@ -2853,6 +2933,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
         "mappingName" : "diagnoseRoleSystem",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -2883,6 +2964,7 @@
         "availableCodings" : null,
         "children" : [ {
           "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+          "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
           "mappingName" : "diagnoseRoleSystem.diagnoseRoleSystem",
           "generatingResourceType" : "CodeableConcept",
           "resolveResourceType" : null,
@@ -2922,6 +3004,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
       "mappingName" : "diagnoseTyp",
       "generatingResourceType" : "CodeableConcept",
       "resolveResourceType" : null,
@@ -2964,6 +3047,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
         "mappingName" : "diagnoseTypSystem",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -2994,6 +3078,7 @@
         "availableCodings" : null,
         "children" : [ {
           "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+          "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
           "mappingName" : "diagnoseTypSystem.diagnoseTypSystem",
           "generatingResourceType" : "CodeableConcept",
           "resolveResourceType" : null,
@@ -3033,6 +3118,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
       "mappingName" : "diagnoseSubTyp",
       "generatingResourceType" : "CodeableConcept",
       "resolveResourceType" : null,
@@ -3075,6 +3161,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
         "mappingName" : "diagnoseSubTypSystem",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -3105,6 +3192,7 @@
         "availableCodings" : null,
         "children" : [ {
           "modelMetadataName" : "CLUSTER.diagnosetyp.v0",
+          "archetype" : "openEHR-EHR-CLUSTER.diagnosetyp.v0",
           "mappingName" : "diagnoseSubTypSystem.diagnoseSubTypSystem",
           "generatingResourceType" : "CodeableConcept",
           "resolveResourceType" : null,

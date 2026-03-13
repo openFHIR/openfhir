@@ -3,8 +3,9 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -28,4 +29,10 @@ public class Preprocessor {
     @JsonProperty("hierarchy")
     private Hierarchy hierarchy;
 
+    public List<Condition> getFhirConditions() {
+        if (fhirConditions == null && fhirCondition != null) {
+            return List.of(fhirCondition);
+        }
+        return fhirConditions;
+    }
 }
