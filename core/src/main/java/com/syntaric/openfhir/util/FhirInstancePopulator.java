@@ -3,6 +3,7 @@ package com.syntaric.openfhir.util;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
+
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
@@ -67,7 +69,7 @@ public class FhirInstancePopulator {
                                 final String toPath,
                                 final Terminology terminology) {
         populateElement(toPopulate, dataH.getData(), modelName, mappingName, fromPath, toPath, dataH.getIndex(),
-                        terminology);
+                terminology);
     }
 
     public void populateElement(final Object toPopulate,
@@ -87,7 +89,7 @@ public class FhirInstancePopulator {
 
         if (toPopulate instanceof List) {
             populateListElement((List<?>) toPopulate, data, modelName, mappingName, fromPath, toPath, index,
-                                terminology);
+                    terminology);
             return;
         }
 
@@ -115,8 +117,8 @@ public class FhirInstancePopulator {
         final Object lastElement = toPopulate.get(toPopulate.size() - 1);
         if (lastElement.toString() == null || objectIsEmpty(lastElement)) {
             populateElement(lastElement, data, modelName, mappingName, fromPath, toPath,
-                            index,
-                            terminology); // Populate last element if empty
+                    index,
+                    terminology); // Populate last element if empty
         } else {
             ((List<Object>) toPopulate).add(data); // Otherwise, add new entry
         }
@@ -215,8 +217,8 @@ public class FhirInstancePopulator {
             ((TimeType) toPopulate).setValue(data.getValue());
         } else if (toPopulate instanceof DateTimeType) {
             LocalDateTime localDateTime = LocalDateTime.of(LocalDate.now(),
-                                                           LocalTime.of(data.getHour(), data.getMinute(),
-                                                                        (int) data.getSecond()));
+                    LocalTime.of(data.getHour(), data.getMinute(),
+                            (int) data.getSecond()));
             ((DateTimeType) toPopulate).setValue(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
         }
     }
@@ -294,6 +296,8 @@ public class FhirInstancePopulator {
             enumeration.setValueAsString(value);
         } else if (toPopulate instanceof DateTimeType dateTimeType) {
             dateTimeType.setValueAsString(data.getValueAsString());
+        } else if (toPopulate instanceof CodeableConcept codeableConcept) {
+            codeableConcept.setText(data.getValue());
         } else if (toPopulate instanceof InstantType instantType) {
             instantType.setValueAsString(data.getValueAsString());
         } else if (toPopulate instanceof IntegerType integerType) {

@@ -88,3 +88,9 @@ mappings:
     with:
       fhir: "$resource.component.interpretation.text"
       openehr: "$archetype/data[at0001]/events[at0006]/data[at0003]/items[at1059]"
+
+
+  - name: "method"
+    with:
+      fhir: "$resource.method"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at1042]/width"

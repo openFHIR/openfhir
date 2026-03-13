@@ -130,6 +130,8 @@ public class News2ToFhirTest extends GenericTest {
         Assert.assertEquals("mm[Hg]", getComponentByCode(bpObservation.get(0), "72313002", true)
                 .getValueQuantity().getUnit());
 
+        Assert.assertEquals("P1DT3H15M", bpObservation.get(0).getMethod().getText());
+
         // body temperature
         final List<Observation> temperatureObservation = bundle.getEntry().stream()
                 .map(en -> ((Observation) en.getResource()))
