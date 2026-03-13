@@ -164,7 +164,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertTrue(bloodPressureSlot.isHasSlot());
 
         final List<MappingHelper> bpLeafHelpers = bloodPressureSlot.getChildren();
-        Assert.assertEquals(4, bpLeafHelpers.size());
+        Assert.assertEquals(5, bpLeafHelpers.size());
 
         final MappingHelper bpSystolic = bpLeafHelpers.get(0);
         Assert.assertEquals("componentSystolic", bpSystolic.getMappingName());
