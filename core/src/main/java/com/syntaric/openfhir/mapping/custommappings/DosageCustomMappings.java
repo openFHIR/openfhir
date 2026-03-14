@@ -52,7 +52,7 @@ public class DosageCustomMappings extends CustomMapping {
     @Override
     public boolean applyFhirToOpenEhrMapping(final MappingHelper mappingHelper,
                                              final Base fhirValue,
-                                             final String openEhrType,
+                                             final List<String> possibleRmTypes,
                                              final JsonObject flat,
                                              final OpenEhrPopulator populator,
                                              final OpenFhirMapperUtils mapperUtils,
@@ -61,7 +61,7 @@ public class DosageCustomMappings extends CustomMapping {
         if (StringUtils.isBlank(openEhrPath) || fhirValue == null) {
             return false;
         }
-        if (FhirConnectConst.OPENEHR_TYPE_NONE.equals(openEhrType)) {
+        if (possibleRmTypes.contains(FhirConnectConst.OPENEHR_TYPE_NONE)) {
             return false;
         }
 
@@ -119,7 +119,7 @@ public class DosageCustomMappings extends CustomMapping {
             flat.remove(openEhrPath + "|code");
             flat.remove(openEhrPath + "|value");
             String intervalPath = toIntervalOfQuantityPath(openEhrPath);
-            populator.setOpenEhrValue(mappingHelper, intervalPath, range, FhirConnectConst.DV_INTERVAL, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, intervalPath, range, FhirConnectConst.DV_INTERVAL, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
             return true;
         }
         if (fhirValue instanceof Quantity quantity) {
@@ -127,7 +127,7 @@ public class DosageCustomMappings extends CustomMapping {
             if (flat.has(openEhrPath + "/lower|magnitude") || flat.has(openEhrPath + "/upper|magnitude")) {
                 return true;
             }
-            populator.setOpenEhrValue(mappingHelper, openEhrPath, quantity, FhirConnectConst.DV_QUANTITY, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, openEhrPath, quantity, FhirConnectConst.DV_QUANTITY, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
             return true;
         }
         return false;
@@ -160,7 +160,7 @@ public class DosageCustomMappings extends CustomMapping {
             return false;
         }
         String textPath = toTextValuePath(openEhrPath);
-        populator.setOpenEhrValue(mappingHelper, textPath, new StringType(serialized), FhirConnectConst.DV_TEXT, flat, null, null);
+        populator.setOpenEhrValue(mappingHelper, textPath, new StringType(serialized), FhirConnectConst.DV_TEXT, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
         return true;
     }
 
@@ -190,7 +190,7 @@ public class DosageCustomMappings extends CustomMapping {
         }
         setUcumSystemIfPresent(q);
 
-        populator.setOpenEhrValue(mappingHelper, openEhrPath, q, FhirConnectConst.DV_QUANTITY, flat, null, null);
+        populator.setOpenEhrValue(mappingHelper, openEhrPath, q, FhirConnectConst.DV_QUANTITY, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
         return true;
     }
 
@@ -262,16 +262,16 @@ public class DosageCustomMappings extends CustomMapping {
             rateQuantity.setCode(combinedUnit);
             setUcumSystemIfPresent(rateQuantity);
             String ratePath = appendFlatChild(openEhrPath, rateChildPath);
-            populator.setOpenEhrValue(mappingHelper, ratePath, rateQuantity, FhirConnectConst.DV_QUANTITY, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, ratePath, rateQuantity, FhirConnectConst.DV_QUANTITY, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
         }
 
         String durationPath = appendFlatChild(openEhrPath, durationChildPath);
         if (useDurationInputSuffixes) {
             if (!writeDurationInputs(durationPath, denominator, flat)) {
-                populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, flat, null, null);
+                populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
             }
         } else {
-            populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
         }
         return true;
     }
@@ -444,7 +444,7 @@ public class DosageCustomMappings extends CustomMapping {
             TimeType time = ctx.repeat.getTimeOfDay().get(0);
             if (time != null && StringUtils.isNotBlank(time.getValueAsString())) {
                 populator.setOpenEhrValue(mappingHelper, openEhrPath + "/zeitpunkt", new TimeType(time.getValueAsString()),
-                                          FhirConnectConst.DV_TIME, flat, null, null);
+                                          FhirConnectConst.DV_TIME, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
             }
         }
 
@@ -487,7 +487,7 @@ public class DosageCustomMappings extends CustomMapping {
             return false;
         }
         populator.setOpenEhrValue(mappingHelper, openEhrPath, new StringType(durationStr),
-                                  FhirConnectConst.DV_DURATION, flat, null, null);
+                                  FhirConnectConst.DV_DURATION, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
         return true;
     }
 
@@ -513,7 +513,7 @@ public class DosageCustomMappings extends CustomMapping {
             if (range.getLow() == null && range.getHigh() == null) {
                 return null;
             }
-            return new DataWithIndex(range, lastIndex == null ? -1 : lastIndex, path);
+            return new DataWithIndex(range, lastIndex == null ? -1 : lastIndex, path, null);
         }
 
         // Quantity
@@ -521,7 +521,7 @@ public class DosageCustomMappings extends CustomMapping {
         if (q == null) {
             return null;
         }
-        return new DataWithIndex(q, lastIndex == null ? -1 : lastIndex, path);
+        return new DataWithIndex(q, lastIndex == null ? -1 : lastIndex, path, null);
     }
 
     private DataWithIndex toFhirRatio(final List<String> joinedValues,
@@ -556,7 +556,7 @@ public class DosageCustomMappings extends CustomMapping {
         Ratio ratio = new Ratio();
         ratio.setNumerator(numerator);
         ratio.setDenominator(denominator);
-        return new DataWithIndex(ratio, lastIndex == null ? -1 : lastIndex, path);
+        return new DataWithIndex(ratio, lastIndex == null ? -1 : lastIndex, path, null);
     }
 
     private DataWithIndex toFhirRangeFromText(final List<String> joinedValues,
@@ -576,7 +576,7 @@ public class DosageCustomMappings extends CustomMapping {
         if (range == null || (!range.hasLow() && !range.hasHigh())) {
             return null;
         }
-        return new DataWithIndex(range, lastIndex == null ? -1 : lastIndex, path);
+        return new DataWithIndex(range, lastIndex == null ? -1 : lastIndex, path, null);
     }
 
     private String extractRangeTextValue(final List<String> joinedValues,
@@ -755,7 +755,7 @@ public class DosageCustomMappings extends CustomMapping {
         Ratio ratio = new Ratio();
         ratio.setNumerator(numerator);
         ratio.setDenominator(denominator);
-        return new DataWithIndex(ratio, lastIndex == null ? -1 : lastIndex, path);
+        return new DataWithIndex(ratio, lastIndex == null ? -1 : lastIndex, path, null);
     }
 
     private Quantity readRateQuantity(final FhirValueReaders readers,
@@ -939,7 +939,7 @@ public class DosageCustomMappings extends CustomMapping {
             return new DataWithIndex(
                     timing,
                     -1,
-                    timingAnchorPath(path));
+                    timingAnchorPath(path), null);
         }
         return null;
     }
@@ -1036,7 +1036,7 @@ public class DosageCustomMappings extends CustomMapping {
                 repeat.setDurationMax(end.value);
             }
         }
-        return repeat.isEmpty() ? null : new DataWithIndex(repeat, lastIndex == null ? -1 : lastIndex, path);
+        return repeat.isEmpty() ? null : new DataWithIndex(repeat, lastIndex == null ? -1 : lastIndex, path, null);
     }
 
     private Quantity readQuantityForSide(FhirValueReaders readers, JsonObject valueHolder,

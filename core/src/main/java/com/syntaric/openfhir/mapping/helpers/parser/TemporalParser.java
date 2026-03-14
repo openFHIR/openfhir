@@ -2,6 +2,7 @@ package com.syntaric.openfhir.mapping.helpers.parser;
 
 import com.google.gson.JsonObject;
 
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import java.time.Duration;
 import java.util.Date;
@@ -28,27 +29,43 @@ public class TemporalParser {
     }
 
     public DataWithIndex dateTime(JsonObject valueHolder, Integer lastIndex, String path) {
+        String raw = fhirValueReaders.get(valueHolder, path);
+        if (raw == null && !path.contains("/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE)) {
+            return dateTime(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE);
+        }
         DateTimeType dt = new DateTimeType();
-        dt.setValue(fhirValueReaders.date(fhirValueReaders.get(valueHolder, path)));
-        return new DataWithIndex(dt, lastIndex, path);
+        dt.setValue(fhirValueReaders.date(raw));
+        return new DataWithIndex(dt, lastIndex, path, FhirConnectConst.DV_DATE_TIME);
     }
 
     public DataWithIndex time(JsonObject valueHolder, Integer lastIndex, String path) {
+        String raw = fhirValueReaders.get(valueHolder, path);
+        if (raw == null && !path.contains("/" + FhirConnectConst.LEAF_TYPE_TIME_VALUE)) {
+            return time(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_TIME_VALUE);
+        }
         TimeType t = new TimeType();
-        t.setValue(fhirValueReaders.get(valueHolder, path));
-        return new DataWithIndex(t, lastIndex, path);
+        t.setValue(raw);
+        return new DataWithIndex(t, lastIndex, path, FhirConnectConst.DV_TIME);
     }
 
     public DataWithIndex bool(JsonObject valueHolder, Integer lastIndex, String path) {
+        String raw = fhirValueReaders.get(valueHolder, path);
+        if (raw == null && !path.contains("/" + FhirConnectConst.LEAF_TYPE_BOOLEAN_VALUE)) {
+            return bool(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_BOOLEAN_VALUE);
+        }
         BooleanType b = new BooleanType();
-        b.setValue(Boolean.valueOf(fhirValueReaders.get(valueHolder, path)));
-        return new DataWithIndex(b, lastIndex, path);
+        b.setValue(Boolean.valueOf(raw));
+        return new DataWithIndex(b, lastIndex, path, FhirConnectConst.DV_BOOL);
     }
 
     public DataWithIndex date(JsonObject valueHolder, Integer lastIndex, String path) {
+        String raw = fhirValueReaders.get(valueHolder, path);
+        if (raw == null && !path.contains("/" + FhirConnectConst.LEAF_TYPE_DATE_VALUE)) {
+            return date(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_DATE_VALUE);
+        }
         DateType d = new DateType();
-        d.setValue(fhirValueReaders.date(fhirValueReaders.get(valueHolder, path)));
-        return new DataWithIndex(d, lastIndex, path);
+        d.setValue(fhirValueReaders.date(raw));
+        return new DataWithIndex(d, lastIndex, path, FhirConnectConst.DV_DATE);
     }
 
     public DataWithIndex interval(List<String> joinedValues,
@@ -70,7 +87,7 @@ public class TemporalParser {
         if (!populated) {
             return null;
         }
-        return new DataWithIndex(period, lastIndex, path);
+        return new DataWithIndex(period, lastIndex, path, FhirConnectConst.DV_INTERVAL);
     }
 
     public DataWithIndex range(List<String> joinedValues,
@@ -91,7 +108,7 @@ public class TemporalParser {
         if (high != null) {
             range.setHigh(high);
         }
-        return new DataWithIndex(range, lastIndex, path);
+        return new DataWithIndex(range, lastIndex, path, FhirConnectConst.DV_INTERVAL);
     }
 
     private Quantity parseIntervalQuantity(List<String> joinedValues, JsonObject valueHolder, String side) {
@@ -168,7 +185,7 @@ public class TemporalParser {
                 }
             }
         }
-        return new DataWithIndex(period, lastIndex, path);
+        return new DataWithIndex(period, lastIndex, path, FhirConnectConst.DV_INTERVAL);
     }
 
     public DataWithIndex eventPoint(List<String> joinedValues,
@@ -185,7 +202,7 @@ public class TemporalParser {
         }
         DateTimeType dt = new DateTimeType();
         dt.setValue(time);
-        return new DataWithIndex(dt, lastIndex, path);
+        return new DataWithIndex(dt, lastIndex, path, FhirConnectConst.DV_DATE_TIME);
     }
 
     public DataWithIndex eventByWidth(List<String> joinedValues,

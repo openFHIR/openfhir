@@ -17,3 +17,4 @@ mappings:
     with:
       fhir: "$resource.clinicalStatus"
       openehr: "$archetype/items[at0003]"
+      # Update Model Problem Qualifier

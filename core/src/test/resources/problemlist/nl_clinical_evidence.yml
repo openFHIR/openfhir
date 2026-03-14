@@ -1,0 +1,55 @@
+# NL Clinical Evidence extension - adds Structured Result mapping for laboratory_test_analyte
+# Maps Condition.evidence.detail (Reference to Observation) to lab analyte slot
+# Uses specimen-style reference pattern: reference.resourceType + reference.mappings
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: NL_clinical_evidence
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: CLUSTER.clinical_evidence.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+  - name: "extensionTest"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    followedBy:
+      mappings:
+        - name: "modifierExtension"
+          with:
+            fhir: "modifierExtension"
+            openehr: "$archetype"
+          manual:
+            - name: "modifierExtension"
+              fhir:
+                - path: "url"
+                  value: "http://example.org/nl-clinical-evidence-test"
+                - path: "value"
+                  value: "NL_clinical_evidence extension applied"
+
+  - name: "structuredResultAppendToParent"
+    extension: "add"
+    with:
+      fhir: "$resource.detail"
+      openehr: "$archetype/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+    appendTo: "parent"
+    followedBy:
+      mappings:
+        - name: "structuredResult"
+          with:
+            fhir: "structuredResult"
+            openehr: "$archetype/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "observationToAnalyte"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$archetype/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+                slotArchetype: "CLUSTER.laboratory_test_analyte.v1"

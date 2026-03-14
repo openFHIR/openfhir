@@ -2,6 +2,7 @@ package com.syntaric.openfhir.mapping.helpers.parser;
 
 import com.google.gson.JsonObject;
 
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -20,6 +21,12 @@ public class MediaParser {
     }
 
     public DataWithIndex attachment(JsonObject valueHolder, Integer lastIndex, String path) {
+        String mediaType = fhirValueReaders.get(valueHolder, path + "|mediatype");
+        String data = fhirValueReaders.get(valueHolder, path + "|data");
+        String url = fhirValueReaders.get(valueHolder, path + "|url");
+        if (mediaType == null && data == null && url == null && !path.contains("/" + FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA)) {
+            return attachment(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA);
+        }
 
         Attachment att = new Attachment();
         att.setContentType(fhirValueReaders.get(valueHolder, path + "|mediatype"));
@@ -39,6 +46,6 @@ public class MediaParser {
             }
         }
 
-        return new DataWithIndex(att, lastIndex, path);
+        return new DataWithIndex(att, lastIndex, path, FhirConnectConst.DV_MULTIMEDIA);
     }
 }

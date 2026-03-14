@@ -190,7 +190,7 @@ public class AqlToFlatPathConverterTest {
                                   final boolean expectedValid) {
         final Result result = converter.convert(aqlPath, forcedType, webTemplate);
         Assert.assertEquals("flatPath for " + aqlPath, expectedFlatPath, result.flatPath());
-        Assert.assertEquals("rmType for " + aqlPath, expectedRmType, result.rmType());
+        Assert.assertTrue("rmType for " + aqlPath, result.possibleTypes().contains(expectedRmType));
         Assert.assertEquals("valid for " + aqlPath, expectedValid, result.valid());
     }
 
