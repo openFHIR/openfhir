@@ -3,6 +3,7 @@ package com.syntaric.openfhir.mapping.tofhir;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.FhirTerser;
 import com.nedap.archie.rm.composition.Composition;
+import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,11 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
     @Override
     public void preProcess(final FhirConnectContext context, final List<Composition> compositions,
                            final OPERATIONALTEMPLATE operationaltemplate) {
+
+    }
+
+    @Override
+    public void preProcessContentItems(FhirConnectContext context, List<ContentItem> contentItems, OPERATIONALTEMPLATE operationaltemplate) {
 
     }
 

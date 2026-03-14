@@ -17,7 +17,7 @@ public interface FhirConnectModelMongoRepository extends FhirConnectModelReposit
     List<FhirConnectModelEntity> findByTenantAndArchetype(final List<String> archetype, @NonNull final String organisation);
 
     @Query("{'fhirConnectModel.metadata.name': { $in: ?0 }, 'organisation': ?1}")
-    List<FhirConnectModelEntity> findByTenantAndName(final List<String> name, @NonNull final String organisation);
+    List<FhirConnectModelEntity> findByTenantAndName(final List<String> name, @NonNull final String organization);
 
     @Query(value = "{'organisation': ?0}", delete = true)
     void deleteAllTenant(@NonNull String organisation);

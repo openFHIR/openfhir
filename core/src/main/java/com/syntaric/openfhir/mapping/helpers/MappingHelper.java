@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.model.Base;
 public class MappingHelper {
 
     private String modelMetadataName;
+    private String archetype;
 
     private String mappingName;
     private String generatingResourceType;
@@ -37,7 +38,7 @@ public class MappingHelper {
     private String fullOpenEhrFlatPathWithMatchingRegex;
     private String flatPathPipeSuffix; // used primarily for fhir->openehr and has the flat path suffix appended to it
 
-    private String detectedType;
+    private String detectedType; // when doing openehr->fhir, we can detect specific type based on incoming openehr composition
     private String hardcodedType;
     private List<String> possibleRmTypes;
 
@@ -89,6 +90,7 @@ public class MappingHelper {
     public MappingHelper cloneWithFhirResourceAndRootIntact() {
         final MappingHelper clone = new MappingHelper();
         clone.modelMetadataName = this.modelMetadataName;
+        clone.archetype = this.archetype;
         clone.mappingName = this.mappingName;
         clone.generatingResourceType = this.generatingResourceType;
         clone.resolveResourceType = this.resolveResourceType;

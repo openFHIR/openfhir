@@ -2,6 +2,7 @@ package com.syntaric.openfhir.mapping.helpers.parser;
 
 import com.google.gson.JsonObject;
 
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -41,8 +42,8 @@ public class CodedParser {
         String ordinal = fhirValueReaders.get(valueHolder, base, "ordinal", fallbackOrdinal);
 
         if (StringUtils.isAllBlank(text, code, system, systemRaw, version, ordinal)
-                && !path.endsWith("/coded_text_value")) {
-            return codeableConcept(joinedValues, valueHolder, lastIndex, path + "/coded_text_value");
+                && !path.endsWith("/"+FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
+            return codeableConcept(joinedValues, valueHolder, lastIndex, path + "/"+FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE);
         }
 
         codeableConcept.setText(text);
@@ -60,7 +61,7 @@ public class CodedParser {
         }
 
         addMappings(valueHolder, base, codeableConcept);
-        return new DataWithIndex(codeableConcept, lastIndex, base);
+        return new DataWithIndex(codeableConcept, lastIndex, base, FhirConnectConst.DV_CODED_TEXT);
     }
 
     public DataWithIndex coding(List<String> joinedValues,
@@ -76,6 +77,10 @@ public class CodedParser {
         String display = fhirValueReaders.get(valueHolder, base, "value", fallbackValue);
         String code = fhirValueReaders.get(valueHolder, base, "code", fallbackCode);
         String systemRaw = fhirValueReaders.get(valueHolder, base, "terminology", fallbackTerminology);
+
+        if (StringUtils.isAllBlank(display, code, systemRaw) && !path.contains("/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
+            return coding(joinedValues, valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE);
+        }
         String system = fhirValueReaders.cleanVersionFromSystem(systemRaw);
         String version = fhirValueReaders.version(systemRaw);
 
@@ -89,7 +94,7 @@ public class CodedParser {
             coding.setVersion(version);
         }
 
-        return new DataWithIndex(coding, lastIndex, base);
+        return new DataWithIndex(coding, lastIndex, base, FhirConnectConst.CODE_PHRASE);
     }
 
     private void addMappings(JsonObject valueHolder, String basePath, CodeableConcept cc) {

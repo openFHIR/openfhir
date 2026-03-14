@@ -64,7 +64,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertNull(news2Score.getFhirConditions());
         Assert.assertEquals("news2_encounter_parent/national_early_warning_score_2_news2/total_score",
                             news2Score.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_COUNT", news2Score.getDetectedType());
+        Assert.assertTrue(news2Score.getPossibleRmTypes().contains("DV_COUNT"));
 
         final MappingHelper news2Time = news2LeafHelpers.get(1);
         Assert.assertEquals("time", news2Time.getMappingName());
@@ -75,7 +75,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertNull(news2Time.getFhirConditions());
         Assert.assertEquals("news2_encounter_parent/national_early_warning_score_2_news2/time",
                             news2Time.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_DATE_TIME", news2Time.getDetectedType());
+        Assert.assertTrue(news2Time.getPossibleRmTypes().contains("DV_DATE_TIME"));
 
         final MappingHelper rrs = news2LeafHelpers.get(2);
         Assert.assertEquals("rrs", rrs.getMappingName());
@@ -150,7 +150,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertNull(acvpu.getFhirConditions());
         Assert.assertEquals("news2_encounter_parent/acvpu_scale/any_point_in_time_event[n]/acvpu",
                             acvpu.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_CODED_TEXT", acvpu.getDetectedType());
+        Assert.assertTrue(acvpu.getPossibleRmTypes().contains("DV_CODED_TEXT"));
 
         // --- bloodPressureParent → iterateBloodPressure → bloodPressureSlot → [4 leaf helpers] ---
         final MappingHelper bloodPressureParent = allHelpers.get(2);
@@ -164,7 +164,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertTrue(bloodPressureSlot.isHasSlot());
 
         final List<MappingHelper> bpLeafHelpers = bloodPressureSlot.getChildren();
-        Assert.assertEquals(4, bpLeafHelpers.size());
+        Assert.assertEquals(5, bpLeafHelpers.size());
 
         final MappingHelper bpSystolic = bpLeafHelpers.get(0);
         Assert.assertEquals("componentSystolic", bpSystolic.getMappingName());
@@ -196,7 +196,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertNull(bodySite.getFhirConditions());
         Assert.assertEquals("news2_encounter_parent/blood_pressure/location_of_measurement",
                             bodySite.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_CODED_TEXT", bodySite.getDetectedType());
+        Assert.assertTrue(bodySite.getPossibleRmTypes().contains("DV_CODED_TEXT"));
 
         final MappingHelper clinicalInterpretation = bpLeafHelpers.get(3);
         Assert.assertEquals("clinicalInterpretation", clinicalInterpretation.getMappingName());
@@ -221,7 +221,7 @@ public class News2HelpersTest extends GenericHelpersTest {
                             bodyTemp.getOpenEhr());
         Assert.assertEquals("news2_encounter_parent/body_temperature/any_event[n]/temperature",
                             bodyTemp.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_QUANTITY", bodyTemp.getDetectedType());
+        Assert.assertTrue(bodyTemp.getPossibleRmTypes().contains("DV_QUANTITY"));
 
         // --- pulseParent → iteratePulse → pulseSlot → [value] ---
         final MappingHelper pulseParent = allHelpers.get(4);

@@ -1,12 +1,5 @@
 package com.syntaric.openfhir.mapping.toopenehr;
 
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_EVENT;
-import static com.syntaric.openfhir.fc.FhirConnectConst.INTERVAL_EVENT;
-import static com.syntaric.openfhir.fc.FhirConnectConst.POINT_EVENT;
-import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR;
-import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
-import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX_ESCAPED;
-
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
@@ -17,28 +10,19 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.StringJoiner;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
-import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.InstantType;
-import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.PrimitiveType;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.TimeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+
+import static com.syntaric.openfhir.fc.FhirConnectConst.*;
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX_ESCAPED;
 
 @Slf4j
 @Component
@@ -77,7 +61,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         int relevantIndex = indexByHierarchyPath.getOrDefault(openEhrHierarchySplitFlatPath, 0);
 
         if (firstWalkOverModelMapping && !fhirPreconditionPasses(mappingHelpers.get(0).getPreprocessorFhirConditions(),
-                                                                 dataPoint)) {
+                dataPoint)) {
             return finalFlat;
         }
 
@@ -139,8 +123,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             for (final String attribute : attributes) {
                 final String fhirPath = String.format("%s.%s", fhirCondition.getTargetRoot(), attribute);
                 final Optional<Base> exists = this.fhirPath.evaluateFirst(mappingHelper.getGeneratingFhirResource(),
-                                                                          fhirPath,
-                                                                          Base.class);
+                        fhirPath,
+                        Base.class);
                 if (mustBeEmpty && exists.isPresent()) {
                     return false; // immediately return, no need to look further
                 }
@@ -148,7 +132,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     passes = false; // loop further, perhaps any other passes
                 }
             }
-            if(!passes) {
+            if (!passes) {
                 return passes;
             }
         }
@@ -165,7 +149,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
         // apply limiting factor
         final boolean exists = fhirPath.evaluateFirst(resource, limitingCriteriaBasedOnCoverCondition,
-                                                      Base.class).isPresent();
+                Base.class).isPresent();
         return negate != exists;
     }
 
@@ -175,8 +159,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             final StringJoiner orJoiner = new StringJoiner(" and ");
             for (final String criteria : preCondition.getCriterias()) {
                 orJoiner.add(String.format("where((%s).toString().contains('%s'))",
-                                           preCondition.getTargetAttribute(),
-                                           criteria));
+                        preCondition.getTargetAttribute(),
+                        criteria));
             }
             andJoiner.add(orJoiner.toString());
         }
@@ -283,9 +267,9 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     private List<Base> evaluateFhirPath(final String fhirPath, final Base toResolveOn) {
         try {
             return this.fhirPath.evaluate(toResolveOn,
-                                          fhirPath.replace(".as(Enumeration)", ""),
-                                          // casting to enumeration only works when doing toFhir, else it complains it's not a valid fhir type
-                                          Base.class);
+                    fhirPath.replace(".as(Enumeration)", ""),
+                    // casting to enumeration only works when doing toFhir, else it complains it's not a valid fhir type
+                    Base.class);
         } catch (final Exception e) {
             // if resolve() can't find the referenced resource, fail gracefully
             log.error("Error trying to evaluate path {}", fhirPath);
@@ -316,16 +300,71 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             final String thePath = resolveIndexedPath(fullOpenEhrFlatPath, i);
             log.debug("Setting value taken with fhirPath {} from object type {}", fhirPath, toResolveOn.getClass());
 
-            final String openEhrPathToPopulateTo =
-                    openFhirMapperUtils.removeAqlSuffix(thePath, clonedHelper.getDetectedType())
-                            + clonedHelper.getFlatPathPipeSuffix();
-
             fixAllChildrenRecurringElements(clonedHelper, thePath);
 
-            populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo, flatComposition);
+            if (!OPENEHR_TYPE_NONE.equals(clonedHelper.getHardcodedType())) {
+                final List<String> possibleRmTypes = clonedHelper.getPossibleRmTypes();
+                if (possibleRmTypes != null && !possibleRmTypes.isEmpty()) {
+                    final String deducedRmType = deduceRmType(result, possibleRmTypes); // if we can deduce RM type based on what result is and what possibleRmTypes are, we do that
+                    final String openEhrPathToPopulateTo =
+                            openFhirMapperUtils.removeAqlSuffix(thePath, deducedRmType)
+                                    + clonedHelper.getFlatPathPipeSuffix();
+                    populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo, flatComposition, deducedRmType);
+                } else if (StringUtils.isNotEmpty(clonedHelper.getProgrammedMapping())) {
+                    // still invoke the programmed one
+                    populateValue(helper, clonedHelper, result, thePath, thePath, flatComposition, null);
+                }
+            }
 
             recurseIntoChildren(clonedHelper, result, helper, flatComposition, indexByHierarchyPath);
         }
+    }
+
+    private String deduceRmType(final Base result, final List<String> possibleRmTypes) {
+        if (possibleRmTypes != null && possibleRmTypes.size() == 1) {
+            return possibleRmTypes.get(0);
+        }
+        if (result instanceof CodeableConcept) {
+            if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
+            if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
+        } else if (result instanceof Coding) {
+            if (possibleRmTypes.contains(CODE_PHRASE)) return CODE_PHRASE;
+            if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
+        } else if (result instanceof Quantity) {
+            if (possibleRmTypes.contains(DV_QUANTITY)) return DV_QUANTITY;
+            if (possibleRmTypes.contains(DV_COUNT)) return DV_COUNT;
+            if (possibleRmTypes.contains(DV_PROPORTION)) return DV_PROPORTION;
+            if (possibleRmTypes.contains(DV_ORDINAL)) return DV_ORDINAL;
+        } else if (result instanceof IntegerType) {
+            if (possibleRmTypes.contains(DV_COUNT)) return DV_COUNT;
+            if (possibleRmTypes.contains(DV_ORDINAL)) return DV_ORDINAL;
+        } else if (result instanceof DateTimeType || result instanceof InstantType) {
+            if (possibleRmTypes.contains(DV_DATE_TIME)) return DV_DATE_TIME;
+        } else if (result instanceof DateType) {
+            if (possibleRmTypes.contains(DV_DATE)) return DV_DATE;
+            if (possibleRmTypes.contains(DV_DATE_TIME)) return DV_DATE_TIME;
+        } else if (result instanceof TimeType) {
+            if (possibleRmTypes.contains(DV_TIME)) return DV_TIME;
+        } else if (result instanceof BooleanType) {
+            if (possibleRmTypes.contains(DV_BOOL)) return DV_BOOL;
+        } else if (result instanceof StringType) {
+            if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
+            if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
+            if (possibleRmTypes.contains(DV_DATE_TIME)) return DV_DATE_TIME;
+            if (possibleRmTypes.contains(DV_DURATION)) return DV_DURATION;
+        } else if (result instanceof Period) {
+            if (possibleRmTypes.contains(DV_INTERVAL)) return DV_INTERVAL;
+        } else if (result instanceof Range) {
+            if (possibleRmTypes.contains(DV_INTERVAL)) return DV_INTERVAL;
+        } else if (result instanceof Attachment) {
+            if (possibleRmTypes.contains(DV_MULTIMEDIA)) return DV_MULTIMEDIA;
+        } else if (result instanceof Identifier) {
+            if (possibleRmTypes.contains(DV_IDENTIFIER)) return DV_IDENTIFIER;
+        } else if (result instanceof Ratio) {
+            if (possibleRmTypes.contains(DV_PROPORTION)) return DV_PROPORTION;
+            if (possibleRmTypes.contains(DV_QUANTITY)) return DV_QUANTITY;
+        }
+        return null;
     }
 
     private String resolveIndexedPath(final String fullOpenEhrFlatPath, final int i) {
@@ -337,25 +376,24 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     private void populateValue(final MappingHelper helper, final MappingHelper clonedHelper, final Base result,
                                final String thePath, final String openEhrPathToPopulateTo,
-                               final JsonObject flatComposition) {
-        final String type = clonedHelper.getHardcodedType() == null
-                ? clonedHelper.getDetectedType()
-                : clonedHelper.getHardcodedType();
+                               final JsonObject flatComposition, final String rmType) {
 
+        long possibleRmTypes = helper.getPossibleRmTypes().size();
         if (StringUtils.isNotEmpty(clonedHelper.getManualOpenEhrValue())) {
             log.debug("Hardcoding value {} to path: {}", clonedHelper.getManualOpenEhrValue(), openEhrPathToPopulateTo);
             // is it ok we use string type here? could it be something else? probably it could be..
             openEhrPopulator.setOpenEhrValue(helper, openEhrPathToPopulateTo,
-                                             new StringType(clonedHelper.getManualOpenEhrValue()),
-                                             type, flatComposition, helper.getTerminology(),
-                                             helper.getAvailableCodings());
+                    new StringType(clonedHelper.getManualOpenEhrValue()),
+                    rmType, possibleRmTypes > 1, flatComposition, helper.getTerminology(),
+                    helper.getAvailableCodings());
         } else if (StringUtils.isNotEmpty(helper.getProgrammedMapping())) {
             invokeProgrammedMapping(helper, flatComposition, result);
         } else {
             final boolean handledEventTime = applyEventTypeMappingIfNeeded(helper, result, thePath, flatComposition);
             if (!handledEventTime) {
-                openEhrPopulator.setOpenEhrValue(helper, openEhrPathToPopulateTo, result, type, flatComposition,
-                                                 helper.getTerminology(), helper.getAvailableCodings());
+                openEhrPopulator.setOpenEhrValue(helper, openEhrPathToPopulateTo, result, rmType,
+                        possibleRmTypes > 1,
+                        flatComposition, helper.getTerminology(), helper.getAvailableCodings());
             }
         }
     }
@@ -371,7 +409,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             c.setGeneratingFhirResource(parentHelper.getGeneratingFhirResource());
         });
         mapToOpenEhr(clonedHelper.getChildren(), flatComposition, result,
-                     clonedHelper.isHasSlot(), indexByHierarchyPath);
+                clonedHelper.isHasSlot(), indexByHierarchyPath);
     }
 
     private void invokeProgrammedMapping(final MappingHelper mappingHelper,
@@ -386,7 +424,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                 success = customMapping.applyFhirToOpenEhrMapping(
                         mappingHelper,
                         result,
-                        mappingHelper.getDetectedType(),
+                        mappingHelper.getPossibleRmTypes(),
                         flatComposition,
                         openEhrPopulator,
                         openFhirMapperUtils,
@@ -426,46 +464,48 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         if (result == null || openEhrPath == null) {
             return false;
         }
-        final String openEhrType = helper.getDetectedType();
-        if (!isEventRmType(openEhrType)) {
-            return false;
-        }
-        if (result instanceof final Period period) {
-            final Date start = period.getStart();
-            final Date end = period.getEnd();
-            final Date time = start != null ? start : end;
-            if (time != null) {
-                openEhrPopulator.setOpenEhrValue(helper,openEhrPath + "/time", new DateTimeType(time),
-                                                 FhirConnectConst.DV_DATE_TIME, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
+        final List<String> openEhrTypes = helper.getPossibleRmTypes();
+        for (final String openEhrType : openEhrTypes) {
+            if (!isEventRmType(openEhrType)) {
+                continue;
             }
-            openEhrPopulator.setOpenEhrValue(helper,openEhrPath + "/math_function",
-                                             new Coding("openehr", "640", "actual"),
-                                             FhirConnectConst.DV_CODED_TEXT, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
-            if (start != null && end != null) {
-                final java.time.Duration duration = java.time.Duration.between(
-                        start.toInstant(), end.toInstant());
-                if (!duration.isNegative() && !duration.isZero()) {
-                    openEhrPopulator.setOpenEhrValue(helper,openEhrPath + "/width",
-                                                     new StringType(duration.toString()), FhirConnectConst.DV_DURATION,
-                                                     flatComposition, helper.getTerminology(), helper.getAvailableCodings());
+            if (result instanceof final Period period) {
+                final Date start = period.getStart();
+                final Date end = period.getEnd();
+                final Date time = start != null ? start : end;
+                if (time != null) {
+                    openEhrPopulator.setOpenEhrValue(helper, openEhrPath + "/time", new DateTimeType(time),
+                            FhirConnectConst.DV_DATE_TIME, false, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
                 }
-            } else if (start != null) {
-                // Represent missing end as empty width for interval events
-                openEhrPopulator.setOpenEhrValue(helper,openEhrPath + "/width",
-                                                 new StringType(""), FhirConnectConst.DV_DURATION, flatComposition,
-                                                 helper.getTerminology(), helper.getAvailableCodings());
+                openEhrPopulator.setOpenEhrValue(helper, openEhrPath + "/math_function",
+                        new Coding("openehr", "640", "actual"),
+                        FhirConnectConst.DV_CODED_TEXT, false, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
+                if (start != null && end != null) {
+                    final java.time.Duration duration = java.time.Duration.between(
+                            start.toInstant(), end.toInstant());
+                    if (!duration.isNegative() && !duration.isZero()) {
+                        openEhrPopulator.setOpenEhrValue(helper, openEhrPath + "/width",
+                                new StringType(duration.toString()), FhirConnectConst.DV_DURATION,
+                                false, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
+                    }
+                } else if (start != null) {
+                    // Represent missing end as empty width for interval events
+                    openEhrPopulator.setOpenEhrValue(helper, openEhrPath + "/width",
+                            new StringType(""), FhirConnectConst.DV_DURATION, false, flatComposition,
+                            helper.getTerminology(), helper.getAvailableCodings());
+                }
+                return true;
+            } else if (result instanceof DateTimeType
+                    || result instanceof InstantType
+                    || result instanceof DateType) {
+                openEhrPopulator.setOpenEhrValue(helper, openEhrPath + "/time", result,
+                        FhirConnectConst.DV_DATE_TIME, false, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
+                return true;
+            } else if (result instanceof TimeType) {
+                openEhrPopulator.setOpenEhrValue(helper, openEhrPath + "/time", result,
+                        FhirConnectConst.DV_TIME, false, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
+                return true;
             }
-            return true;
-        } else if (result instanceof DateTimeType
-                || result instanceof InstantType
-                || result instanceof DateType) {
-            openEhrPopulator.setOpenEhrValue(helper,openEhrPath + "/time", result,
-                                             FhirConnectConst.DV_DATE_TIME, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
-            return true;
-        } else if (result instanceof TimeType) {
-            openEhrPopulator.setOpenEhrValue(helper,openEhrPath + "/time", result,
-                                             FhirConnectConst.DV_TIME, flatComposition, helper.getTerminology(), helper.getAvailableCodings());
-            return true;
         }
         return false;
     }
@@ -507,7 +547,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     void fixAllChildrenRecurringElements(final MappingHelper helper, final String newOne) {
         if (helper.getFullOpenEhrFlatPath() != null) {
             final boolean hasParentRecurring = stringUtils.childHasParentRecurring(helper.getFullOpenEhrFlatPath(),
-                                                                                   newOne);
+                    newOne);
             if (hasParentRecurring) {
                 final String replaced = stringUtils.replacePattern(helper.getFullOpenEhrFlatPath(), newOne);
                 helper.setFullOpenEhrFlatPath(replaced);

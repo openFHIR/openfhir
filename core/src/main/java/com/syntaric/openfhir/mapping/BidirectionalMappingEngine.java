@@ -5,8 +5,10 @@ import static com.syntaric.openfhir.util.OpenFhirStringUtils.RESOLVE;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
+
 import java.util.List;
 import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.hl7.fhir.r4.model.Base;
@@ -29,8 +31,8 @@ public class BidirectionalMappingEngine {
      * unidirectional constraints or failing FHIR/openEHR type conditions.
      *
      * @param mappingDirection the direction this engine is executing toward —
-     *         use {@link FhirConnectConst#UNIDIRECTIONAL_TOFHIR} or
-     *         {@link FhirConnectConst#UNIDIRECTIONAL_TOOPENEHR}
+     *                         use {@link FhirConnectConst#UNIDIRECTIONAL_TOFHIR} or
+     *                         {@link FhirConnectConst#UNIDIRECTIONAL_TOOPENEHR}
      */
     protected boolean shouldProcessMapping(final MappingHelper mappingHelper,
                                            final String mappingDirection) {
@@ -42,20 +44,20 @@ public class BidirectionalMappingEngine {
 
         if (blockedUnidirectional.equalsIgnoreCase(mappingHelper.getUnidirectional())) {
             log.info("[{}] Unidirectional '{}' for mapping name {}; skipping mapping.",
-                     executionLog, blockedUnidirectional, mappingHelper.getMappingName());
+                    executionLog, blockedUnidirectional, mappingHelper.getMappingName());
             return false;
         }
         final Base generatingFhirResource = mappingHelper.getGeneratingFhirResource();
         if (!fhirTypePasses(mappingHelper, mappingHelper.getFhirConditions())) {
             log.info("[{}] FHIR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
-                     executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
-                     mappingHelper.getMappingName());
+                    executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
+                    mappingHelper.getMappingName());
             return false;
         }
         if (!openEhrTypePasses(mappingHelper, mappingHelper.getOpenEhrConditions())) {
             log.info("[{}] OpenEHR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
-                     executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
-                     mappingHelper.getMappingName());
+                    executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
+                    mappingHelper.getMappingName());
             return false;
         }
         return true;
@@ -79,14 +81,14 @@ public class BidirectionalMappingEngine {
                 final String fhirPathAfterResolve = fhirPathType.split(".resolve\\(\\)")[1].substring(1);
                 final Resource resolvedInstance = getReferencedResource((Resource) instance, fhirPathType);
                 final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(resolvedInstance,
-                                                                                     fhirPathAfterResolve,
-                                                                                     ClassTypeInfo.class);
+                        fhirPathAfterResolve,
+                        ClassTypeInfo.class);
                 return isCorrectType.map(cr -> ((StringType) cr.getProperty(0, "name", false)[0]).getValue()
                                 .equals(fhirCondition.getCriteria()))
                         .orElse(true);
             } else {
                 final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(instance, fhirPathType,
-                                                                                     ClassTypeInfo.class);
+                        ClassTypeInfo.class);
                 return isCorrectType.map(cr -> ((StringType) cr.getProperty(0, "name", false)[0]).getValue()
                                 .equals(fhirCondition.getCriteria()))
                         .orElse(true);
@@ -103,7 +105,14 @@ public class BidirectionalMappingEngine {
             if (!condition.getOperator().equals(FhirConnectConst.CONDITION_OPERATOR_TYPE)) {
                 return true;
             }
-            return condition.getCriterias().stream().anyMatch(c -> mappingHelper.getDetectedType().equals(c));
+            if (mappingHelper.getDetectedType() != null) {
+                // this should be populated when going openehr -> fhir, because in that case we know exactly which
+                // type it is
+                return condition.getCriterias().stream().anyMatch(c -> mappingHelper.getDetectedType().equals(c));
+            } else {
+                // this is fhir->openehr and we just check if possibleRmType is one of those
+                return condition.getCriterias().stream().anyMatch(c -> mappingHelper.getPossibleRmTypes().contains(c));
+            }
         });
     }
 
@@ -114,8 +123,8 @@ public class BidirectionalMappingEngine {
         final String fhirPathWithoutResolve = fhirPathExpr.split(RESOLVE)[0];
         try {
             final Reference reference = (Reference) fhirPath.evaluateFirst(initialResource,
-                                                                           fhirPathWithoutResolve,
-                                                                           Reference.class).get().getResource();
+                    fhirPathWithoutResolve,
+                    Reference.class).get().getResource();
             return (Resource) reference.getResource();
         } catch (Exception e) {
             log.warn("Nothing resolved by evaluating {}", fhirPathWithoutResolve);

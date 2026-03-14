@@ -11,6 +11,8 @@ import org.hibernate.annotations.UuidGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity                             // for postgres
+@Table(name = "opt")         // for postgres
 public class OptEntity extends UserBasedEntity {
     @Id
     @GeneratedValue

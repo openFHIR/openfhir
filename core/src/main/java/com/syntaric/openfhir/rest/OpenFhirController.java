@@ -1,6 +1,7 @@
 package com.syntaric.openfhir.rest;
 
 import com.syntaric.openfhir.OpenFhirEngine;
+import com.syntaric.openfhir.aql.ToAqlRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,12 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller for the openFHIR Engine; mapping from openEHR to FHIR and vice versa REST endpoints are created here
@@ -38,10 +34,10 @@ public class OpenFhirController {
      * engine
      *
      * @param composition can either be a flat json or a canonical format of a Composition
-     * @param templateId is an optional parameter if composition is of canonical format; if composition is in
-     *         flat format,
-     *         this parameter is required, because the engine can not determine templateId in that case (yet
-     *         requires it to find the correct state of the Engine)
+     * @param templateId  is an optional parameter if composition is of canonical format; if composition is in
+     *                    flat format,
+     *                    this parameter is required, because the engine can not determine templateId in that case (yet
+     *                    requires it to find the correct state of the Engine)
      * @return FHIR Bundle with mapped Resources inside
      */
     @PostMapping(value = "/openfhir/tofhir", produces = "application/json")
@@ -73,19 +69,18 @@ public class OpenFhirController {
      * state of the openFHIR
      *
      * @param fhirResource incoming FHIR Resource (Bundle or any other), R4
-     * @param templateId template id is an optional parameter if you want to force a specific context mapper; if
-     *         no
-     *         templateId is provided, then out of all context mappers, the engine will try to find one that
-     *         matches the given incoming FHIR Resource (based on context mapper context.profileUrl)
-     * @param flat if you want the mapped Composition to be provided in a flat format, default is false meaning
-     *         it will
-     *         be returned in a canonical format
-     * @param reqId request id that will be logged
+     * @param templateId   template id is an optional parameter if you want to force a specific context mapper; if
+     *                     no
+     *                     templateId is provided, then out of all context mappers, the engine will try to find one that
+     *                     matches the given incoming FHIR Resource (based on context mapper context.profileUrl)
+     * @param flat         if you want the mapped Composition to be provided in a flat format, default is false meaning
+     *                     it will
+     *                     be returned in a canonical format
+     * @param reqId        request id that will be logged
      * @return openEHR Composition in either flat or canonical format, depending on "flat" argument (default is
-     *         canonical)
+     * canonical)
      */
     @PostMapping(value = "/openfhir/toopenehr", produces = "application/json")
-    @PreAuthorize("hasAuthority('SCOPE_openfhir.map')")
     @Operation(
             summary = "Maps incoming FHIR Resource to openEHR Composition",
             description = "Maps incoming FHIR Resource to openEHR Composition according to FHIR Connect state of the engine",
@@ -106,6 +101,30 @@ public class OpenFhirController {
         try {
             final String openEhr = openFhirEngine.toOpenEhr(fhirResource, templateId, flat);
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(openEhr);
+        } catch (final Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/openfhir/toaql", produces = "application/json")
+    @Operation(
+            summary = "Maps incoming FHIR Query to openEHR AQL",
+            description = "Maps incoming FHIR Query to openEHR AQL according to FHIR Connect state of the engine",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "openEHR AQL")
+            },
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "FHIR Search",
+                    content = {
+                            @Content(mediaType = "application/json")
+                    }
+            )
+    )
+    ResponseEntity toAql(@RequestBody ToAqlRequest aqlRequest,
+                         @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        try {
+            final var result = openFhirEngine.toAql(aqlRequest);
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(result);
         } catch (final Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

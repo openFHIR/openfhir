@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "contextStartTime",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -16,9 +17,9 @@
   "fullOpenEhrFlatPath" : "kds_todesursache/context/start_time",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/start_time(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_DATE_TIME",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_DATE_TIME", "DV_DATE_TIME" ],
+  "possibleRmTypes" : [ "DV_DATE_TIME" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -33,6 +34,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "status",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -49,9 +51,9 @@
   "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "CLUSTER",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "CLUSTER" ],
+  "possibleRmTypes" : [ ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -63,6 +65,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.provisional",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -79,7 +82,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code/terminology_id",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|terminology",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -103,6 +106,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.provisional",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -119,7 +123,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|code",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -159,6 +163,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.provisional",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -175,9 +180,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : "Working",
     "manualFhirValue" : null,
@@ -199,6 +204,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -215,9 +221,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -236,6 +242,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -252,9 +259,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "provisional",
@@ -276,6 +283,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -292,9 +300,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Provisional",
@@ -316,6 +324,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -332,9 +341,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -356,6 +365,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -372,9 +382,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "differential",
@@ -396,6 +406,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -412,9 +423,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Differential",
@@ -436,6 +447,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -452,9 +464,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -476,6 +488,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -492,9 +505,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "unconfirmed",
@@ -516,6 +529,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -532,9 +546,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Unconfirmed",
@@ -556,6 +570,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -572,9 +587,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -596,6 +611,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -612,9 +628,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "confirmed",
@@ -636,6 +652,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -652,9 +669,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Confirmed",
@@ -676,6 +693,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -692,9 +710,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -716,6 +734,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -732,9 +751,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "refuted",
@@ -756,6 +775,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -772,9 +792,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Refuted",
@@ -796,6 +816,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -812,9 +833,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -839,6 +860,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.differential",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -855,7 +877,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code/terminology_id",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|terminology",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -879,6 +901,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.differential",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -895,7 +918,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|code",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -935,6 +958,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.differential",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -951,9 +975,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : "Working",
     "manualFhirValue" : null,
@@ -975,6 +999,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -991,9 +1016,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -1012,6 +1037,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1028,9 +1054,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "provisional",
@@ -1052,6 +1078,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1068,9 +1095,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Provisional",
@@ -1092,6 +1119,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1108,9 +1136,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -1132,6 +1160,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1148,9 +1177,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "differential",
@@ -1172,6 +1201,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1188,9 +1218,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Differential",
@@ -1212,6 +1242,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1228,9 +1259,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -1252,6 +1283,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1268,9 +1300,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "unconfirmed",
@@ -1292,6 +1324,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1308,9 +1341,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Unconfirmed",
@@ -1332,6 +1365,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1348,9 +1382,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -1372,6 +1406,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1388,9 +1423,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "confirmed",
@@ -1412,6 +1447,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1428,9 +1464,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Confirmed",
@@ -1452,6 +1488,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1468,9 +1505,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -1492,6 +1529,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1508,9 +1546,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "refuted",
@@ -1532,6 +1570,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1548,9 +1587,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Refuted",
@@ -1572,6 +1611,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1588,9 +1628,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -1615,6 +1655,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.preliminary",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1631,7 +1672,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code/terminology_id",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|terminology",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -1655,6 +1696,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.preliminary",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1671,7 +1713,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|code",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -1711,6 +1753,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.preliminary",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1727,9 +1770,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : "Preliminary",
     "manualFhirValue" : null,
@@ -1751,6 +1794,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1767,9 +1811,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -1788,6 +1832,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1804,9 +1849,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "provisional",
@@ -1828,6 +1873,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1844,9 +1890,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Provisional",
@@ -1868,6 +1914,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1884,9 +1931,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -1908,6 +1955,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1924,9 +1972,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "differential",
@@ -1948,6 +1996,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1964,9 +2013,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Differential",
@@ -1988,6 +2037,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2004,9 +2054,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2028,6 +2078,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2044,9 +2095,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "unconfirmed",
@@ -2068,6 +2119,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2084,9 +2136,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Unconfirmed",
@@ -2108,6 +2160,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2124,9 +2177,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2148,6 +2201,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2164,9 +2218,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "confirmed",
@@ -2188,6 +2242,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2204,9 +2259,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Confirmed",
@@ -2228,6 +2283,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2244,9 +2300,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2268,6 +2324,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2284,9 +2341,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "refuted",
@@ -2308,6 +2365,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2324,9 +2382,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Refuted",
@@ -2348,6 +2406,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2364,9 +2423,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2391,6 +2450,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.established",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2407,7 +2467,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code/terminology_id",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|terminology",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -2431,6 +2491,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.established",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2447,7 +2508,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|code",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -2487,6 +2548,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.established",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2503,9 +2565,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : "Festgestellt",
     "manualFhirValue" : null,
@@ -2527,6 +2589,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2543,9 +2606,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -2564,6 +2627,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2580,9 +2644,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "provisional",
@@ -2604,6 +2668,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2620,9 +2685,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Provisional",
@@ -2644,6 +2709,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2660,9 +2726,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2684,6 +2750,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2700,9 +2767,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "differential",
@@ -2724,6 +2791,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2740,9 +2808,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Differential",
@@ -2764,6 +2832,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2780,9 +2849,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2804,6 +2873,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2820,9 +2890,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "unconfirmed",
@@ -2844,6 +2914,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2860,9 +2931,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Unconfirmed",
@@ -2884,6 +2955,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2900,9 +2972,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -2924,6 +2996,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2940,9 +3013,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "confirmed",
@@ -2964,6 +3037,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2980,9 +3054,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Confirmed",
@@ -3004,6 +3078,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3020,9 +3095,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3044,6 +3119,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3060,9 +3136,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "refuted",
@@ -3084,6 +3160,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3100,9 +3177,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Refuted",
@@ -3124,6 +3201,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3140,9 +3218,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3167,6 +3245,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.refuted",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3183,7 +3262,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code/terminology_id",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|terminology",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -3207,6 +3286,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.refuted",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3223,7 +3303,7 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus/defining_code",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "|code",
-    "detectedType" : "CODE_PHRASE",
+    "detectedType" : null,
     "hardcodedType" : null,
     "possibleRmTypes" : [ "CODE_PHRASE" ],
     "programmedMapping" : null,
@@ -3263,6 +3343,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.refuted",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3279,9 +3360,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : "Refuted",
     "manualFhirValue" : null,
@@ -3303,6 +3384,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3319,9 +3401,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -3340,6 +3422,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3356,9 +3439,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "provisional",
@@ -3380,6 +3463,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3396,9 +3480,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Provisional",
@@ -3420,6 +3504,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3436,9 +3521,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3460,6 +3545,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3476,9 +3562,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "differential",
@@ -3500,6 +3586,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3516,9 +3603,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Differential",
@@ -3540,6 +3627,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3556,9 +3644,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3580,6 +3668,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3596,9 +3685,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "unconfirmed",
@@ -3620,6 +3709,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3636,9 +3726,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Unconfirmed",
@@ -3660,6 +3750,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3676,9 +3767,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3700,6 +3791,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3716,9 +3808,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "confirmed",
@@ -3740,6 +3832,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3756,9 +3849,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Confirmed",
@@ -3780,6 +3873,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3796,9 +3890,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3820,6 +3914,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3836,9 +3931,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "refuted",
@@ -3860,6 +3955,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3876,9 +3972,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "Refuted",
@@ -3900,6 +3996,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3916,9 +4013,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/diagnosestatus",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/diagnosestatus(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
@@ -3943,6 +4040,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "clinicalStatus",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3959,9 +4057,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/problem_diagnose_attribut[n]/klinischer_status",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/problem_diagnose_attribut(:\\d+)?/klinischer_status(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "DV_CODED_TEXT",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -3979,6 +4077,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "causeOfDeath",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -3995,9 +4094,9 @@
   "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/todesursache",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/todesursache(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_CODED_TEXT",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -4012,6 +4111,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "category",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4042,6 +4142,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_loinc",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4072,6 +4173,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4105,6 +4207,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4141,6 +4244,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_loinc",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4171,6 +4275,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4204,6 +4309,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4240,6 +4346,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_snomed",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4270,6 +4377,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4303,6 +4411,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4339,6 +4448,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_snomed",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4369,6 +4479,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4402,6 +4513,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4441,6 +4553,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "comment",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4457,9 +4570,9 @@
   "fullOpenEhrFlatPath" : "kds_todesursache/todesursache/kommentar",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?/kommentar(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_TEXT",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_TEXT", "DV_TEXT" ],
+  "possibleRmTypes" : [ "DV_TEXT" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -4474,6 +4587,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "metaURL",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4504,6 +4618,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4540,6 +4655,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4556,9 +4672,9 @@
   "fullOpenEhrFlatPath" : "kds_todesursache/context/fallidentifikation",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "CLUSTER",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "CLUSTER" ],
+  "possibleRmTypes" : [ ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -4570,6 +4686,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -4586,9 +4703,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/context/fallidentifikation",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "CLUSTER",
+    "detectedType" : null,
     "hardcodedType" : "NONE",
-    "possibleRmTypes" : [ "CLUSTER" ],
+    "possibleRmTypes" : [ ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -4600,6 +4717,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -4616,9 +4734,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/context/fallidentifikation/fall-kennung",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
@@ -4639,6 +4757,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : "Encounter",
@@ -4655,7 +4774,7 @@
   "fullOpenEhrFlatPath" : "kds_todesursache/todesursache",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/todesursache(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "EVALUATION",
+  "detectedType" : null,
   "hardcodedType" : null,
   "possibleRmTypes" : [ "EVALUATION" ],
   "programmedMapping" : null,
@@ -4669,6 +4788,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -4685,9 +4805,9 @@
     "fullOpenEhrFlatPath" : "kds_todesursache/context/fallidentifikation",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "CLUSTER",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "CLUSTER" ],
+    "possibleRmTypes" : [ ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -4699,6 +4819,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -4715,9 +4836,9 @@
       "fullOpenEhrFlatPath" : "kds_todesursache/context/fallidentifikation",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "CLUSTER",
+      "detectedType" : null,
       "hardcodedType" : "NONE",
-      "possibleRmTypes" : [ "CLUSTER" ],
+      "possibleRmTypes" : [ ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
@@ -4729,6 +4850,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
@@ -4745,9 +4867,9 @@
         "fullOpenEhrFlatPath" : "kds_todesursache/context/fallidentifikation/fall-kennung",
         "fullOpenEhrFlatPathWithMatchingRegex" : "kds_todesursache(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
-        "detectedType" : "DV_CODED_TEXT",
+        "detectedType" : null,
         "hardcodedType" : null,
-        "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+        "possibleRmTypes" : [ "DV_CODED_TEXT" ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
         "manualFhirValue" : null,

@@ -50,7 +50,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("growth_chart/height_length/any_event[n]", heightParent.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/height_length(:\\d+)?/any_event(:\\d+)?(\\|.*)?", heightParent.getFullOpenEhrFlatPathWithMatchingRegex());
         Assert.assertEquals("", heightParent.getFlatPathPipeSuffix());
-        Assert.assertEquals("EVENT", heightParent.getDetectedType());
+        Assert.assertTrue(heightParent.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(heightParent.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(heightParent.isUseParentRoot());
         Assert.assertFalse(heightParent.isHasSlot());
@@ -70,7 +70,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("growth_chart/height_length/any_event[n]", iterateHeight.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/height_length(:\\d+)?/any_event(:\\d+)?(\\|.*)?", iterateHeight.getFullOpenEhrFlatPathWithMatchingRegex());
         Assert.assertEquals("", iterateHeight.getFlatPathPipeSuffix());
-        Assert.assertEquals("EVENT", iterateHeight.getDetectedType());
+        Assert.assertTrue(iterateHeight.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(iterateHeight.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(iterateHeight.isUseParentRoot());
         Assert.assertFalse(iterateHeight.isHasSlot());
@@ -89,7 +89,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("growth_chart/height_length", heightSlot.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/height_length(:\\d+)?(\\|.*)?", heightSlot.getFullOpenEhrFlatPathWithMatchingRegex());
         Assert.assertEquals("", heightSlot.getFlatPathPipeSuffix());
-        Assert.assertEquals("OBSERVATION", heightSlot.getDetectedType());
+        Assert.assertTrue(heightSlot.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertFalse(heightSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(heightSlot.isUseParentRoot());
         Assert.assertTrue(heightSlot.isHasSlot());
@@ -115,7 +115,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("growth_chart/height_length/any_event[n]/height_length", height.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/height_length(:\\d+)?/any_event(:\\d+)?/height_length(:\\d+)?(\\|.*)?", height.getFullOpenEhrFlatPathWithMatchingRegex());
         Assert.assertEquals("", height.getFlatPathPipeSuffix());
-        Assert.assertEquals("DV_QUANTITY", height.getDetectedType());
+        Assert.assertTrue(height.getPossibleRmTypes().contains("DV_QUANTITY"));
         Assert.assertTrue(height.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(height.isUseParentRoot());
         Assert.assertFalse(height.isHasSlot());
@@ -134,7 +134,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.height.v2]", heightCode.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/height_length", heightCode.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/height_length(:\\d+)?(\\|.*)?", heightCode.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("OBSERVATION", heightCode.getDetectedType());
+        Assert.assertTrue(heightCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("openehr->fhir", heightCode.getUnidirectional());
         Assert.assertTrue(heightCode.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(heightCode.isUseParentRoot());
@@ -151,7 +151,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().code.coding.code", heightCodeCode.getFullFhirPath());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.height.v2", heightCodeCode.getOpenEhr());
         Assert.assertEquals("growth_chart/height_length", heightCodeCode.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", heightCodeCode.getDetectedType());
+        Assert.assertTrue(heightCodeCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("8302-2", heightCodeCode.getManualFhirValue());
         Assert.assertEquals("openehr->fhir", heightCodeCode.getUnidirectional());
         Assert.assertTrue(heightCodeCode.isEnteredFromSlotArchetypeLink());
@@ -174,7 +174,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("growth_chart/body_weight/any_event[n]", weightParent.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?/any_event(:\\d+)?(\\|.*)?", weightParent.getFullOpenEhrFlatPathWithMatchingRegex());
         Assert.assertEquals("", weightParent.getFlatPathPipeSuffix());
-        Assert.assertEquals("EVENT", weightParent.getDetectedType());
+        Assert.assertTrue(weightParent.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(weightParent.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(weightParent.isUseParentRoot());
         Assert.assertFalse(weightParent.isHasSlot());
@@ -193,7 +193,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]", iterateWeight.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight/any_event[n]", iterateWeight.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?/any_event(:\\d+)?(\\|.*)?", iterateWeight.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("EVENT", iterateWeight.getDetectedType());
+        Assert.assertTrue(iterateWeight.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(iterateWeight.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(iterateWeight.isUseParentRoot());
         Assert.assertFalse(iterateWeight.isHasSlot());
@@ -211,7 +211,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]", weightSlot.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight", weightSlot.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?(\\|.*)?", weightSlot.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("OBSERVATION", weightSlot.getDetectedType());
+        Assert.assertTrue(weightSlot.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertFalse(weightSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(weightSlot.isUseParentRoot());
         Assert.assertTrue(weightSlot.isHasSlot());
@@ -236,7 +236,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]", weight.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight/any_event[n]/weight", weight.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?/any_event(:\\d+)?/weight(:\\d+)?(\\|.*)?", weight.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_QUANTITY", weight.getDetectedType());
+        Assert.assertTrue(weight.getPossibleRmTypes().contains("DV_QUANTITY"));
         Assert.assertTrue(weight.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(weight.isUseParentRoot());
         Assert.assertFalse(weight.isHasSlot());
@@ -255,7 +255,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/time", weightTime.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight/any_event[n]/time", weightTime.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?/any_event(:\\d+)?/time(:\\d+)?(\\|.*)?", weightTime.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_DATE_TIME", weightTime.getDetectedType());
+        Assert.assertTrue(weightTime.getPossibleRmTypes().contains("DV_DATE_TIME"));
         Assert.assertTrue(weightTime.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(weightTime.isUseParentRoot());
         Assert.assertFalse(weightTime.isHasSlot());
@@ -274,7 +274,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0024]", comment.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight/any_event[n]/comment", comment.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?/any_event(:\\d+)?/comment(:\\d+)?(\\|.*)?", comment.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_TEXT", comment.getDetectedType());
+        Assert.assertTrue(comment.getPossibleRmTypes().contains("DV_TEXT"));
         Assert.assertNull(comment.getFhirConditions());
         Assert.assertTrue(comment.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(comment.isUseParentRoot());
@@ -295,7 +295,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/state[at0008]/items[at0009]", stateOfDress.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight/any_event[n]/state_of_dress", stateOfDress.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?/any_event(:\\d+)?/state_of_dress(:\\d+)?(\\|.*)?", stateOfDress.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_CODED_TEXT", stateOfDress.getDetectedType());
+        Assert.assertTrue(stateOfDress.getPossibleRmTypes().contains("DV_CODED_TEXT"));
         Assert.assertNotNull(stateOfDress.getFhirConditions());
         Assert.assertEquals(1, stateOfDress.getFhirConditions().size());
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().component", stateOfDress.getFhirConditions().get(0).getTargetRoot());
@@ -320,7 +320,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]", weightCode.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight", weightCode.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_weight(:\\d+)?(\\|.*)?", weightCode.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("OBSERVATION", weightCode.getDetectedType());
+        Assert.assertTrue(weightCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("openehr->fhir", weightCode.getUnidirectional());
         Assert.assertTrue(weightCode.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(weightCode.isUseParentRoot());
@@ -337,7 +337,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().code.coding.code", weightCodeCode.getFullFhirPath());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.body_weight.v2", weightCodeCode.getOpenEhr());
         Assert.assertEquals("growth_chart/body_weight", weightCodeCode.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", weightCodeCode.getDetectedType());
+        Assert.assertTrue(weightCodeCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("29463-7", weightCodeCode.getManualFhirValue());
         Assert.assertEquals("openehr->fhir", weightCodeCode.getUnidirectional());
         Assert.assertTrue(weightCodeCode.isEnteredFromSlotArchetypeLink());
@@ -359,7 +359,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0002]/events[at0003]", bmiParent.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_mass_index/any_event[n]", bmiParent.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_mass_index(:\\d+)?/any_event(:\\d+)?(\\|.*)?", bmiParent.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("EVENT", bmiParent.getDetectedType());
+        Assert.assertTrue(bmiParent.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(bmiParent.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(bmiParent.isUseParentRoot());
         Assert.assertFalse(bmiParent.isHasSlot());
@@ -377,7 +377,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("openEHR-EHR-COMPOSITION.growth_chart.v0", iterateBmi.getOpenEhr());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0002]/events[at0003]", iterateBmi.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_mass_index/any_event[n]", iterateBmi.getFullOpenEhrFlatPath());
-        Assert.assertEquals("EVENT", iterateBmi.getDetectedType());
+        Assert.assertTrue(iterateBmi.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(iterateBmi.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(iterateBmi.isUseParentRoot());
         Assert.assertFalse(iterateBmi.isHasSlot());
@@ -395,7 +395,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]", bmiSlot.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_mass_index", bmiSlot.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_mass_index(:\\d+)?(\\|.*)?", bmiSlot.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("OBSERVATION", bmiSlot.getDetectedType());
+        Assert.assertTrue(bmiSlot.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertFalse(bmiSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(bmiSlot.isUseParentRoot());
         Assert.assertTrue(bmiSlot.isHasSlot());
@@ -417,7 +417,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0001]/events[at0002]/data[at0003]/items[at0004]", bmi.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_mass_index/any_event[n]/body_mass_index", bmi.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_mass_index(:\\d+)?/any_event(:\\d+)?/body_mass_index(:\\d+)?(\\|.*)?", bmi.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_QUANTITY", bmi.getDetectedType());
+        Assert.assertTrue(bmi.getPossibleRmTypes().contains("DV_QUANTITY"));
         Assert.assertTrue(bmi.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(bmi.isUseParentRoot());
         Assert.assertFalse(bmi.isHasSlot());
@@ -436,7 +436,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0001]/events[at0002]/time", bmiTime.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_mass_index/any_event[n]/time", bmiTime.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/body_mass_index(:\\d+)?/any_event(:\\d+)?/time(:\\d+)?(\\|.*)?", bmiTime.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_DATE_TIME", bmiTime.getDetectedType());
+        Assert.assertTrue(bmiTime.getPossibleRmTypes().contains("DV_DATE_TIME"));
         Assert.assertTrue(bmiTime.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(bmiTime.isUseParentRoot());
         Assert.assertFalse(bmiTime.isHasSlot());
@@ -454,7 +454,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("openEHR-EHR-OBSERVATION.body_mass_index.v2", bmiCode.getOpenEhr());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]", bmiCode.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/body_mass_index", bmiCode.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", bmiCode.getDetectedType());
+        Assert.assertTrue(bmiCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("openehr->fhir", bmiCode.getUnidirectional());
         Assert.assertTrue(bmiCode.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(bmiCode.isUseParentRoot());
@@ -471,7 +471,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().code.coding.code", bmiCodeCode.getFullFhirPath());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.body_mass_index.v2", bmiCodeCode.getOpenEhr());
         Assert.assertEquals("growth_chart/body_mass_index", bmiCodeCode.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", bmiCodeCode.getDetectedType());
+        Assert.assertTrue(bmiCodeCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("39156-5", bmiCodeCode.getManualFhirValue());
         Assert.assertEquals("openehr->fhir", bmiCodeCode.getUnidirectional());
         Assert.assertTrue(bmiCodeCode.isEnteredFromSlotArchetypeLink());
@@ -493,7 +493,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0002]/events[at0003]", headCircumferenceParent.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference/any_event[n]", headCircumferenceParent.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/head_circumference(:\\d+)?/any_event(:\\d+)?(\\|.*)?", headCircumferenceParent.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("EVENT", headCircumferenceParent.getDetectedType());
+        Assert.assertTrue(headCircumferenceParent.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(headCircumferenceParent.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(headCircumferenceParent.isUseParentRoot());
         Assert.assertFalse(headCircumferenceParent.isHasSlot());
@@ -511,7 +511,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("openEHR-EHR-COMPOSITION.growth_chart.v0", iterateHead.getOpenEhr());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0002]/events[at0003]", iterateHead.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference/any_event[n]", iterateHead.getFullOpenEhrFlatPath());
-        Assert.assertEquals("EVENT", iterateHead.getDetectedType());
+        Assert.assertTrue(iterateHead.getPossibleRmTypes().contains("EVENT"));
         Assert.assertFalse(iterateHead.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(iterateHead.isUseParentRoot());
         Assert.assertFalse(iterateHead.isHasSlot());
@@ -529,7 +529,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]", headCircumferenceSlot.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference", headCircumferenceSlot.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/head_circumference(:\\d+)?(\\|.*)?", headCircumferenceSlot.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("OBSERVATION", headCircumferenceSlot.getDetectedType());
+        Assert.assertTrue(headCircumferenceSlot.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertFalse(headCircumferenceSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(headCircumferenceSlot.isUseParentRoot());
         Assert.assertTrue(headCircumferenceSlot.isHasSlot());
@@ -552,7 +552,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0001]/events[at0010]/data[at0003]/items[at0004]", headCircumference.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference/any_event[n]/head_circumference", headCircumference.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/head_circumference(:\\d+)?/any_event(:\\d+)?/head_circumference(:\\d+)?(\\|.*)?", headCircumference.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_QUANTITY", headCircumference.getDetectedType());
+        Assert.assertTrue(headCircumference.getPossibleRmTypes().contains("DV_QUANTITY"));
         Assert.assertTrue(headCircumference.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(headCircumference.isUseParentRoot());
         Assert.assertFalse(headCircumference.isHasSlot());
@@ -571,7 +571,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0001]/events[at0010]/time", headCircumferenceTime.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference/any_event[n]/time", headCircumferenceTime.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/head_circumference(:\\d+)?/any_event(:\\d+)?/time(:\\d+)?(\\|.*)?", headCircumferenceTime.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("DV_DATE_TIME", headCircumferenceTime.getDetectedType());
+        Assert.assertTrue(headCircumferenceTime.getPossibleRmTypes().contains("DV_DATE_TIME"));
         Assert.assertTrue(headCircumferenceTime.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(headCircumferenceTime.isUseParentRoot());
         Assert.assertFalse(headCircumferenceTime.isHasSlot());
@@ -589,7 +589,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("openEHR-EHR-OBSERVATION.head_circumference.v1", headStatus.getOpenEhr());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]", headStatus.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference", headStatus.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", headStatus.getDetectedType());
+        Assert.assertTrue(headStatus.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("openehr->fhir", headStatus.getUnidirectional());
         Assert.assertTrue(headStatus.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(headStatus.isUseParentRoot());
@@ -606,7 +606,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().status", headStatusStatus.getFullFhirPath());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.head_circumference.v1", headStatusStatus.getOpenEhr());
         Assert.assertEquals("growth_chart/head_circumference", headStatusStatus.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", headStatusStatus.getDetectedType());
+        Assert.assertTrue(headStatusStatus.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("final", headStatusStatus.getManualFhirValue());
         Assert.assertEquals("openehr->fhir", headStatusStatus.getUnidirectional());
         Assert.assertTrue(headStatusStatus.isEnteredFromSlotArchetypeLink());
@@ -627,7 +627,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]", headCode.getFullOpenEhrPath());
         Assert.assertEquals("growth_chart/head_circumference", headCode.getFullOpenEhrFlatPath());
         Assert.assertEquals("growth_chart(:\\d+)?/head_circumference(:\\d+)?(\\|.*)?", headCode.getFullOpenEhrFlatPathWithMatchingRegex());
-        Assert.assertEquals("OBSERVATION", headCode.getDetectedType());
+        Assert.assertTrue(headCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("openehr->fhir", headCode.getUnidirectional());
         Assert.assertTrue(headCode.isEnteredFromSlotArchetypeLink());
         Assert.assertFalse(headCode.isUseParentRoot());
@@ -644,7 +644,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().code.coding.code", headCodeCode.getFullFhirPath());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.head_circumference.v1", headCodeCode.getOpenEhr());
         Assert.assertEquals("growth_chart/head_circumference", headCodeCode.getFullOpenEhrFlatPath());
-        Assert.assertEquals("OBSERVATION", headCodeCode.getDetectedType());
+        Assert.assertTrue(headCodeCode.getPossibleRmTypes().contains("OBSERVATION"));
         Assert.assertEquals("8287-5", headCodeCode.getManualFhirValue());
         Assert.assertEquals("openehr->fhir", headCodeCode.getUnidirectional());
         Assert.assertTrue(headCodeCode.isEnteredFromSlotArchetypeLink());

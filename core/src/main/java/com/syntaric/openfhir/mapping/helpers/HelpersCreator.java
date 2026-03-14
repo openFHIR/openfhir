@@ -122,6 +122,7 @@ public class HelpersCreator {
         for (final Mapping mapping : mappings) {
             final MappingHelper mappingHelper = new MappingHelper();
             mappingHelper.setModelMetadataName(fhirConnectModel.getMetadata().getName());
+            mappingHelper.setArchetype(fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype());
             mappingHelper.setMappingName(mapping.getName());
             mappingHelper.setGeneratingResourceType(fhirDataType);
             mappingHelper.setEnteredFromSlotArchetypeLink(slotArchetype != null);

@@ -44,3 +44,14 @@ docker run -e SPRING_DATA_MONGODB_URI=mongodb://your-mongodb-url \
 ```
 
 Additionally, check out the [Docker Compose](https://github.com/openfhir/openfhir/blob/develop/docker-compose.yml) file for a complete setup with mongodb.
+
+---
+
+## Credits
+
+Original openFHIR project was initially open-sourced by MedBlocks in https://github.com/medblocks/openFHIR. Credits:
+
+- **[Medblocks](https://medblocks.com/)** 
+- **[Karkinos Healthcare](https://karkinos.in/)** 
+- **[HiGHmed](https://www.highmed.org/)** 
+- **[Syntaric](https://syntaric.com/)** 

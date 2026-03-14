@@ -60,12 +60,18 @@ public class OpenEhrFlatPathDataExtractor {
 
         // group pipe-suffixed siblings (|value, |code, …) into per-occurrence buckets keyed by root
         final Map<String, List<String>> grouped = openFhirStringUtils.joinValuesThatAreOne(matchingKeys);
-        final String detectedType = mappingHelper.getDetectedType();
+        final List<String> possibleRmTypes = mappingHelper.getPossibleRmTypes();
         final String hardcodedType = mappingHelper.getHardcodedType();
 
         return grouped.entrySet().stream()
-                .map(entry -> toDataWithIndex(entry.getKey(), entry.getValue(), flatJsonObject, detectedType,
-                                              hardcodedType, mappingHelper.getFhir()))
+                .map(entry -> {
+                    DataWithIndex dataWithIndex = toDataWithIndex(entry.getKey(), entry.getValue(), flatJsonObject, possibleRmTypes,
+                            hardcodedType, mappingHelper.getFhir());
+                    if(dataWithIndex != null) {
+                        mappingHelper.setDetectedType(dataWithIndex.getDetectedType());
+                    }
+                    return dataWithIndex;
+                })
                 .filter(d -> d != null)
                 .collect(Collectors.toList());
     }
@@ -77,12 +83,12 @@ public class OpenEhrFlatPathDataExtractor {
     private DataWithIndex toDataWithIndex(final String root,
                                           final List<String> keys,
                                           final JsonObject flatJson,
-                                          final String detectedType,
+                                          final List<String> possibleRmTypes,
                                           final String hardcodedType,
                                           final String fhirPath) {
         final int index = openFhirStringUtils.getLastIndex(root);
-        final String type = StringUtils.isEmpty(hardcodedType) ? detectedType : hardcodedType;
+        final List<String> types = StringUtils.isEmpty(hardcodedType) ? possibleRmTypes : List.of(hardcodedType);
 
-        return valueToFHIRParser.parse(keys, type, flatJson, root, index, fhirPath);
+        return valueToFHIRParser.parse(keys, types, flatJson, root, index, fhirPath);
     }
 }

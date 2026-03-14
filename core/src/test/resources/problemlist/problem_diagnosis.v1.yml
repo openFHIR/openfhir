@@ -1,3 +1,4 @@
+# Full problem_diagnosis model - used in Update Model Problem_Diagnosis
 grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
@@ -14,16 +15,14 @@ spec:
 
 preprocessor:
   fhirCondition:
-    targetRoot: "$resource.verificationStatus" # exclude all conditions with entered-in-error or refuted
+    targetRoot: "$resource.verificationStatus"
     targetAttribute: "coding.code"
     operator: "not of"
     criterias:
       - "entered-in-error"
-      - "refuted" # This can be mapped to exclusion archetype but we cannot expect that this is part of most templates
-      # Extension mapping can be used to map to exclusion archetype
+      - "refuted"
 
 mappings:
-
   - name: "contextStartTime"
     with:
       fhir: "$resource.recordedDate"
@@ -32,11 +31,11 @@ mappings:
   - name: "participations"
     with:
       fhir: "$resource.asserter"
-      openehr: "$composition/context/participations"  # reference to part
+      openehr: "$composition/context/participations"
       type: "NONE"
     followedBy:
       mappings:
-        - name : "participationFunction"
+        - name: "participationFunction"
           with:
             fhir: "$fhirRoot"
             openehr: "$openehrRoot"
@@ -48,21 +47,21 @@ mappings:
         - name: "performer"
           with:
             fhir: "$fhirRoot"
-            openehr: "$openehrRoot/performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out#
+            openehr: "$openehrRoot/performer"
+
   - name: "composer"
     with:
       fhir: "$resource.recorder"
-      openehr: "$composition/composer" # often required therefore simplified mapping engine is to resolve Reference -> Composer
-
+      openehr: "$composition/composer"
 
   - name: "other_participations"
     with:
       fhir: "$resource.asserter"
-      openehr: "$archetype/other_participations"  # reference to part
+      openehr: "$archetype/other_participations"
       type: "NONE"
     followedBy:
       mappings:
-        - name : "participationFunction"
+        - name: "participationFunction"
           with:
             fhir: "$fhirRoot"
             openehr: "$openehrRoot"
@@ -74,38 +73,38 @@ mappings:
         - name: "performer"
           with:
             fhir: "$fhirRoot"
-            openehr: "performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+            openehr: "performer"
 
   - name: "provider"
     with:
       fhir: "$resource.recorder"
-      openehr: "$archetype/provider"  # often required therefore simplified mapping engine is to resolve Reference -> Participations
+      openehr: "$archetype/provider"
 
   - name: "problemDiagnose"
     with:
       fhir: "$resource.code"
-      openehr: "$archetype/data[at0001]/items[at0002]" # FHIR "code" is mapped to openEHR "Problem/Diagnosis name"
+      openehr: "$archetype/data[at0001]/items[at0002]"
 
   - name: "verificationStatus"
     with:
       fhir: "$resource.verificationStatus"
-      openehr: "$archetype/data[at0001]/items[at0073]" #Verification Status maps to Diagnostic Certainty
+      openehr: "$archetype/data[at0001]/items[at0073]"
 
   - name: "clinicalStatusSlot"
     with:
-      fhir: "$resource.clinicalStatus"
-      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]" #Clinical Status Slot
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]"
     slotArchetype: "CLUSTER.problem_qualifier.v2"
 
   - name: "note"
     with:
       fhir: "$resource.note.text"
-      openehr: "$archetype/data[at0001]/items[at0069]" # FHIR "note.text" is mapped to openEHR "Comment"
+      openehr: "$archetype/data[at0001]/items[at0069]"
 
   - name: "dateTime"
     with:
       fhir: "$resource.onset"
-      openehr: "$archetype/data[at0001]/items[at0077]" # FHIR "onsetDateTime" is mapped to openEHR "Date/time of onset"
+      openehr: "$archetype/data[at0001]/items[at0077]"
 
   - name: "bodySiteCluster"
     with:
@@ -116,4 +115,29 @@ mappings:
   - name: "severity"
     with:
       fhir: "$resource.severity"
-      openehr: "$archetype/data[at0001]/items[at0005]" # FHIR "severity" is mapped to openEHR "Severity"
+      openehr: "$archetype/data[at0001]/items[at0005]"
+
+#  - name: "stage"
+#    with:
+#      fhir: "$resource.stage"
+#      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+#    slotArchetype: "CLUSTER.laboratory_test_analyte.v1"
+#   followedBy:
+#      mappings:
+#        - name: "stageAssessmentReference"
+#          with:
+#            fhir: "assessment.as(Observation)"
+#            openehr: "$reference"
+#          reference:
+#            resourceType: "Observation"
+#            mappings:
+#              - name: "observationToStage"
+#                with:
+#                  fhir: "$fhirRoot"
+#                  openehr: "$openehrRoot"
+#                slotArchetype: "CLUSTER.laboratory_test_analyte.v1"
+ # - name: "clinicalEvidence"
+ #   with:
+ #     fhir: "$resource.evidence"
+ #     openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1]"
+ #   slotArchetype: "CLUSTER.clinical_evidence.v1"

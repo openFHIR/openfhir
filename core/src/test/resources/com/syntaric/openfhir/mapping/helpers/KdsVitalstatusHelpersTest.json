@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "effective",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -13,12 +14,12 @@
   "fullFhirPath" : "Observation.effective",
   "openEhr" : "openEHR-EHR-EVALUATION.vital_status.v1/protocol[at0002]/items[at0018]",
   "fullOpenEhrPath" : "openEHR-EHR-EVALUATION.vital_status.v1/protocol[at0002]/items[at0018]",
-  "fullOpenEhrFlatPath" : "kds_vitalstatus/vitalstatus/zeitpunkt_der_feststellung/date_time_value",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/vitalstatus(:\\d+)?/zeitpunkt_der_feststellung(:\\d+)?/date_time_value(:\\d+)?(\\|.*)?",
+  "fullOpenEhrFlatPath" : "kds_vitalstatus/vitalstatus/zeitpunkt_der_feststellung",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/vitalstatus(:\\d+)?/zeitpunkt_der_feststellung(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_DATE_TIME",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_DATE_TIME", "DV_DATE_TIME", "DV_DURATION" ],
+  "possibleRmTypes" : [ "DV_DATE_TIME", "DV_DURATION" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -33,6 +34,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "vitalStatus",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -49,9 +51,9 @@
   "fullOpenEhrFlatPath" : "kds_vitalstatus/vitalstatus/vitalstatus",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/vitalstatus(:\\d+)?/vitalstatus(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_CODED_TEXT",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -66,6 +68,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "note",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -82,9 +85,9 @@
   "fullOpenEhrFlatPath" : "kds_vitalstatus/vitalstatus/kommentar[n]",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/vitalstatus(:\\d+)?/kommentar(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_TEXT",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_TEXT", "DV_TEXT" ],
+  "possibleRmTypes" : [ "DV_TEXT" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -99,6 +102,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "metaURL",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -129,6 +133,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "Observation",
     "resolveResourceType" : null,
@@ -165,6 +170,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -181,9 +187,9 @@
   "fullOpenEhrFlatPath" : "kds_vitalstatus/context/fallidentifikation",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "CLUSTER",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "CLUSTER" ],
+  "possibleRmTypes" : [ ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -195,6 +201,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -211,9 +218,9 @@
     "fullOpenEhrFlatPath" : "kds_vitalstatus/context/fallidentifikation",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "CLUSTER",
+    "detectedType" : null,
     "hardcodedType" : "NONE",
-    "possibleRmTypes" : [ "CLUSTER" ],
+    "possibleRmTypes" : [ ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -225,6 +232,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -241,9 +249,9 @@
       "fullOpenEhrFlatPath" : "kds_vitalstatus/context/fallidentifikation/fall-kennung",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "DV_CODED_TEXT",
+      "detectedType" : null,
       "hardcodedType" : null,
-      "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
@@ -264,6 +272,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : "Encounter",
@@ -280,7 +289,7 @@
   "fullOpenEhrFlatPath" : "kds_vitalstatus/vitalstatus",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/vitalstatus(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "EVALUATION",
+  "detectedType" : null,
   "hardcodedType" : null,
   "possibleRmTypes" : [ "EVALUATION" ],
   "programmedMapping" : null,
@@ -294,6 +303,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -310,9 +320,9 @@
     "fullOpenEhrFlatPath" : "kds_vitalstatus/context/fallidentifikation",
     "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
-    "detectedType" : "CLUSTER",
+    "detectedType" : null,
     "hardcodedType" : null,
-    "possibleRmTypes" : [ "CLUSTER" ],
+    "possibleRmTypes" : [ ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
@@ -324,6 +334,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -340,9 +351,9 @@
       "fullOpenEhrFlatPath" : "kds_vitalstatus/context/fallidentifikation",
       "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
-      "detectedType" : "CLUSTER",
+      "detectedType" : null,
       "hardcodedType" : "NONE",
-      "possibleRmTypes" : [ "CLUSTER" ],
+      "possibleRmTypes" : [ ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
@@ -354,6 +365,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
@@ -370,9 +382,9 @@
         "fullOpenEhrFlatPath" : "kds_vitalstatus/context/fallidentifikation/fall-kennung",
         "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
-        "detectedType" : "DV_CODED_TEXT",
+        "detectedType" : null,
         "hardcodedType" : null,
-        "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+        "possibleRmTypes" : [ "DV_CODED_TEXT" ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
         "manualFhirValue" : null,
@@ -396,6 +408,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "status",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -412,9 +425,9 @@
   "fullOpenEhrFlatPath" : "kds_vitalstatus/context/status",
   "fullOpenEhrFlatPathWithMatchingRegex" : "kds_vitalstatus(:\\d+)?/context(:\\d+)?/status(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
-  "detectedType" : "DV_CODED_TEXT",
+  "detectedType" : null,
   "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT", "DV_CODED_TEXT" ],
+  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
   "manualFhirValue" : null,
@@ -429,6 +442,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "category",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -459,6 +473,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
     "mappingName" : "manual",
     "generatingResourceType" : "Observation",
     "resolveResourceType" : null,
@@ -489,6 +504,7 @@
     "availableCodings" : null,
     "children" : [ {
       "modelMetadataName" : "EVALUATION.vital_status.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
       "mappingName" : "manual.survey",
       "generatingResourceType" : "Observation",
       "resolveResourceType" : null,
@@ -522,6 +538,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.vital_status.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
       "mappingName" : "manual.survey",
       "generatingResourceType" : "Observation",
       "resolveResourceType" : null,
@@ -561,6 +578,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
   "mappingName" : "code",
   "generatingResourceType" : "Observation",
   "resolveResourceType" : null,
@@ -591,6 +609,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
     "mappingName" : "manual",
     "generatingResourceType" : "Observation",
     "resolveResourceType" : null,
@@ -621,6 +640,7 @@
     "availableCodings" : null,
     "children" : [ {
       "modelMetadataName" : "EVALUATION.vital_status.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
       "mappingName" : "manual.survey",
       "generatingResourceType" : "Observation",
       "resolveResourceType" : null,
@@ -654,6 +674,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.vital_status.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
       "mappingName" : "manual.survey",
       "generatingResourceType" : "Observation",
       "resolveResourceType" : null,

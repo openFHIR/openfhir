@@ -173,7 +173,7 @@ public class StudienteilnahmeToFHIRTest extends KdsGenericTest {
     }
 
     /**
-     * Input: /kds/studienteilnahme/toOpenEHR/output/studienteilnahme.flat.json
+     * Input: /kds/studienteilnahme/toOpenEHR/output/studienteilnahme.flat_textvalue.json
      */
     @Test
     public void assertToFHIRFlatFields() {

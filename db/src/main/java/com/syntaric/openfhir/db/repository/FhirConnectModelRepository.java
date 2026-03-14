@@ -9,7 +9,7 @@ public interface FhirConnectModelRepository {
 
     List<FhirConnectModelEntity> findByTenantAndArchetype(final List<String> archetype, final String user);
 
-    List<FhirConnectModelEntity> findByTenantAndName(final List<String> name, final String user);
+    List<FhirConnectModelEntity> findByTenantAndName(final List<String> name, final String organization);
     FhirConnectModelEntity save(final FhirConnectModelEntity entity);
 
     void deleteAll();

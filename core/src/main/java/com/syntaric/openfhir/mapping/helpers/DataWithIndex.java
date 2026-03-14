@@ -11,4 +11,5 @@ public class DataWithIndex {
     private Base data;
     private int index;
     private String fullOpenEhrPath;
+    private String detectedType;
 }
