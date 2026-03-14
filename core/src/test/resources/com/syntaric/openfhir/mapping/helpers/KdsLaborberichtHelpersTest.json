@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "effectivePeriod",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -30,6 +31,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "effectiveEnd",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -63,6 +65,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "effectiveStart",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -99,6 +102,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "effectiveDateTime",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -132,6 +136,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "issued",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -165,6 +170,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "eventParent",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -195,6 +201,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "eventTime",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -228,6 +235,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "categoryLoinc",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -258,6 +266,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "categoryCoding",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : null,
@@ -288,6 +297,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "categoryCoding.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -321,6 +331,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "categoryCoding.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -354,6 +365,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "categoryCoding.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -390,6 +402,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "categoryHl7",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : null,
@@ -420,6 +433,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "categoryHl7.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -453,6 +467,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "categoryHl7.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -486,6 +501,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "categoryHl7.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -522,6 +538,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "text",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : null,
@@ -552,6 +569,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "text.laboratoryCategory",
         "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
@@ -591,6 +609,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "code",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -624,6 +643,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "status",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -657,6 +677,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "conclusion",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -690,6 +711,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "specimen",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -720,6 +742,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "specimenReference",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : "Specimen",
@@ -750,6 +773,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "specimenReference",
         "generatingResourceType" : "Specimen",
         "resolveResourceType" : null,
@@ -780,6 +804,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "identifier",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -813,6 +838,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "collection",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -843,6 +869,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "collected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -883,6 +910,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "collectedPeriod",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -923,6 +951,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "collector",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -956,6 +985,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "specimenCollectionMethod",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -989,6 +1019,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "specimenCollectionBodySite",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1022,6 +1053,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "samplingContext",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1058,6 +1090,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "type",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1091,6 +1124,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "note",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1124,6 +1158,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "descriptionOfSpecimen",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1157,6 +1192,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "identifierOfSpecimen",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1190,6 +1226,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "dateReceived",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1223,6 +1260,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "parent",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1256,6 +1294,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "request",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1286,6 +1325,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "identifier",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1324,6 +1364,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "identifierInReference",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : "Specimen",
@@ -1359,6 +1400,7 @@
             "availableCodings" : [ ],
             "children" : [ {
               "modelMetadataName" : "CLUSTER.specimen.v1",
+              "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
               "mappingName" : "identifierInReference",
               "generatingResourceType" : "Specimen",
               "resolveResourceType" : null,
@@ -1398,6 +1440,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.available",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1438,6 +1481,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.available",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1478,6 +1522,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.available",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1518,6 +1563,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1555,6 +1601,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.available",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1595,6 +1642,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.unavailable",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1635,6 +1683,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.unsatisfactory",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1678,6 +1727,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unavailable",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1718,6 +1768,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unavailable",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1758,6 +1809,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unavailable",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1798,6 +1850,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1835,6 +1888,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.available",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1875,6 +1929,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.unavailable",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1915,6 +1970,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.unsatisfactory",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1958,6 +2014,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unsatisfactory",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1998,6 +2055,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unsatisfactory",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2038,6 +2096,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unsatisfactory",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2078,6 +2137,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2115,6 +2175,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.available",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2155,6 +2216,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.unavailable",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2195,6 +2257,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "status.unsatisfactory",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2247,6 +2310,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "basedOn",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -2277,6 +2341,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "identifierInReference",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : null,
@@ -2313,6 +2378,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "result",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -2343,6 +2409,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "observationReference",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : "Observation",
@@ -2373,6 +2440,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+        "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "observationRecurring",
         "generatingResourceType" : "Observation",
         "resolveResourceType" : null,
@@ -2403,6 +2471,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.registered",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2443,6 +2512,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.registered",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2483,6 +2553,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.registered",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2523,6 +2594,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2553,6 +2625,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2593,6 +2666,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2633,6 +2707,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2673,6 +2748,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2713,6 +2789,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2753,6 +2830,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2793,6 +2871,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2833,6 +2912,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2873,6 +2953,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2916,6 +2997,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2946,6 +3028,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -2986,6 +3069,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3026,6 +3110,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3066,6 +3151,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3106,6 +3192,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3146,6 +3233,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3186,6 +3274,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3226,6 +3315,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3266,6 +3356,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3309,6 +3400,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.preliminary",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3349,6 +3441,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.preliminary",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3389,6 +3482,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.preliminary",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3429,6 +3523,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3459,6 +3554,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3499,6 +3595,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3539,6 +3636,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3579,6 +3677,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3619,6 +3718,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3659,6 +3759,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3699,6 +3800,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3739,6 +3841,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3779,6 +3882,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -3822,6 +3926,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.final",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3862,6 +3967,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.final",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3902,6 +4008,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.final",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3942,6 +4049,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3972,6 +4080,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4012,6 +4121,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4052,6 +4162,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4092,6 +4203,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4132,6 +4244,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4172,6 +4285,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4212,6 +4326,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4252,6 +4367,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4292,6 +4408,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4335,6 +4452,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.amended",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4375,6 +4493,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.amended",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4415,6 +4534,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.amended",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4455,6 +4575,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4485,6 +4606,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4525,6 +4647,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4565,6 +4688,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4605,6 +4729,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4645,6 +4770,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4685,6 +4811,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4725,6 +4852,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4765,6 +4893,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4805,6 +4934,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -4848,6 +4978,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.corrected",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4888,6 +5019,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.corrected",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4928,6 +5060,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.corrected",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4968,6 +5101,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -4998,6 +5132,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5038,6 +5173,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5078,6 +5214,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5118,6 +5255,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5158,6 +5296,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5198,6 +5337,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5238,6 +5378,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5278,6 +5419,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5318,6 +5460,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5361,6 +5504,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.appended",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5401,6 +5545,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.appended",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5441,6 +5586,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.appended",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5481,6 +5627,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5511,6 +5658,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5551,6 +5699,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5591,6 +5740,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5631,6 +5781,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5671,6 +5822,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5711,6 +5863,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5751,6 +5904,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5791,6 +5945,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5831,6 +5986,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -5874,6 +6030,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.cancelled",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5914,6 +6071,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.cancelled",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5954,6 +6112,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.cancelled",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -5994,6 +6153,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6024,6 +6184,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6064,6 +6225,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6104,6 +6266,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6144,6 +6307,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6184,6 +6348,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6224,6 +6389,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6264,6 +6430,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6304,6 +6471,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6344,6 +6512,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6387,6 +6556,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.entered-in-error",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6427,6 +6597,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.entered-in-error",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6467,6 +6638,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status.entered-in-error",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6507,6 +6679,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "status",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6537,6 +6710,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.registered",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6577,6 +6751,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.partial",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6617,6 +6792,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.preliminary",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6657,6 +6833,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.final",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6697,6 +6874,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.amended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6737,6 +6915,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.corrected",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6777,6 +6956,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.appended",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6817,6 +6997,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.cancelled",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6857,6 +7038,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "status.entered-in-error",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -6900,6 +7082,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "issued",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6933,6 +7116,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "analyteMeasurement",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6966,6 +7150,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "analyteName",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -6999,6 +7184,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "interpretation",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -7032,6 +7218,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "testmethod",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -7065,6 +7252,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "specimen",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -7095,6 +7283,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "identifier",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -7133,6 +7322,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
             "mappingName" : "identifierInReference",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : "Specimen",
@@ -7168,6 +7358,7 @@
             "availableCodings" : [ ],
             "children" : [ {
               "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+              "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
               "mappingName" : "identifierInReference",
               "generatingResourceType" : "Specimen",
               "resolveResourceType" : null,
@@ -7207,6 +7398,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
           "mappingName" : "comment",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -7252,6 +7444,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "metaURL",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -7282,6 +7475,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -7318,6 +7512,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -7348,6 +7543,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -7378,6 +7574,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -7417,6 +7614,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : "Encounter",
@@ -7447,6 +7645,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -7477,6 +7676,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -7507,6 +7707,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
@@ -7549,6 +7750,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "berichtIdParent",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
@@ -7586,6 +7788,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "type",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
@@ -7616,6 +7819,7 @@
     "availableCodings" : null,
     "children" : [ {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "type.fill",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : null,
@@ -7649,6 +7853,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
       "mappingName" : "type.fill",
       "generatingResourceType" : "DiagnosticReport",
       "resolveResourceType" : null,
@@ -7685,6 +7890,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "berichtId",
     "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,

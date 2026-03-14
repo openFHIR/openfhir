@@ -43,7 +43,7 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
     public void initMappingCache(final FhirConnectContext context,
                                  final OPERATIONALTEMPLATE operationaltemplate,
                                  final WebTemplate webTemplate,
-                                 final String user) {
+                                 final String tenant) {
         final String templateId = context.getContext().getTemplate().getId();
         final String normalizedRepoId = normalizeTemplateId(templateId);
         if (repository.containsKey(normalizedRepoId)) {
@@ -55,7 +55,7 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
         fhirContextRepo.setWebTemplate(webTemplate);
 
         final List<OpenFhirFhirConnectModelMapper> openFhirFhirConnectModelMappers = prepareJoinedModels(
-                context.getContext(), user);
+                context.getContext(), tenant);
 
         final Map<String, List<OpenFhirFhirConnectModelMapper>> mappers = new HashMap<>();
 
@@ -95,10 +95,10 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
         repository.put(normalizedRepoId, fhirContextRepo);
     }
 
-    private List<OpenFhirFhirConnectModelMapper> prepareJoinedModels(final Context context, final String user) {
+    public List<OpenFhirFhirConnectModelMapper> prepareJoinedModels(final Context context, final String tenant) {
         // now load mappings
         final List<FhirConnectModelEntity> modelEntities = fhirConnectModelRepository.findByTenantAndName(
-                context.getArchetypes(), user);
+                context.getArchetypes(), tenant);
         if (modelEntities == null || modelEntities.isEmpty()) {
             log.error("Couldn't find any model entities that would match {}", context.getArchetypes());
             throw new IllegalArgumentException("Couldn't find any model entities for this template.");
@@ -107,17 +107,17 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
         final List<FhirConnectModel> coreModels = modelEntities.stream()
                 .map(FhirConnectModelEntity::getFhirConnectModel)
                 .collect(Collectors.toList());
-        final List<FhirConnectModel> extensionsModels = loadExtensions(context.getExtensions(), user);
+        final List<FhirConnectModel> extensionsModels = loadExtensions(context.getExtensions(), tenant);
         return modelMerger.joinModelMappers(coreModels, extensionsModels);
     }
 
-    private List<FhirConnectModel> loadExtensions(final List<String> extensions, final String user) {
+    private List<FhirConnectModel> loadExtensions(final List<String> extensions, final String org) {
         if (extensions == null || extensions.isEmpty()) {
             log.debug("No extensions defined.");
             return null;
         }
         final List<FhirConnectModelEntity> extensionEntities = fhirConnectModelRepository.findByTenantAndName(
-                extensions, user);
+                extensions, org);
         if (extensionEntities == null || extensionEntities.isEmpty()) {
             log.error("Couldn't find extension model mappers ({}) in the database.", extensions);
             throw new IllegalArgumentException("Couldn't find defined extension model mappers in the database.");

@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "authoredOn",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -33,6 +34,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "protocol0008Parent",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -63,6 +65,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "identifier",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -96,6 +99,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "status.categoryStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -136,6 +140,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "status.categoryStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -180,6 +185,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "status.categoryStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -220,6 +226,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "status",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -250,6 +257,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "INSTRUCTION.service_request.v1",
+      "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
       "mappingName" : "status.categoryStatic",
       "generatingResourceType" : "ServiceRequest",
       "resolveResourceType" : null,
@@ -293,6 +301,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "organisation",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : "Organization",
@@ -323,6 +332,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "INSTRUCTION.service_request.v1",
+      "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
       "mappingName" : "organization",
       "generatingResourceType" : "Organization",
       "resolveResourceType" : null,
@@ -353,6 +363,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.organisation.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.organisation.v1",
         "mappingName" : "orgName",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -386,6 +397,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.organisation.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.organisation.v1",
         "mappingName" : "orgId",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -428,6 +440,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "code",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -461,6 +474,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "category.categoryStatic",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -501,6 +515,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "category.categoryStatic",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -545,6 +560,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "category.categoryStatic",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -585,6 +601,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "category",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -615,6 +632,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "category.categoryStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -655,6 +673,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "category.categoryStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -695,6 +714,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "category.categoryStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -738,6 +758,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "intent.intentStatic",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -778,6 +799,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "intent.intentStatic",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -822,6 +844,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "intent.intentStatic",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -862,6 +885,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "intent",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -892,6 +916,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "intent.intentStatic",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
@@ -935,6 +960,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "note",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -968,6 +994,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -998,6 +1025,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -1028,6 +1056,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -1067,6 +1096,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : "Encounter",
@@ -1097,6 +1127,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -1127,6 +1158,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -1157,6 +1189,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
@@ -1199,6 +1232,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "specimen",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -1229,6 +1263,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "specimenReference",
     "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : "Specimen",
@@ -1259,6 +1294,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "INSTRUCTION.service_request.v1",
+      "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
       "mappingName" : "specimenRecurring",
       "generatingResourceType" : "Specimen",
       "resolveResourceType" : null,
@@ -1289,6 +1325,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "INSTRUCTION.service_request.v1",
+        "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
         "mappingName" : "specimenIdentifier",
         "generatingResourceType" : "Specimen",
         "resolveResourceType" : null,
@@ -1322,6 +1359,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "identifier",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1355,6 +1393,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "collection",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1385,6 +1424,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "collected",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1425,6 +1465,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "collectedPeriod",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1465,6 +1506,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "collector",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1498,6 +1540,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "specimenCollectionMethod",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1531,6 +1574,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "specimenCollectionBodySite",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1564,6 +1608,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "samplingContext",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1600,6 +1645,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "type",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1633,6 +1679,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "note",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1666,6 +1713,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "descriptionOfSpecimen",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1699,6 +1747,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "identifierOfSpecimen",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1732,6 +1781,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "dateReceived",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1765,6 +1815,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "parent",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1798,6 +1849,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "request",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1828,6 +1880,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "identifier",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1866,6 +1919,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "identifierInReference",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : "Specimen",
@@ -1901,6 +1955,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "identifierInReference",
             "generatingResourceType" : "Specimen",
             "resolveResourceType" : null,
@@ -1940,6 +1995,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.available",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1980,6 +2036,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.available",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2020,6 +2077,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.available",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2060,6 +2118,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2097,6 +2156,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.available",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2137,6 +2197,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unavailable",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2177,6 +2238,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unsatisfactory",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2220,6 +2282,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.unavailable",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2260,6 +2323,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.unavailable",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2300,6 +2364,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.unavailable",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2340,6 +2405,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2377,6 +2443,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.available",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2417,6 +2484,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unavailable",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2457,6 +2525,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unsatisfactory",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2500,6 +2569,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.unsatisfactory",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2540,6 +2610,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.unsatisfactory",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2580,6 +2651,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status.unsatisfactory",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2620,6 +2692,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
         "mappingName" : "status",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2657,6 +2730,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.available",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2697,6 +2771,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unavailable",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2737,6 +2812,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
           "mappingName" : "status.unsatisfactory",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,

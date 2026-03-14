@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "EVALUATION.gender.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
   "mappingName" : "gender",
   "generatingResourceType" : "Patient",
   "resolveResourceType" : null,
@@ -30,6 +31,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.gender.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
     "mappingName" : "genderAppended",
     "generatingResourceType" : "Patient",
     "resolveResourceType" : null,
@@ -67,6 +69,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.gender.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
       "mappingName" : "staticExtensionUrl",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : null,
@@ -97,6 +100,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "EVALUATION.gender.v1",
+        "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
         "mappingName" : "staticExtensionUrl.staticUrl",
         "generatingResourceType" : "Patient",
         "resolveResourceType" : null,
@@ -133,6 +137,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.gender.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
       "mappingName" : "otherAmtlichValueCoding",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : null,
@@ -172,6 +177,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.gender.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
   "mappingName" : "metaURL",
   "generatingResourceType" : "Patient",
   "resolveResourceType" : null,
@@ -202,6 +208,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "EVALUATION.gender.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "Patient",
     "resolveResourceType" : null,
@@ -238,6 +245,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.gender.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
   "mappingName" : "adminEntryPerson",
   "generatingResourceType" : "Patient",
   "resolveResourceType" : null,
@@ -268,6 +276,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "ADMIN_ENTRY.person_data.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.person_data.v0",
     "mappingName" : "personData",
     "generatingResourceType" : "Patient",
     "resolveResourceType" : null,
@@ -298,6 +307,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.person.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.person.v1",
       "mappingName" : "name",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : null,
@@ -331,6 +341,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.person.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.person.v1",
       "mappingName" : "address",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : null,
@@ -361,6 +372,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.address.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.address.v1",
         "mappingName" : "streetaddress",
         "generatingResourceType" : "Address",
         "resolveResourceType" : null,
@@ -391,6 +403,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "city",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -424,6 +437,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "postalCode",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -457,6 +471,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "line",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -490,6 +505,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.physical",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -530,6 +546,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.physical",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -582,6 +599,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.physical",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -622,6 +640,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -652,6 +671,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.physical",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -692,6 +712,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.postal",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -732,6 +753,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.both",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -775,6 +797,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.postal",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -815,6 +838,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.postal",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -867,6 +891,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.postal",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -907,6 +932,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -937,6 +963,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.physical",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -977,6 +1004,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.postal",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -1017,6 +1045,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.both",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -1060,6 +1089,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.both",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -1100,6 +1130,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.both",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -1152,6 +1183,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type.both",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -1192,6 +1224,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.address.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.address.v1",
           "mappingName" : "type",
           "generatingResourceType" : "Address",
           "resolveResourceType" : null,
@@ -1222,6 +1255,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.physical",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -1262,6 +1296,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.postal",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -1302,6 +1337,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.address.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.address.v1",
             "mappingName" : "type.both",
             "generatingResourceType" : "Address",
             "resolveResourceType" : null,
@@ -1351,6 +1387,7 @@
       "hasSlot" : true
     }, {
       "modelMetadataName" : "CLUSTER.person.v1",
+      "archetype" : "openEHR-EHR-CLUSTER.person.v1",
       "mappingName" : "organizationReference",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : "Organization",
@@ -1381,6 +1418,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.person.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.person.v1",
         "mappingName" : "organization",
         "generatingResourceType" : "Organization",
         "resolveResourceType" : null,
@@ -1420,6 +1458,7 @@
     "hasSlot" : true
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.person_data.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.person_data.v0",
     "mappingName" : "death",
     "generatingResourceType" : "Patient",
     "resolveResourceType" : null,
@@ -1450,6 +1489,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "ADMIN_ENTRY.person_data.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.person_data.v0",
       "mappingName" : "deathBoolean",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : null,
@@ -1488,6 +1528,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "ADMIN_ENTRY.person_data.v0",
+      "archetype" : "openEHR-EHR-ADMIN_ENTRY.person_data.v0",
       "mappingName" : "deathTime",
       "generatingResourceType" : "Patient",
       "resolveResourceType" : null,
@@ -1524,6 +1565,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "ADMIN_ENTRY.person_data.v0",
+    "archetype" : "openEHR-EHR-ADMIN_ENTRY.person_data.v0",
     "mappingName" : "personBirthDate",
     "generatingResourceType" : "Patient",
     "resolveResourceType" : null,
@@ -1554,6 +1596,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.person_birth_data_iso.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.person_birth_data_iso.v0",
       "mappingName" : "birthdate",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1593,6 +1636,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "EVALUATION.gender.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
   "mappingName" : "pid",
   "generatingResourceType" : "Patient",
   "resolveResourceType" : null,
@@ -1633,6 +1677,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.gender.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.gender.v1",
   "mappingName" : "versicherungsInformationen",
   "generatingResourceType" : "Patient",
   "resolveResourceType" : null,

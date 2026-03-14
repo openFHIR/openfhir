@@ -3,13 +3,12 @@ package com.syntaric.openfhir.mapping.tofhir;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.nedap.archie.rm.composition.Composition;
+import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.util.OpenEhrCachedUtils;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.marshal.FlatJsonMarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -19,6 +18,9 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -44,6 +46,16 @@ public class ToFhir {
         this.helpersCreator = helpersCreator;
         this.toFhirPrePostProcessor = toFhirPrePostProcessor;
         this.toFhirMappingEngine = toFhirMappingEngine;
+    }
+
+    public Bundle contentItemToFhir(final FhirConnectContext context,
+                                     final List<ContentItem> contentItems,
+                                     final OPERATIONALTEMPLATE operationaltemplate) {
+        toFhirPrePostProcessor.preProcessContentItems(context, contentItems, operationaltemplate);
+
+        Composition composition = new Composition();
+        composition.setContent(contentItems);
+        return compositionsToFhir(context, List.of(composition), operationaltemplate);
     }
 
     public Bundle compositionsToFhir(final FhirConnectContext context,

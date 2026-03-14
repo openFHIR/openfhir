@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "dateAsserted",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -33,6 +34,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "effectivePeriod",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -63,6 +65,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "effectiveEnd",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -96,6 +99,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "effectiveStart",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -132,6 +136,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "effectiveDateTime",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -165,6 +170,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "eventsParent",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -195,6 +201,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "eventTime",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -228,6 +235,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "reasonCode",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -261,6 +269,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "note",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -294,6 +303,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "dosageX",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -327,6 +337,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "dosage",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -357,6 +368,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.dosage.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
       "mappingName" : "dosageInstructionText",
       "generatingResourceType" : "Dosage",
       "resolveResourceType" : null,
@@ -390,6 +402,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
       "mappingName" : "sequence",
       "generatingResourceType" : "Dosage",
       "resolveResourceType" : null,
@@ -423,6 +436,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
       "mappingName" : "doseAndRate",
       "generatingResourceType" : "Dosage",
       "resolveResourceType" : null,
@@ -453,6 +467,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.dosage.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
         "mappingName" : "doseQuantityValue",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -493,6 +508,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
         "mappingName" : "doseRangeValue",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -533,6 +549,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
         "mappingName" : "rateQuantity",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -571,6 +588,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
         "mappingName" : "rateRatio",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -609,6 +627,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
         "mappingName" : "rateRangeValue",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -645,6 +664,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
       "mappingName" : "dosageDailyTiming",
       "generatingResourceType" : "Dosage",
       "resolveResourceType" : null,
@@ -682,6 +702,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.timing_daily.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
         "mappingName" : "dosageTiming",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -712,6 +733,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.timing_daily.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
           "mappingName" : "when",
           "generatingResourceType" : "Dosage",
           "resolveResourceType" : null,
@@ -745,6 +767,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.timing_daily.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
           "mappingName" : "offset",
           "generatingResourceType" : "Dosage",
           "resolveResourceType" : null,
@@ -781,6 +804,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.timing_daily.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
         "mappingName" : "asNeeded",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -814,6 +838,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.timing_daily.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
         "mappingName" : "asNeededCode",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -850,6 +875,7 @@
       "hasSlot" : true
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
       "mappingName" : "dosageTimingNonDaily",
       "generatingResourceType" : "Dosage",
       "resolveResourceType" : null,
@@ -887,6 +913,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.timing_nondaily.v1",
+        "archetype" : "openEHR-EHR-CLUSTER.timing_nondaily.v1",
         "mappingName" : "dosageTiming",
         "generatingResourceType" : "Dosage",
         "resolveResourceType" : null,
@@ -917,6 +944,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.timing_nondaily.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.timing_nondaily.v1",
           "mappingName" : "when",
           "generatingResourceType" : "Dosage",
           "resolveResourceType" : null,
@@ -950,6 +978,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.timing_nondaily.v1",
+          "archetype" : "openEHR-EHR-CLUSTER.timing_nondaily.v1",
           "mappingName" : "offset",
           "generatingResourceType" : "Dosage",
           "resolveResourceType" : null,
@@ -989,6 +1018,7 @@
       "hasSlot" : true
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
       "mappingName" : "duration",
       "generatingResourceType" : "Dosage",
       "resolveResourceType" : null,
@@ -1025,6 +1055,7 @@
     "hasSlot" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "unstructuredDosage",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -1058,6 +1089,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "medication",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : "Medication",
@@ -1088,6 +1120,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+      "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
       "mappingName" : "medicationReference",
       "generatingResourceType" : "Medication",
       "resolveResourceType" : null,
@@ -1118,6 +1151,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "name",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1158,6 +1192,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "form",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1191,6 +1226,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "amount",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1224,6 +1260,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "batch",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1254,6 +1291,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "id",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1287,6 +1325,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "expirationDate",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1323,6 +1362,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "ingredients",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1353,6 +1393,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "ingredient",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1383,6 +1424,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.medication.v2",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "itemtext",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1416,6 +1458,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.medication.v2",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "wirkstofftyp",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1452,6 +1495,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "medication",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : "Medication",
@@ -1482,6 +1526,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.medication.v2",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "useMinimalMedicationMapper",
             "generatingResourceType" : "Medication",
             "resolveResourceType" : null,
@@ -1512,6 +1557,7 @@
             "availableCodings" : [ ],
             "children" : [ {
               "modelMetadataName" : "RESOURCE.medication.min",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "code-text",
               "generatingResourceType" : "Medication",
               "resolveResourceType" : null,
@@ -1545,6 +1591,7 @@
               "hasSlot" : false
             }, {
               "modelMetadataName" : "RESOURCE.medication.min",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "code-code",
               "generatingResourceType" : "Medication",
               "resolveResourceType" : null,
@@ -1578,6 +1625,7 @@
               "hasSlot" : false
             }, {
               "modelMetadataName" : "RESOURCE.medication.min",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "form",
               "generatingResourceType" : "Medication",
               "resolveResourceType" : null,
@@ -1611,6 +1659,7 @@
               "hasSlot" : false
             }, {
               "modelMetadataName" : "RESOURCE.medication.min",
+              "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
               "mappingName" : "amount",
               "generatingResourceType" : "Medication",
               "resolveResourceType" : null,
@@ -1650,6 +1699,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "strength",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1680,6 +1730,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "CLUSTER.medication.v2",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "numerator",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1713,6 +1764,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "CLUSTER.medication.v2",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "denominator",
             "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
@@ -1752,6 +1804,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "metaURL",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1782,6 +1835,7 @@
         "availableCodings" : null,
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "metaURL.profileUrl",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -1818,6 +1872,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "nameStructured",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -1864,6 +1919,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "medicationCode",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -1901,6 +1957,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "medicationCodeR",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -1939,6 +1996,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "reasonReference",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -1972,6 +2030,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "reasonReference",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -2005,6 +2064,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "reasonReferenceObservation",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -2041,6 +2101,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "metaURL",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -2071,6 +2132,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -2107,6 +2169,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -2137,6 +2200,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -2167,6 +2231,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -2206,6 +2271,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : "Encounter",
@@ -2236,6 +2302,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -2266,6 +2333,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -2296,6 +2364,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
@@ -2338,6 +2407,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "status",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -2371,6 +2441,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "protocol0004Parent",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
@@ -2401,6 +2472,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "externalIdentifier",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -2431,6 +2503,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.identifier_fhir.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.identifier_fhir.v0",
       "mappingName" : "identifier",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -2467,6 +2540,7 @@
     "hasSlot" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "category",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
@@ -2497,6 +2571,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.entry_category.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.entry_category.v0",
       "mappingName" : "category",
       "generatingResourceType" : "CodeableConcept",
       "resolveResourceType" : null,
@@ -2527,6 +2602,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.entry_category.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.entry_category.v0",
         "mappingName" : "coding",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -2560,6 +2636,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.entry_category.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.entry_category.v0",
         "mappingName" : "comment",
         "generatingResourceType" : "CodeableConcept",
         "resolveResourceType" : null,
@@ -2602,6 +2679,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "medicationReference",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : "Medication",
@@ -2632,6 +2710,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "medicationReferenceKds",
     "generatingResourceType" : "Medication",
     "resolveResourceType" : null,
@@ -2662,6 +2741,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "name",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2702,6 +2782,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "form",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2735,6 +2816,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "amount",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2768,6 +2850,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "batch",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2798,6 +2881,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "id",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2831,6 +2915,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "expirationDate",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2867,6 +2952,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "ingredients",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2897,6 +2983,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "ingredient",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -2927,6 +3014,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "itemtext",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2960,6 +3048,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "wirkstofftyp",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -2996,6 +3085,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "medication",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : "Medication",
@@ -3026,6 +3116,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "useMinimalMedicationMapper",
           "generatingResourceType" : "Medication",
           "resolveResourceType" : null,
@@ -3056,6 +3147,7 @@
           "availableCodings" : [ ],
           "children" : [ {
             "modelMetadataName" : "RESOURCE.medication.min",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "code-text",
             "generatingResourceType" : "Medication",
             "resolveResourceType" : null,
@@ -3089,6 +3181,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "RESOURCE.medication.min",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "code-code",
             "generatingResourceType" : "Medication",
             "resolveResourceType" : null,
@@ -3122,6 +3215,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "RESOURCE.medication.min",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "form",
             "generatingResourceType" : "Medication",
             "resolveResourceType" : null,
@@ -3155,6 +3249,7 @@
             "hasSlot" : false
           }, {
             "modelMetadataName" : "RESOURCE.medication.min",
+            "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "amount",
             "generatingResourceType" : "Medication",
             "resolveResourceType" : null,
@@ -3194,6 +3289,7 @@
         "hasSlot" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "strength",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -3224,6 +3320,7 @@
         "availableCodings" : [ ],
         "children" : [ {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "numerator",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3257,6 +3354,7 @@
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
+          "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "denominator",
           "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
@@ -3296,6 +3394,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "metaURL",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3326,6 +3425,7 @@
       "availableCodings" : null,
       "children" : [ {
         "modelMetadataName" : "CLUSTER.medication.v2",
+        "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
         "mappingName" : "metaURL.profileUrl",
         "generatingResourceType" : "BackboneElement",
         "resolveResourceType" : null,
@@ -3362,6 +3462,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
       "mappingName" : "nameStructured",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,

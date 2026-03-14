@@ -11,14 +11,8 @@ import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.AqlToFlatPathConverter;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
-import com.syntaric.openfhir.mapping.helpers.parser.CodedParser;
-import com.syntaric.openfhir.mapping.helpers.parser.FhirValueReaders;
-import com.syntaric.openfhir.mapping.helpers.parser.IdentifierParser;
-import com.syntaric.openfhir.mapping.helpers.parser.MediaParser;
-import com.syntaric.openfhir.mapping.helpers.parser.QuantityParser;
-import com.syntaric.openfhir.mapping.helpers.parser.TemporalParser;
-import com.syntaric.openfhir.mapping.helpers.parser.TextParser;
-import com.syntaric.openfhir.mapping.helpers.parser.ValueToFHIRParser;
+import com.syntaric.openfhir.mapping.helpers.parser.*;
+import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.tofhir.ToFhirInstantiator;
 import com.syntaric.openfhir.mapping.tofhir.ToFhirMappingEngine;
@@ -28,22 +22,9 @@ import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrMappingEngine;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrNullFlavour;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrPrePostProcessor;
 import com.syntaric.openfhir.terminology.NoOpTerminologyTranslator;
-import com.syntaric.openfhir.util.FhirConnectModelMerger;
-import com.syntaric.openfhir.util.FhirInstanceCreator;
-import com.syntaric.openfhir.util.FhirInstanceCreatorUtility;
-import com.syntaric.openfhir.util.FhirInstancePopulator;
-import com.syntaric.openfhir.util.NoOpPrePostFhirInstancePopulator;
-import com.syntaric.openfhir.util.NoOpPrePostOpenEhrPopulator;
-import com.syntaric.openfhir.util.OpenEhrCachedUtils;
-import com.syntaric.openfhir.util.OpenEhrConditionEvaluator;
-import com.syntaric.openfhir.util.OpenEhrPopulator;
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
-import com.syntaric.openfhir.util.OpenFhirStringUtils;
-import com.syntaric.openfhir.util.OpenFhirTestUtility;
+import com.syntaric.openfhir.util.*;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import java.io.IOException;
-import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.marshal.FlatJsonMarshaller;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
@@ -58,6 +39,9 @@ import org.mockito.MockitoAnnotations;
 import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.openehr.schemas.v1.TemplateDocument;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public abstract class GenericTest {
 
     protected final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
@@ -70,6 +54,7 @@ public abstract class GenericTest {
     protected TestOpenFhirMappingContext repo;
     protected ToFhir toFhir;
     protected ToOpenEhr toOpenEhr;
+    protected ToAql toAql;
     protected FhirConnectContext context;
     protected OPERATIONALTEMPLATE operationaltemplate;
     protected String operationaltemplateSerialized;

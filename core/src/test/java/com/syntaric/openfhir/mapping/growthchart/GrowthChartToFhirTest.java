@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
+import org.ehrbase.openehr.sdk.serialisation.jsonencoding.CanonicalJson;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
@@ -34,6 +35,479 @@ public class GrowthChartToFhirTest extends GenericTest {
         operationaltemplate = getOperationalTemplate();
         repo.initRepository(context, operationaltemplate, getClass().getResource(MODEL_MAPPINGS).getFile());
         webTemplate = new OPTParser(operationaltemplate).parse();
+    }
+
+    @Test
+    public void growthChartSpecificObservationToFhir() throws IOException {
+        final String observation = "{\n" +
+                "        \"_type\": \"OBSERVATION\",\n" +
+                "        \"archetype_node_id\": \"openEHR-EHR-OBSERVATION.height.v2\",\n" +
+                "        \"name\": {\n" +
+                "          \"_type\": \"DV_TEXT\",\n" +
+                "          \"value\": \"Height/Length\"\n" +
+                "        },\n" +
+                "        \"archetype_details\": {\n" +
+                "          \"archetype_id\": {\n" +
+                "            \"value\": \"openEHR-EHR-OBSERVATION.height.v2\"\n" +
+                "          },\n" +
+                "          \"rm_version\": \"1.0.4\"\n" +
+                "        },\n" +
+                "        \"encoding\": {\n" +
+                "          \"_type\": \"CODE_PHRASE\",\n" +
+                "          \"code_string\": \"ISO-10646-UTF-1\",\n" +
+                "          \"terminology_id\": {\n" +
+                "            \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "            \"value\": \"IANA_character-sets\"\n" +
+                "          }\n" +
+                "        },\n" +
+                "        \"guideline_id\": {\n" +
+                "          \"_type\": \"OBJECT_REF\",\n" +
+                "          \"id\": {\n" +
+                "            \"_type\": \"GENERIC_ID\",\n" +
+                "            \"value\": \"48b61e73-9545-358b-b442-34db4c2ed3b9\",\n" +
+                "            \"scheme\": \"scheme\"\n" +
+                "          },\n" +
+                "          \"namespace\": \"unknown\",\n" +
+                "          \"type\": \"ANY\"\n" +
+                "        },\n" +
+                "        \"language\": {\n" +
+                "          \"_type\": \"CODE_PHRASE\",\n" +
+                "          \"code_string\": \"en\",\n" +
+                "          \"terminology_id\": {\n" +
+                "            \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "            \"value\": \"ISO_639-1\"\n" +
+                "          }\n" +
+                "        },\n" +
+                "        \"provider\": {\n" +
+                "          \"_type\": \"PARTY_SELF\"\n" +
+                "        },\n" +
+                "        \"subject\": {\n" +
+                "          \"_type\": \"PARTY_SELF\"\n" +
+                "        },\n" +
+                "        \"workflow_id\": {\n" +
+                "          \"_type\": \"OBJECT_REF\",\n" +
+                "          \"id\": {\n" +
+                "            \"_type\": \"GENERIC_ID\",\n" +
+                "            \"value\": \"36c6d06e-cc47-306c-a5c4-66833ced9c2e\",\n" +
+                "            \"scheme\": \"scheme\"\n" +
+                "          },\n" +
+                "          \"namespace\": \"unknown\",\n" +
+                "          \"type\": \"ANY\"\n" +
+                "        },\n" +
+                "        \"data\": {\n" +
+                "          \"archetype_node_id\": \"at0001\",\n" +
+                "          \"name\": {\n" +
+                "            \"_type\": \"DV_TEXT\",\n" +
+                "            \"value\": \"history\"\n" +
+                "          },\n" +
+                "          \"duration\": {\n" +
+                "            \"_type\": \"DV_DURATION\",\n" +
+                "            \"value\": \"PT0S\"\n" +
+                "          },\n" +
+                "          \"origin\": {\n" +
+                "            \"_type\": \"DV_DATE_TIME\",\n" +
+                "            \"value\": \"2022-02-03T04:05:06\"\n" +
+                "          },\n" +
+                "          \"period\": {\n" +
+                "            \"_type\": \"DV_DURATION\",\n" +
+                "            \"value\": \"PT0S\"\n" +
+                "          },\n" +
+                "          \"events\": [\n" +
+                "            {\n" +
+                "              \"_type\": \"POINT_EVENT\",\n" +
+                "              \"archetype_node_id\": \"at0021\",\n" +
+                "              \"name\": {\n" +
+                "                \"_type\": \"DV_TEXT\",\n" +
+                "                \"value\": \"Birth\"\n" +
+                "              },\n" +
+                "              \"time\": {\n" +
+                "                \"_type\": \"DV_DATE_TIME\",\n" +
+                "                \"value\": \"2022-02-03T04:05:06\"\n" +
+                "              },\n" +
+                "              \"data\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0003\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Simple\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0004\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Height/Length\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_QUANTITY\",\n" +
+                "                      \"magnitude\": 500.0,\n" +
+                "                      \"units\": \"cm\"\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0018\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Comment\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              },\n" +
+                "              \"state\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0013\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Tree\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0014\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Position\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_CODED_TEXT\",\n" +
+                "                      \"value\": \"Standing\",\n" +
+                "                      \"defining_code\": {\n" +
+                "                        \"_type\": \"CODE_PHRASE\",\n" +
+                "                        \"code_string\": \"at0016\",\n" +
+                "                        \"terminology_id\": {\n" +
+                "                          \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "                          \"value\": \"local\"\n" +
+                "                        }\n" +
+                "                      }\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0019\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Confounding factors\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {\n" +
+                "              \"_type\": \"INTERVAL_EVENT\",\n" +
+                "              \"archetype_node_id\": \"at0002\",\n" +
+                "              \"name\": {\n" +
+                "                \"_type\": \"DV_TEXT\",\n" +
+                "                \"value\": \"Any event\"\n" +
+                "              },\n" +
+                "              \"math_function\": {\n" +
+                "                \"_type\": \"DV_CODED_TEXT\",\n" +
+                "                \"value\": \"minimum\",\n" +
+                "                \"defining_code\": {\n" +
+                "                  \"_type\": \"CODE_PHRASE\",\n" +
+                "                  \"code_string\": \"145\",\n" +
+                "                  \"terminology_id\": {\n" +
+                "                    \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "                    \"value\": \"openehr\"\n" +
+                "                  }\n" +
+                "                }\n" +
+                "              },\n" +
+                "              \"time\": {\n" +
+                "                \"_type\": \"DV_DATE_TIME\",\n" +
+                "                \"value\": \"2022-02-03T04:05:06\"\n" +
+                "              },\n" +
+                "              \"width\": {\n" +
+                "                \"_type\": \"DV_DURATION\",\n" +
+                "                \"value\": \"PT42H\"\n" +
+                "              },\n" +
+                "              \"data\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0003\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Simple\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0004\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Height/Length\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_QUANTITY\",\n" +
+                "                      \"magnitude\": 500.0,\n" +
+                "                      \"units\": \"cm\"\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0018\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Comment\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              },\n" +
+                "              \"state\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0013\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Tree\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0014\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Position\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_CODED_TEXT\",\n" +
+                "                      \"value\": \"Standing\",\n" +
+                "                      \"defining_code\": {\n" +
+                "                        \"_type\": \"CODE_PHRASE\",\n" +
+                "                        \"code_string\": \"at0016\",\n" +
+                "                        \"terminology_id\": {\n" +
+                "                          \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "                          \"value\": \"local\"\n" +
+                "                        }\n" +
+                "                      }\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0019\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Confounding factors\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {\n" +
+                "              \"_type\": \"POINT_EVENT\",\n" +
+                "              \"archetype_node_id\": \"at0002\",\n" +
+                "              \"name\": {\n" +
+                "                \"_type\": \"DV_TEXT\",\n" +
+                "                \"value\": \"Any event\"\n" +
+                "              },\n" +
+                "              \"time\": {\n" +
+                "                \"_type\": \"DV_DATE_TIME\",\n" +
+                "                \"value\": \"2022-02-03T04:05:06\"\n" +
+                "              },\n" +
+                "              \"data\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0003\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Simple\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0004\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Height/Length\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_QUANTITY\",\n" +
+                "                      \"magnitude\": 500.0,\n" +
+                "                      \"units\": \"cm\"\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0018\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Comment\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              },\n" +
+                "              \"state\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0013\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Tree\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0014\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Position\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_CODED_TEXT\",\n" +
+                "                      \"value\": \"Standing\",\n" +
+                "                      \"defining_code\": {\n" +
+                "                        \"_type\": \"CODE_PHRASE\",\n" +
+                "                        \"code_string\": \"at0016\",\n" +
+                "                        \"terminology_id\": {\n" +
+                "                          \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "                          \"value\": \"local\"\n" +
+                "                        }\n" +
+                "                      }\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0019\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Confounding factors\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              }\n" +
+                "            },\n" +
+                "            {\n" +
+                "              \"_type\": \"INTERVAL_EVENT\",\n" +
+                "              \"archetype_node_id\": \"at0002\",\n" +
+                "              \"name\": {\n" +
+                "                \"_type\": \"DV_TEXT\",\n" +
+                "                \"value\": \"Any event\"\n" +
+                "              },\n" +
+                "              \"math_function\": {\n" +
+                "                \"_type\": \"DV_CODED_TEXT\",\n" +
+                "                \"value\": \"minimum\",\n" +
+                "                \"defining_code\": {\n" +
+                "                  \"_type\": \"CODE_PHRASE\",\n" +
+                "                  \"code_string\": \"145\",\n" +
+                "                  \"terminology_id\": {\n" +
+                "                    \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "                    \"value\": \"openehr\"\n" +
+                "                  }\n" +
+                "                }\n" +
+                "              },\n" +
+                "              \"time\": {\n" +
+                "                \"_type\": \"DV_DATE_TIME\",\n" +
+                "                \"value\": \"2022-02-03T04:05:06\"\n" +
+                "              },\n" +
+                "              \"width\": {\n" +
+                "                \"_type\": \"DV_DURATION\",\n" +
+                "                \"value\": \"PT42H\"\n" +
+                "              },\n" +
+                "              \"data\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0003\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Simple\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0004\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Height/Length\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_QUANTITY\",\n" +
+                "                      \"magnitude\": 500.0,\n" +
+                "                      \"units\": \"cm\"\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0018\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Comment\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              },\n" +
+                "              \"state\": {\n" +
+                "                \"_type\": \"ITEM_TREE\",\n" +
+                "                \"archetype_node_id\": \"at0013\",\n" +
+                "                \"name\": {\n" +
+                "                  \"_type\": \"DV_TEXT\",\n" +
+                "                  \"value\": \"Tree\"\n" +
+                "                },\n" +
+                "                \"items\": [\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0014\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Position\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_CODED_TEXT\",\n" +
+                "                      \"value\": \"Standing\",\n" +
+                "                      \"defining_code\": {\n" +
+                "                        \"_type\": \"CODE_PHRASE\",\n" +
+                "                        \"code_string\": \"at0016\",\n" +
+                "                        \"terminology_id\": {\n" +
+                "                          \"_type\": \"TERMINOLOGY_ID\",\n" +
+                "                          \"value\": \"local\"\n" +
+                "                        }\n" +
+                "                      }\n" +
+                "                    }\n" +
+                "                  },\n" +
+                "                  {\n" +
+                "                    \"_type\": \"ELEMENT\",\n" +
+                "                    \"archetype_node_id\": \"at0019\",\n" +
+                "                    \"name\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Confounding factors\"\n" +
+                "                    },\n" +
+                "                    \"value\": {\n" +
+                "                      \"_type\": \"DV_TEXT\",\n" +
+                "                      \"value\": \"Lorem ipsum\"\n" +
+                "                    }\n" +
+                "                  }\n" +
+                "                ]\n" +
+                "              }\n" +
+                "            }\n" +
+                "          ]\n" +
+                "        }\n" +
+                "      }";
+        final com.nedap.archie.rm.composition.Observation unmarshalled = new CanonicalJson().unmarshal(observation, com.nedap.archie.rm.composition.Observation.class);
+
+        Bundle bundle = toFhir.contentItemToFhir(context, List.of(unmarshalled), operationaltemplate);
+        System.out.println();
     }
 
     @Test

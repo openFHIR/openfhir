@@ -1,5 +1,6 @@
 [ {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "contextStartTime",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -33,6 +34,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "status",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -63,6 +65,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.provisional",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -103,6 +106,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.provisional",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -159,6 +163,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.provisional",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -199,6 +204,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -236,6 +242,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -276,6 +283,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -316,6 +324,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -356,6 +365,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -396,6 +406,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -436,6 +447,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -476,6 +488,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -516,6 +529,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -556,6 +570,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -596,6 +611,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -636,6 +652,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -676,6 +693,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -716,6 +734,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -756,6 +775,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -796,6 +816,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -839,6 +860,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.differential",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -879,6 +901,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.differential",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -935,6 +958,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.differential",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -975,6 +999,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1012,6 +1037,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1052,6 +1078,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1092,6 +1119,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1132,6 +1160,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1172,6 +1201,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1212,6 +1242,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1252,6 +1283,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1292,6 +1324,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1332,6 +1365,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1372,6 +1406,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1412,6 +1447,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1452,6 +1488,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1492,6 +1529,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1532,6 +1570,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1572,6 +1611,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1615,6 +1655,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.preliminary",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1655,6 +1696,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.preliminary",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1711,6 +1753,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.preliminary",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1751,6 +1794,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -1788,6 +1832,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1828,6 +1873,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1868,6 +1914,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1908,6 +1955,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1948,6 +1996,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -1988,6 +2037,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2028,6 +2078,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2068,6 +2119,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2108,6 +2160,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2148,6 +2201,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2188,6 +2242,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2228,6 +2283,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2268,6 +2324,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2308,6 +2365,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2348,6 +2406,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2391,6 +2450,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.established",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2431,6 +2491,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.established",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2487,6 +2548,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.established",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2527,6 +2589,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -2564,6 +2627,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2604,6 +2668,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2644,6 +2709,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2684,6 +2750,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2724,6 +2791,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2764,6 +2832,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2804,6 +2873,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2844,6 +2914,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2884,6 +2955,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2924,6 +2996,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -2964,6 +3037,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3004,6 +3078,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3044,6 +3119,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3084,6 +3160,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3124,6 +3201,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3167,6 +3245,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.refuted",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3207,6 +3286,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.refuted",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3263,6 +3343,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded.refuted",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3303,6 +3384,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "statusCoded",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3340,6 +3422,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3380,6 +3463,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3420,6 +3504,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.provisional",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3460,6 +3545,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3500,6 +3586,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3540,6 +3627,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.differential",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3580,6 +3668,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3620,6 +3709,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3660,6 +3750,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.preliminary",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3700,6 +3791,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3740,6 +3832,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3780,6 +3873,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.established",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3820,6 +3914,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3860,6 +3955,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3900,6 +3996,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+      "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
       "mappingName" : "statusCoded.refuted",
       "generatingResourceType" : "BackboneElement",
       "resolveResourceType" : null,
@@ -3943,6 +4040,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "CLUSTER.problem_qualifier.v2",
+    "archetype" : "openEHR-EHR-CLUSTER.problem_qualifier.v2",
     "mappingName" : "clinicalStatus",
     "generatingResourceType" : "BackboneElement",
     "resolveResourceType" : null,
@@ -3979,6 +4077,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "causeOfDeath",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4012,6 +4111,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "category",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4042,6 +4142,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_loinc",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4072,6 +4173,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4105,6 +4207,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4141,6 +4244,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_loinc",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4171,6 +4275,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4204,6 +4309,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_loinc.loinc_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4240,6 +4346,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_snomed",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4270,6 +4377,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4303,6 +4411,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4339,6 +4448,7 @@
     "hasSlot" : false
   }, {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "category_code_coding_snomed",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4369,6 +4479,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_code",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4402,6 +4513,7 @@
       "hasSlot" : false
     }, {
       "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+      "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
       "mappingName" : "category_code_coding_snomed.snomed_system",
       "generatingResourceType" : "Condition",
       "resolveResourceType" : null,
@@ -4441,6 +4553,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "comment",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4474,6 +4587,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "metaURL",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4504,6 +4618,7 @@
   "availableCodings" : null,
   "children" : [ {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "metaURL.profileUrl",
     "generatingResourceType" : "Condition",
     "resolveResourceType" : null,
@@ -4540,6 +4655,7 @@
   "hasSlot" : false
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "fallIdentifikationIdentifier",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : null,
@@ -4570,6 +4686,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "CLUSTER.case_identification.v0",
+    "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
     "mappingName" : "identifierCaseParent",
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
@@ -4600,6 +4717,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCase",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -4639,6 +4757,7 @@
   "hasSlot" : true
 }, {
   "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+  "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
   "mappingName" : "fallIdentifikationReference",
   "generatingResourceType" : "Condition",
   "resolveResourceType" : "Encounter",
@@ -4669,6 +4788,7 @@
   "availableCodings" : [ ],
   "children" : [ {
     "modelMetadataName" : "EVALUATION.cause_of_death.v1",
+    "archetype" : "openEHR-EHR-EVALUATION.cause_of_death.v1",
     "mappingName" : "identifierInReference",
     "generatingResourceType" : "Encounter",
     "resolveResourceType" : null,
@@ -4699,6 +4819,7 @@
     "availableCodings" : [ ],
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
+      "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
       "mappingName" : "identifierCaseParent",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
@@ -4729,6 +4850,7 @@
       "availableCodings" : [ ],
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
         "mappingName" : "identifierCase",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
