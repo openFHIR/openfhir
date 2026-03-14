@@ -12,12 +12,8 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.terminology.OfCoding;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Address;
@@ -112,6 +108,7 @@ public class OpenEhrPopulator {
                                 String openEhrPath,
                                 final Base extractedValue,
                                 final String openEhrType,
+                                final boolean isMultipleTypes, // true if there can be multiple types for a certain field, in which case we need to add the leaf type suffix (i.e. quantity_value)
                                 final JsonObject constructingFlat,
                                 final Terminology terminology,
                                 final List<OfCoding> availableCodings) {
@@ -123,16 +120,17 @@ public class OpenEhrPopulator {
                                                             terminology,
                                                             availableCodings);
 
-        setOpenEhrValueInternal(mappingHelper, openEhrPath, extractedValue, openEhrType, constructingFlat, terminology,
+        final Set<String> keysBefore = new HashSet<>(constructingFlat.keySet());
+
+        setOpenEhrValueInternal(mappingHelper, openEhrPath, extractedValue, openEhrType, isMultipleTypes, constructingFlat, terminology,
                                 availableCodings);
 
-        // newly added things
-        final List<String> added = openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
-                openEhrPath,
-                constructingFlat);
-        final List<String> toPaths = openFhirStringUtils.getAllEntriesThatMatch(
-                openFhirStringUtils.addRegexPatternToSimplifiedFlatFormat(openEhrPath),
-                constructingFlat);
+        final List<String> toPaths = constructingFlat.keySet().stream()
+                .filter(k -> !keysBefore.contains(k))
+                .collect(java.util.stream.Collectors.toList());
+        final List<String> added = toPaths.stream()
+                .map(k -> constructingFlat.get(k).getAsString())
+                .collect(java.util.stream.Collectors.toList());
 
         prePostOpenEhrPopulatorInterface.postPopulateElement(mappingHelper,
                                                              openEhrPath,
@@ -150,6 +148,7 @@ public class OpenEhrPopulator {
                                          String openEhrPath,
                                          final Base extractedValue,
                                          final String openEhrType,
+                                         final boolean isMultipleTypes,
                                          final JsonObject constructingFlat,
                                          final Terminology terminology,
                                          final List<OfCoding> availableCodings) {
@@ -189,101 +188,101 @@ public class OpenEhrPopulator {
 
         switch (openEhrType) {
             case FhirConnectConst.DV_MULTIMEDIA:
-                handleDvMultimedia(openEhrPath, extractedValue, constructingFlat);
+                handleDvMultimedia(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 return;
             case FhirConnectConst.DV_QUANTITY:
                 final boolean addedQuantity = handleDvQuantity(mappingHelper, openEhrPath, extractedValue, constructingFlat,
-                                                               terminology, availableCodings);
+                                                               terminology, isMultipleTypes, availableCodings);
                 if (addedQuantity) {
                     return;
                 }
             case FhirConnectConst.DV_ORDINAL:
-                boolean addedOrdinal = handleDvOrdinal(openEhrPath, extractedValue, constructingFlat, terminology);
+                boolean addedOrdinal = handleDvOrdinal(openEhrPath, extractedValue, isMultipleTypes, constructingFlat, terminology);
                 if (addedOrdinal) {
                     return;
                 }
             case FhirConnectConst.DV_PROPORTION:
-                boolean addedProportion = handleDvProportion(openEhrPath, extractedValue, constructingFlat);
+                boolean addedProportion = handleDvProportion(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedProportion) {
                     return;
                 }
             case FhirConnectConst.DV_COUNT:
-                final boolean addedCount = handleDvCount(openEhrPath, extractedValue, constructingFlat);
+                final boolean addedCount = handleDvCount(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedCount) {
                     return;
                 }
             case FhirConnectConst.DV_DATE_TIME:
-                final boolean addedDateTime = handleDvDateTime(openEhrPath, extractedValue, constructingFlat);
+                final boolean addedDateTime = handleDvDateTime(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedDateTime) {
                     return;
                 }
             case FhirConnectConst.DV_INTERVAL:
                 final boolean addedInterval = handleDvInterval(mappingHelper, openEhrPath, extractedValue,
-                                                               constructingFlat, terminology, availableCodings);
+                                                               constructingFlat, terminology, isMultipleTypes, availableCodings);
                 if (addedInterval) {
                     return;
                 }
             case FhirConnectConst.DV_DURATION:
-                final boolean addedDuration = handleDvDuration(openEhrPath, extractedValue, constructingFlat,
+                final boolean addedDuration = handleDvDuration(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
                                                                terminology);
                 if (addedDuration) {
                     return;
                 }
             case FhirConnectConst.DV_DATE:
-                final boolean addedDate = handleDvDate(openEhrPath, extractedValue, constructingFlat);
+                final boolean addedDate = handleDvDate(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedDate) {
                     return;
                 }
             case FhirConnectConst.DV_TIME:
-                final boolean addedTime = handleDvTime(openEhrPath, extractedValue, constructingFlat);
+                final boolean addedTime = handleDvTime(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedTime) {
                     return;
                 }
             case FhirConnectConst.DV_CODED_TEXT:
-                final boolean addedCodeText = handleDvCodedText(openEhrPath, extractedValue, constructingFlat,
+                final boolean addedCodeText = handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
                                                                 terminology);
                 if (addedCodeText) {
                     return;
                 }
             case FhirConnectConst.DV_IDENTIFIER:
-                final boolean addedIdentifier = handleIdentifier(openEhrPath, extractedValue, constructingFlat,
+                final boolean addedIdentifier = handleIdentifier(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
                                                                  terminology);
                 if (addedIdentifier) {
                     return;
                 }
             case FhirConnectConst.CODE_PHRASE:
-                final boolean addedCode = handleCodePhrase(mappingHelper, openEhrPath, extractedValue, constructingFlat, openEhrType,
+                final boolean addedCode = handleCodePhrase(mappingHelper, openEhrPath, extractedValue, isMultipleTypes, constructingFlat, openEhrType,
                                                            terminology, availableCodings);
                 if (addedCode) {
                     return;
                 }
             case FhirConnectConst.DV_TEXT:
-                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, constructingFlat, FhirConnectConst.DV_TEXT,
+                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
                                     terminology, availableCodings);
                 return;
             case FhirConnectConst.EVENT_CONTEXT:
-                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, constructingFlat, FhirConnectConst.DV_TEXT,
+                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
                                     terminology, availableCodings);
                 return;
             case FhirConnectConst.DV_BOOL:
-                final boolean addedBool = handleDvBool(openEhrPath, extractedValue, constructingFlat);
+                final boolean addedBool = handleDvBool(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedBool) {
                     return;
                 }
             case FhirConnectConst.DV_PARTY_IDENTIFIED:
                 final boolean addedPartyIdentified = handlePartyIdentifier(openEhrPath, extractedValue,
-                                                                           constructingFlat, terminology);
+                                                                           isMultipleTypes, constructingFlat, terminology);
                 if (addedPartyIdentified) {
                     return;
                 }
             case FhirConnectConst.DV_PARTY_PROXY:
-                final boolean addedPartyProxy = handlePartyProxy(openEhrPath, extractedValue, constructingFlat,
+                final boolean addedPartyProxy = handlePartyProxy(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
                                                                  terminology);
                 if (addedPartyProxy) {
                     return;
                 }
             case FhirConnectConst.DV_EVENT:
-                final boolean addedDvEvent = handleDateTimeEvent(openEhrPath, extractedValue, constructingFlat);
+                final boolean addedDvEvent = handleDateTimeEvent(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedDvEvent) {
                     return;
                 }
@@ -299,7 +298,10 @@ public class OpenEhrPopulator {
         addToConstructingFlat(openEhrPath, translate(primitiveValue, null, terminology), constructingFlat);
     }
 
-    private void handleDvMultimedia(final String path, final Base value, final JsonObject flat) {
+    private void handleDvMultimedia(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA;
+        }
         if (value instanceof Attachment attachment) {
             int size = (attachment.getSize() == 0 && attachment.getData() != null) ? attachment.getData().length
                     : attachment.getSize();
@@ -340,9 +342,15 @@ public class OpenEhrPopulator {
     }
 
     private boolean handleDvQuantity(final MappingHelper helper,
-                                     final String path, final Base value, final JsonObject flat,
+                                     String path,
+                                     final Base value,
+                                     final JsonObject flat,
                                      final Terminology terminology,
+                                     final boolean isMultipleTypes,
                                      final List<OfCoding> availableCodings) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_QUANTITY_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_QUANTITY_VALUE;
+        }
         if (value instanceof Quantity quantity) {
             if (quantity.getValue() != null) {
                 addToConstructingFlatDouble(path + "|magnitude", quantity.getValue().doubleValue(), flat);
@@ -356,7 +364,7 @@ public class OpenEhrPopulator {
             addToConstructingFlat(path + "|unit", translate(unit, quantity.getSystem(), terminology), flat);
             return true;
         } else if (value instanceof Ratio ratio) {
-            setOpenEhrValue(helper, path, ratio.getNumerator(), FhirConnectConst.DV_QUANTITY, flat, terminology,
+            setOpenEhrValue(helper, path, ratio.getNumerator(), FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, terminology,
                             availableCodings);
             return true;
         } else if (value instanceof StringType stringType) {
@@ -369,8 +377,11 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvDuration(final String path, final Base value, final JsonObject flat,
+    private boolean handleDvDuration(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                      final Terminology terminology) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DURATION_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_DURATION_VALUE;
+        }
         if (value instanceof StringType stringType) {
             if (StringUtils.isNotBlank(stringType.getValue())) {
                 addToConstructingFlat(path, translate(stringType.getValue(), null, terminology), flat);
@@ -388,8 +399,11 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvOrdinal(final String path, final Base value, final JsonObject flat,
+    private boolean handleDvOrdinal(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                     final Terminology terminology) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_ORDINAL_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_ORDINAL_VALUE;
+        }
         if (value instanceof Quantity quantity) {
             if (quantity.getValue() != null) {
                 addToConstructingFlat(path + "|ordinal", quantity.getValue().toPlainString(), flat);
@@ -405,7 +419,10 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvProportion(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDvProportion(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE;
+        }
         if (value instanceof Quantity quantity) {
             if ("%".equals(quantity.getCode())) {
                 addToConstructingFlatDouble(path + "|denominator", 100.0, flat);
@@ -421,7 +438,10 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvCount(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDvCount(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_COUNT_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_COUNT_VALUE;
+        }
         if (value instanceof Quantity quantity) {
             if (quantity.getValue() != null) {
                 addToConstructingFlatInteger(path, quantity.getValue().intValueExact(), flat);
@@ -439,7 +459,10 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvDateTime(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDvDateTime(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE;
+        }
         if (value instanceof DateTimeType dateTime) {
             if (dateTime.getValue() != null) {
                 final String formattedDate = openFhirMapperUtils.dateTimeToString(dateTime.getValue());
@@ -466,7 +489,10 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvDate(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDvDate(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DATE_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_DATE_VALUE;
+        }
         if (value instanceof DateTimeType dateTime) {
             if (dateTime.getValue() != null) {
                 final String formattedDate = openFhirMapperUtils.dateToString(dateTime.getValue());
@@ -484,7 +510,7 @@ public class OpenEhrPopulator {
     }
 
     private boolean handleDvInterval(final MappingHelper mappingHelper, final String path, final Base value, final JsonObject flat,
-                                     final Terminology terminology, final List<OfCoding> availableCodings) {
+                                     final Terminology terminology, final boolean isMultipleTypes, final List<OfCoding> availableCodings) {
         if (value instanceof Period period) {
             if (period.getStart() != null) {
                 addToConstructingFlat(path + "/lower|value",
@@ -508,7 +534,7 @@ public class OpenEhrPopulator {
 
             Quantity low = range.getLow();
             if (hasQuantityContent(low)) {
-                handleDvQuantity(mappingHelper, path + "/lower", low, flat, terminology, availableCodings);
+                handleDvQuantity(mappingHelper, path + "/lower", low, flat, terminology, isMultipleTypes, availableCodings);
                 //               addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_QUANTITY, flat);
                 //               addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
                 lowerPopulated = true;
@@ -516,7 +542,7 @@ public class OpenEhrPopulator {
 
             Quantity high = range.getHigh();
             if (hasQuantityContent(high)) {
-                handleDvQuantity(mappingHelper, path + "/upper", high, flat, terminology, availableCodings);
+                handleDvQuantity(mappingHelper, path + "/upper", high, flat, terminology, isMultipleTypes, availableCodings);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_QUANTITY, flat);
 //                addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
                 upperPopulated = true;
@@ -539,7 +565,10 @@ public class OpenEhrPopulator {
                 || StringUtils.isNotBlank(quantity.getCode());
     }
 
-    private boolean handleDvTime(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDvTime(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_TIME_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_TIME_VALUE;
+        }
         if (value instanceof DateTimeType dateTime) {
             if (dateTime.getValue() != null) {
                 final String formattedDate = openFhirMapperUtils.timeToString(dateTime.getValue());
@@ -561,8 +590,11 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvCodedText(final String path, final Base value, final JsonObject flat,
+    private boolean handleDvCodedText(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                       final Terminology terminology) {
+//        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
+//            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE; //todo: I really don't understand when this should be here as leaf type and when not
+//        }
         if (value instanceof CodeableConcept codeableConcept) {
             List<Coding> codings = codeableConcept.getCoding().stream()
                     .filter(coding -> StringUtils.isNotBlank(coding.getCode()))
@@ -785,8 +817,11 @@ public class OpenEhrPopulator {
         }
     }
 
-    private boolean handleIdentifier(final String path, final Base value, final JsonObject flat,
+    private boolean handleIdentifier(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                      final Terminology terminology) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE;
+        }
         if (value instanceof Identifier identifier) {
             addToConstructingFlat(path + "|id", translate(identifier.getValue(), identifier.getSystem(), terminology),
                                   flat);
@@ -855,7 +890,7 @@ public class OpenEhrPopulator {
         return chosenValue;
     }
 
-    private boolean handlePartyIdentifier(final String path, final Base value, final JsonObject flat,
+    private boolean handlePartyIdentifier(final String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                           final Terminology terminology) {
         if (value instanceof StringType string) {
             addToConstructingFlat(path + "|name", translate(string.getValue(), null, terminology), flat);
@@ -875,7 +910,7 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handlePartyProxy(final String path, final Base value, final JsonObject flat,
+    private boolean handlePartyProxy(final String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                      final Terminology terminology) {
         if (value instanceof StringType string) {
             addToConstructingFlat(path + "|name", translate(string.getValue(), null, terminology), flat);
@@ -888,7 +923,7 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDateTimeEvent(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDateTimeEvent(final String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
         if (value instanceof DateTimeType dateTimeType) {
             addToConstructingFlat(path + "/time", openFhirMapperUtils.dateTimeToString(dateTimeType.getValue()), flat);
             return true;
@@ -900,19 +935,22 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleCodePhrase(final MappingHelper mappingHelper, final String path, final Base value, final JsonObject flat,
+    private boolean handleCodePhrase(final MappingHelper mappingHelper, String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
                                      final String openEhrType, final Terminology terminology,
                                      final List<OfCoding> availableCodes) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
+        }
         if (value instanceof Coding coding) {
             addToConstructingFlat(path + "|code", translate(coding.getCode(), coding.getSystem(), terminology), flat);
             addToConstructingFlat(path + "|value", translate(coding.getCode(), coding.getSystem(), terminology), flat);
             setTerminology(path + "|terminology", coding, flat, terminology);
             return true;
         } else if (value instanceof Extension extension) {
-            setOpenEhrValue(mappingHelper, path, extension.getValue(), openEhrType, flat, terminology, availableCodes);
+            setOpenEhrValue(mappingHelper, path, extension.getValue(), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
             return true;
         } else if (value instanceof CodeableConcept concept) {
-            setOpenEhrValue(mappingHelper, path, concept.getCodingFirstRep(), openEhrType, flat, terminology, availableCodes);
+            setOpenEhrValue(mappingHelper, path, concept.getCodingFirstRep(), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
             return true;
         } else if (value instanceof Enumeration<?> enumeration) {
             addToConstructingFlat(path + "|code", translate(enumeration.getValueAsString(), null, terminology), flat);
@@ -926,7 +964,10 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvBool(final String path, final Base value, final JsonObject flat) {
+    private boolean handleDvBool(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_BOOLEAN_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_BOOLEAN_VALUE;
+        }
         if (value instanceof BooleanType booleanType) {
             addToConstructingBoolean(path, booleanType.getValue(), flat);
             return true;
@@ -936,18 +977,22 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private void addValuePerFhirType(final MappingHelper mappingHelper, final Base fhirValue, final String openEhrPath,
-                                     final JsonObject constructingFlat,
+    private void addValuePerFhirType(final MappingHelper mappingHelper, final Base fhirValue, String openEhrPath,
+                                     final boolean isMultipleTypes, final JsonObject constructingFlat,
                                      final String openehrType, final Terminology terminology,
                                      final List<OfCoding> availableCodes) {
+        if(isMultipleTypes) {
+            openEhrPath = openEhrPath + "/" + FhirConnectConst.getLeafTypeForRmType(openehrType);
+        }
+
         if (fhirValue instanceof Quantity extractedQuantity) {
             if (extractedQuantity.getValue() != null) {
                 addToConstructingFlat(openEhrPath, extractedQuantity.getValue().toPlainString(), constructingFlat);
             }
         } else if (fhirValue instanceof Coding extractedCoding) {
-            handleCodePhrase(mappingHelper, openEhrPath, extractedCoding, constructingFlat, openehrType, terminology, availableCodes);
+            handleCodePhrase(mappingHelper, openEhrPath, extractedCoding, false, constructingFlat, openehrType, terminology, availableCodes);
         } else if (fhirValue instanceof CodeableConcept codeableConcept) {
-            handleDvCodedText(openEhrPath, codeableConcept.getCodingFirstRep(), constructingFlat, terminology);
+            handleDvCodedText(openEhrPath, codeableConcept.getCodingFirstRep(), false, constructingFlat, terminology);
         } else if (fhirValue instanceof DateTimeType extractedQuantity) {
             String dt = openFhirMapperUtils.dateTimeToString(extractedQuantity.getValue());
             addToConstructingFlat(openEhrPath, dt, constructingFlat);
@@ -960,7 +1005,7 @@ public class OpenEhrPopulator {
                                   constructingFlat);
         } else if (fhirValue instanceof Extension extracted) {
             if (extracted.getValue().hasPrimitiveValue()) {
-                addValuePerFhirType(mappingHelper, extracted.getValue(), openEhrPath, constructingFlat, openehrType, terminology,
+                addValuePerFhirType(mappingHelper, extracted.getValue(), openEhrPath, false, constructingFlat, openehrType, terminology,
                                     availableCodes);
             }
         } else if (fhirValue.hasPrimitiveValue()) {

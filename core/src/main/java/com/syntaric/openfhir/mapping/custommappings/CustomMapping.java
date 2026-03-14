@@ -28,7 +28,7 @@ public abstract class CustomMapping {
      */
     public boolean applyFhirToOpenEhrMapping(final MappingHelper mappingHelper,
                                              final Base fhirValue,
-                                             final String openEhrType,
+                                             final List<String> possibleRmTypes,
                                              final JsonObject flat,
                                              final OpenEhrPopulator populator,
                                              final OpenFhirMapperUtils mapperUtils,

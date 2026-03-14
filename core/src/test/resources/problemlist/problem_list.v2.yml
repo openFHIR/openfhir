@@ -1,0 +1,25 @@
+# Problem list composition model - used in Update Model Problem List
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: COMPOSITION.problem_list.v2
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-COMPOSITION.problem_list.v2
+    revision: 1.0.3
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Composition
+
+mappings:
+  - name: "date"
+    with:
+      fhir: "$resource.date"
+      openehr: "$composition/context/start_time"
+
+  - name: "sectionActiveProblems"
+    with:
+      fhir: "$resource.section"
+      openehr: "$archetype"

@@ -279,10 +279,10 @@ mappings:
           with:
             fhir: "$fhirRoot"
             openehr: "$reference"
-#          openehrCondition:
-#            targetRoot: "$openehrRoot" todo: it is empty???
-#            targetAttribute: "links"
-#            operator: "not empty"
+          openehrCondition:
+            targetRoot: "$openehrRoot"
+            targetAttribute: "links"
+            operator: "not empty"
           reference:
             resourceType: "Specimen"
             mappings:

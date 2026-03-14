@@ -37,7 +37,7 @@ public class MappingHelper {
     private String fullOpenEhrFlatPathWithMatchingRegex;
     private String flatPathPipeSuffix; // used primarily for fhir->openehr and has the flat path suffix appended to it
 
-    private String detectedType;
+    private String detectedType; // when doing openehr->fhir, we can detect specific type based on incoming openehr composition
     private String hardcodedType;
     private List<String> possibleRmTypes;
 

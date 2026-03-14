@@ -64,7 +64,7 @@ public class OpenEhrPopulatorTest {
                 "asked-declined",
                 "Asked Declined");
 
-        populator.setOpenEhrValue(null, "test/value/null_flavour", coding, FhirConnectConst.CODE_PHRASE, flat, null, null);
+        populator.setOpenEhrValue(null, "test/value/null_flavour", coding, FhirConnectConst.CODE_PHRASE, false, flat, null, null);
 
         Assert.assertEquals("masked", flat.get("test/value/null_flavour|value").getAsString());
         Assert.assertEquals("272", flat.get("test/value/null_flavour|code").getAsString());

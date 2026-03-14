@@ -1,40 +1,40 @@
-grammar: FHIRConnect/v1.0.0
-type: model
+# NL Problem List extension - adds nesting condition logic and narrative text to Composition section
+grammar: FHIRConnect/v0.0.1
+type: extension
 metadata:
-  name:  COMPOSITION.problem_list.v2
+  name: NL_problem_list
   version: 0.0.1-alpha
 spec:
   system: FHIR
   version: R4
-  openEhrConfig:
-    archetype: openEHR-EHR-COMPOSITION.problem_list.v2
-    revision: 1.0.3
+  extends: COMPOSITION.problem_list.v2
   fhirConfig:
-    structureDefinition: http://hl7.org/fhir/StructureDefinition/Composition
+    structureDefinition: http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips
 
 mappings:
-
-  - name: "date"
-    with:
-      fhir: "$resource.date"
-      openehr: "$composition/context/start_time"
-
   - name: "sectionActiveProblems"
+    extension: "overwrite"
     with:
       fhir: "$resource.section"
-      openehr: "$archetype"
+      openehr: "$composition"
     followedBy:
       mappings:
         - name: "entry"
           with:
-            fhir: "entry.as(Condition)"
-            openehr: "$composition/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
-            type: "NONE"
-          slotArchetype: "EVALUATION.problem_diagnosis.v1"
+            fhir: "entry"
+            openehr: "$reference"
+          reference:
+            resourceType: "Condition"
+            mappings:
+              - name: "problemDiagnosis"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+                slotArchetype: "EVALUATION.problem_diagnosis.v1"
         - name: "title"
           with:
             fhir: "$fhirRoot"
-            openehr: "$archetype"
+            openehr: "$composition"
           manual:
             - name: "manualTitle"
               fhir:
@@ -43,7 +43,7 @@ mappings:
         - name: "code"
           with:
             fhir: "code.coding"
-            openehr: "$archetype"
+            openehr: "$composition"
           manual:
             - name: "manualSystem"
               fhir:
@@ -60,7 +60,7 @@ mappings:
         - name: "narrativeText"
           with:
             fhir: "text"
-            openehr: "$archetype"
+            openehr: "$composition"
           manual:
             - name: "status"
               fhir:

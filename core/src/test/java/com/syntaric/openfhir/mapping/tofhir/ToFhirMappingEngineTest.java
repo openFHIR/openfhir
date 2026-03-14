@@ -390,7 +390,7 @@ public class ToFhirMappingEngineTest {
     // -----------------------------------------------------------------------
 
     /**
-     * Realistic KDS Diagnose scenario: the flat JSON from KDS_Diagnose_multiple_Composition.flat.json
+     * Realistic KDS Diagnose scenario: the flat JSON from KDS_Diagnose_multiple_Composition.flat_textvalue.json
      * has two diagnose groups with different diagnosestatus codes.
      * <p>
      * The statusCoded.provisional mapping has:
@@ -404,7 +404,7 @@ public class ToFhirMappingEngineTest {
      */
     @Test
     public void getRelevantJsonObject_statusCodedScenario_oneOf_preliminary() {
-        // Derived from KDS_Diagnose_multiple_Composition.flat.json
+        // Derived from KDS_Diagnose_multiple_Composition.flat_textvalue.json
         final JsonObject flat = json("""
                                              {
                                                "diagnose/context/start_time": "2022-02-03T04:05:06",

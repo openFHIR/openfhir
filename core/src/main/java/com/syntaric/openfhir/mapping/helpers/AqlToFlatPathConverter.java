@@ -8,12 +8,10 @@ import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.terminology.OfCoding;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
+
+import java.util.*;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -32,8 +30,8 @@ public class AqlToFlatPathConverter {
      * Result of converting an AQL path to a flat path.
      *
      * @param flatPath the flat JSON path, e.g. {@code growth_chart/body_weight/any_event[n]/weight}
-     * @param rmType the detected RM type of the leaf node, or {@code null} if not resolved
-     * @param valid {@code false} when the path could not be fully resolved in the template
+     * @param rmType   the detected RM type of the leaf node, or {@code null} if not resolved
+     * @param valid    {@code false} when the path could not be fully resolved in the template
      */
     public record Result(String flatPath, String rmType, boolean valid, List<String> possibleTypes,
                          List<OfCoding> availableCodings) {
@@ -54,16 +52,16 @@ public class AqlToFlatPathConverter {
      */
     public Result convert(final MappingHelper mappingHelper, final WebTemplate webTemplate) {
         final Result result = convert(mappingHelper.getFullOpenEhrPath(), mappingHelper.getHardcodedType(),
-                                      webTemplate);
+                webTemplate);
         final String flatPath = result.flatPath();
         mappingHelper.setFullOpenEhrFlatPath(flatPath);
-        mappingHelper.setDetectedType(result.rmType());
+//        mappingHelper.setDetectedType(result.rmType());
         mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
         mappingHelper.setPossibleRmTypes(result.possibleTypes());
         mappingHelper.setAvailableCodings(result.availableCodings());
 
         final String flatPathPipeSuffix = openFhirMapperUtils.replaceAqlSuffixWithFlatSuffix(flatPath,
-                                                                                             result.rmType());
+                result.rmType());
         mappingHelper.setFlatPathPipeSuffix(flatPathPipeSuffix);
         return result;
     }
@@ -83,9 +81,9 @@ public class AqlToFlatPathConverter {
     /**
      * Converts an AQL-style openEHR path to a simplified flat path.
      *
-     * @param aqlPath full AQL path, e.g.
-     *         {@code openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]}
-     * @param forcedType optional RM type hint from the FHIRConnect model (may be {@code null})
+     * @param aqlPath     full AQL path, e.g.
+     *                    {@code openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]}
+     * @param forcedType  optional RM type hint from the FHIRConnect model (may be {@code null})
      * @param webTemplate the parsed OPT web template to walk
      * @return conversion result with flat path, detected type, and validity flag
      */
@@ -119,7 +117,7 @@ public class AqlToFlatPathConverter {
         if (archetypeRoot == null) {
             // Archetype not found in this template — return as-is (invalid)
             return new Result(firstSlash < 0 ? aqlPath : tree.getId() + "/" + String.join("/", segments), null, false,
-                              null, null);
+                    null, null);
         }
 
         flat.add(archetypeRoot.isMulti() ? flatId(archetypeRoot) + RECURRING_SYNTAX : flatId(archetypeRoot));
@@ -136,7 +134,7 @@ public class AqlToFlatPathConverter {
         final boolean valid = !result.possibleRmTypes().isEmpty();
 
         return new Result(flatPath, valid ? result.rmType() : null, valid, result.possibleRmTypes(),
-                          result.availableCodings());
+                result.availableCodings());
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -172,7 +170,7 @@ public class AqlToFlatPathConverter {
         final String flatPath = removeStructuralSegments(tree.getId() + (flat.length() > 0 ? "/" + flat : ""));
         final boolean valid = walkResult.possibleRmTypes() != null && !walkResult.possibleRmTypes().isEmpty();
         return new Result(flatPath, valid ? walkResult.rmType() : null, valid, walkResult.possibleRmTypes(),
-                          walkResult.availableCodings());
+                walkResult.availableCodings());
     }
 
     String[] splitPath(final String path) {
@@ -260,8 +258,8 @@ public class AqlToFlatPathConverter {
                                                   null);
                 }
                 return new WalkSegmentsResult(rmType,
-                                              Collections.singletonList(rmType),
-                                              getPossibleCodings(lastFound));
+                        Collections.singletonList(rmType),
+                        getPossibleCodings(lastFound));
             }
 
             lastFound = found;
@@ -283,17 +281,19 @@ public class AqlToFlatPathConverter {
         final List<String> possibleTypes = new ArrayList<>();
         final List<OfCoding> possibleCodings = new ArrayList<>();
         if (lastFound != null) {
-            rmType = resolveLeafType(lastFound.getChildren(), forcedTypes, flat, rmType);
-            if (rmType != null) {
+//            rmType = resolveLeafType(lastFound.getChildren(), forcedTypes, flat, rmType);
+            if (rmType != null &&
+                    !FhirConnectConst.ELEMENT.equals(rmType)
+                    && !FhirConnectConst.OPENEHR_TYPE_CLUSTER.equals(rmType)) {
                 possibleTypes.add(rmType);
             }
-            possibleTypes.addAll(getPossibleType(lastFound.getChildren(), forcedTypes, flat, rmType));
+            possibleTypes.addAll(getPossibleType(lastFound.getChildren(), rmType));
             possibleCodings.addAll(getPossibleCodings(lastFound));
         }
 
         return new WalkSegmentsResult(rmType,
-                                      possibleTypes,
-                                      possibleCodings);
+                possibleTypes.stream().distinct().toList(),
+                possibleCodings);
     }
 
     /**
@@ -349,9 +349,14 @@ public class AqlToFlatPathConverter {
             return currentRmType;
         }
 
-        appendIfPresent(children, "identifier_value", flat);
-        appendIfPresent(children, "date_time_value", flat);
-        appendIfPresent(children, "quantity_value", flat);
+        // todo: refactor this. We should just have all possible flatPaths registered like possibleRmTypes (or no leaf types and leaf types are added at extraction/population phase based on possible rmtypes)
+        boolean identifierValue = appendIfPresent(children, "identifier_value", flat);
+        if (!identifierValue) {
+            boolean dateTimeValue = appendIfPresent(children, "date_time_value", flat);
+            if (!dateTimeValue) {
+                boolean quantityValue = appendIfPresent(children, "quantity_value", flat);
+            }
+        }
 
         if (forcedTypes == null || forcedTypes.isEmpty()) {
             return children.stream()
@@ -368,14 +373,15 @@ public class AqlToFlatPathConverter {
     }
 
     private static List<String> getPossibleType(final List<WebTemplateNode> children,
-                                                final Set<String> forcedTypes,
-                                                final StringJoiner flat,
                                                 final String currentRmType) {
         if (children == null || children.isEmpty()) {
             return Collections.singletonList(currentRmType);
         }
         return children.stream()
                 .filter(n -> "value".equals(n.getId()) || n.getId().endsWith("_value"))
+                .filter(child -> !FhirConnectConst.ELEMENT.equals(child.getRmType())
+                        && !FhirConnectConst.OPENEHR_TYPE_CLUSTER.equals(child.getRmType()))
+                .distinct()
                 .map(WebTemplateNode::getRmType).toList();
     }
 
@@ -447,10 +453,12 @@ public class AqlToFlatPathConverter {
         }
     }
 
-    private static void appendIfPresent(final List<WebTemplateNode> nodes,
-                                        final String id,
-                                        final StringJoiner flat) {
-        nodes.stream().filter(n -> id.equals(n.getId())).findAny().ifPresent(n -> flat.add(id));
+    private static boolean appendIfPresent(final List<WebTemplateNode> nodes,
+                                           final String id,
+                                           final StringJoiner flat) {
+        Optional<WebTemplateNode> matched = nodes.stream().filter(n -> id.equals(n.getId())).findAny();
+        matched.ifPresent(n -> flat.add(id));
+        return matched.isPresent();
     }
 
     private static String removeStructuralSegments(final String path) {

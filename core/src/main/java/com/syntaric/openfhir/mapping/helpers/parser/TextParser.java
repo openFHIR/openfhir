@@ -2,6 +2,7 @@ package com.syntaric.openfhir.mapping.helpers.parser;
 
 import com.google.gson.JsonObject;
 
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.StringType;
@@ -23,8 +24,11 @@ public class TextParser {
                                 String path) {
 
         String v = fhirValueReaders.get(valueHolder, path);
+        if (StringUtils.isEmpty(v) && !path.contains("/" + FhirConnectConst.LEAF_TYPE_TEXT_VALUE)) {
+            return string(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_TEXT_VALUE);
+        }
         if (StringUtils.isNotEmpty(v)) {
-            return new DataWithIndex(new StringType(v), lastIndex, path);
+            return new DataWithIndex(new StringType(v), lastIndex, path, FhirConnectConst.DV_TEXT);
         }
         return null;
     }

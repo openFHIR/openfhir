@@ -20,11 +20,13 @@ import com.syntaric.openfhir.util.FhirInstancePopulator;
 import com.syntaric.openfhir.util.OpenEhrConditionEvaluator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
@@ -97,9 +99,9 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 handleMappingIterations(copiesToIterateOver, jsonObject, true);
 
                 postProcessMappingFromCoverConditions(generatedResource,
-                                                      mappingHelpers.get(0).getPreprocessorFhirConditions(),
-                                                      archetype,
-                                                      mappingHelpers.get(0).getTerminology());
+                        mappingHelpers.get(0).getPreprocessorFhirConditions(),
+                        archetype,
+                        mappingHelpers.get(0).getTerminology());
 
             }
         });
@@ -112,16 +114,12 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                         final JsonObject jsonObject,
                                         final boolean isFirstEntryIntoModelMapping) {
         for (final MappingHelper mappingHelper : helpers) {
-            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR)) {
-                continue;
-            }
-
             final JsonObject relevantJsonObject = getRelevantJsonObject(jsonObject,
-                                                                        mappingHelper.getPreprocessorOpenEhrCondition(),
-                                                                        mappingHelper);
+                    mappingHelper.getPreprocessorOpenEhrCondition(),
+                    mappingHelper);
             if (relevantJsonObject.entrySet().isEmpty()) {
                 log.warn("No relevant entries found for mapping name {}; skipping mapping.",
-                         mappingHelper.getMappingName());
+                        mappingHelper.getMappingName());
                 continue;
             }
 
@@ -130,9 +128,12 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 extractedData = invokeProgrammedMapping(mappingHelper, relevantJsonObject);
             } else {
                 extractedData = openEhrFlatPathDataExtractor.extract(mappingHelper,
-                                                                     relevantJsonObject);
+                        relevantJsonObject);
             }
 
+            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR)) {
+                continue;
+            }
 
             if (isChildrenOnlyIteration(mappingHelper, extractedData)) {
                 handleChildrenOnlyIteration(mappingHelper, relevantJsonObject);
@@ -151,9 +152,9 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             if (preprocessorFhirConditions != null && !preprocessorFhirConditions.isEmpty()
                     && generatingFhirRoot != null) {
                 postProcessMappingFromCoverConditions((Base) generatingFhirRoot,
-                                                      preprocessorFhirConditions,
-                                                      aHelper.getGeneratingResourceType(),
-                                                      aHelper.getTerminology());
+                        preprocessorFhirConditions,
+                        aHelper.getGeneratingResourceType(),
+                        aHelper.getTerminology());
             }
         }
     }
@@ -205,8 +206,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                             final List<DataWithIndex> extractedData) {
         boolean isReference = FhirConnectConst.REFERENCE.equals(mappingHelper.getOriginalOpenEhrPath());
         boolean isSlot = mappingHelper.isHasSlot();
-        final boolean isEvent = "EVENT".equals(mappingHelper.getDetectedType()) && !mappingHelper.getFhir().contains(
-                "effective"); // we should rather check which element this is in Fhir and if it's date time, then let it pass
+        final boolean isEvent = mappingHelper.getPossibleRmTypes() != null
+                && mappingHelper.getPossibleRmTypes().contains("EVENT") && !mappingHelper.getFhir().contains("effective"); // we should rather check which element this is in Fhir and if it's date time, then let it pass
         boolean isNonPopulatingField = isReference || isSlot || isEvent;
         return isNonPopulatingField || extractedData.isEmpty()
                 && !mappingHelper.getChildren().isEmpty();
@@ -308,12 +309,12 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             handleHardcodedMapping(mappingHelper, instantiated);
         } else if (!FhirConnectConst.OPENEHR_TYPE_NONE.equals(mappingHelper.getHardcodedType())) {
             fhirInstancePopulator.populateElement(instantiated,
-                                                  extractedDataPoint,
-                                                  mappingHelper.getModelMetadataName(),
-                                                  mappingHelper.getMappingName(),
-                                                  mappingHelper.getOpenEhr(),
-                                                  mappingHelper.getFhir(),
-                                                  mappingHelper.getTerminology());
+                    extractedDataPoint,
+                    mappingHelper.getModelMetadataName(),
+                    mappingHelper.getMappingName(),
+                    mappingHelper.getOpenEhr(),
+                    mappingHelper.getFhir(),
+                    mappingHelper.getTerminology());
         }
     }
 
@@ -353,7 +354,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      * of each mapping
      *
      * @param creatingResource a created resources
-     * @param conditions conditions in the header of a mapping
+     * @param conditions       conditions in the header of a mapping
      */
     private void postProcessMappingFromCoverConditions(final Base creatingResource,
                                                        final List<Condition> conditions,
@@ -372,7 +373,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
 
             // check if it exists
             final List<Base> alreadyExists = fhirPath.evaluate(creatingResource, conditionFhirPathWithConditions,
-                                                               Base.class);
+                    Base.class);
             if (alreadyExists != null && !alreadyExists.isEmpty()) {
                 continue;
             }
@@ -386,14 +387,14 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             final Coding stringFromCriteria = openFhirStringUtils.getStringFromCriteria(
                     condition.getCriteria());
             fhirInstancePopulator.populateElement(toSetCriteriaOn,
-                                                  new StringType(stringFromCriteria.getCode()),
-                                                  modelName,
-                                                  "Cover Condition",
-                                                  // todo: not sure what value this path will have and whether its ok for it to be a mappingName in analytics
-                                                  null, // null since its hardcoding
-                                                  conditionFhirPathWithConditions,
-                                                  -1,
-                                                  terminology);
+                    new StringType(stringFromCriteria.getCode()),
+                    modelName,
+                    "Cover Condition",
+                    // todo: not sure what value this path will have and whether its ok for it to be a mappingName in analytics
+                    null, // null since its hardcoding
+                    conditionFhirPathWithConditions,
+                    -1,
+                    terminology);
         }
     }
 
@@ -426,7 +427,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
 
         // build regex from splitKey (strip [n] first so it matches real :0/:1 indices)
         final String strippedKey = splitKey.replace(com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX,
-                                                    "");
+                "");
         final String withRegex = openFhirStringUtils.addRegexPatternToSimplifiedFlatFormat(strippedKey);
 
         // getAllEntriesThatMatch returns the matched substring from each key via matcher.group().
@@ -474,20 +475,20 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                         final Object lastInstantiatedElement) {
         log.info("Handling hardcoded mapping for mapping name {}.", mappingHelper.getMappingName());
         fhirInstancePopulator.populateElement(lastInstantiatedElement,
-                                              new StringType(mappingHelper.getManualFhirValue()),
-                                              mappingHelper.getModelMetadataName(),
-                                              mappingHelper.getMappingName(),
-                                              mappingHelper.getOpenEhr(),
-                                              mappingHelper.getFhir(),
-                                              -1,
-                                              mappingHelper.getTerminology());
+                new StringType(mappingHelper.getManualFhirValue()),
+                mappingHelper.getModelMetadataName(),
+                mappingHelper.getMappingName(),
+                mappingHelper.getOpenEhr(),
+                mappingHelper.getFhir(),
+                -1,
+                mappingHelper.getTerminology());
     }
 
     JsonObject getRelevantJsonObject(final JsonObject flatJsonObject,
                                      final Condition preprocessorOpenEhrCondition,
                                      final MappingHelper mappingHelper) {
         final JsonObject splitByPreprocessor = evaluatePreprocessorCondition(flatJsonObject,
-                                                                             preprocessorOpenEhrCondition);
+                preprocessorOpenEhrCondition);
 
         return evaluateSpecificMappingCondition(splitByPreprocessor, mappingHelper);
     }
@@ -498,7 +499,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             return flatJsonObject;
         }
         return openEhrConditionEvaluator.splitByOpenEhrCondition(flatJsonObject,
-                                                                 preprocessorOpenEhrCondition);
+                preprocessorOpenEhrCondition);
     }
 
     private JsonObject evaluateSpecificMappingCondition(final JsonObject flatJsonObject,
@@ -508,6 +509,6 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         }
         final Condition preprocessorOpenehrCondition = mappingHelper.getOpenEhrConditions().get(0);
         return openEhrConditionEvaluator.splitByOpenEhrCondition(flatJsonObject,
-                                                                 preprocessorOpenehrCondition);
+                preprocessorOpenehrCondition);
     }
 }

@@ -1,0 +1,49 @@
+# NL Problem Diagnosis extension - adds narrative text to Condition
+grammar: FHIRConnect/v0.0.1
+type: extension
+metadata:
+  name: NL_problem_diagnosis
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: EVALUATION.problem_diagnosis.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/uv/ips/StructureDefinition/Condition-uv-ips
+
+mappings:
+  - name: "narrativeText"
+    extension: "add"
+    with:
+      fhir: "$resource.text"
+      openehr: "$archetype"
+    manual:
+      - name: "statusText"
+        fhir:
+          - path: "status"
+            value: "generated"
+
+  - name: "laboratoryAnalyteEvidenceDetail"
+    extension: "add"
+    with:
+      fhir: "$resource.evidence"
+      openehr: "$archetype/data[at0001]"
+#    openehrCondition:
+#      targetRoot: "$archetype/data[at0001]"
+#      targetAttribute: "items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+#      operator: "not empty"
+    followedBy:
+      mappings:
+        - name: "laboratoryAnalyteDetailReference"
+          with:
+            fhir: "detail"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "observationToAnalyte"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$openehrRoot/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]"
+                slotArchetype: "CLUSTER.laboratory_test_analyte.v1"
+ 

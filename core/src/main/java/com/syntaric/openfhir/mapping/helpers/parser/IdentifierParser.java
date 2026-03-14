@@ -2,6 +2,7 @@ package com.syntaric.openfhir.mapping.helpers.parser;
 
 import com.google.gson.JsonObject;
 
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import java.net.URI;
 import java.util.List;
@@ -27,47 +28,54 @@ public class IdentifierParser {
                                     Integer lastIndex,
                                     String path) {
         // try to find an explicit "|id" path from joinedValues
-        String idPath = find(joinedValues, "|id");
 
         Identifier identifier = new Identifier();
-        String resolvedIdPath = StringUtils.isEmpty(idPath) ? (path + "/identifier_value|id") : idPath;
-        String issuerPath = find(joinedValues, "|issuer");
-        String resolvedIssuerPath = StringUtils.isEmpty(issuerPath) ? (path + "/identifier_value|issuer") : issuerPath;
-        String system = normalizeIdentifierSystem(fhirValueReaders.get(valueHolder, resolvedIssuerPath));
-        identifier.setValue(fhirValueReaders.get(valueHolder, resolvedIdPath));
+
+        String idPath = path + "|id";
+        String issuerPath = path+ "|issuer";
+        String typePath = path+ "|type";
+        String assignerPath = path+ "|assigner";
+
+        String issuerValue = fhirValueReaders.get(valueHolder, issuerPath);
+        String idValue = fhirValueReaders.get(valueHolder, idPath);
+        String typeValue = fhirValueReaders.get(valueHolder, typePath);
+        String assignerValue = fhirValueReaders.get(valueHolder, assignerPath);
+
+        if(StringUtils.isAllBlank(issuerValue, idValue, typeValue, assignerValue)) {
+            return identifier(joinedValues, valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE);
+        }
+
+        String system = normalizeIdentifierSystem(issuerValue);
+        identifier.setValue(idValue);
         identifier.setSystem(system);
 
-        String typePath = find(joinedValues, "|type");
         if (StringUtils.isNotBlank(typePath)) {
-            String rawType = fhirValueReaders.get(valueHolder, typePath);
-            if (StringUtils.isNotBlank(rawType)) {
-                Coding typeCoding = parseSystemValueOrFallback(rawType, "http://openehr.org/identifier/type");
+            if (StringUtils.isNotBlank(typeValue)) {
+                Coding typeCoding = parseSystemValueOrFallback(typeValue, "http://openehr.org/identifier/type");
                 identifier.getType().addCoding(typeCoding);
             }
         }
 
-        String assignerPath = find(joinedValues, "|assigner");
         if (StringUtils.isNotBlank(assignerPath)) {
-            String rawAssigner = fhirValueReaders.get(valueHolder, assignerPath);
-            if (StringUtils.isNotBlank(rawAssigner)) {
+            if (StringUtils.isNotBlank(assignerValue)) {
                 Reference assigner = new Reference();
                 Identifier assignerIdentifier = new Identifier();
-                if (StringUtils.contains(rawAssigner, "::")) {
-                    String[] parts = rawAssigner.split("::", 2);
+                if (StringUtils.contains(assignerValue, "::")) {
+                    String[] parts = assignerValue.split("::", 2);
                     assignerIdentifier.setSystem(parts[0]);
                     assignerIdentifier.setValue(parts.length > 1 ? parts[1] : null);
                     assigner.setDisplay(parts.length > 1 ? parts[1] : null);
                 } else {
                     assignerIdentifier.setSystem("http://openehr.org/identifier/assigner");
-                    assignerIdentifier.setValue(rawAssigner);
-                    assigner.setDisplay(rawAssigner);
+                    assignerIdentifier.setValue(assignerValue);
+                    assigner.setDisplay(assignerValue);
                 }
                 assigner.setIdentifier(assignerIdentifier);
                 identifier.setAssigner(assigner);
             }
         }
 
-        return new DataWithIndex(identifier, lastIndex, path);
+        return new DataWithIndex(identifier, lastIndex, path, FhirConnectConst.DV_IDENTIFIER);
     }
 
     private String find(List<String> joinedValues, String suffix) {

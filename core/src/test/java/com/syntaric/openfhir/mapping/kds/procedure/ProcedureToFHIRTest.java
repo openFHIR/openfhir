@@ -97,7 +97,7 @@ public class ProcedureToFHIRTest extends KdsGenericTest {
     }
 
     /**
-     * Input: /kds/procedure/toOpenEHR/output/KDS_Prozedur.flat.json
+     * Input: /kds/procedure/toOpenEHR/output/KDS_Prozedur.flat_textvalue.json
      * Expected: Mapped Procedure fields in resulting Bundle
      */
     @Test

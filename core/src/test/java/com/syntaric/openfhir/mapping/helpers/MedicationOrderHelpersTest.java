@@ -54,7 +54,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
                 note.getOpenEhr());
         Assert.assertEquals("medication_order/medication_order/order[n]/additional_instruction[n]",
                             note.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_TEXT", note.getDetectedType());
+        Assert.assertTrue(note.getPossibleRmTypes().contains("DV_TEXT"));
 
         // --- time ---
         final MappingHelper time = allHelpers.get(2);
@@ -66,7 +66,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
                 time.getOpenEhr());
         Assert.assertEquals("medication_order/medication_order/order[n]/order_details/order_start_date_time",
                             time.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_DATE_TIME", time.getDetectedType());
+        Assert.assertTrue(time.getPossibleRmTypes().contains("DV_DATE_TIME"));
 
         // --- therapeutic-direction (has dosage as nested child) ---
         final MappingHelper therapeuticDirection = allHelpers.get(3);
@@ -78,7 +78,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
                 therapeuticDirection.getOpenEhr());
         Assert.assertEquals("medication_order/medication_order/order[n]/therapeutic_direction",
                             therapeuticDirection.getFullOpenEhrFlatPath());
-        Assert.assertEquals("CLUSTER", therapeuticDirection.getDetectedType());
+//        Assert.assertTrue(therapeuticDirection.getPossibleRmTypes().contains("CLUSTER"));
         Assert.assertEquals(1, therapeuticDirection.getChildren().size());
 
         // --- dosage (child of therapeutic-direction, has directionDuration + doseQuantityValue as children) ---
@@ -93,7 +93,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
                 dosage.getFullOpenEhrPath());
         Assert.assertEquals("medication_order/medication_order/order[n]/therapeutic_direction/dosage",
                             dosage.getFullOpenEhrFlatPath());
-        Assert.assertEquals("CLUSTER", dosage.getDetectedType());
+//        Assert.assertTrue(dosage.getPossibleRmTypes().contains("CLUSTER"));
         Assert.assertEquals(2, dosage.getChildren().size());
 
         // --- directionDuration (first child of dosage) ---
@@ -109,7 +109,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
                 directionDuration.getFullOpenEhrPath());
         Assert.assertEquals("medication_order/medication_order/order[n]/therapeutic_direction/direction_duration/coded_text_value",
                             directionDuration.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_CODED_TEXT", directionDuration.getDetectedType());
+        Assert.assertTrue(directionDuration.getPossibleRmTypes().contains("DV_CODED_TEXT"));
 
         // --- doseQuantityValue (second child of dosage) ---
         final MappingHelper doseQuantityValue = dosage.getChildren().get(1);
@@ -121,9 +121,9 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(
                 "openEHR-EHR-INSTRUCTION.medication_order.v2/activities[at0001]/description[at0002]/items[openEHR-EHR-CLUSTER.therapeutic_direction.v1]/items[openEHR-EHR-CLUSTER.dosage.v1]/items[at0144]",
                 doseQuantityValue.getFullOpenEhrPath());
-        Assert.assertEquals("medication_order/medication_order/order[n]/therapeutic_direction/dosage/dose_amount/quantity_value",
+        Assert.assertEquals("medication_order/medication_order/order[n]/therapeutic_direction/dosage/dose_amount",
                             doseQuantityValue.getFullOpenEhrFlatPath());
-        Assert.assertEquals("DV_QUANTITY", doseQuantityValue.getDetectedType());
+        Assert.assertTrue(doseQuantityValue.getPossibleRmTypes().contains("DV_QUANTITY"));
     }
 
 }

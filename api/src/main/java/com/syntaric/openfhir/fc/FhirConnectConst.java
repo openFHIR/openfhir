@@ -2,6 +2,7 @@ package com.syntaric.openfhir.fc;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -53,6 +54,84 @@ public class FhirConnectConst {
     public static final String CONDITION_OPERATOR_EMPTY = "empty";
     public static final String CONDITION_OPERATOR_TYPE = "type";
     public static final String CONDITION_OPERATOR_NOT_EMPTY = "not empty";
+
+    // leaf types below:
+
+
+
+    public static String getLeafTypeForRmType(final String rmType) {
+        if (rmType == null) {
+            return null;
+        }
+        return switch (rmType) {
+            case DV_TEXT -> LEAF_TYPE_TEXT_VALUE;
+            case DV_CODED_TEXT  -> LEAF_TYPE_CODED_TEXT_VALUE;
+            case DV_ORDINAL -> LEAF_TYPE_ORDINAL_VALUE;
+            case DV_BOOL -> LEAF_TYPE_BOOLEAN_VALUE;
+            case DV_IDENTIFIER -> LEAF_TYPE_IDENTIFIER_VALUE;
+            case DV_DATE -> LEAF_TYPE_DATE_VALUE;
+            case DV_TIME -> LEAF_TYPE_TIME_VALUE;
+            case DV_DATE_TIME -> LEAF_TYPE_DATE_TIME_VALUE;
+            case DV_DURATION -> LEAF_TYPE_DURATION_VALUE;
+            case DV_COUNT -> LEAF_TYPE_COUNT_VALUE;
+            case DV_QUANTITY -> LEAF_TYPE_QUANTITY_VALUE;
+            case DV_PROPORTION -> LEAF_TYPE_PROPORTION_VALUE;
+            case DV_MULTIMEDIA -> LEAF_TYPE_MULTIMEDIA_DATA;
+            default -> rmType.replace("DV_", "").toLowerCase(Locale.ROOT) + "_value"; // is this ok for all?
+        };
+    }
+
+    // DV_TEXT
+    public static final String LEAF_TYPE_TEXT_VALUE = "text_value";
+
+    // DV_CODED_TEXT
+    public static final String LEAF_TYPE_CODED_TEXT_VALUE = "coded_text_value";
+
+    // DV_BOOLEAN
+    public static final String LEAF_TYPE_BOOLEAN_VALUE = "boolean_value";
+
+    // DV_IDENTIFIER
+    public static final String LEAF_TYPE_IDENTIFIER_VALUE = "identifier_value";
+
+    // DV_URI
+    public static final String LEAF_TYPE_URI_VALUE = "uri_value";
+
+    // DV_EHR_URI
+    public static final String LEAF_TYPE_EHR_URI_VALUE = "ehr_uri_value";
+
+    // DV_DATE
+    public static final String LEAF_TYPE_DATE_VALUE = "date_value";
+
+    // DV_TIME
+    public static final String LEAF_TYPE_TIME_VALUE = "time_value";
+
+    // DV_DATE_TIME
+    public static final String LEAF_TYPE_DATE_TIME_VALUE = "date_time_value";
+
+    // DV_DURATION
+    public static final String LEAF_TYPE_DURATION_VALUE = "duration_value";
+
+    // DV_COUNT
+    public static final String LEAF_TYPE_COUNT_VALUE = "count_value";
+
+    // DV_QUANTITY
+    public static final String LEAF_TYPE_QUANTITY_VALUE = "quantity_value";
+
+    // DV_PROPORTION
+    public static final String LEAF_TYPE_PROPORTION_VALUE = "proportion_value";
+
+    // DV_ORDINAL
+    public static final String LEAF_TYPE_ORDINAL_VALUE = "ordinal_value";
+
+    // DV_PARSABLE
+    public static final String LEAF_TYPE_PARSABLE_VALUE = "parsable_value";
+
+    // DV_STATE
+    public static final String LEAF_TYPE_STATE_VALUE = "state_value";
+
+    // DV_MULTIMEDIA
+    public static final String LEAF_TYPE_MULTIMEDIA_DATA = "multimedia_data";
+
 
     public static final List<String> OPENEHR_INVALID_PATH_RM_TYPES = Arrays.asList("HISTORY", "EVENT", "ITEM_TREE",
                                                                                    "POINT_EVENT", "POINT_INTERVAL");
