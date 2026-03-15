@@ -64,7 +64,7 @@ public class FallToFHIRTest extends KdsGenericTest {
 
     /**
      * Input: /kds/fall/toOpenEHR/output/Composition-KDS_Fall_einfach.Bundle.json
-     * Expected: /kds/fall/toFHIR/output/KDS_Fall_einfach.flat_textvalue.json
+     * Expected: /kds/fall/toFHIR/output/KDS_Fall_einfach.flat.json
      */
     @SneakyThrows
     @Test
