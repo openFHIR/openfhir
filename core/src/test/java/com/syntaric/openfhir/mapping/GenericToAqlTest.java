@@ -48,7 +48,7 @@ public abstract class GenericToAqlTest extends GenericTest {
                 openFhirStringUtils,
                 openFhirMapperUtils), openFhirStringUtils);
         toAql = new ToAql(contextRepository, openFhirMapperUtils, new NoOpUserContextProducer(), repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
-                openEhrCachedUtils);
+                openEhrCachedUtils, null);
     }
 
     protected abstract WebTemplate webTemplate();

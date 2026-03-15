@@ -6,9 +6,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nedap.archie.rm.composition.Composition;
+import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.aql.ToAqlRequest;
+import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
-import com.syntaric.openfhir.db.entity.FhirConnectModelEntity;
 import com.syntaric.openfhir.db.repository.FhirConnectContextRepository;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
@@ -160,6 +161,10 @@ public class OpenFhirEngine {
         }
         log.debug("Will try to obtain template id from the incoming openEhr object");
         final String templateId = getTemplateIdFromOpenEhr(incomingOpenEhr);
+        if (StringUtils.isEmpty(templateId)) {
+            log.warn("No templateId provided in the request nor could it be deduced from the payload.");
+            return null;
+        }
         return fhirConnectContextRepository.findByTemplateIdAndTenant(templateId, user);
     }
 
@@ -175,6 +180,9 @@ public class OpenFhirEngine {
         if (jsonObject.get("_type") != null && "COMPOSITION".equals(jsonObject.get("_type").getAsString())) {
             return jsonObject.get("archetype_details").getAsJsonObject().get("template_id").getAsJsonObject()
                     .get("value").getAsString();
+        } else if (jsonObject.get("_type") != null) {
+            // its a general ContentItem (i.e. OBSERVATION) and we can't know templateid
+            return null;
         }
         final Set<String> keys = jsonObject.keySet();
         return new ArrayList<>(keys).get(0).split("/")[0];
@@ -255,16 +263,30 @@ public class OpenFhirEngine {
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext(), operationalTemplate,
                 webTemplate, openFhirUser.getAuthContext().getTenant());
 
-        List<Composition> compositions = parseCompositions(openEhrCompositionJson, operationalTemplate);
+        final IncomingOpenEhrType incomingOpenEhrType = deduceIncomingPayloadType(openEhrCompositionJson);
+        final Bundle fhir;
+        if (incomingOpenEhrType == IncomingOpenEhrType.COMPOSITION) {
+            final List<Composition> compositions = parseCompositions(openEhrCompositionJson);
+            fhir = openEhrToFhir.compositionsToFhir(fhirConnectContext.getFhirConnectContext(),
+                    compositions,
+                    operationalTemplate);
+        } else if (incomingOpenEhrType == IncomingOpenEhrType.CONTENT_ITEM) {
+            final List<ContentItem> contentItems = parseContentItem(openEhrCompositionJson);
+            fhir = openEhrToFhir.contentItemsToFhir(fhirConnectContext.getFhirConnectContext(),
+                    contentItems,
+                    operationalTemplate);
+        } else {
+            // flat
+            final List<Composition> compositions = parseFlat(openEhrCompositionJson, operationalTemplate);
+            fhir = openEhrToFhir.compositionsToFhir(fhirConnectContext.getFhirConnectContext(),
+                    compositions,
+                    operationalTemplate);
+        }
 
-        final Bundle fhir = openEhrToFhir.compositionsToFhir(fhirConnectContext.getFhirConnectContext(),
-                compositions,
-                operationalTemplate);
         return jsonParser.encodeResourceToString(fhir);
     }
 
-    List<Composition> parseCompositions(final String marshalled,
-                                        final OPERATIONALTEMPLATE operationalTemplate) {
+    List<Composition> parseCompositions(final String marshalled) {
         final List<Composition> compositions = new ArrayList<>();
         final CanonicalJson canonicalJson = new CanonicalJson();
         if (marshalled.startsWith("[")) {
@@ -276,19 +298,38 @@ public class OpenFhirEngine {
             }
             return compositions;
         } else {
-            try {
-                // try to unmarshall to Composition with a flat json unmarshaller, if it fails, we assume it's actually
-                // Composition in a Canonical format (//todo if this proves to be a performance issue, perhaps whether
-                // todo its in flat format or canonical should be passed as an input parameter to the RESTful call)
-                compositions.add(flatJsonUnmarshaller.unmarshal(marshalled,
-                        cachedUtils.parseWebTemplate(operationalTemplate)));
-            } catch (Exception e) {
-                log.error("Error trying to unmarshall flat path, {}. Will try with a canonical json unmarshaller.",
-                        e.getMessage());
-                // try to unmarshall content from a canonical parser
-                compositions.add(canonicalJson.unmarshal(marshalled));
-            }
+            compositions.add(canonicalJson.unmarshal(marshalled));
         }
+        if (compositions.stream().anyMatch(s -> s.getContent().isEmpty())) {
+            log.error("Composition not properly unmarshalled. Empty content. Aborting translation.");
+            throw new IllegalArgumentException(
+                    "Composition not properly unmarshalled. Empty content. Aborting translation. See log for more info.");
+        }
+        return compositions;
+    }
+
+    List<ContentItem> parseContentItem(final String marshalled) {
+        final List<ContentItem> contentItems = new ArrayList<>();
+        final CanonicalJson canonicalJson = new CanonicalJson();
+        if (marshalled.startsWith("[")) {
+            // is array and most definitely in canonical
+            final JsonArray arrayOfCompositions = gson.fromJson(marshalled, JsonArray.class);
+            for (final JsonElement composition : arrayOfCompositions) {
+                final String serializedComposition = composition.toString();
+                contentItems.add(canonicalJson.unmarshal(serializedComposition, ContentItem.class));
+            }
+            return contentItems;
+        } else {
+            contentItems.add(canonicalJson.unmarshal(marshalled, ContentItem.class));
+        }
+        return contentItems;
+    }
+
+    List<Composition> parseFlat(final String marshalled,
+                                final OPERATIONALTEMPLATE operationalTemplate) {
+        final List<Composition> compositions = new ArrayList<>();
+        compositions.add(flatJsonUnmarshaller.unmarshal(marshalled,
+                cachedUtils.parseWebTemplate(operationalTemplate)));
         if (compositions.stream().anyMatch(s -> s.getContent().isEmpty())) {
             log.error("Composition not properly unmarshalled. Empty content. Aborting translation.");
             throw new IllegalArgumentException(
@@ -306,11 +347,10 @@ public class OpenFhirEngine {
      */
     private void validatePrerequisites(final FhirConnectContextEntity fhirConnectContext, final String templateId) {
         if (fhirConnectContext == null) {
-            log.error(
-                    "Couldn't find a Context Mapper for the inbound request. If using flat format for the input body, make sure you set query parameter 'templateId' that matches a fhirConnectContext.openEHR.templateId value.");
             final String format = String.format(
-                    "Couldn't find a Context Mapper for the inbound request. If using flat format for the input body, make sure you set query parameter 'templateId' that matches a fhirConnectContext.openEHR.templateId value. Current template id '%s'",
+                    "Couldn't find a Context Mapper for the inbound request. If using flat format for the input body (or a ContentItem instead of a whole Composition), make sure you set query parameter 'templateId' that matches a fhirConnectContext.openEHR.templateId value. Current template id '%s'",
                     templateId);
+            log.error(format);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, format);
         }
         final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
@@ -329,11 +369,29 @@ public class OpenFhirEngine {
         }
     }
 
-    public List<FhirConnectModelEntity> toAql(final ToAqlRequest toAqlRequest) {
-//        return toAql.toAql(toAqlRequest.getFhirFullUrl(), openFhirUser.getAuthContext().getTenant());
-        return null;
+    public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {
+        return toAql.toAql(toAqlRequest);
     }
 
+    private IncomingOpenEhrType deduceIncomingPayloadType(final String incomingOpenEhr) {
+        final JsonObject jsonObject;
+        if (incomingOpenEhr.startsWith("[")) {
+            // array
+            final JsonArray arrayOfCompositions = gson.fromJson(incomingOpenEhr, JsonArray.class);
+            jsonObject = arrayOfCompositions.get(0).getAsJsonObject();
+        } else {
+            jsonObject = gson.fromJson(incomingOpenEhr, JsonObject.class);
+        }
+        if (jsonObject.get("_type") != null && "COMPOSITION".equals(jsonObject.get("_type").getAsString())) {
+            return IncomingOpenEhrType.COMPOSITION;
+        } else if (jsonObject.get("_type") != null) {
+            return IncomingOpenEhrType.CONTENT_ITEM;
+        }
+        return IncomingOpenEhrType.FLAT;
+    }
 
+    public enum IncomingOpenEhrType {
+        COMPOSITION, CONTENT_ITEM, FLAT
+    }
 
 }

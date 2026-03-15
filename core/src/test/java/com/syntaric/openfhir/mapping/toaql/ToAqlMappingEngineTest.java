@@ -304,13 +304,13 @@ public class ToAqlMappingEngineTest {
         // Two params both matching helpers on the same model — should produce one AQL with both conditions AND-ed
         final MappingHelper codeHelper = new MappingHelper();
         codeHelper.setFullFhirPath("Observation.code");
-        codeHelper.setDetectedType("DvCodedText");
+        codeHelper.setPossibleRmTypes(List.of("DvCodedText"));
         codeHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         codeHelper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
 
         final MappingHelper statusHelper = new MappingHelper();
         statusHelper.setFullFhirPath("Observation.status");
-        statusHelper.setDetectedType("DvCodedText");
+        statusHelper.setPossibleRmTypes(List.of("DvCodedText"));
         statusHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         statusHelper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0005]");
 

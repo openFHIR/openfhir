@@ -2,6 +2,7 @@ package com.syntaric.openfhir.mapping.toaql;
 
 import com.syntaric.openfhir.OpenFhirContextRepository;
 import com.syntaric.openfhir.OpenFhirMappingContext;
+import com.syntaric.openfhir.ProdDefaultOpenFhirMappingContext;
 import com.syntaric.openfhir.aql.FhirQueryParam;
 import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
@@ -44,6 +45,7 @@ public class ToAql {
     private final ToAqlMappingEngine toAqlMappingEngine;
     private final HelpersCreator helpersCreator;
     private final OpenEhrCachedUtils cachedUtils;
+    private final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext;
 
     @Autowired
     public ToAql(final FhirConnectContextRepository fhirConnectContextRepository,
@@ -51,7 +53,8 @@ public class ToAql {
                  final UserContextProducerInterface openFhirUser,
                  final OpenFhirMappingContext openFhirMappingContext,
                  final ToAqlMappingEngine toAqlMappingEngine, HelpersCreator helpersCreator,
-                 final OpenEhrCachedUtils cachedUtils) {
+                 final OpenEhrCachedUtils cachedUtils,
+                 final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext) {
         this.fhirConnectContextRepository = fhirConnectContextRepository;
         this.openFhirMapperUtils = openFhirMapperUtils;
         this.openFhirUser = openFhirUser;
@@ -59,6 +62,7 @@ public class ToAql {
         this.toAqlMappingEngine = toAqlMappingEngine;
         this.helpersCreator = helpersCreator;
         this.cachedUtils = cachedUtils;
+        this.prodOpenFhirMappingContext = prodOpenFhirMappingContext;
     }
 
     public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {
@@ -85,6 +89,7 @@ public class ToAql {
             final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
                     openFhirUser.getAuthContext().getTenant(), templateId);
             final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
+
             final List<MappingHelper> mappingHelpers = helpersCreator.constructHelpers(templateId,
                     aModel.getModelMappers(),
                     webTemplate);
@@ -238,13 +243,29 @@ public class ToAql {
     }
 
     private ToAqlModels contextToToAqlModels(final FhirConnectContextEntity context) {
-        List<OpenFhirFhirConnectModelMapper> mapperForArchetype = openFhirMappingContext
+        // init specific repo first
+        initRepo(context);
+        final List<OpenFhirFhirConnectModelMapper> mapperForArchetype = openFhirMappingContext
                 .getMapperForArchetype(context.getFhirConnectContext().getContext().getTemplate().getId(),
                         context.getFhirConnectContext().getContext().getStart());
         return ToAqlModels.builder()
                 .modelMappers(mapperForArchetype)
                 .context(context)
                 .build();
+    }
+
+    private void initRepo(final FhirConnectContextEntity context) {
+        if(prodOpenFhirMappingContext == null) {
+            // todo: refactor this similarly to OpenFhirEngine, beacuse right now this class is invoked both
+            // from tests as well as from rest, meaning this can be null in tests because it's initialized elsewhere
+            return;
+        }
+        final String templateId = OpenFhirMappingContext.normalizeTemplateId(context.getTemplateId());
+        final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
+                openFhirUser.getAuthContext().getTenant(), templateId);
+        final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
+        prodOpenFhirMappingContext.initMappingCache(context.getFhirConnectContext(), operationalTemplate,
+                webTemplate, openFhirUser.getAuthContext().getTenant());
     }
 
     private FhirConnectContextEntity getContext(final String templateId,
