@@ -112,6 +112,7 @@ public class DosageCustomMappings extends CustomMapping {
                                                    final Base fhirValue,
                                                    final JsonObject flat,
                                                    final OpenEhrPopulator populator) {
+        boolean isMultipleTypes = mappingHelper.getPossibleRmTypes().size() > 1;
         if (fhirValue instanceof Range range) {
             // If we previously mapped a single quantity, clear it to avoid conflicts.
             flat.remove(openEhrPath + "|magnitude");
@@ -119,7 +120,7 @@ public class DosageCustomMappings extends CustomMapping {
             flat.remove(openEhrPath + "|code");
             flat.remove(openEhrPath + "|value");
             String intervalPath = toIntervalOfQuantityPath(openEhrPath);
-            populator.setOpenEhrValue(mappingHelper, intervalPath, range, FhirConnectConst.DV_INTERVAL, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, intervalPath, range, FhirConnectConst.DV_INTERVAL, isMultipleTypes, flat, null, null);
             return true;
         }
         if (fhirValue instanceof Quantity quantity) {
@@ -127,7 +128,7 @@ public class DosageCustomMappings extends CustomMapping {
             if (flat.has(openEhrPath + "/lower|magnitude") || flat.has(openEhrPath + "/upper|magnitude")) {
                 return true;
             }
-            populator.setOpenEhrValue(mappingHelper, openEhrPath, quantity, FhirConnectConst.DV_QUANTITY, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, openEhrPath, quantity, FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, null, null);
             return true;
         }
         return false;
@@ -160,7 +161,8 @@ public class DosageCustomMappings extends CustomMapping {
             return false;
         }
         String textPath = toTextValuePath(openEhrPath);
-        populator.setOpenEhrValue(mappingHelper, textPath, new StringType(serialized), FhirConnectConst.DV_TEXT, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+        boolean isMultipleTypes = mappingHelper.getPossibleRmTypes().size() > 1;
+        populator.setOpenEhrValue(mappingHelper, textPath, new StringType(serialized), FhirConnectConst.DV_TEXT, isMultipleTypes, flat, null, null);
         return true;
     }
 
@@ -190,7 +192,8 @@ public class DosageCustomMappings extends CustomMapping {
         }
         setUcumSystemIfPresent(q);
 
-        populator.setOpenEhrValue(mappingHelper, openEhrPath, q, FhirConnectConst.DV_QUANTITY, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+        boolean isMultipleTypes = mappingHelper.getPossibleRmTypes().size() > 1;
+        populator.setOpenEhrValue(mappingHelper, openEhrPath, q, FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, null, null);
         return true;
     }
 
@@ -257,21 +260,22 @@ public class DosageCustomMappings extends CustomMapping {
         String numeratorUnit = unitOrCodePreferCode(numerator);
         String denominatorUnit = unitOrCodePreferCode(denominator);
         String combinedUnit = normalizeUcumUnit(buildUnit(numeratorUnit, denominatorUnit));
+        boolean isMultipleTypes = mappingHelper.getPossibleRmTypes().size() > 1;
         if (StringUtils.isNotBlank(combinedUnit) && isAllowedRateUnit(combinedUnit)) {
             rateQuantity.setUnit(combinedUnit);
             rateQuantity.setCode(combinedUnit);
             setUcumSystemIfPresent(rateQuantity);
             String ratePath = appendFlatChild(openEhrPath, rateChildPath);
-            populator.setOpenEhrValue(mappingHelper, ratePath, rateQuantity, FhirConnectConst.DV_QUANTITY, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, ratePath, rateQuantity, FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, null, null);
         }
 
         String durationPath = appendFlatChild(openEhrPath, durationChildPath);
         if (useDurationInputSuffixes) {
             if (!writeDurationInputs(durationPath, denominator, flat)) {
-                populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+                populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, isMultipleTypes, flat, null, null);
             }
         } else {
-            populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+            populator.setOpenEhrValue(mappingHelper, durationPath, new StringType(duration), FhirConnectConst.DV_DURATION, isMultipleTypes, flat, null, null);
         }
         return true;
     }
@@ -443,8 +447,9 @@ public class DosageCustomMappings extends CustomMapping {
         if (ctx.repeat.hasTimeOfDay() && !ctx.repeat.getTimeOfDay().isEmpty()) {
             TimeType time = ctx.repeat.getTimeOfDay().get(0);
             if (time != null && StringUtils.isNotBlank(time.getValueAsString())) {
+                boolean isMultipleTypes = mappingHelper.getPossibleRmTypes().size() > 1;
                 populator.setOpenEhrValue(mappingHelper, openEhrPath + "/zeitpunkt", new TimeType(time.getValueAsString()),
-                                          FhirConnectConst.DV_TIME, mappingHelper.getPossibleRmTypes().size() > 1, flat, null, null);
+                                          FhirConnectConst.DV_TIME, isMultipleTypes, flat, null, null);
             }
         }
 

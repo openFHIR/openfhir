@@ -48,7 +48,7 @@ public class ToFhir {
         this.toFhirMappingEngine = toFhirMappingEngine;
     }
 
-    public Bundle contentItemToFhir(final FhirConnectContext context,
+    public Bundle contentItemsToFhir(final FhirConnectContext context,
                                      final List<ContentItem> contentItems,
                                      final OPERATIONALTEMPLATE operationaltemplate) {
         toFhirPrePostProcessor.preProcessContentItems(context, contentItems, operationaltemplate);

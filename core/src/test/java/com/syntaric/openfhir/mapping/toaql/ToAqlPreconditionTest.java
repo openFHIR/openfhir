@@ -21,7 +21,7 @@ public class ToAqlPreconditionTest {
 
     @Before
     public void setUp() {
-        toAql = new ToAql(null, null, null, null, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), null, null);
+        toAql = new ToAql(null, null, null, null, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), null, null, null);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

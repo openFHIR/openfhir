@@ -103,9 +103,7 @@ public class ToAqlMappingEngine {
                                                        final boolean narrowToTemplate) {
         final List<ToAqlResponse.AqlResponse> responses = new ArrayList<>();
         final List<HelperValue> typedEntries = helperValues.stream()
-                .filter(hv -> StringUtils.isNotEmpty(hv.getHelper().getDetectedType())
-                        && !FhirConnectConst.OPENEHR_TYPE_CLUSTER.equals(hv.getHelper().getDetectedType())
-                        && !FhirConnectConst.OPENEHR_TYPE_NONE.equals(hv.getHelper().getDetectedType()))
+                .filter(this::possibleTypesAreAcceptableForAqlTranslation)
                 .toList();
         if (typedEntries.isEmpty()) {
             return responses;
@@ -121,6 +119,19 @@ public class ToAqlMappingEngine {
             responses.add(new ToAqlResponse.AqlResponse(compositionAql, ToAqlResponse.AqlType.COMPOSITION));
         }
         return responses;
+    }
+
+    boolean possibleTypesAreAcceptableForAqlTranslation(final HelperValue helperValue) {
+        final MappingHelper helper = helperValue.getHelper();
+        if (helper.getPossibleRmTypes() == null
+                || helper.getPossibleRmTypes().isEmpty()
+                || FhirConnectConst.OPENEHR_TYPE_NONE.equals(helper.getHardcodedType())) {
+            return false;
+        }
+        if(helper.getPossibleRmTypes().size() == 1 && helper.getPossibleRmTypes().contains(FhirConnectConst.OPENEHR_TYPE_CLUSTER)) {
+            return false;
+        }
+        return true;
     }
 
     private boolean isValidAql(final String aql) {
@@ -160,7 +171,7 @@ public class ToAqlMappingEngine {
             }
             hv.getValue().setHandled(true);
             conditions.append(getPathWithoutArchetype(hv.getHelper().getFullOpenEhrPath(), hv.getHelper().getArchetype()));
-            conditions.append(openEhrAqlPopulator.getDataTypeAwareAqlSuffix(hv.getValue().getValue(), hv.getHelper().getDetectedType()));
+            conditions.append(openEhrAqlPopulator.getDataTypeAwareAqlSuffix(hv.getValue().getValue(), hv.getHelper().getPossibleRmTypes()));
         }
         return String.format("SELECT h FROM EHR e CONTAINS %s h [%s] WHERE e/ehr_id/value='{{ehrid}}' AND h/%s",
                 entryType, archetype, conditions);
@@ -182,7 +193,7 @@ public class ToAqlMappingEngine {
             if (hv.getValue().isHandled()) {
                 continue;
             }
-            final boolean isOnComposition = hv.helper.getFullOpenEhrPath().startsWith(FhirConnectConst.OPENEHR_COMPOSITION_FC);
+            final boolean isOnComposition = hv.getHelper().getFullOpenEhrPath().startsWith(FhirConnectConst.OPENEHR_COMPOSITION_FC);
             final String archetype = hv.getHelper().getFullOpenEhrPath().split("/")[0];
             if (isOnComposition) {
                 if (!conditions.isEmpty()) {
@@ -201,7 +212,7 @@ public class ToAqlMappingEngine {
             }
             hv.getValue().setHandled(true);
             conditions.append(getPathWithoutArchetype(hv.getHelper().getFullOpenEhrPath(), archetype));
-            conditions.append(openEhrAqlPopulator.getDataTypeAwareAqlSuffix(hv.getValue().getValue(), hv.getHelper().getDetectedType()));
+            conditions.append(openEhrAqlPopulator.getDataTypeAwareAqlSuffix(hv.getValue().getValue(), hv.getHelper().getPossibleRmTypes()));
         }
         if (narrowToTemplate) {
             return String.format("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS %s [%s] WHERE e/ehr_id/value='{{ehrid}}' and %s",

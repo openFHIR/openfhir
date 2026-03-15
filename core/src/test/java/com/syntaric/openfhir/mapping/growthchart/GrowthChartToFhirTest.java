@@ -506,7 +506,7 @@ public class GrowthChartToFhirTest extends GenericTest {
                 "      }";
         final com.nedap.archie.rm.composition.Observation unmarshalled = new CanonicalJson().unmarshal(observation, com.nedap.archie.rm.composition.Observation.class);
 
-        Bundle bundle = toFhir.contentItemToFhir(context, List.of(unmarshalled), operationaltemplate);
+        Bundle bundle = toFhir.contentItemsToFhir(context, List.of(unmarshalled), operationaltemplate);
         System.out.println();
     }
 

@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 ## Unreleased
 
+## [2.0.2] - 2026-03-15
+
+### Added
+- tests for toAql translation
+- abbility to translate separate ContentItems not necessarily the whole Composition
+
+### Fixed
+- toAql now properly exposed via RESTful API (/openfhir/toaql), but still a BETA feature
+
 ## [2.0.1] - 2026-03-14
 
 ### Added
