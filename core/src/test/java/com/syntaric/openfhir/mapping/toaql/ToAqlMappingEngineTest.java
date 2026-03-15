@@ -310,7 +310,7 @@ public class ToAqlMappingEngineTest {
 
         final MappingHelper statusHelper = new MappingHelper();
         statusHelper.setFullFhirPath("Observation.status");
-        codeHelper.setPossibleRmTypes(List.of("DvCodedText"));
+        statusHelper.setPossibleRmTypes(List.of("DvCodedText"));
         statusHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         statusHelper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0005]");
 
