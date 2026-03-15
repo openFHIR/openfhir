@@ -91,7 +91,7 @@ public class KdsToAqlTest {
                 new OpenFhirStringUtils(),
                 new OpenFhirMapperUtils()), new OpenFhirStringUtils());
         toAql = new ToAql(contextRepository, new OpenFhirMapperUtils(), new NoOpUserContextProducer(), repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
-                openEhrCachedUtils);
+                openEhrCachedUtils, null);
     }
 
     @Test
