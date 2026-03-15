@@ -116,7 +116,7 @@ public class ProcedureToOpenEHRTest extends KdsGenericTest {
 
     /**
      * Input: /kds/procedure/toOpenEHR/input/KDS_Prozedur_bundle.json
-     * Expected: /kds/procedure/toOpenEHR/output/KDS_Prozedur.flat_textvalue.json
+     * Expected: /kds/procedure/toOpenEHR/output/KDS_Prozedur.flat.json
      */
     @Test
     public void assertToOpenEHRLegacyFlatDetails() {

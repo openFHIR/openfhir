@@ -206,8 +206,9 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                             final List<DataWithIndex> extractedData) {
         boolean isReference = FhirConnectConst.REFERENCE.equals(mappingHelper.getOriginalOpenEhrPath());
         boolean isSlot = mappingHelper.isHasSlot();
-        final boolean isEvent = mappingHelper.getPossibleRmTypes() != null
-                && mappingHelper.getPossibleRmTypes().contains("EVENT") && !mappingHelper.getFhir().contains("effective"); // we should rather check which element this is in Fhir and if it's date time, then let it pass
+        final List<String> possibleRmTypes = mappingHelper.getPossibleRmTypes();
+        final boolean isEvent = possibleRmTypes != null
+                && possibleRmTypes.contains(FhirConnectConst.DV_EVENT) && !mappingHelper.getFhir().contains("effective"); // we should rather check which element this is in Fhir and if it's date time, then let it pass
         boolean isNonPopulatingField = isReference || isSlot || isEvent;
         return isNonPopulatingField || extractedData.isEmpty()
                 && !mappingHelper.getChildren().isEmpty();
