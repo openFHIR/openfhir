@@ -1,0 +1,201 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: CLUSTER.problem_qualifier.v2
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-CLUSTER.problem_qualifier.v2
+    revision: 2.0.1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+  - name: "clinicalStatus"
+    with:
+      fhir: "$resource.clinicalStatus"
+      openehr: "$archetype"
+    followedBy:
+      mappings:
+        - name: "activeInactive"
+          with:
+            fhir: "coding"
+            openehr: "items[at0003]"
+          manual:
+            - name: "active"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0026"
+                - path: "value"
+                  value: "Active"
+              fhirCondition:
+                targetRoot: "$fhirRoot"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "active"
+              fhir:
+                - path: "code"
+                  value: "active"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                - path: "display"
+                  value: "Active"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0003]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0026"
+
+            - name: "inactive"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0027"
+                - path: "value"
+                  value: "Inactive"
+              fhirCondition:
+                targetRoot: "$fhirRoot"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "inactive"
+              fhir:
+                - path: "code"
+                  value: "inactive"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                - path: "display"
+                  value: "Inactive"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0003]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0027"
+
+
+        - name: "resolutionPhase"
+          with:
+            fhir: "coding"
+            openehr: "items[at0083]"
+          manual:
+            - name: "resolved"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0084"
+                - path: "value"
+                  value: "Resolved"
+              fhirCondition:
+                targetRoot: "$fhirRoot"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "resolved"
+              fhir:
+                - path: "code"
+                  value: "resolved"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                - path: "display"
+                  value: "Resolved"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0083]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0084"
+
+            - name: "relapsed"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0097"
+                - path: "value"
+                  value: "relapsed"
+              fhirCondition:
+                targetRoot: "$fhirRoot"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "relapse"
+              fhir:
+                - path: "code"
+                  value: "relapse"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                - path: "display"
+                  value: "Relapse"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0083]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0097"
+
+
+        - name: "remissionPhase"
+          with:
+            fhir: "coding"
+            openehr: "items[at0089]"
+          manual:
+            - name: "remission"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0090"
+                - path: "value"
+                  value: "In remission"
+              fhirCondition:
+                targetRoot: "$fhirRoot"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "remission"
+              fhir:
+                - path: "code"
+                  value: "remission"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                - path: "display"
+                  value: "Remission"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0089]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0090"
+
+
+        - name: "occurrencePhase"
+          with:
+            fhir: "coding"
+            openehr: "items[at0071]"
+          manual:
+            - name: "remission"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0096"
+                - path: "value"
+                  value: "Recurrence"
+              fhirCondition:
+                targetRoot: "$fhirRoot"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "recurrence"
+              fhir:
+                - path: "code"
+                  value: "recurrence"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                - path: "display"
+                  value: "Recurrence"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0071]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0096"
+
+

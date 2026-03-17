@@ -1,0 +1,64 @@
+grammar: FHIRConnect/v0.9.0
+type: extension
+metadata:
+  name: IPS_problem_diagnose
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: EVALUATION.problem_diagnosis.v1
+
+mappings:
+  - name: "dateTime"
+    extension: add
+    with:
+      fhir: "$resource.abatement.as(DateTime)"
+      openehr: "$archetype/data[at0001]/items[at0030]"
+
+  - name: "certainty"
+    extension: add
+    with:
+      fhir: "$resource.verificationStatus"
+      openehr: "$archetype/data[at0001]/items[at0073]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "data[at0001]/items[at0073]/defining_code/code_string"
+      operator: "one of"
+      criteria: "at0076"
+
+
+  - name: "stage"
+    extension: add
+    with:
+      fhir: "$resource.stage"
+      openehr: "$archetype"
+    followedBy:
+      mappings:
+        - name: "type"
+          with:
+            fhir: "type"
+            openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1, 'Stage']/items[at0003]"
+        - name: "summary"
+          with:
+            fhir: "summary"
+            openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1, 'Stage']/items[at0005]"
+#        - name: "assessment"
+#          with:
+#            fhir: "assessment"
+#            openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1, 'Stage']/items[at0005]"
+
+
+
+  - name: "evidence"
+    extension: add
+    with:
+      fhir: "$resource.evidence"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1, 'Clinical evidence']"
+    slotArchetype: "CLUSTER.clinical_evidence.v1"
+
+  - name: "clinicalStatusSlot"
+    extension: add
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]"
+    slotArchetype: "CLUSTER.problem_qualifier.v2"
