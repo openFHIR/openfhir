@@ -14,6 +14,16 @@ spec:
     structureDefinition: http://hl7.org/fhir/StructureDefinition/Composition
 
 mappings:
+  - name: meta
+    with:
+      fhir: "$resource.meta"
+      openehr: "$composition"
+    manual:
+      - name: "profile"
+        fhir:
+          - path: "profile"
+            value: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+
   - name: "sectionActiveProblems"
     with:
       fhir: "$resource.section"

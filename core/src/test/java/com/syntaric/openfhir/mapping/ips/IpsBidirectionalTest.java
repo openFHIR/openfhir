@@ -53,6 +53,7 @@ public class IpsBidirectionalTest extends GenericTest {
     }
 
     private void assertProblemList(org.hl7.fhir.r4.model.Composition composition) {
+        Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
         final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
                 .filter(s -> s.getCode().getCoding().stream()
                         .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "11450-4".equals(c.getCode())))

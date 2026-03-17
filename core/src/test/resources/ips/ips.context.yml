@@ -10,7 +10,7 @@ spec:
 
 context:
   profile:
-    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition"
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
     version: "2.0.0"
   template:
     id: "International Patient Summary"
