@@ -117,9 +117,9 @@ public class OpenFhirFhirConnectModelMapper {
             }
             if (manual.getFhir() != null) {
                 appendFhirManualMappings(mapping, manual);
-                toReturn.add(mapping);
             }
         }
+        toReturn.add(mapping);
     }
 
     private List<Mapping> buildOpenEhrManualMappings(final Mapping mapping, final Manual manual) {

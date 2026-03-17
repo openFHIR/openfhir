@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## Unreleased
+### Fixed
+- manual mappings may produce duplicate results due to incorrect manual mapping construction
 
 ## [2.0.2] - 2026-03-15
 
