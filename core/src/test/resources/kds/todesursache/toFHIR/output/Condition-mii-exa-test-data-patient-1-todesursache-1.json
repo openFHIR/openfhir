@@ -37,14 +37,6 @@
                 "code": "79378-6"
               },
               {
-                "system": "http://loinc.org",
-                "code": "79378-6"
-              },
-              {
-                "system": "http://snomed.info/sct",
-                "code": "16100001"
-              },
-              {
                 "system": "http://snomed.info/sct",
                 "code": "16100001"
               }
