@@ -90,9 +90,32 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("inactive", allergy.getClinicalStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("Inactive", allergy.getClinicalStatus().getCodingFirstRep().getDisplay());
         Assert.assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical", allergy.getClinicalStatus().getCodingFirstRep().getSystem());
+        Assert.assertEquals("confirmed", allergy.getVerificationStatus().getCodingFirstRep().getCode());
+        Assert.assertEquals("Confirmed", allergy.getVerificationStatus().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-verification", allergy.getVerificationStatus().getCodingFirstRep().getSystem());
         Assert.assertEquals("42", allergy.getCode().getCodingFirstRep().getCode());
         Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips", allergy.getCode().getCodingFirstRep().getSystem());
         Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available", allergy.getCode().getText());
+        Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
+//        Assert.assertEquals(AllergyIntolerance.AllergyIntoleranceCategory.FOOD, allergy.getCategory().get(0).getValue());
+
+        Assert.assertEquals("2022-02-03T04:05:06+01:00", allergy.getLastOccurrenceElement().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:07+01:00", allergy.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("Allergy", allergy.getTypeElement().getValueAsString());
+        Assert.assertEquals("a random text", allergy.getNoteFirstRep().getText());
+
+        AllergyIntolerance.AllergyIntoleranceReactionComponent reactionFirstRep = allergy.getReactionFirstRep();
+        Assert.assertEquals("Lorem ipsum Specific Substance", reactionFirstRep.getSubstance().getText());
+        Assert.assertEquals("142", reactionFirstRep.getManifestationFirstRep().getCodingFirstRep().getCode());
+        Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips", reactionFirstRep.getManifestationFirstRep().getCodingFirstRep().getSystem());
+        Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available", reactionFirstRep.getManifestationFirstRep().getText());
+        Assert.assertEquals("reaction description", reactionFirstRep.getDescription());
+        Assert.assertEquals("2027-02-03T04:05:06+01:00", reactionFirstRep.getOnsetElement().getValueAsString());
+        Assert.assertEquals("moderate", reactionFirstRep.getSeverityElement().getValueAsString());
+        Assert.assertEquals("Exposure Lorem ipsum", reactionFirstRep.getExposureRoute().getText());
+        Assert.assertEquals("Reaction text", reactionFirstRep.getNoteFirstRep().getText());
+
+        jsonParser.encodeResourceToString(allergy);
     }
 
     private void assertProblemList(org.hl7.fhir.r4.model.Composition composition) {

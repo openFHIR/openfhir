@@ -81,3 +81,245 @@ mappings:
                 targetAttribute: "defining_code/code_string"
                 operator: "one of"
                 criteria: "at0132"
+
+  - name: "verificationStatus"
+    with:
+      fhir: "$resource.verificationStatus"
+      openehr: "$archetype"
+    followedBy:
+      mappings:
+        - name: "verificationStatusAllergies"
+          with:
+            fhir: "coding"
+            openehr: "data[at0001]/items[at0063]"
+            type: "NONE"
+          manual:
+            - name: "unconfirmed"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0064"
+                - path: "value"
+                  value: "Unconfirmed"
+              fhirCondition:
+                targetRoot: "coding"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "unconfirmed"
+              fhir:
+                - path: "code"
+                  value: "unconfirmed"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"
+                - path: "display"
+                  value: "Unconfirmed"
+              openehrCondition:
+                targetRoot: "$archetype/data[at0001]/items[at0063]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0064"
+
+            - name: "confirmed"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0065"
+                - path: "value"
+                  value: "Confirmed"
+              fhirCondition:
+                targetRoot: "coding"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "confirmed"
+              fhir:
+                - path: "code"
+                  value: "confirmed"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"
+                - path: "display"
+                  value: "Confirmed"
+              openehrCondition:
+                targetRoot: "$archetype/data[at0001]/items[at0063]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0065"
+
+            - name: "refuted"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0066"
+                - path: "value"
+                  value: "Refuted"
+              fhirCondition:
+                targetRoot: "coding"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "refuted"
+              fhir:
+                - path: "code"
+                  value: "refuted"
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"
+                - path: "display"
+                  value: "Refuted"
+              openehrCondition:
+                targetRoot: "$archetype/data[at0001]/items[at0063]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0066"
+
+  - name: "criticality"
+    with:
+      fhir: "$resource.criticality"
+      openehr: "$archetype/data[at0001]/items[at0101]"
+      type: "NONE"
+    manual:
+      - name: "low"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0102"
+          - path: "value"
+            value: "Low"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "criticality"
+          operator: "one of"
+          criteria: "low"
+        fhir:
+          - path: "$fhirRoot"
+            value: "low"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0101]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0102"
+
+      - name: "high"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0103"
+          - path: "value"
+            value: "High"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "criticality"
+          operator: "one of"
+          criteria: "high"
+        fhir:
+          - path: "$fhirRoot"
+            value: "high"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0101]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0103"
+
+      - name: "indeterminate"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0124"
+          - path: "value"
+            value: "indeterminate"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "criticality"
+          operator: "one of"
+          criteria: "unable-to-assess"
+        fhir:
+          - path: "$fhirRoot"
+            value: "unable-to-assess"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0101]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0124"
+
+#  - name: "category"
+#    with:            todo hapi bug about this being a codetype but then can't de-serialize it
+#      fhir: "$resource.category"
+#      openehr: "$archetype/data[at0001]/items[at0120]" # value has to match the one binded in FHIR (food, medication, environment, biologic), even though its DV_TEXT in openEHR
+#      type: "DV_TEXT"
+
+  - name: "lastOccurrence"
+    with:
+      fhir: "$resource.lastOccurrence"
+      openehr: "$archetype/data[at0001]/items[at0117]"
+
+  - name: "onsetDateTime"
+    with:
+      fhir: "$resource.onset.as(DateTime)"
+      openehr: "$archetype/data[at0001]/items[at0133]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "data[at0001]/items[at0133]"
+      operator: "type"
+      criteria: "DV_DATE_TIME"
+
+  - name: "onsetDuration"
+    with:
+      fhir: "$resource.onset.as(Age)"
+      openehr: "$archetype/data[at0001]/items[at0133]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "data[at0001]/items[at0133]"
+      operator: "type"
+      criteria: "DV_DURATION"
+
+  - name: "onsetIntervalPeriod"
+    with:
+      fhir: "$resource.onset.as(Period)"
+      openehr: "$archetype/data[at0001]/items[at0133]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "data[at0001]/items[at0133]"
+      operator: "type"
+      criteria: "DV_INTERVAL<DV_DATE_TIME>"
+
+  - name: "onsetIntervalRange"
+    with:
+      fhir: "$resource.onset.as(Range)"
+      openehr: "$archetype/data[at0001]/items[at0133]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "data[at0001]/items[at0133]"
+      operator: "type"
+      criteria: "DV_INTERVAL<DV_DURATION>"
+
+  - name: "onsetString"
+    with:
+      fhir: "$resource.onset.as(String)"
+      openehr: "$archetype/data[at0001]/items[at0133]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "data[at0001]/items[at0133]"
+      operator: "type"
+      criteria: "DV_TEXT"
+
+  - name: "reactionMechanism"
+    with:
+      fhir: "$resource.type"
+      openehr: "$archetype/data[at0001]/items[at0058]" # value has to match the one binded in FHIR (allergy, intolerance), even though its DV_TEXT in openEHR
+
+  - name: "comment"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0006]"
+
+  - name: "comment"
+    with:
+      fhir: "$resource.reaction"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]"
+    slotArchetype: "CLUSTER.adverse_reaction_event.v1"
+
+
+

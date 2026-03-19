@@ -22,6 +22,7 @@ context:
     - "EVALUATION.adverse_reaction_risk.v2"
     - "CLUSTER.clinical_evidence.v1"
     - "CLUSTER.problem_qualifier.v2"
+    - "CLUSTER.adverse_reaction_event.v1"
   extensions:
     - "IPS_problem_diagnose"
   start: "COMPOSITION.health_summary.v1"
