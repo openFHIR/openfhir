@@ -226,6 +226,26 @@ public class OpenFhirStringUtilsTest {
                                                                           "MedicationStatement",
                                                                           null));
 
+        Assert.assertEquals("coding.where(code.toString().contains('active'))",
+                            openFhirStringUtils.getFhirPathWithConditions("",
+                                                                          new Condition()
+                                                                                  .withTargetRoot("coding")
+                                                                                  .withTargetAttribute("code")
+                                                                                  .withOperator("one of")
+                                                                                  .withCriteria("active"),
+                                                                          "BackboneElement",
+                                                                          null));
+
+        Assert.assertEquals("coding.where(code.toString().contains('active'))",
+                            openFhirStringUtils.getFhirPathWithConditions("",
+                                                                          new Condition()
+                                                                                  .withTargetRoot("coding")
+                                                                                  .withTargetAttribute("code")
+                                                                                  .withOperator("one of")
+                                                                                  .withCriteria("active"),
+                                                                          "AllergyIntolerance",
+                                                                          null));
+
         Assert.assertEquals("MedicationStatement.medication.resolve().ingredient",
                             openFhirStringUtils.getFhirPathWithConditions(
                                     "MedicationStatement.medication.resolve().ingredient",
@@ -260,7 +280,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("code");
         condition.setCriteria("refuted");
         condition.setOperator("one of");
-        Assert.assertEquals(".where(verificationStatus.coding.code.toString().contains('refuted'))",
+        Assert.assertEquals(".verificationStatus.coding.where(code.toString().contains('refuted'))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           condition,
                                                                           "",
@@ -271,7 +291,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("code");
         condition.setCriteria("refuted");
         condition.setOperator("one of");
-        Assert.assertEquals(".where(verificationStatus.coding.code.toString().contains('refuted'))",
+        Assert.assertEquals(".verificationStatus.coding.where(code.toString().contains('refuted'))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           condition,
                                                                           "BackboneElement",

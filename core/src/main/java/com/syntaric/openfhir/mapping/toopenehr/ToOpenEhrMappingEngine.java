@@ -236,7 +236,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
      */
     private List<Base> resolveFhirResults(final MappingHelper helper, final String fhirPath,
                                           final Base toResolveOn) {
-        final boolean isReference = FhirConnectConst.REFERENCE.equals(helper.getOriginalOpenEhrPath());
+        final boolean isReference = helper.getOriginalOpenEhrPath() != null && helper.getOriginalOpenEhrPath().startsWith(FhirConnectConst.REFERENCE);
 
         if (isReference) {
             return resolveReference(toResolveOn, helper);
