@@ -1,7 +1,7 @@
 grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
-  name: SECTION.adhoc.v1_problem_list
+  name: SECTION.adhoc.v1_adverse_reaction_list
   version: 0.0.1-alpha
 spec:
   system: FHIR
@@ -15,15 +15,15 @@ mappings:
   - name: "entry"
     with:
       fhir: "entry"
-      openehr: "$reference/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+      openehr: "$reference/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]"
     reference:
-      resourceType: "Condition"
+      resourceType: "AllergyIntolerance"
       mappings:
-        - name: "problemDiagnosis"
+        - name: "allergy"
           with:
             fhir: "$fhirRoot"
-            openehr: "$archetype/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
-          slotArchetype: "EVALUATION.problem_diagnosis.v1"
+            openehr: "$archetype/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]"
+          slotArchetype: "EVALUATION.adverse_reaction_risk.v2"
   - name: "title"
     with:
       fhir: "$fhirRoot"
@@ -32,7 +32,7 @@ mappings:
       - name: "manualTitle"
         fhir:
           - path: "title"
-            value: "Active Problems"
+            value: "Active Allergies and Intolerances"
 
   - name: "code"
     with:
@@ -46,11 +46,11 @@ mappings:
       - name: "manualCode"
         fhir:
           - path: "code"
-            value: "11450-4"
+            value: "48765-2"
       - name: "manualDisplay"
         fhir:
           - path: "display"
-            value: "Problem list Reported"
+            value: "Allergies and Intolerances"
 
   - name: "emptyReason"
     with:

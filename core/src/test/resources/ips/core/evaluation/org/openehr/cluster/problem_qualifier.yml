@@ -19,10 +19,11 @@ mappings:
       openehr: "$archetype"
     followedBy:
       mappings:
-        - name: "activeInactive"
+        - name: "activeInactiveProblemList"
           with:
             fhir: "coding"
             openehr: "items[at0003]"
+            type: "NONE"
           manual:
             - name: "active"
               openehr:
@@ -33,7 +34,7 @@ mappings:
                 - path: "value"
                   value: "Active"
               fhirCondition:
-                targetRoot: "$fhirRoot"
+                targetRoot: "coding"
                 targetAttribute: "code"
                 operator: "one of"
                 criteria: "active"
@@ -59,7 +60,7 @@ mappings:
                 - path: "value"
                   value: "Inactive"
               fhirCondition:
-                targetRoot: "$fhirRoot"
+                targetRoot: "coding"
                 targetAttribute: "code"
                 operator: "one of"
                 criteria: "inactive"
@@ -81,6 +82,7 @@ mappings:
           with:
             fhir: "coding"
             openehr: "items[at0083]"
+            type: "NONE"
           manual:
             - name: "resolved"
               openehr:
@@ -91,7 +93,7 @@ mappings:
                 - path: "value"
                   value: "Resolved"
               fhirCondition:
-                targetRoot: "$fhirRoot"
+                targetRoot: "coding"
                 targetAttribute: "code"
                 operator: "one of"
                 criteria: "resolved"
@@ -117,7 +119,7 @@ mappings:
                 - path: "value"
                   value: "relapsed"
               fhirCondition:
-                targetRoot: "$fhirRoot"
+                targetRoot: "coding"
                 targetAttribute: "code"
                 operator: "one of"
                 criteria: "relapse"
@@ -139,6 +141,7 @@ mappings:
           with:
             fhir: "coding"
             openehr: "items[at0089]"
+            type: "NONE"
           manual:
             - name: "remission"
               openehr:
@@ -149,7 +152,7 @@ mappings:
                 - path: "value"
                   value: "In remission"
               fhirCondition:
-                targetRoot: "$fhirRoot"
+                targetRoot: "coding"
                 targetAttribute: "code"
                 operator: "one of"
                 criteria: "remission"
@@ -171,6 +174,7 @@ mappings:
           with:
             fhir: "coding"
             openehr: "items[at0071]"
+            type: "NONE"
           manual:
             - name: "remission"
               openehr:
@@ -181,7 +185,7 @@ mappings:
                 - path: "value"
                   value: "Recurrence"
               fhirCondition:
-                targetRoot: "$fhirRoot"
+                targetRoot: "coding"
                 targetAttribute: "code"
                 operator: "one of"
                 criteria: "recurrence"

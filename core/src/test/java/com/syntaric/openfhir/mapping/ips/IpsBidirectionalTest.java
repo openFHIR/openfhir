@@ -1,5 +1,6 @@
 package com.syntaric.openfhir.mapping.ips;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.nedap.archie.rm.composition.Composition;
 import com.syntaric.openfhir.mapping.GenericTest;
@@ -7,6 +8,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
+import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.junit.Assert;
@@ -34,26 +36,66 @@ public class IpsBidirectionalTest extends GenericTest {
     }
 
     @Test
-    public void toFhir() {
+    public void toFhirToOpenEhrToFhir() {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
         final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
-        assertProblemList(composition);
+        Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
 
-        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, composition, operationaltemplate);
-        System.out.println();
+        assertProblemList(composition);
+        assertAllergies(composition);
+
+        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+
+        final Composition roundTwoCompositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
+                new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
+        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), operationaltemplate);
+
+        final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
+
+        assertProblemList(roundTwoComposition);
+        assertAllergies(roundTwoComposition);
     }
 
-    @Test
-    public void toOpenEhr() {
+    private void assertAllergies(org.hl7.fhir.r4.model.Composition composition) {
+        final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
+                .filter(s -> s.getCode().getCoding().stream()
+                        .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "48765-2".equals(c.getCode())))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Active Allergies and Intolerances section not found"));
+        Assert.assertEquals("Active Allergies and Intolerances", section.getTitle());
 
+        Assert.assertEquals("generated", section.getText().getStatusAsString());
+        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>", section.getText().getDivAsString());
+
+        Assert.assertEquals("No known allergies", section.getEmptyReason().getText());
+        Assert.assertEquals("http://terminology.hl7.org/CodeSystem/list-empty-reason", section.getEmptyReason().getCodingFirstRep().getSystem());
+        Assert.assertEquals("nilknown", section.getEmptyReason().getCodingFirstRep().getCode());
+
+        final org.hl7.fhir.r4.model.Coding coding = section.getCode().getCoding().stream()
+                .filter(c -> "http://loinc.org".equals(c.getSystem()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("LOINC coding not found in Active Allergies section"));
+        Assert.assertEquals("48765-2", coding.getCode());
+        Assert.assertEquals("Allergies and Intolerances", coding.getDisplay());
+
+        final AllergyIntolerance allergy = (AllergyIntolerance) section.getEntry().stream()
+                .filter(e -> "#3".equals(e.getReference()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Entry reference '#3' not found"))
+                .getResource();
+        Assert.assertEquals("inactive", allergy.getClinicalStatus().getCodingFirstRep().getCode());
+        Assert.assertEquals("Inactive", allergy.getClinicalStatus().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical", allergy.getClinicalStatus().getCodingFirstRep().getSystem());
+        Assert.assertEquals("42", allergy.getCode().getCodingFirstRep().getCode());
+        Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips", allergy.getCode().getCodingFirstRep().getSystem());
+        Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available", allergy.getCode().getText());
     }
 
     private void assertProblemList(org.hl7.fhir.r4.model.Composition composition) {
-        Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
         final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
                 .filter(s -> s.getCode().getCoding().stream()
                         .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "11450-4".equals(c.getCode())))

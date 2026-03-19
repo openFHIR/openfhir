@@ -17,7 +17,9 @@ context:
   archetypes:
     - "COMPOSITION.health_summary.v1"
     - "SECTION.adhoc.v1_problem_list"
+    - "SECTION.adhoc.v1_adverse_reaction_list"
     - "EVALUATION.problem_diagnosis.v1"
+    - "EVALUATION.adverse_reaction_risk.v2"
     - "CLUSTER.clinical_evidence.v1"
     - "CLUSTER.problem_qualifier.v2"
   extensions:

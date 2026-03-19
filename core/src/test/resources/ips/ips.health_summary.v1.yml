@@ -29,3 +29,20 @@ mappings:
       fhir: "$resource.section"
       openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Problem List']"
     slotArchetype: "SECTION.adhoc.v1_problem_list"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "11450-4"
+
+
+  - name: "sectionAllergiesAndIntolerances"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Allergies and Intolerances']"
+    slotArchetype: "SECTION.adhoc.v1_adverse_reaction_list"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "48765-2"
