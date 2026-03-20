@@ -390,7 +390,7 @@ public class OpenFhirStringUtils {
             remainingItems = originalFhirPath.replace(FHIR_ROOT_FC, "").replace("BackboneElement", "")
                     .replace(actualConditionTargetRoot, "");
         } else {
-            withParentsWhereInPlace = setParentsWherePathToTheCorrectPlace(originalFhirPath, parentPath);
+            withParentsWhereInPlace = StringUtils.isEmpty(originalFhirPath) ?  actualConditionTargetRoot:setParentsWherePathToTheCorrectPlace(originalFhirPath, parentPath);
             remainingItems = "";
         }
 

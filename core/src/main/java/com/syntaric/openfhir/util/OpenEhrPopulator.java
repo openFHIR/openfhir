@@ -257,8 +257,13 @@ public class OpenEhrPopulator {
                     return;
                 }
             case FhirConnectConst.DV_TEXT:
-                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
-                                    terminology, availableCodings);
+                if(extractedValue instanceof CodeableConcept codeableConcept && StringUtils.isNotEmpty(codeableConcept.getText())) {
+                    addValuePerFhirType(mappingHelper, new StringType(codeableConcept.getText()), openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
+                            terminology, availableCodings);
+                } else {
+                    addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
+                            terminology, availableCodings);
+                }
                 return;
             case FhirConnectConst.EVENT_CONTEXT:
                 addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,

@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## Unreleased
 ### Fixed
 - manual mappings may produce duplicate results due to incorrect manual mapping construction
+- fhirpath with fhirconditions was in some cases wrongly constructed, resulting in missin mappings
+- $reference can be suffix with further AQL path when necessary
+
+### Added
+- DV_TEXT maps to CodeableConcept.text
 
 ## [2.0.2] - 2026-03-15
 

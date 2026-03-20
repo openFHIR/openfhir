@@ -1560,7 +1560,6 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "useParentRoot" : false,
           "hasSlot" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
