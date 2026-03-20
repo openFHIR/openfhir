@@ -1,7 +1,9 @@
 package com.syntaric.openfhir.aql;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -45,9 +47,12 @@ public class ToAqlResponse {
     }
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class AqlResponse {
-        private final String aql;
-        private final AqlType type;
+        @Setter
+        private String aql;
+        private AqlType type;
     }
 
     public enum AqlType {

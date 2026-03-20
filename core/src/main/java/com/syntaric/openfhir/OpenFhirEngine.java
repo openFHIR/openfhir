@@ -371,7 +371,13 @@ public class OpenFhirEngine {
 
     public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {
         try {
-            return toAql.toAql(toAqlRequest);
+            ToAqlResponse aql = toAql.toAql(toAqlRequest);
+            if (aql.getAqls() != null && StringUtils.isNotEmpty(toAqlRequest.getEhrId())) {
+                for (ToAqlResponse.AqlResponse aqlAql : aql.getAqls()) {
+                    aqlAql.setAql(aqlAql.getAql().replace("{{ehrid}}", toAqlRequest.getEhrId()));
+                }
+            }
+            return aql;
         } catch (final Exception e) {
             log.error("Error trying to get AQL", e);
             throw e;

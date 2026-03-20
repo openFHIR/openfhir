@@ -13,10 +13,7 @@ import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
 import com.syntaric.openfhir.mapping.helpers.parser.*;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
-import com.syntaric.openfhir.mapping.tofhir.ToFhir;
-import com.syntaric.openfhir.mapping.tofhir.ToFhirInstantiator;
-import com.syntaric.openfhir.mapping.tofhir.ToFhirMappingEngine;
-import com.syntaric.openfhir.mapping.tofhir.ToFhirPrePostProcessor;
+import com.syntaric.openfhir.mapping.tofhir.*;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrMappingEngine;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrNullFlavour;
@@ -104,7 +101,7 @@ public abstract class GenericTest {
                                 readers)
                 ));
         fhirInstanceCreator = new FhirInstanceCreator(openFhirStringUtils,
-                                                                                fhirInstanceCreatorUtility);
+                fhirInstanceCreatorUtility);
         fhirInstancePopulator = new FhirInstancePopulator(
                 new NoOpPrePostFhirInstancePopulator(), new NoOpTerminologyTranslator());
         toFhirMappingEngine = new ToFhirMappingEngine(
@@ -119,31 +116,32 @@ public abstract class GenericTest {
                 new CustomMappingRegistry(),
                 openFhirMapperUtils);
         toFhir = new ToFhir(new FlatJsonMarshaller(),
-                            new OpenEhrCachedUtils(null),
-                            new Gson(),
-                            helpersCreator,
-                            new ToFhirPrePostProcessor(FhirContext.forR4Cached()),
-                            toFhirMappingEngine);
+                new OpenEhrCachedUtils(null),
+                new Gson(),
+                helpersCreator,
+                new ToFhirPrePostProcessor(FhirContext.forR4Cached()),
+                toFhirMappingEngine,
+                new ContentItemCompositionBuilder());
 
         final OpenEhrPopulator openEhrPopulator = new OpenEhrPopulator(openFhirMapperUtils,
-                                                                       new NoOpTerminologyTranslator(),
-                                                                       new NoOpPrePostOpenEhrPopulator(),
-                                                                       openFhirStringUtils);
+                new NoOpTerminologyTranslator(),
+                new NoOpPrePostOpenEhrPopulator(),
+                openFhirStringUtils);
         toOpenEhr = new ToOpenEhr(new ToOpenEhrPrePostProcessor(ctx),
-                                  new FlatJsonUnmarshaller(),
-                                  new OpenEhrCachedUtils(null),
-                                  helpersCreator,
-                                  new Gson(),
-                                  new ToOpenEhrMappingEngine(fhirPath,
-                                                             openFhirStringUtils,
-                                                             openEhrPopulator,
-                                                             openFhirMapperUtils,
-                                                             new ToOpenEhrNullFlavour(openFhirStringUtils,
-                                                                                      openEhrPopulator,
-                                                                                      fhirPath),
-                                                             new CustomMappingRegistry()),
-                                  fhirPath,
-                                  openFhirStringUtils);
+                new FlatJsonUnmarshaller(),
+                new OpenEhrCachedUtils(null),
+                helpersCreator,
+                new Gson(),
+                new ToOpenEhrMappingEngine(fhirPath,
+                        openFhirStringUtils,
+                        openEhrPopulator,
+                        openFhirMapperUtils,
+                        new ToOpenEhrNullFlavour(openFhirStringUtils,
+                                openEhrPopulator,
+                                fhirPath),
+                        new CustomMappingRegistry()),
+                fhirPath,
+                openFhirStringUtils);
 
 
         prepareState();

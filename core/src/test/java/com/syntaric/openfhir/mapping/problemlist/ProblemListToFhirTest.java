@@ -1,4 +1,4 @@
-package com.syntaric.openfhir.mapping.ips;
+package com.syntaric.openfhir.mapping.problemlist;
 
 import com.nedap.archie.rm.composition.Composition;
 import com.syntaric.openfhir.mapping.GenericTest;
