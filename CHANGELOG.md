@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 - DV_TEXT maps to CodeableConcept.text
+- ability to transform discrete ContentItems on the fly
+- ehrid is now replaced with the ehrid coming in the request in toAql translation
+- IPS tests
 
 ## [2.0.2] - 2026-03-15
 
