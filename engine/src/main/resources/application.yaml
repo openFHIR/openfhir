@@ -3,6 +3,9 @@ mongock:
     - com.syntaric.openfhir.db.repository.mongodb.migrations
 
 spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://openfhir_tests:X5DNIzlyAHyx2AX7@vonk-gandrejc.s9qr7n0.mongodb.net/openfhir_development
   application:
     name: open-fhir-impl
 db:

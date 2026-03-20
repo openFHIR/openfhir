@@ -1,0 +1,152 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: SECTION.adhoc.v1_problem_list
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-SECTION.adhoc.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+  - name: "entry"
+    with:
+      fhir: "entry"
+      openehr: "$reference/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+    reference:
+      resourceType: "Condition"
+      mappings:
+        - name: "problemDiagnosis"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+          slotArchetype: "EVALUATION.problem_diagnosis.v1"
+  - name: "title"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$composition"
+    manual:
+      - name: "manualTitle"
+        fhir:
+          - path: "title"
+            value: "Active Problems"
+
+  - name: "code"
+    with:
+      fhir: "code.coding"
+      openehr: "$composition"
+    manual:
+      - name: "manualSystem"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "manualCode"
+        fhir:
+          - path: "code"
+            value: "11450-4"
+      - name: "manualDisplay"
+        fhir:
+          - path: "display"
+            value: "Problem list Reported"
+
+  - name: "emptyReason"
+    with:
+      fhir: "emptyReason"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.absence.v2]"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "emptyReason.coding.code"
+      operator: "not of"
+      criteria: "nilknown"
+
+    followedBy:
+      mappings:
+        - name: "text"
+          with:
+            fhir: "text"
+            openehr: "data[at0001]/items[at0002]"
+
+        - name: "reason"
+          with:
+            fhir: "coding"
+            openehr: "$archetype"
+          followedBy:
+            mappings:
+              - name: "code"
+                with:
+                  fhir: "display"
+                  openehr: "data[at0001]/items[at0005]"
+              - name: "manualEmptyResonCoding"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$archetype"
+                manual:
+                  - name: "manualSystem"
+                    fhir:
+                      - path: "system"
+                        value: "http://terminology.hl7.org/CodeSystem/list-empty-reason"
+                  - name: "manualCode"
+                    fhir:
+                      - path: "code"
+                        value: "unavailable"
+
+  - name: "emptyReason" # goes after above and if it it's there, it will overwrite it which is ok
+    with:
+      fhir: "emptyReason"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.exclusion_global.v1]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "items[openEHR-EHR-EVALUATION.exclusion_global.v1]/data[at0001]/items[at0002]"
+      operator: "not empty"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "emptyReason.coding.code"
+      operator: "one of"
+      criteria: "nilknown"
+    followedBy:
+      mappings:
+        - name: "text"
+          with:
+            fhir: "text"
+            openehr: "data[at0001]/items[at0002]"
+
+        - name: "reason"
+          with:
+            fhir: "coding"
+            openehr: "$archetype"
+          followedBy:
+            mappings:
+              - name: "code"
+                with:
+                  fhir: "display"
+                  openehr: "data[at0001]/items[at0002]"
+              - name: "manualEmptyResonCoding"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$archetype"
+                manual:
+                  - name: "manualSystem"
+                    fhir:
+                      - path: "system"
+                        value: "http://terminology.hl7.org/CodeSystem/list-empty-reason"
+                  - name: "manualCode"
+                    fhir:
+                      - path: "code"
+                        value: "nilknown"
+
+  - name: "narrativeText"
+    with:
+      fhir: "text"
+      openehr: "$composition"
+    manual:
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "generated"
+      - name: "div"
+        fhir:
+          - path: "div"
+            value: "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>"

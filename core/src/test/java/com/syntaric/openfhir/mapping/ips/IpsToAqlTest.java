@@ -1,4 +1,4 @@
-package com.syntaric.openfhir.mapping.kds;
+package com.syntaric.openfhir.mapping.ips;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syntaric.openfhir.OpenFhirMappingContext;
@@ -38,8 +38,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 @Slf4j
-public class KdsToAqlTest {
-
+public class IpsToAqlTest {
     AutoCloseable closeable;
 
     @Mock
@@ -48,8 +47,8 @@ public class KdsToAqlTest {
     @Mock
     protected OpenEhrCachedUtils openEhrCachedUtils;
 
-    final String DIR = getClass().getResource("/kds/").getFile();
-    final String CONTEXT_DIR = getClass().getResource("/kds/core/projects/").getFile();
+    final String DIR = getClass().getResource("/ips/").getFile();
+    final String CONTEXT_DIR = getClass().getResource("/ips/").getFile();
 
     private ToAql toAql;
 
@@ -95,47 +94,18 @@ public class KdsToAqlTest {
     }
 
     @Test
-    public void limitByProfile_medikatonseintrag() {
+    public void limitByResource_archetypeonly() {
         final ToAqlRequest toAqlRequest = new ToAqlRequest(null,
-                "123", "MedicationStatement?status=final&_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement");
+                "123", "Condition?verification-status=confirmed");
         final ToAqlResponse aql = toAql.toAql(toAqlRequest);
         final ToAqlResponse.AqlResponse compositionAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.COMPOSITION)
                 .findAny().orElse(null);
         final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
                 .findAny().orElse(null);
-        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}' and c/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]/value = 'final'", compositionAql.getAql());
-        Assert.assertNull(entryAql); // because its a contex aql
-    }
-
-    @Test
-    public void limitByProfile_medikatonseintrag_category() {
-        final ToAqlRequest toAqlRequest = new ToAqlRequest(null,
-                "123", "MedicationStatement?status=final&category=456&_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement");
-        final ToAqlResponse aql = toAql.toAql(toAqlRequest);
-        final ToAqlResponse.AqlResponse compositionAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.COMPOSITION)
-                .findAny().orElse(null);
-        final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
-                .findAny().orElse(null);
-        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}' and c/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]/value = 'final' AND c/content[openEHR-EHR-OBSERVATION.medication_statement.v0]/protocol[at0004]/items[openEHR-EHR-CLUSTER.entry_category.v0]/items[at0002]/value = '456'", compositionAql.getAql());
-        Assert.assertNull(entryAql); // because its a contex aql
-    }
-
-    @Test
-    public void limitByProfile_medikatonseintrag_archetypeonly() {
-        final ToAqlRequest toAqlRequest = new ToAqlRequest(null,
-                "123", "MedicationStatement");
-        final ToAqlResponse aql = toAql.toAql(toAqlRequest);
-        final ToAqlResponse.AqlResponse compositionAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.COMPOSITION)
-                .findAny().orElse(null);
-        final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
-                .findAny().orElse(null);
-        Assert.assertEquals("SELECT c FROM EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}'", compositionAql.getAql());
-        Assert.assertEquals("SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}'", entryAql.getAql());
     }
 
     private OPERATIONALTEMPLATE getOperationalTemplate(final String contextFilePath) {
-        final String dirName = new File(contextFilePath).getParentFile().getName();
-        final File optDir = new File(DIR, dirName);
+        final File optDir = new File(DIR, "");
         final File[] optFiles = optDir.listFiles(f -> f.getName().endsWith(".opt"));
         if (optFiles == null || optFiles.length == 0) {
             throw new RuntimeException("No .opt file found in " + optDir.getAbsolutePath());
@@ -175,10 +145,9 @@ public class KdsToAqlTest {
         for (final File file : files) {
             if (file.isDirectory()) {
                 collectContextFiles(file, result);
-            } else if (file.getName().endsWith("context.yaml")) {
+            } else if (file.getName().endsWith("context.yml")) {
                 result.add(file.getAbsolutePath());
             }
         }
     }
-
 }

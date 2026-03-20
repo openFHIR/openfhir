@@ -62,11 +62,14 @@ public class ToOpenEhrPrePostProcessor implements ToOpenEhrPrePostProcessorInter
                     entry.getResource(), Reference.class);
             // check if they're resolveable from within the Bundle
             for (final Reference aReference : allReferences) {
+                final String referenceString = aReference.getReference();
                 if (aReference.getResource() != null) {
                     // is ok
+                    if (referenceString.startsWith("#")) {
+                        aReference.setReference(referenceString.substring(1));
+                    }
                     continue;
                 }
-                final String referenceString = aReference.getReference();
                 if (StringUtils.isBlank(referenceString)) {
                     continue;
                 }
