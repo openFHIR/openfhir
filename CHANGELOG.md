@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - manual mappings may produce duplicate results due to incorrect manual mapping construction
 - fhirpath with fhirconditions was in some cases wrongly constructed, resulting in missin mappings
 - $reference can be suffix with further AQL path when necessary
+- AQL generation now fallbacks to archetype-only AQL when no param matches
+- logging when something goes wrong in toAql now works (previously stacktrace was not logged)
 
 ### Added
 - DV_TEXT maps to CodeableConcept.text

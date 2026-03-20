@@ -370,7 +370,12 @@ public class OpenFhirEngine {
     }
 
     public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {
-        return toAql.toAql(toAqlRequest);
+        try {
+            return toAql.toAql(toAqlRequest);
+        } catch (final Exception e) {
+            log.error("Error trying to get AQL", e);
+            throw e;
+        }
     }
 
     private IncomingOpenEhrType deduceIncomingPayloadType(final String incomingOpenEhr) {
