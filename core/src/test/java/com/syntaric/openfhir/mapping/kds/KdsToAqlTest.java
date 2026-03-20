@@ -175,7 +175,7 @@ public class KdsToAqlTest {
         for (final File file : files) {
             if (file.isDirectory()) {
                 collectContextFiles(file, result);
-            } else if (file.getName().endsWith("context.yaml") || file.getName().endsWith("context.xml")) {
+            } else if (file.getName().endsWith("context.yaml")) {
                 result.add(file.getAbsolutePath());
             }
         }

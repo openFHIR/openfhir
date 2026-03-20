@@ -73,6 +73,17 @@ public class ToAqlMappingEngine {
             toAqlResponse.addAqls(aqls);
         }
 
+        if(toAqlResponse.getAqls() == null || toAqlResponse.getAqls().isEmpty()) {
+            final ToAqlResponse archOnlyResponse = archetypeOnlyAql(modelsToMap, narrowToTemplate);
+            for (FhirQueryParam queryParam : queryParams) {
+                if (!queryParam.isHandled()) {
+                    archOnlyResponse.addUnhandledParam(queryParam.getName(), ToAqlResponse.UnhandledParamType.ERROR,
+                            "Parameter was not handled nor included in the AQL.");
+                }
+            }
+            return archOnlyResponse;
+        }
+
         return toAqlResponse;
     }
 
@@ -128,7 +139,7 @@ public class ToAqlMappingEngine {
                 || FhirConnectConst.OPENEHR_TYPE_NONE.equals(helper.getHardcodedType())) {
             return false;
         }
-        if(helper.getPossibleRmTypes().size() == 1 && helper.getPossibleRmTypes().contains(FhirConnectConst.OPENEHR_TYPE_CLUSTER)) {
+        if (helper.getPossibleRmTypes().size() == 1 && helper.getPossibleRmTypes().contains(FhirConnectConst.OPENEHR_TYPE_CLUSTER)) {
             return false;
         }
         return true;
@@ -272,6 +283,9 @@ public class ToAqlMappingEngine {
                 .map(String::trim)
                 .toList();
         for (final MappingHelper helper : helpers) {
+            if(helper.getFullFhirPath() == null) {
+                continue;
+            }
             boolean isArchetypeOnlyMapping = helper.getFullFhirPath().equals(helper.getGeneratingResourceType());
             if (!isArchetypeOnlyMapping
                     && (paths.stream().anyMatch(p -> p.contains(helper.getFullFhirPath()) || helper.getFullFhirPath().contains(p)))) {

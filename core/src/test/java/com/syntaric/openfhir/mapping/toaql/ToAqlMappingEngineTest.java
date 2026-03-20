@@ -364,9 +364,10 @@ public class ToAqlMappingEngineTest {
         // "code" resolves to "Observation.code" but the helper has a different path — no match
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.status");
+        helper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
 
         final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
-                .context(new FhirConnectContextEntity())
+                .context(getContext())
                 .mappingHelpers(List.of(helper))
                 .build();
 
@@ -383,6 +384,9 @@ public class ToAqlMappingEngineTest {
         // "code" resolves to "Observation.code" — helper matches, so no unhandled param
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code");
+        helper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
+        helper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
+        helper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
 
         final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
                 .context(getContext())
@@ -398,6 +402,9 @@ public class ToAqlMappingEngineTest {
     public void map_multipleParams_onlyUnmatchedAddedToUnhandled() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code");
+        helper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
+        helper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
+        helper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
 
         final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
                 .context(getContext())
