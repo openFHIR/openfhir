@@ -7,7 +7,7 @@ spec:
   system: FHIR
   version: R4
   openEhrConfig:
-    archetype: SECTION.adhoc.v1
+    archetype: openEHR-EHR-SECTION.adhoc.v1
   fhirConfig:
     structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
 

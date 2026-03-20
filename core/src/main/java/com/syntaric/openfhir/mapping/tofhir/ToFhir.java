@@ -32,6 +32,7 @@ public class ToFhir {
     final private HelpersCreator helpersCreator;
     final private ToFhirPrePostProcessorInterface toFhirPrePostProcessor;
     final private ToFhirMappingEngine toFhirMappingEngine;
+    final private ContentItemCompositionBuilder contentItemCompositionBuilder;
 
     @Autowired
     public ToFhir(final FlatJsonMarshaller flatJsonMarshaller,
@@ -39,13 +40,15 @@ public class ToFhir {
                   final Gson gson,
                   final HelpersCreator helpersCreator,
                   final ToFhirPrePostProcessorInterface toFhirPrePostProcessor,
-                  final ToFhirMappingEngine toFhirMappingEngine) {
+                  final ToFhirMappingEngine toFhirMappingEngine,
+                  final ContentItemCompositionBuilder contentItemCompositionBuilder) {
         this.flatJsonMarshaller = flatJsonMarshaller;
         this.openEhrApplicationScopedUtils = openEhrApplicationScopedUtils;
         this.gson = gson;
         this.helpersCreator = helpersCreator;
         this.toFhirPrePostProcessor = toFhirPrePostProcessor;
         this.toFhirMappingEngine = toFhirMappingEngine;
+        this.contentItemCompositionBuilder = contentItemCompositionBuilder;
     }
 
     public Bundle contentItemsToFhir(final FhirConnectContext context,
@@ -53,8 +56,9 @@ public class ToFhir {
                                      final OPERATIONALTEMPLATE operationaltemplate) {
         toFhirPrePostProcessor.preProcessContentItems(context, contentItems, operationaltemplate);
 
-        Composition composition = new Composition();
-        composition.setContent(contentItems);
+        final WebTemplate webTemplate = openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
+        final Composition composition = contentItemCompositionBuilder.buildComposition(contentItems,
+                webTemplate);
         return compositionsToFhir(context, List.of(composition), operationaltemplate);
     }
 

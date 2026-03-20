@@ -1,0 +1,1558 @@
+[
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.adverse_reaction_risk.v2",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Adverse reaction risk"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.adverse_reaction_risk.v2"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0002",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Substance"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "42",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0130",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Active/inactive status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Inactive",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0132",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0063",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Verification status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Confirmed",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0065",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0101",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Criticality"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "High",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0103",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0117",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Onset of last reaction"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0133",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Onset of first reaction"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:07"
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.adverse_reaction_event.v1",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Adverse reaction event"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.adverse_reaction_event.v1"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0001",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Specific substance"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Lorem ipsum Specific Substance"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0006",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Manifestation"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "142",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0007",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Reaction description"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "reaction description"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0008",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Onset of reaction"
+              },
+              "value": {
+                "_type": "DV_DATE_TIME",
+                "value": "2027-02-03T04:05:06"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0010",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Severity of reaction"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Moderate",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0012",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0017",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Route of exposure"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Exposure Lorem ipsum"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0024",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Comment"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Reaction text"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0006",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Comment"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "a random text"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.adverse_reaction_risk.v2",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Adverse reaction risk"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.adverse_reaction_risk.v2"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0002",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Substance"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "42",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0130",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Active/inactive status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Inactive",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0132",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0063",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Verification status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Confirmed",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0065",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0101",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Criticality"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "High",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0103",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0117",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Onset of last reaction"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0133",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Onset of first reaction"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:07"
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.adverse_reaction_event.v1",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Adverse reaction event"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.adverse_reaction_event.v1"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0001",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Specific substance"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Lorem ipsum Specific Substance"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0006",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Manifestation"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "142",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0007",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Reaction description"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "reaction description"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0008",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Onset of reaction"
+              },
+              "value": {
+                "_type": "DV_DATE_TIME",
+                "value": "2027-02-03T04:05:06"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0010",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Severity of reaction"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Moderate",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0012",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0017",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Route of exposure"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Exposure Lorem ipsum"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0024",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Comment"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Reaction text"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0006",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Comment"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "a random text"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.adverse_reaction_risk.v2",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Adverse reaction risk"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.adverse_reaction_risk.v2"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0002",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Substance"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "42",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0130",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Active/inactive status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Inactive",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0132",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0063",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Verification status"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Confirmed",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0065",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0101",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Criticality"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "High",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0103",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0117",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Onset of last reaction"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0133",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Onset of first reaction"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:07"
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.adverse_reaction_event.v1",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Adverse reaction event"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.adverse_reaction_event.v1"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0001",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Specific substance"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Lorem ipsum Specific Substance"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0006",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Manifestation"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "142",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0007",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Reaction description"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "reaction description"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0008",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Onset of reaction"
+              },
+              "value": {
+                "_type": "DV_DATE_TIME",
+                "value": "2027-02-03T04:05:06"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0010",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Severity of reaction"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Moderate",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0012",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0017",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Route of exposure"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Exposure Lorem ipsum"
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0024",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Comment"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Reaction text"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0006",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Comment"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "a random text"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Problem/Diagnosis"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.problem_diagnosis.v1"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "structure"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0002",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Problem/Diagnosis name"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips' available",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "42",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0077",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Date/time of onset"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0005",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Severity"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Mild",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0047",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.clinical_evidence.v1",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Stage"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.clinical_evidence.v1"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0003",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Evidence"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Lorem ipsum"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0030",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Date/time of resolution"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.problem_qualifier.v2",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Problem/Diagnosis qualifier"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.problem_qualifier.v2"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0003",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Active/Inactive?"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Active",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0026",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0083",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Resolution phase"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Resolved",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0084",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0089",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Remission status"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "In remission",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0090",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0071",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Occurrence"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Recurrence",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0096",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0073",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Diagnostic certainty"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Confirmed",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0076",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0069",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Comment"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "Lorem ipsum"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Problem/Diagnosis"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.problem_diagnosis.v1"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "structure"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0002",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Problem/Diagnosis name"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Chronic back pain",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "161891005",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "http://snomed.info/sct"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0077",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Date/time of onset"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2020-06-15T10:00:00"
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0005",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Severity"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Moderate",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0048",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.clinical_evidence.v1",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Stage"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.clinical_evidence.v1"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0003",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Evidence"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "MRI confirmed"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0030",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Date/time of resolution"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2024-01-01T00:00:00"
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.problem_qualifier.v2",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Problem/Diagnosis qualifier"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.problem_qualifier.v2"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0003",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Active/Inactive?"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Inactive",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0027",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0083",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Resolution phase"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Relapsed",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0097",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0069",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Comment"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "Managed with physiotherapy"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Problem/Diagnosis"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.problem_diagnosis.v1"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "structure"
+      },
+      "items": [
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0002",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Problem/Diagnosis name"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips' available",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "42",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0077",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Date/time of onset"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0005",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Severity"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Mild",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0047",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.clinical_evidence.v1",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Stage"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.clinical_evidence.v1"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0003",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Evidence"
+              },
+              "value": {
+                "_type": "DV_TEXT",
+                "value": "Lorem ipsum"
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0030",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Date/time of resolution"
+          },
+          "value": {
+            "_type": "DV_DATE_TIME",
+            "value": "2022-02-03T04:05:06"
+          }
+        },
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "openEHR-EHR-CLUSTER.problem_qualifier.v2",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Problem/Diagnosis qualifier"
+          },
+          "archetype_details": {
+            "archetype_id": {
+              "value": "openEHR-EHR-CLUSTER.problem_qualifier.v2"
+            },
+            "rm_version": "1.0.4"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0003",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Active/Inactive?"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Active",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0026",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0083",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Resolution phase"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Resolved",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0084",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0089",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Remission status"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "In remission",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0090",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0071",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Occurrence"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Recurrence",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "at0096",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "local"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0073",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Diagnostic certainty"
+          },
+          "value": {
+            "_type": "DV_CODED_TEXT",
+            "value": "Confirmed",
+            "defining_code": {
+              "_type": "CODE_PHRASE",
+              "code_string": "at0076",
+              "terminology_id": {
+                "_type": "TERMINOLOGY_ID",
+                "value": "local"
+              }
+            }
+          }
+        },
+        {
+          "_type": "ELEMENT",
+          "archetype_node_id": "at0069",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Comment"
+          },
+          "value": {
+            "_type": "DV_TEXT",
+            "value": "Lorem ipsum"
+          }
+        }
+      ]
+    }
+  }
+
+
+]
