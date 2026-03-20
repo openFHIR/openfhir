@@ -155,12 +155,12 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("#1", condition.getId());
 
         final org.hl7.fhir.r4.model.Coding verificationCoding = condition.getVerificationStatus().getCoding().stream()
-                .filter(c -> "local".equals(c.getSystem()))
+                .filter(c -> "http://terminology.hl7.org/CodeSystem/condition-ver-status".equals(c.getSystem()))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("verificationStatus coding not found"));
-        Assert.assertEquals("at0076", verificationCoding.getCode());
+        Assert.assertEquals("http://terminology.hl7.org/CodeSystem/condition-ver-status", verificationCoding.getSystem());
+        Assert.assertEquals("confirmed", verificationCoding.getCode());
         Assert.assertEquals("Confirmed", verificationCoding.getDisplay());
-        Assert.assertEquals("Confirmed", condition.getVerificationStatus().getText());
 
         final List<org.hl7.fhir.r4.model.Coding> clinicalStatuses = condition.getClinicalStatus().getCoding().stream()
                 .filter(c -> "http://terminology.hl7.org/CodeSystem/condition-clinical".equals(c.getSystem()))

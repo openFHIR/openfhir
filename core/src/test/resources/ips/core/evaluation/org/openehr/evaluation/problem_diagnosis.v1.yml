@@ -43,13 +43,6 @@ mappings:
       fhir: "$resource.bodySite"
       openehr: "$archetype/data[at0012]"
 
-
-  - name: "bodySiteCluster"
-    with:
-      fhir: "$resource.bodySite"
-      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.anatomical_location.v1]"
-    slotArchetype: "CLUSTER.anatomical_location.v1"
-
   - name: "severity"
     with:
       fhir: "$resource.severity"

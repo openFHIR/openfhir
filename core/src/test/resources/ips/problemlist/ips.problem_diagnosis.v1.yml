@@ -18,13 +18,35 @@ mappings:
   - name: "certainty"
     extension: add
     with:
-      fhir: "$resource.verificationStatus"
+      fhir: "$resource.verificationStatus.coding"
       openehr: "$archetype/data[at0001]/items[at0073]"
-    openehrCondition:
-      targetRoot: "$archetype"
-      targetAttribute: "data[at0001]/items[at0073]/defining_code/code_string"
-      operator: "one of"
-      criteria: "at0076"
+      type: "NONE"
+    manual:
+      - name: "confirmed"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0076"
+          - path: "value"
+            value: "Confirmed"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "verificationStatus.coding.code"
+          operator: "one of"
+          criteria: "confirmed"
+        fhir:
+          - path: "code"
+            value: "confirmed"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+          - path: "display"
+            value: "Confirmed"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0073]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0076"
 
 
   - name: "stage"

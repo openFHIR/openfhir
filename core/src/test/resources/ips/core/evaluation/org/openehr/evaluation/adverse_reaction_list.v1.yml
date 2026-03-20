@@ -307,7 +307,7 @@ mappings:
 
   - name: "reactionMechanism"
     with:
-      fhir: "$resource.type"
+      fhir: "$resource.type" #todo: HAS TO BE LOWER CASE
       openehr: "$archetype/data[at0001]/items[at0058]" # value has to match the one binded in FHIR (allergy, intolerance), even though its DV_TEXT in openEHR
 
   - name: "comment"
