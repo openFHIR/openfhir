@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
-## Unreleased
+## [Unreleased]
+
+## [2.0.3] - 2026-03-20
 ### Fixed
 - manual mappings may produce duplicate results due to incorrect manual mapping construction
 - fhirpath with fhirconditions was in some cases wrongly constructed, resulting in missin mappings
