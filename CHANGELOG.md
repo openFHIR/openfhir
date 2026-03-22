@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## [Unreleased]
+## [2.0.4] - 2026-03-23
 
 ### Fixed
 - when mapping to FHIR Enumeration that's a List (like AllergyIntolerance.category), this is now properly mapped and serialized (previously HAPI serialization was throwing errors)
