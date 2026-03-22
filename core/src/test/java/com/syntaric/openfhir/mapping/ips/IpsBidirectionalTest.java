@@ -44,6 +44,11 @@ public class IpsBidirectionalTest extends GenericTest {
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
+        Assert.assertEquals("60591-5", composition.getType().getCodingFirstRep().getCode());
+        Assert.assertEquals("http://loinc.org", composition.getType().getCodingFirstRep().getSystem());
+        Assert.assertEquals("Patient summary Document", composition.getType().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("Patient Summary", composition.getTitle());
+        Assert.assertEquals("final", composition.getStatusElement().getValueAsString());
 
         assertProblemList(composition);
         assertAllergies(composition);
@@ -97,7 +102,7 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips", allergy.getCode().getCodingFirstRep().getSystem());
         Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available", allergy.getCode().getText());
         Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
-//        Assert.assertEquals(AllergyIntolerance.AllergyIntoleranceCategory.FOOD, allergy.getCategory().get(0).getValue());
+        Assert.assertEquals("Food", allergy.getCategory().get(0).getValueAsString());
 
         Assert.assertEquals("2022-02-03T04:05:06+01:00", allergy.getLastOccurrenceElement().getValueAsString());
         Assert.assertEquals("2022-02-03T04:05:07+01:00", allergy.getOnsetDateTimeType().getValueAsString());

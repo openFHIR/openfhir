@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## [Unreleased]
+## [2.0.4] - 2026-03-23
+
+### Fixed
+- when mapping to FHIR Enumeration that's a List (like AllergyIntolerance.category), this is now properly mapped and serialized (previously HAPI serialization was throwing errors)
+- criterias are properly evaluated when multiple (previously only 0th criteria was evaluated)
+
+### Added
+- IPS tests
+- CodedText <> Enumeration mapping
+- Additional sections to IPS mappings and tests on the codebase
+
+### Changed
+- interface on `ToFhirPrePostProcessorInterface.postProcess` now includes also the context, opt and compositions
 
 ## [2.0.3] - 2026-03-20
 ### Fixed
@@ -20,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - DV_TEXT maps to CodeableConcept.text
 - ability to transform discrete ContentItems on the fly
 - ehrid is now replaced with the ehrid coming in the request in toAql translation
-- IPS tests
 
 ## [2.0.2] - 2026-03-15
 

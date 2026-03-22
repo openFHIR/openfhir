@@ -90,7 +90,7 @@ mappings:
           - path: "defining_code/terminology_id"
             value: "local"
           - path: "defining_code/code_string"
-            value: "at0012"
+            value: "at0013"
           - path: "value"
             value: "Severe"
         fhirCondition:

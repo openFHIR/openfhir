@@ -180,6 +180,11 @@ public class FhirInstanceCreatorUtility {
                     return field.getType();
                 }
                 return types[0];
+            } else if (field.getGenericType() instanceof ParameterizedType) {
+                final Type actualTypeArgument = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                if (actualTypeArgument.getTypeName().contains("Enumeration")) {
+                    return getClassForName("org.hl7.fhir.r4.model.Enumeration");
+                }
             } else if ("extension".equals(field.getName()) || "modifierExtension".equals(field.getName())) {
                 // special handling
                 return Extension.class;

@@ -9,7 +9,10 @@ import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 
 public interface ToFhirPrePostProcessorInterface {
 
-    Bundle postProcess(final Bundle mappedResource);
+    Bundle postProcess(final Bundle mappedResource,
+                       final FhirConnectContext context,
+                       final List<Composition> compositions,
+                       final OPERATIONALTEMPLATE operationaltemplate);
 
     void preProcess(final FhirConnectContext context,
                     final List<Composition> compositions,
