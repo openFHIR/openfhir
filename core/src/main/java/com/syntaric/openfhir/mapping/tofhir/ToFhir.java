@@ -92,7 +92,7 @@ public class ToFhir {
 
         final Bundle relevantBundle = extractBundleFromBundle(returningBundle);
 
-        return toFhirPrePostProcessor.postProcess(relevantBundle);
+        return toFhirPrePostProcessor.postProcess(relevantBundle, context, compositions, operationaltemplate);
     }
 
     private Bundle extractBundleFromBundle(final Bundle returningBundle) {

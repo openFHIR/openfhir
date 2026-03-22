@@ -24,6 +24,44 @@ mappings:
           - path: "profile"
             value: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
 
+  - name: title
+    with:
+      fhir: "$resource"
+      openehr: "$composition"
+    manual:
+      - name: "title"
+        fhir:
+          - path: "title"
+            value: "Patient Summary"
+
+  - name: status
+    with:
+      fhir: "$resource"
+      openehr: "$composition"
+    manual:
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "final"
+
+  - name: type
+    with:
+      fhir: "$resource.type.coding"
+      openehr: "$composition"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code"
+            value: "60591-5"
+      - name: "system"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "display"
+        fhir:
+          - path: "display"
+            value: "Patient summary Document"
+
   - name: "sectionActiveProblems"
     with:
       fhir: "$resource.section"
@@ -46,3 +84,15 @@ mappings:
       targetAttribute: "code.coding.code"
       operator: "one of"
       criteria: "48765-2"
+
+
+  - name: "sectionMedications"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Medication list']"
+    slotArchetype: "SECTION.adhoc.v1_medication_list"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "10160-0"
