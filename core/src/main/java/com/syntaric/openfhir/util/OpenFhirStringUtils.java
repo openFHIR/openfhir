@@ -410,17 +410,22 @@ public class OpenFhirStringUtils {
             if(remainingToAdd.startsWith(".")){
                 remainingToAdd = remainingToAdd.substring(1);
             }
-            final String whereClause =
-                    ".where(" + remainingToAdd + condition.getTargetAttribute() + ".toString().contains('"
-                            + getStringFromCriteria(condition.getCriteria()).getCode() + "')" + (negate ? "=false" : "")
-                            + ")";
+            final StringJoiner criteriaJoiner1 = new StringJoiner(negate ? " and " : " or ");
+            for (final String criteria : condition.getCriterias()) {
+                criteriaJoiner1.add(remainingToAdd + condition.getTargetAttribute() + ".toString().contains('"
+                        + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
+            }
+            final String whereClause = ".where(" + criteriaJoiner1 + ")";
             final String remainingItemsFromParent = originalFhirPath.replace(commonPath, "");
             return commonPath + whereClause + remainingItemsFromParent;
         } else {
             // then do your own where path
-            final String whereClause =
-                    ".where(" + condition.getTargetAttribute() + ".toString().contains('" + getStringFromCriteria(
-                            condition.getCriteria()).getCode() + "')" + (negate ? "=false" : "") + ")";
+            final StringJoiner criteriaJoiner2 = new StringJoiner(negate ? " and " : " or ");
+            for (final String criteria : condition.getCriterias()) {
+                criteriaJoiner2.add(condition.getTargetAttribute() + ".toString().contains('"
+                        + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
+            }
+            final String whereClause = ".where(" + criteriaJoiner2 + ")";
             // then suffix with whatever is left from the children's path
             final String finalOne = withParentsWhereInPlace + whereClause + (StringUtils.isBlank(remainingItems) ? ""
                     : (remainingItems.startsWith(".") ? remainingItems : ("." + remainingItems)));

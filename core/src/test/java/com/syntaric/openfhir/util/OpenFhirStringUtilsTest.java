@@ -236,6 +236,28 @@ public class OpenFhirStringUtilsTest {
                                                                           "BackboneElement",
                                                                           null));
 
+        Assert.assertEquals("coding.where(code.toString().contains('active') or code.toString().contains('inactive'))",
+                            openFhirStringUtils.getFhirPathWithConditions("",
+                                                                          new Condition()
+                                                                                  .withTargetRoot("coding")
+                                                                                  .withTargetAttribute("code")
+                                                                                  .withOperator("one of")
+                                                                                  .withCriterias("active")
+                                                                                  .withCriterias("inactive"),
+                                                                          "BackboneElement",
+                                                                          null));
+
+        Assert.assertEquals("coding.where(code.toString().contains('active')=false and code.toString().contains('inactive')=false)",
+                            openFhirStringUtils.getFhirPathWithConditions("",
+                                                                          new Condition()
+                                                                                  .withTargetRoot("coding")
+                                                                                  .withTargetAttribute("code")
+                                                                                  .withOperator("not of")
+                                                                                  .withCriterias("active")
+                                                                                  .withCriterias("inactive"),
+                                                                          "BackboneElement",
+                                                                          null));
+
         Assert.assertEquals("coding.where(code.toString().contains('active'))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           new Condition()

@@ -15,12 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - $reference can be suffix with further AQL path when necessary
 - AQL generation now fallbacks to archetype-only AQL when no param matches
 - logging when something goes wrong in toAql now works (previously stacktrace was not logged)
+- when mapping to FHIR Enumeration that's a List (like AllergyIntolerance.category), this is now properly mapped and serialized (previously HAPI serialization was throwing errors)
+- criterias are properly evaluated when multiple (previously only 0th criteria was evaluated)
 
 ### Added
 - DV_TEXT maps to CodeableConcept.text
 - ability to transform discrete ContentItems on the fly
 - ehrid is now replaced with the ehrid coming in the request in toAql translation
 - IPS tests
+- CodedText <> Enumeration mapping
 
 ## [2.0.2] - 2026-03-15
 

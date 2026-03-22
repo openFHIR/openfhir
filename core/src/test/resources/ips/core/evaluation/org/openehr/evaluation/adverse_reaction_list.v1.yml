@@ -244,11 +244,10 @@ mappings:
           operator: "one of"
           criteria: "at0124"
 
-#  - name: "category"
-#    with:            todo hapi bug about this being a codetype but then can't de-serialize it
-#      fhir: "$resource.category"
-#      openehr: "$archetype/data[at0001]/items[at0120]" # value has to match the one binded in FHIR (food, medication, environment, biologic), even though its DV_TEXT in openEHR
-#      type: "DV_TEXT"
+  - name: "categoryToTest"
+    with:
+      fhir: "$resource.category"
+      openehr: "$archetype/data[at0001]/items[at0120]" # value has to match the one binded in FHIR (food, medication, environment, biologic), even though its DV_TEXT in openEHR
 
   - name: "lastOccurrence"
     with:
@@ -315,7 +314,7 @@ mappings:
       fhir: "$resource.note.text"
       openehr: "$archetype/data[at0001]/items[at0006]"
 
-  - name: "comment"
+  - name: "reaction"
     with:
       fhir: "$resource.reaction"
       openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]"

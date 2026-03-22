@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r4.model.Enumeration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -325,6 +326,9 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             return possibleRmTypes.get(0);
         }
         if (result instanceof CodeableConcept) {
+            if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
+            if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
+        } if (result instanceof Enumeration<?>) {
             if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
             if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
         } else if (result instanceof Coding) {

@@ -95,7 +95,7 @@ public class HelpersCreator {
                                       final WebTemplate webTemplate) {
         final List<MappingHelper> result = new ArrayList<>();
         createHelpers(fhirConnectModel, fhirDataType, mappings, null, result, templateId, null, null, null,
-                      webTemplate, null);
+                      webTemplate, fhirConnectModel.getTerminology());
         return result;
     }
 

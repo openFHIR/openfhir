@@ -176,7 +176,7 @@ mappings:
             openehr: "items[at0071]"
             type: "NONE"
           manual:
-            - name: "remission"
+            - name: "recurrence"
               openehr:
                 - path: "defining_code/terminology_id"
                   value: "local"
