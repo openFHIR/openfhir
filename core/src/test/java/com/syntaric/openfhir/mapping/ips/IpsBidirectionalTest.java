@@ -44,6 +44,11 @@ public class IpsBidirectionalTest extends GenericTest {
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
+        Assert.assertEquals("60591-5", composition.getType().getCodingFirstRep().getCode());
+        Assert.assertEquals("http://loinc.org", composition.getType().getCodingFirstRep().getSystem());
+        Assert.assertEquals("Patient summary Document", composition.getType().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("Patient Summary", composition.getTitle());
+        Assert.assertEquals("final", composition.getStatusElement().getValueAsString());
 
         assertProblemList(composition);
         assertAllergies(composition);

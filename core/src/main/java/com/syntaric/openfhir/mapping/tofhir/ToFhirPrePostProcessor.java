@@ -24,7 +24,10 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
     }
 
     @Override
-    public Bundle postProcess(final Bundle mappedResource) {
+    public Bundle postProcess(final Bundle mappedResource,
+                              final FhirConnectContext context,
+                              final List<Composition> compositions,
+                              final OPERATIONALTEMPLATE operationaltemplate) {
         stripEmptyContained(mappedResource);
         return mappedResource;
     }

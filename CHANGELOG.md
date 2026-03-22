@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - ehrid is now replaced with the ehrid coming in the request in toAql translation
 - IPS tests
 - CodedText <> Enumeration mapping
+- Additional sections to IPS mappings and tests on the codebase
+
+### Changed
+- interface on `ToFhirPrePostProcessorInterface.postProcess` now includes also the context, opt and compositions
 
 ## [2.0.2] - 2026-03-15
 
