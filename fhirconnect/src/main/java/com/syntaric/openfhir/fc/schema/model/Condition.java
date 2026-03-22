@@ -213,7 +213,13 @@ public class Condition {
         this.criterias = criterias;
     }
 
-
+    public Condition withCriterias(String criteria) {
+        if(criterias == null) {
+            this.criterias = new ArrayList<>();
+        }
+        this.criterias.add(criteria);
+        return this;
+    }
 
 
 

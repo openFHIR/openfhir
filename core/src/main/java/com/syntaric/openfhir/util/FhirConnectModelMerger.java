@@ -3,9 +3,12 @@ package com.syntaric.openfhir.util;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
 import com.syntaric.openfhir.fc.schema.model.FhirConnectModel;
 import com.syntaric.openfhir.fc.schema.model.Mapping;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +45,7 @@ public class FhirConnectModelMerger {
     /**
      * Merges extensions to the core model mapping
      *
-     * @param coreModel to be merged on
+     * @param coreModel  to be merged on
      * @param extensions to be merged
      * @return constructed OpenFhirFhirConnectModelMapper that results from a merge of core and extensions
      */
@@ -52,8 +55,9 @@ public class FhirConnectModelMerger {
             // no extension exists for this core mapping, add it to the output as is
             return new OpenFhirFhirConnectModelMapper().fromFhirConnectModelMapper(coreModel);
         }
+        Terminology lastTerminology = null;
         for (final FhirConnectModel extension : extensions) {
-            if(extension.getMappings() == null) {
+            if (extension.getMappings() == null) {
                 continue;
             }
             for (final Mapping extensionMapping : extension.getMappings()) {
@@ -63,6 +67,12 @@ public class FhirConnectModelMerger {
                     case OVERWRITE -> overwriteMapping(coreModel, extensionMapping);
                 }
             }
+            if (extension.getTerminology() != null) {
+                lastTerminology = extension.getTerminology();
+            }
+        }
+        if (lastTerminology != null) {
+            coreModel.setTerminology(lastTerminology);
         }
         return new OpenFhirFhirConnectModelMapper().fromFhirConnectModelMapper(coreModel);
     }
@@ -70,7 +80,7 @@ public class FhirConnectModelMerger {
     /**
      * Overwrites a mapping, meaning it overwrites it completely
      *
-     * @param coreModel where it looks for this specific mapping to overwrite it
+     * @param coreModel        where it looks for this specific mapping to overwrite it
      * @param extensionMapping the one to overwrite with
      */
     void overwriteMapping(final FhirConnectModel coreModel, final Mapping extensionMapping) {
@@ -78,7 +88,7 @@ public class FhirConnectModelMerger {
         final Mapping toOverwrite = findMappingByName(coreModel.getMappings(), extensionMapping.getName());
         if (toOverwrite == null) {
             log.error("Couldn't find mapping named {} in the core model mapper. Not overwriting anything.",
-                      extensionMapping.getName());
+                    extensionMapping.getName());
             return;
         }
         toOverwrite.copyOverWith(extensionMapping);
@@ -87,7 +97,7 @@ public class FhirConnectModelMerger {
     /**
      * Appends a mapping to a specific other mapping
      *
-     * @param coreModel where it looks for this specific mapping that it needs to append to
+     * @param coreModel        where it looks for this specific mapping that it needs to append to
      * @param extensionMapping that needs to be appended
      */
     void appendMapping(final FhirConnectModel coreModel, final Mapping extensionMapping) {
@@ -95,7 +105,7 @@ public class FhirConnectModelMerger {
         final Mapping toAppendTo = findMapping(coreModel.getMappings(), extensionMapping.getAppendTo());
         if (toAppendTo == null) {
             log.error("Couldn't find mapping named {} in the core model mapper. Not appending anything.",
-                      extensionMapping.getName());
+                    extensionMapping.getName());
             return;
         }
         // add the thing that is being appended
@@ -115,7 +125,7 @@ public class FhirConnectModelMerger {
         }
         if (extensionMapping.getFollowedBy() != null) {
             log.info("Appending followed by mappings to the end of existing followed by mappings of {}",
-                     extensionMapping.getAppendTo());
+                    extensionMapping.getAppendTo());
             if (toAppendTo.getFollowedBy() != null) {
                 final List<Mapping> existingMappings = toAppendTo.getFollowedBy().getMappings();
                 final List<Mapping> modifiableExistingMappings = new ArrayList<>(
@@ -131,7 +141,7 @@ public class FhirConnectModelMerger {
     /**
      * Adds a mapping to core coreModel mappers
      *
-     * @param coreModel where it adds the mapping to
+     * @param coreModel        where it adds the mapping to
      * @param extensionMapping to be added
      */
     void addMapping(final FhirConnectModel coreModel, final Mapping extensionMapping) {
