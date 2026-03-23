@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## [Unreleased]
+### Added
+- DV_TEXT can implicitly be mapped to/from DV_CODED_TEXT
+
 ## [2.0.4] - 2026-03-23
 
 ### Fixed

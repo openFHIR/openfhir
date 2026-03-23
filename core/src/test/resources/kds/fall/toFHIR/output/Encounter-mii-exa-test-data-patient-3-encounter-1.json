@@ -30,6 +30,19 @@
               ],
               "text": "C21.8"
             },
+            "bodySite": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "version": "20230731",
+                    "code": "281088000",
+                    "display": "Structure of anus and/or rectum (body structure)"
+                  }
+                ],
+                "text": "Structure of anus and/or rectum (body structure)"
+              }
+            ],
             "note": [
               {
                 "text": "Bösartige anorektale Neubildung"

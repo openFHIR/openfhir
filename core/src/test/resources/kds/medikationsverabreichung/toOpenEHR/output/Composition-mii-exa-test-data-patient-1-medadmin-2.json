@@ -1,463 +1,446 @@
 {
-  "_type": "COMPOSITION",
-  "name": {
-    "_type": "DV_TEXT",
-    "value": "KDS_Medikamentenverabreichungen"
+  "_type" : "COMPOSITION",
+  "name" : {
+    "_type" : "DV_TEXT",
+    "value" : "KDS_Medikamentenverabreichungen"
   },
-  "archetype_details": {
-    "archetype_id": {
-      "value": "openEHR-EHR-COMPOSITION.report.v1"
+  "archetype_details" : {
+    "archetype_id" : {
+      "value" : "openEHR-EHR-COMPOSITION.report.v1"
     },
-    "template_id": {
-      "value": "KDS_Medikamentenverabreichungen"
+    "template_id" : {
+      "value" : "KDS_Medikamentenverabreichungen"
     },
-    "rm_version": "1.0.4"
+    "rm_version" : "1.0.4"
   },
-  "language": {
-    "_type": "CODE_PHRASE",
-    "terminology_id": {
-      "_type": "TERMINOLOGY_ID",
-      "value": "ISO_639-1"
+  "language" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_639-1"
     },
-    "code_string": "de"
+    "code_string" : "de"
   },
-  "territory": {
-    "_type": "CODE_PHRASE",
-    "terminology_id": {
-      "_type": "TERMINOLOGY_ID",
-      "value": "ISO_3166-1"
+  "territory" : {
+    "_type" : "CODE_PHRASE",
+    "terminology_id" : {
+      "_type" : "TERMINOLOGY_ID",
+      "value" : "ISO_3166-1"
     },
-    "code_string": "DE"
+    "code_string" : "DE"
   },
-  "category": {
-    "_type": "DV_CODED_TEXT",
-    "value": "event",
-    "defining_code": {
-      "_type": "CODE_PHRASE",
-      "terminology_id": {
-        "_type": "TERMINOLOGY_ID",
-        "value": "openehr"
+  "category" : {
+    "_type" : "DV_CODED_TEXT",
+    "value" : "event",
+    "defining_code" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "openehr"
       },
-      "code_string": "433"
+      "code_string" : "433"
     }
   },
-  "composer": {
-    "_type": "PARTY_SELF"
+  "composer" : {
+    "_type" : "PARTY_SELF"
   },
-  "context": {
-    "_type": "EVENT_CONTEXT",
-    "start_time": {
-      "_type": "DV_DATE_TIME",
-      "value": "2024-02-16T10:20:00"
+  "context" : {
+    "_type" : "EVENT_CONTEXT",
+    "start_time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2024-02-16T10:20:00"
     },
-    "setting": {
-      "_type": "DV_CODED_TEXT",
-      "value": "secondary medical care",
-      "defining_code": {
-        "_type": "CODE_PHRASE",
-        "terminology_id": {
-          "_type": "TERMINOLOGY_ID",
-          "value": "openehr"
+    "setting" : {
+      "_type" : "DV_CODED_TEXT",
+      "value" : "secondary medical care",
+      "defining_code" : {
+        "_type" : "CODE_PHRASE",
+        "terminology_id" : {
+          "_type" : "TERMINOLOGY_ID",
+          "value" : "openehr"
         },
-        "code_string": "232"
+        "code_string" : "232"
       }
     },
-    "other_context": {
-      "_type": "ITEM_TREE",
-      "name": {
-        "_type": "DV_TEXT",
-        "value": "Tree"
+    "other_context" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Tree"
       },
-      "items": [
-        {
-          "_type": "ELEMENT",
-          "name": {
-            "_type": "DV_TEXT",
-            "value": "Bericht ID"
-          },
-          "value": {
-            "_type": "DV_CODED_TEXT",
-            "value": "MA_0000002",
-            "defining_code": {
-              "_type": "CODE_PHRASE",
-              "terminology_id": {
-                "_type": "TERMINOLOGY_ID",
-                "value": "https://www.charite.de/fhir/sid/MedicationAdministrations"
-              },
-              "code_string": "MA_0000002"
-            }
-          },
-          "archetype_node_id": "at0002"
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Bericht ID"
         },
-        {
-          "_type": "ELEMENT",
-          "name": {
-            "_type": "DV_TEXT",
-            "value": "Status"
-          },
-          "value": {
-            "_type": "DV_CODED_TEXT",
-            "value": "Entered in Error",
-            "defining_code": {
-              "_type": "CODE_PHRASE",
-              "terminology_id": {
-                "_type": "TERMINOLOGY_ID",
-                "value": "http://terminology.hl7.org/CodeSystem/medication-admin-status"
-              },
-              "code_string": "entered-in-error"
-            }
-          },
-          "archetype_node_id": "at0005"
-        },
-        {
-          "_type": "CLUSTER",
-          "name": {
-            "_type": "DV_TEXT",
-            "value": "Fallidentifikation"
-          },
-          "archetype_details": {
-            "archetype_id": {
-              "value": "openEHR-EHR-CLUSTER.case_identification.v0"
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "MA_0000002",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "https://www.charite.de/fhir/sid/MedicationAdministrations"
             },
-            "rm_version": "1.0.4"
+            "code_string" : "MA_0000002"
+          }
+        },
+        "archetype_node_id" : "at0002"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Status"
+        },
+        "value" : {
+          "_type" : "DV_CODED_TEXT",
+          "value" : "Entered in Error",
+          "defining_code" : {
+            "_type" : "CODE_PHRASE",
+            "terminology_id" : {
+              "_type" : "TERMINOLOGY_ID",
+              "value" : "http://terminology.hl7.org/CodeSystem/medication-admin-status"
+            },
+            "code_string" : "entered-in-error"
+          }
+        },
+        "archetype_node_id" : "at0005"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Fallidentifikation"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.case_identification.v0"
           },
-          "items": [
-            {
-              "_type": "ELEMENT",
-              "name": {
-                "_type": "DV_TEXT",
-                "value": "Fall-Kennung"
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Fall-Kennung"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "MII_0000001",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern"
               },
-              "value": {
-                "_type": "DV_CODED_TEXT",
-                "value": "MII_0000001",
-                "defining_code": {
-                  "_type": "CODE_PHRASE",
-                  "terminology_id": {
-                    "_type": "TERMINOLOGY_ID",
-                    "value": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern"
-                  },
-                  "code_string": "MII_0000001"
-                }
-              },
-              "archetype_node_id": "at0001"
+              "code_string" : "MII_0000001"
             }
-          ],
-          "archetype_node_id": "openEHR-EHR-CLUSTER.case_identification.v0"
-        }
-      ],
-      "archetype_node_id": "at0001"
+          },
+          "archetype_node_id" : "at0001"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.case_identification.v0"
+      } ],
+      "archetype_node_id" : "at0001"
     }
   },
-  "content": [
-    {
-      "_type": "ACTION",
-      "name": {
-        "_type": "DV_TEXT",
-        "value": "Arzneimittelanwendung"
+  "content" : [ {
+    "_type" : "ACTION",
+    "name" : {
+      "_type" : "DV_TEXT",
+      "value" : "Arzneimittelanwendung"
+    },
+    "archetype_details" : {
+      "archetype_id" : {
+        "value" : "openEHR-EHR-ACTION.medication.v1"
       },
-      "archetype_details": {
-        "archetype_id": {
-          "value": "openEHR-EHR-ACTION.medication.v1"
+      "rm_version" : "1.0.4"
+    },
+    "language" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "ISO_639-1"
+      },
+      "code_string" : "de"
+    },
+    "encoding" : {
+      "_type" : "CODE_PHRASE",
+      "terminology_id" : {
+        "_type" : "TERMINOLOGY_ID",
+        "value" : "IANA_character-sets"
+      },
+      "code_string" : "UTF-8"
+    },
+    "subject" : {
+      "_type" : "PARTY_SELF"
+    },
+    "protocol" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Tree"
+      },
+      "items" : [ {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "ID der Verordnung"
         },
-        "rm_version": "1.0.4"
-      },
-      "language": {
-        "_type": "CODE_PHRASE",
-        "terminology_id": {
-          "_type": "TERMINOLOGY_ID",
-          "value": "ISO_639-1"
+        "value" : {
+          "_type" : "DV_IDENTIFIER",
+          "issuer" : "https://www.charite.de/fhir/sid/MedicationOrders",
+          "id" : "MO_0000001"
         },
-        "code_string": "de"
+        "archetype_node_id" : "at0103"
+      } ],
+      "archetype_node_id" : "at0030"
+    },
+    "time" : {
+      "_type" : "DV_DATE_TIME",
+      "value" : "2024-02-16T10:20:00"
+    },
+    "description" : {
+      "_type" : "ITEM_TREE",
+      "name" : {
+        "_type" : "DV_TEXT",
+        "value" : "Tree"
       },
-      "encoding": {
-        "_type": "CODE_PHRASE",
-        "terminology_id": {
-          "_type": "TERMINOLOGY_ID",
-          "value": "IANA_character-sets"
+      "items" : [ {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Arzneimittel"
         },
-        "code_string": "UTF-8"
-      },
-      "subject": {
-        "_type": "PARTY_SELF"
-      },
-      "protocol": {
-        "_type": "ITEM_TREE",
-        "name": {
-          "_type": "DV_TEXT",
-          "value": "Tree"
-        },
-        "items": [
-          {
-            "_type": "ELEMENT",
-            "name": {
-              "_type": "DV_TEXT",
-              "value": "ID der Verordnung"
-            },
-            "value": {
-              "_type": "DV_IDENTIFIER",
-              "issuer": "https://www.charite.de/fhir/sid/MedicationOrders",
-              "id": "MO_0000001"
-            },
-            "archetype_node_id": "at0103"
-          }
-        ],
-        "archetype_node_id": "at0030"
-      },
-      "time": {
-        "_type": "DV_DATE_TIME",
-        "value": "2024-02-16T10:20:00"
-      },
-      "description": {
-        "_type": "ITEM_TREE",
-        "name": {
-          "_type": "DV_TEXT",
-          "value": "Tree"
-        },
-        "items": [
-          {
-            "_type": "CLUSTER",
-            "name": {
-              "_type": "DV_TEXT",
-              "value": "Arzneimittel"
-            },
-            "archetype_details": {
-              "archetype_id": {
-                "value": "openEHR-EHR-CLUSTER.medication.v2"
-              },
-              "rm_version": "1.0.4"
-            },
-            "items": [
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Arzneimittel-Name"
-                },
-                "value": {
-                  "_type": "DV_CODED_TEXT",
-                  "value": "XYDALBA",
-                  "defining_code": {
-                    "_type": "CODE_PHRASE",
-                    "terminology_id": {
-                      "_type": "TERMINOLOGY_ID",
-                      "value": "http://fhir.de/CodeSystem/ifa/pzn"
-                    },
-                    "code_string": "15205222"
-                  }
-                },
-                "archetype_node_id": "at0132"
-              },
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Darreichungsform"
-                },
-                "value": {
-                  "_type": "DV_CODED_TEXT",
-                  "value": "Powder for concentrate for solution for infusion",
-                  "defining_code": {
-                    "_type": "CODE_PHRASE",
-                    "terminology_id": {
-                      "_type": "TERMINOLOGY_ID",
-                      "value": "http://standardterms.edqm.eu"
-                    },
-                    "code_string": "50043000"
-                  }
-                },
-                "archetype_node_id": "at0071"
-              },
-              {
-                "_type": "CLUSTER",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Wirkstoff"
-                },
-                "archetype_details": {
-                  "archetype_id": {
-                    "value": "openEHR-EHR-CLUSTER.medication.v2"
-                  },
-                  "rm_version": "1.0.4"
-                },
-                "items": [
-                  {
-                    "_type": "ELEMENT",
-                    "name": {
-                      "_type": "DV_TEXT",
-                      "value": "Wirkstofftyp"
-                    },
-                    "value": {
-                      "_type": "DV_CODED_TEXT",
-                      "value": "33395",
-                      "defining_code": {
-                        "_type": "CODE_PHRASE",
-                        "terminology_id": {
-                          "_type": "TERMINOLOGY_ID",
-                          "value": "http://fhir.de/CodeSystem/ask"
-                        },
-                        "code_string": "33395"
-                      }
-                    },
-                    "archetype_node_id": "at0142"
-                  }
-                ],
-                "archetype_node_id": "openEHR-EHR-CLUSTER.medication.v2"
-              }
-            ],
-            "archetype_node_id": "openEHR-EHR-CLUSTER.medication.v2"
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.medication.v2"
           },
-          {
-            "_type": "CLUSTER",
-            "name": {
-              "_type": "DV_TEXT",
-              "value": "Dosierung"
-            },
-            "archetype_details": {
-              "archetype_id": {
-                "value": "openEHR-EHR-CLUSTER.dosage.v2"
-              },
-              "rm_version": "1.0.4"
-            },
-            "items": [
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Dosis"
-                },
-                "value": {
-                  "_type": "DV_QUANTITY",
-                  "units": "mg",
-                  "magnitude": 1500.0
-                },
-                "archetype_node_id": "at0144"
-              },
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Dosierung Freitext"
-                },
-                "value": {
-                  "_type": "DV_TEXT",
-                  "value": "Dalbavancin 1500 mg als 30-minütige Infusion"
-                },
-                "archetype_node_id": "at0178"
-              },
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Verabreichungsrate"
-                },
-                "value": {
-                  "_type": "DV_QUANTITY",
-                  "units": "mg/h",
-                  "magnitude": 1500.0
-                },
-                "archetype_node_id": "at0134"
-              }
-            ],
-            "archetype_node_id": "openEHR-EHR-CLUSTER.dosage.v2"
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Arzneimittel-Name"
           },
-          {
-            "_type": "CLUSTER",
-            "name": {
-              "_type": "DV_TEXT",
-              "value": "Details zur Verabreichung"
-            },
-            "items": [
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Verabreichungsweg"
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "XYDALBA",
+            "mappings" : [ {
+              "_type" : "TERM_MAPPING",
+              "match" : "?",
+              "target" : {
+                "_type" : "CODE_PHRASE",
+                "terminology_id" : {
+                  "_type" : "TERMINOLOGY_ID",
+                  "value" : "http://fhir.de/CodeSystem/bfarm/atc (2023)"
                 },
-                "value": {
-                  "_type": "DV_CODED_TEXT",
-                  "value": "Intravenous use",
-                  "mappings": [
-                    {
-                      "_type": "TERM_MAPPING",
-                      "match": "?",
-                      "target": {
-                        "_type": "CODE_PHRASE",
-                        "terminology_id": {
-                          "_type": "TERMINOLOGY_ID",
-                          "value": "http://snomed.info/sct (20230731)"
-                        },
-                        "code_string": "47625008",
-                        "preferred_term": "Intravenous route (qualifier value)"
-                      }
-                    }
-                  ],
-                  "defining_code": {
-                    "_type": "CODE_PHRASE",
-                    "terminology_id": {
-                      "_type": "TERMINOLOGY_ID",
-                      "value": "http://standardterms.edqm.eu"
-                    },
-                    "code_string": "20045000"
-                  }
-                },
-                "archetype_node_id": "at0147"
-              },
-              {
-                "_type": "ELEMENT",
-                "name": {
-                  "_type": "DV_TEXT",
-                  "value": "Körperstelle"
-                },
-                "value": {
-                  "_type": "DV_CODED_TEXT",
-                  "value": "Structure of dorsum of left hand (body structure)",
-                  "defining_code": {
-                    "_type": "CODE_PHRASE",
-                    "terminology_id": {
-                      "_type": "TERMINOLOGY_ID",
-                      "value": "http://snomed.info/sct (20230731)"
-                    },
-                    "code_string": "789218009"
-                  }
-                },
-                "archetype_node_id": "at0141"
+                "code_string" : "J01XA04",
+                "preferred_term" : "Dalbavancin"
               }
-            ],
-            "archetype_node_id": "at0140"
+            } ],
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://fhir.de/CodeSystem/ifa/pzn"
+              },
+              "code_string" : "15205222"
+            }
           },
-          {
-            "_type": "ELEMENT",
-            "name": {
-              "_type": "DV_TEXT",
-              "value": "Kommentar"
+          "archetype_node_id" : "at0132"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Darreichungsform"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "Powder for concentrate for solution for infusion",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://standardterms.edqm.eu"
+              },
+              "code_string" : "50043000"
+            }
+          },
+          "archetype_node_id" : "at0071"
+        }, {
+          "_type" : "CLUSTER",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Wirkstoff"
+          },
+          "archetype_details" : {
+            "archetype_id" : {
+              "value" : "openEHR-EHR-CLUSTER.medication.v2"
             },
-            "value": {
-              "_type": "DV_TEXT",
-              "value": "abgebrochen fehlerhafte Eingabe"
+            "rm_version" : "1.0.4"
+          },
+          "items" : [ {
+            "_type" : "ELEMENT",
+            "name" : {
+              "_type" : "DV_TEXT",
+              "value" : "Wirkstofftyp"
             },
-            "archetype_node_id": "at0024"
-          }
-        ],
-        "archetype_node_id": "at0017"
-      },
-      "ism_transition": {
-        "_type": "ISM_TRANSITION",
-        "current_state": {
-          "_type": "DV_CODED_TEXT",
-          "value": "cancelled",
-          "defining_code": {
-            "_type": "CODE_PHRASE",
-            "terminology_id": {
-              "_type": "TERMINOLOGY_ID",
-              "value": "openehr"
+            "value" : {
+              "_type" : "DV_CODED_TEXT",
+              "value" : "33395",
+              "defining_code" : {
+                "_type" : "CODE_PHRASE",
+                "terminology_id" : {
+                  "_type" : "TERMINOLOGY_ID",
+                  "value" : "http://fhir.de/CodeSystem/ask"
+                },
+                "code_string" : "33395"
+              }
             },
-            "code_string": "528"
-          }
+            "archetype_node_id" : "at0142"
+          } ],
+          "archetype_node_id" : "openEHR-EHR-CLUSTER.medication.v2"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.medication.v2"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Dosierung"
+        },
+        "archetype_details" : {
+          "archetype_id" : {
+            "value" : "openEHR-EHR-CLUSTER.dosage.v2"
+          },
+          "rm_version" : "1.0.4"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Dosis"
+          },
+          "value" : {
+            "_type" : "DV_QUANTITY",
+            "units" : "mg",
+            "magnitude" : 1500.0
+          },
+          "archetype_node_id" : "at0144"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Dosierung Freitext"
+          },
+          "value" : {
+            "_type" : "DV_TEXT",
+            "value" : "Dalbavancin 1500 mg als 30-minütige Infusion"
+          },
+          "archetype_node_id" : "at0178"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Verabreichungsrate"
+          },
+          "value" : {
+            "_type" : "DV_QUANTITY",
+            "units" : "mg/h",
+            "magnitude" : 1500.0
+          },
+          "archetype_node_id" : "at0134"
+        } ],
+        "archetype_node_id" : "openEHR-EHR-CLUSTER.dosage.v2"
+      }, {
+        "_type" : "CLUSTER",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Details zur Verabreichung"
+        },
+        "items" : [ {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Verabreichungsweg"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "Intravenous use",
+            "mappings" : [ {
+              "_type" : "TERM_MAPPING",
+              "match" : "?",
+              "target" : {
+                "_type" : "CODE_PHRASE",
+                "terminology_id" : {
+                  "_type" : "TERMINOLOGY_ID",
+                  "value" : "http://snomed.info/sct (20230731)"
+                },
+                "code_string" : "47625008",
+                "preferred_term" : "Intravenous route (qualifier value)"
+              }
+            } ],
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://standardterms.edqm.eu"
+              },
+              "code_string" : "20045000"
+            }
+          },
+          "archetype_node_id" : "at0147"
+        }, {
+          "_type" : "ELEMENT",
+          "name" : {
+            "_type" : "DV_TEXT",
+            "value" : "Körperstelle"
+          },
+          "value" : {
+            "_type" : "DV_CODED_TEXT",
+            "value" : "Structure of dorsum of left hand (body structure)",
+            "defining_code" : {
+              "_type" : "CODE_PHRASE",
+              "terminology_id" : {
+                "_type" : "TERMINOLOGY_ID",
+                "value" : "http://snomed.info/sct (20230731)"
+              },
+              "code_string" : "789218009"
+            }
+          },
+          "archetype_node_id" : "at0141"
+        } ],
+        "archetype_node_id" : "at0140"
+      }, {
+        "_type" : "ELEMENT",
+        "name" : {
+          "_type" : "DV_TEXT",
+          "value" : "Kommentar"
+        },
+        "value" : {
+          "_type" : "DV_TEXT",
+          "value" : "abgebrochen fehlerhafte Eingabe"
+        },
+        "archetype_node_id" : "at0024"
+      } ],
+      "archetype_node_id" : "at0017"
+    },
+    "ism_transition" : {
+      "_type" : "ISM_TRANSITION",
+      "current_state" : {
+        "_type" : "DV_CODED_TEXT",
+        "value" : "cancelled",
+        "defining_code" : {
+          "_type" : "CODE_PHRASE",
+          "terminology_id" : {
+            "_type" : "TERMINOLOGY_ID",
+            "value" : "openehr"
+          },
+          "code_string" : "528"
         }
-      },
-      "archetype_node_id": "openEHR-EHR-ACTION.medication.v1"
-    }
-  ],
-  "archetype_node_id": "openEHR-EHR-COMPOSITION.report.v1"
+      }
+    },
+    "archetype_node_id" : "openEHR-EHR-ACTION.medication.v1"
+  } ],
+  "archetype_node_id" : "openEHR-EHR-COMPOSITION.report.v1"
 }

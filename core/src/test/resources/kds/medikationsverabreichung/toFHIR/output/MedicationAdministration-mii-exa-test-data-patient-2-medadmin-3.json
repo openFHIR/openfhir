@@ -14,6 +14,17 @@
           {
             "resourceType": "Medication",
             "id": "1",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "version": "2024",
+                  "code": "L01CD01",
+                  "display": "Paclitaxel"
+                }
+              ],
+              "text": "Paclitaxel"
+            },
             "form": {
               "coding": [
                 {
