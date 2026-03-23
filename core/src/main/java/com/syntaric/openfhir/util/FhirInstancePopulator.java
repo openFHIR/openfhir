@@ -2,6 +2,7 @@ package com.syntaric.openfhir.util;
 
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
+import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -61,18 +62,20 @@ public class FhirInstancePopulator {
      * <p>
      * Populates an element with the data. Population logic depends on the type of toPopulate object
      */
-    public void populateElement(final Object toPopulate,
+    public void populateElement(final MappingHelper mappingHelper,
+                                final Object toPopulate,
                                 final DataWithIndex dataH,
                                 final String modelName,
                                 final String mappingName,
                                 final String fromPath,
                                 final String toPath,
                                 final Terminology terminology) {
-        populateElement(toPopulate, dataH.getData(), modelName, mappingName, fromPath, toPath, dataH.getIndex(),
+        populateElement(mappingHelper, toPopulate, dataH.getData(), modelName, mappingName, fromPath, toPath, dataH.getIndex(),
                 terminology);
     }
 
-    public void populateElement(final Object toPopulate,
+    public void populateElement(final MappingHelper mappingHelper,
+                                final Object toPopulate,
                                 final Base data,
                                 final String modelName,
                                 final String mappingName,
@@ -80,7 +83,7 @@ public class FhirInstancePopulator {
                                 final String toPath,
                                 final int index,
                                 final Terminology terminology) {
-        prePostFhirInstancePopulatorInterface.prePopulateElement(toPopulate, data, modelName, mappingName, fromPath, toPath, index, terminology);
+        prePostFhirInstancePopulatorInterface.prePopulateElement(mappingHelper, toPopulate, data, modelName, mappingName, fromPath, toPath, index, terminology);
 
         if (toPopulate instanceof Extension && data instanceof IBaseDatatype) {
             setExtensionValue((Extension) toPopulate, (IBaseDatatype) data);
@@ -88,14 +91,14 @@ public class FhirInstancePopulator {
         }
 
         if (toPopulate instanceof List) {
-            populateListElement((List<?>) toPopulate, data, modelName, mappingName, fromPath, toPath, index,
+            populateListElement(mappingHelper, (List<?>) toPopulate, data, modelName, mappingName, fromPath, toPath, index,
                     terminology);
             return;
         }
 
         handleSpecificTypePopulation(toPopulate, data, terminology);
 
-        prePostFhirInstancePopulatorInterface.postPopulateElement(toPopulate, data, modelName, mappingName, fromPath, toPath, index, terminology);
+        prePostFhirInstancePopulatorInterface.postPopulateElement(mappingHelper, toPopulate, data, modelName, mappingName, fromPath, toPath, index, terminology);
     }
 
     private Boolean objectIsEmpty(final Object lastElement) {
@@ -110,13 +113,14 @@ public class FhirInstancePopulator {
         extension.setValue(data);
     }
 
-    private void populateListElement(final List<?> toPopulate, final Base data, final String modelName,
+    private void populateListElement(final MappingHelper mappingHelper,
+                                     final List<?> toPopulate, final Base data, final String modelName,
                                      final String mappingName,
                                      final String fromPath, final String toPath, final int index,
                                      final Terminology terminology) {
         final Object lastElement = toPopulate.get(toPopulate.size() - 1);
         if (lastElement.toString() == null || objectIsEmpty(lastElement)) {
-            populateElement(lastElement, data, modelName, mappingName, fromPath, toPath,
+            populateElement(mappingHelper, lastElement, data, modelName, mappingName, fromPath, toPath,
                     index,
                     terminology); // Populate last element if empty
         } else {

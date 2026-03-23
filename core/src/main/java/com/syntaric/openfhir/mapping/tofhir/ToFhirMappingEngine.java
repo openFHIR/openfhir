@@ -309,7 +309,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         if (mappingHelper.getManualFhirValue() != null) {
             handleHardcodedMapping(mappingHelper, instantiated);
         } else if (!FhirConnectConst.OPENEHR_TYPE_NONE.equals(mappingHelper.getHardcodedType())) {
-            fhirInstancePopulator.populateElement(instantiated,
+            fhirInstancePopulator.populateElement(mappingHelper,
+                    instantiated,
                     extractedDataPoint,
                     mappingHelper.getModelMetadataName(),
                     mappingHelper.getMappingName(),
@@ -387,7 +388,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             final Object toSetCriteriaOn = toFhirInstantiator.getLastReturn(hardcodedReturn).getReturning();
             final Coding stringFromCriteria = openFhirStringUtils.getStringFromCriteria(
                     condition.getCriteria());
-            fhirInstancePopulator.populateElement(toSetCriteriaOn,
+            fhirInstancePopulator.populateElement(null,
+                    toSetCriteriaOn,
                     new StringType(stringFromCriteria.getCode()),
                     modelName,
                     "Cover Condition",
@@ -475,7 +477,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     private void handleHardcodedMapping(final MappingHelper mappingHelper,
                                         final Object lastInstantiatedElement) {
         log.info("Handling hardcoded mapping for mapping name {}.", mappingHelper.getMappingName());
-        fhirInstancePopulator.populateElement(lastInstantiatedElement,
+        fhirInstancePopulator.populateElement(mappingHelper,
+                lastInstantiatedElement,
                 new StringType(mappingHelper.getManualFhirValue()),
                 mappingHelper.getModelMetadataName(),
                 mappingHelper.getMappingName(),

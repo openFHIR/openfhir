@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## [Unreleased]
+### Added
+- MappingHelper to the `PrePostFhirInstancePopulator` method signature
 
 ## [2.0.5] - 2026-03-23
 
