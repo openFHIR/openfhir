@@ -323,10 +323,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available",
+            "value": "Penicillin",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "42",
+              "code_string": "55",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips"
@@ -343,10 +343,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "Inactive",
+            "value": "Active",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "at0132",
+              "code_string": "at0131",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "local"
@@ -363,10 +363,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "Confirmed",
+            "value": "Unconfirmed",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "at0065",
+              "code_string": "at0064",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "local"
@@ -383,10 +383,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "High",
+            "value": "Low",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "at0103",
+              "code_string": "at0102",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "local"
@@ -403,7 +403,7 @@
           },
           "value": {
             "_type": "DV_DATE_TIME",
-            "value": "2022-02-03T04:05:06"
+            "value": "2021-05-10T08:00:00"
           }
         },
         {
@@ -415,7 +415,7 @@
           },
           "value": {
             "_type": "DV_DATE_TIME",
-            "value": "2022-02-03T04:05:07"
+            "value": "2021-05-10T08:00:01"
           }
         },
         {
@@ -441,7 +441,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "Lorem ipsum Specific Substance"
+                "value": "Amoxicillin Substance"
               }
             },
             {
@@ -453,10 +453,10 @@
               },
               "value": {
                 "_type": "DV_CODED_TEXT",
-                "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available",
+                "value": "Rash",
                 "defining_code": {
                   "_type": "CODE_PHRASE",
-                  "code_string": "142",
+                  "code_string": "243",
                   "terminology_id": {
                     "_type": "TERMINOLOGY_ID",
                     "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips"
@@ -473,7 +473,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "reaction description"
+                "value": "skin rash all over"
               }
             },
             {
@@ -485,7 +485,7 @@
               },
               "value": {
                 "_type": "DV_DATE_TIME",
-                "value": "2027-02-03T04:05:06"
+                "value": "2021-05-12T10:00:00"
               }
             },
             {
@@ -497,10 +497,10 @@
               },
               "value": {
                 "_type": "DV_CODED_TEXT",
-                "value": "Moderate",
+                "value": "Mild",
                 "defining_code": {
                   "_type": "CODE_PHRASE",
-                  "code_string": "at0012",
+                  "code_string": "at0011",
                   "terminology_id": {
                     "_type": "TERMINOLOGY_ID",
                     "value": "local"
@@ -517,7 +517,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "Exposure Lorem ipsum"
+                "value": "Oral route"
               }
             },
             {
@@ -529,7 +529,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "Reaction text"
+                "value": "Mild reaction note"
               }
             }
           ]
@@ -543,7 +543,7 @@
           },
           "value": {
             "_type": "DV_TEXT",
-            "value": "a random text"
+            "value": "second allergy note"
           }
         }
       ]
@@ -598,10 +598,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available",
+            "value": "Aspirin",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "42",
+              "code_string": "99",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips"
@@ -618,10 +618,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "Inactive",
+            "value": "Active",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "at0132",
+              "code_string": "at0131",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "local"
@@ -638,10 +638,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "Confirmed",
+            "value": "Refuted",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "at0065",
+              "code_string": "at0066",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "local"
@@ -658,10 +658,10 @@
           },
           "value": {
             "_type": "DV_CODED_TEXT",
-            "value": "High",
+            "value": "Low",
             "defining_code": {
               "_type": "CODE_PHRASE",
-              "code_string": "at0103",
+              "code_string": "at0102",
               "terminology_id": {
                 "_type": "TERMINOLOGY_ID",
                 "value": "local"
@@ -678,7 +678,7 @@
           },
           "value": {
             "_type": "DV_DATE_TIME",
-            "value": "2022-02-03T04:05:06"
+            "value": "2019-11-20T14:30:00"
           }
         },
         {
@@ -690,7 +690,7 @@
           },
           "value": {
             "_type": "DV_DATE_TIME",
-            "value": "2022-02-03T04:05:07"
+            "value": "2019-11-20T14:30:01"
           }
         },
         {
@@ -716,7 +716,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "Lorem ipsum Specific Substance"
+                "value": "Acetylsalicylic Substance"
               }
             },
             {
@@ -728,10 +728,10 @@
               },
               "value": {
                 "_type": "DV_CODED_TEXT",
-                "value": "No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available",
+                "value": "Anaphylaxis",
                 "defining_code": {
                   "_type": "CODE_PHRASE",
-                  "code_string": "142",
+                  "code_string": "399",
                   "terminology_id": {
                     "_type": "TERMINOLOGY_ID",
                     "value": "//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips"
@@ -748,7 +748,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "reaction description"
+                "value": "severe systemic reaction"
               }
             },
             {
@@ -760,7 +760,7 @@
               },
               "value": {
                 "_type": "DV_DATE_TIME",
-                "value": "2027-02-03T04:05:06"
+                "value": "2019-11-22T09:15:00"
               }
             },
             {
@@ -772,10 +772,10 @@
               },
               "value": {
                 "_type": "DV_CODED_TEXT",
-                "value": "Moderate",
+                "value": "Severe",
                 "defining_code": {
                   "_type": "CODE_PHRASE",
-                  "code_string": "at0012",
+                  "code_string": "at0013",
                   "terminology_id": {
                     "_type": "TERMINOLOGY_ID",
                     "value": "local"
@@ -792,7 +792,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "Exposure Lorem ipsum"
+                "value": "Intravenous route"
               }
             },
             {
@@ -804,7 +804,7 @@
               },
               "value": {
                 "_type": "DV_TEXT",
-                "value": "Reaction text"
+                "value": "Severe reaction note"
               }
             }
           ]
@@ -818,7 +818,7 @@
           },
           "value": {
             "_type": "DV_TEXT",
-            "value": "a random text"
+            "value": "third allergy note"
           }
         }
       ]
@@ -1553,6 +1553,4 @@
       ]
     }
   }
-
-
 ]
