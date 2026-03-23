@@ -83,6 +83,29 @@
           "end": "2024-02-16T10:50:00+01:00"
         },
         "dateAsserted": "2024-02-16T00:00:00+01:00",
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+                "version": "2023",
+                "code": "B05.3",
+                "display": "B05.3"
+              },
+              {
+                "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+                "code": "I29578",
+                "display": "Masern mit Otitis"
+              },
+              {
+                "system": "http://snomed.info/sct",
+                "code": "13420004",
+                "display": "Post measles otitis media (disorder)"
+              }
+            ],
+            "text": "B05.3"
+          }
+        ],
         "dosage": [
           {
             "route": {

@@ -236,7 +236,9 @@ public class OpenEhrPopulator {
                     return;
                 }
             case FhirConnectConst.DV_TEXT:
-                if (extractedValue instanceof CodeableConcept codeableConcept && StringUtils.isNotEmpty(codeableConcept.getText())) {
+                if (extractedValue instanceof CodeableConcept codeableConcept && !codeableConcept.getCoding().isEmpty()) {
+                    handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes, constructingFlat, terminology);
+                } else if (extractedValue instanceof CodeableConcept codeableConcept && StringUtils.isNotEmpty(codeableConcept.getText())) {
                     addValuePerFhirType(mappingHelper, new StringType(codeableConcept.getText()), openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
                             terminology, availableCodings);
                 } else {

@@ -30,6 +30,19 @@
               ],
               "text": "B05.3"
             },
+            "bodySite": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "version": "20230731",
+                    "code": "25342003",
+                    "display": "Middle ear structure (body structure)"
+                  }
+                ],
+                "text": "Middle ear structure (body structure)"
+              }
+            ],
             "onsetDateTime": "2024-02-21T00:00:00+01:00",
             "note": [
               {

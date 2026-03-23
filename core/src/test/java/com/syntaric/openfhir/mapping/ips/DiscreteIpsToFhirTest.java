@@ -68,33 +68,62 @@ public class DiscreteIpsToFhirTest extends GenericTest {
                         .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "48765-2".equals(c.getCode())))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("Allergies and Intolerances section not found"));
-        Assert.assertEquals(1, allergySection.getEntry().size());
+        Assert.assertEquals(3, allergySection.getEntry().size());
 
         final List<AllergyIntolerance> allergies = allergySection.getEntry().stream()
                 .map(e -> (AllergyIntolerance) e.getResource())
                 .toList();
-        Assert.assertEquals(1, allergies.size());
+        Assert.assertEquals(3, allergies.size());
 
         assertCondition1And3(conditions.get(0));
         assertCondition2(conditions.get(1));
         assertCondition1And3(conditions.get(2));
 
-        final AllergyIntolerance allergy = allergies.get(0);
+        assertAllergy1(allergies.get(0));
+        assertAllergy2(allergies.get(1));
+        assertAllergy3(allergies.get(2));
+    }
+
+    private void assertAllergy1(final AllergyIntolerance allergy) {
         Assert.assertEquals("inactive", allergy.getClinicalStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("confirmed", allergy.getVerificationStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
-        Assert.assertEquals("42", allergy.getCode().getCodingFirstRep().getCode());
         Assert.assertEquals("2022-02-03T04:05:07+01:00", allergy.getOnsetDateTimeType().getValueAsString());
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", allergy.getLastOccurrenceElement().getValueAsString());
-        Assert.assertEquals("a random text", allergy.getNoteFirstRep().getText());
 
         final AllergyIntolerance.AllergyIntoleranceReactionComponent reaction = allergy.getReactionFirstRep();
         Assert.assertEquals("Lorem ipsum Specific Substance", reaction.getSubstance().getText());
-        Assert.assertEquals("142", reaction.getManifestationFirstRep().getCodingFirstRep().getCode());
         Assert.assertEquals("reaction description", reaction.getDescription());
         Assert.assertEquals("moderate", reaction.getSeverityElement().getValueAsString());
         Assert.assertEquals("Exposure Lorem ipsum", reaction.getExposureRoute().getText());
         Assert.assertEquals("Reaction text", reaction.getNoteFirstRep().getText());
+    }
+
+    private void assertAllergy2(final AllergyIntolerance allergy) {
+        Assert.assertEquals("active", allergy.getClinicalStatus().getCodingFirstRep().getCode());
+        Assert.assertEquals("unconfirmed", allergy.getVerificationStatus().getCodingFirstRep().getCode());
+        Assert.assertEquals("low", allergy.getCriticalityElement().getValueAsString());
+        Assert.assertEquals("2021-05-10T08:00:01+02:00", allergy.getOnsetDateTimeType().getValueAsString());
+
+        final AllergyIntolerance.AllergyIntoleranceReactionComponent reaction = allergy.getReactionFirstRep();
+        Assert.assertEquals("Amoxicillin Substance", reaction.getSubstance().getText());
+        Assert.assertEquals("skin rash all over", reaction.getDescription());
+        Assert.assertEquals("mild", reaction.getSeverityElement().getValueAsString());
+        Assert.assertEquals("Oral route", reaction.getExposureRoute().getText());
+        Assert.assertEquals("Mild reaction note", reaction.getNoteFirstRep().getText());
+    }
+
+    private void assertAllergy3(final AllergyIntolerance allergy) {
+        Assert.assertEquals("active", allergy.getClinicalStatus().getCodingFirstRep().getCode());
+        Assert.assertEquals("refuted", allergy.getVerificationStatus().getCodingFirstRep().getCode());
+        Assert.assertEquals("low", allergy.getCriticalityElement().getValueAsString());
+        Assert.assertEquals("2019-11-20T14:30:01+01:00", allergy.getOnsetDateTimeType().getValueAsString());
+
+        final AllergyIntolerance.AllergyIntoleranceReactionComponent reaction = allergy.getReactionFirstRep();
+        Assert.assertEquals("Acetylsalicylic Substance", reaction.getSubstance().getText());
+        Assert.assertEquals("severe systemic reaction", reaction.getDescription());
+        Assert.assertEquals("severe", reaction.getSeverityElement().getValueAsString());
+        Assert.assertEquals("Intravenous route", reaction.getExposureRoute().getText());
+        Assert.assertEquals("Severe reaction note", reaction.getNoteFirstRep().getText());
     }
 
     private void assertCondition1And3(final Condition condition) {

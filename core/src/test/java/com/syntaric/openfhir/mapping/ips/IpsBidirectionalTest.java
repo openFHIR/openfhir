@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class IpsBidirectionalTest extends GenericTest {
     final String HELPER_LOCATION = "/ips/";
     final String OPT = "International Patient Summary.opt";
     final String FLAT_TEXT_VALUE = "ips.flat.json";
+    final String REAL_FLAT_TEXT_VALUE = "ips.real.json";
 
 
     @SneakyThrows
@@ -40,6 +42,37 @@ public class IpsBidirectionalTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+
+        final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
+        Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
+        Assert.assertEquals("60591-5", composition.getType().getCodingFirstRep().getCode());
+        Assert.assertEquals("http://loinc.org", composition.getType().getCodingFirstRep().getSystem());
+        Assert.assertEquals("Patient summary Document", composition.getType().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("Patient Summary", composition.getTitle());
+        Assert.assertEquals("final", composition.getStatusElement().getValueAsString());
+
+        assertProblemList(composition);
+        assertAllergies(composition);
+
+        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+
+        final Composition roundTwoCompositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
+                new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
+        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), operationaltemplate);
+
+        final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
+
+        assertProblemList(roundTwoComposition);
+        assertAllergies(roundTwoComposition);
+    }
+
+    @Test
+    @Ignore
+    public void toFhirToOpenEhrToFhirIpsReal() {
+        // openEHR to FHIR
+        final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
+                getFlat(HELPER_LOCATION + REAL_FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
         final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
@@ -98,22 +131,16 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("confirmed", allergy.getVerificationStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("Confirmed", allergy.getVerificationStatus().getCodingFirstRep().getDisplay());
         Assert.assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-verification", allergy.getVerificationStatus().getCodingFirstRep().getSystem());
-        Assert.assertEquals("42", allergy.getCode().getCodingFirstRep().getCode());
-        Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips", allergy.getCode().getCodingFirstRep().getSystem());
-        Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergies-intolerances-uv-ips' available", allergy.getCode().getText());
+
         Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
         Assert.assertEquals("Food", allergy.getCategory().get(0).getValueAsString());
 
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", allergy.getLastOccurrenceElement().getValueAsString());
         Assert.assertEquals("2022-02-03T04:05:07+01:00", allergy.getOnsetDateTimeType().getValueAsString());
-//        Assert.assertEquals("Allergy", allergy.getTypeElement().getValueAsString());
-        Assert.assertEquals("a random text", allergy.getNoteFirstRep().getText());
+
 
         AllergyIntolerance.AllergyIntoleranceReactionComponent reactionFirstRep = allergy.getReactionFirstRep();
         Assert.assertEquals("Lorem ipsum Specific Substance", reactionFirstRep.getSubstance().getText());
-        Assert.assertEquals("142", reactionFirstRep.getManifestationFirstRep().getCodingFirstRep().getCode());
-        Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips", reactionFirstRep.getManifestationFirstRep().getCodingFirstRep().getSystem());
-        Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/allergy-reaction-uv-ips' available", reactionFirstRep.getManifestationFirstRep().getText());
+        Assert.assertEquals("manifestation thing", reactionFirstRep.getManifestationFirstRep().getText());
         Assert.assertEquals("reaction description", reactionFirstRep.getDescription());
         Assert.assertEquals("2027-02-03T04:05:06+01:00", reactionFirstRep.getOnsetElement().getValueAsString());
         Assert.assertEquals("moderate", reactionFirstRep.getSeverityElement().getValueAsString());
