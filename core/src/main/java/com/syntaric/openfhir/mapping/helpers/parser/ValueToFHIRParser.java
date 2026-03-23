@@ -18,6 +18,7 @@ import static com.syntaric.openfhir.fc.FhirConnectConst.DV_TIME;
 
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -78,7 +79,8 @@ public class ValueToFHIRParser {
                             ? temporalParser.range(joinedValues, valueHolder, lastIndex, path)
                             : temporalParser.interval(joinedValues, valueHolder, lastIndex, path);
                 }
-                case DV_PROPORTION, "PROPORTION" -> quantityParser.proportion(joinedValues, valueHolder, lastIndex, path);
+                case DV_PROPORTION, "PROPORTION" ->
+                        quantityParser.proportion(joinedValues, valueHolder, lastIndex, path);
                 case DV_QUANTITY, "QUANTITY" -> quantityParser.quantity(joinedValues, valueHolder, lastIndex, path);
                 case DV_COUNT -> quantityParser.count(valueHolder, lastIndex, path);
 
@@ -89,9 +91,11 @@ public class ValueToFHIRParser {
 
                 case DV_MULTIMEDIA, "MEDIA" -> mediaParser.attachment(valueHolder, lastIndex, path);
 
-                case DV_TEXT, "STRING", "TEXT" -> textParser.string(valueHolder, lastIndex, path);
+                case DV_TEXT, "STRING", "TEXT" ->
+                        textParser.string(valueHolder, lastIndex, path) == null ? codedParser.codeableConcept(joinedValues, valueHolder, lastIndex, path) : textParser.string(valueHolder, lastIndex, path);
 
-                case DV_IDENTIFIER, "IDENTIFIER" -> identifierParser.identifier(joinedValues, valueHolder, lastIndex, path);
+                case DV_IDENTIFIER, "IDENTIFIER" ->
+                        identifierParser.identifier(joinedValues, valueHolder, lastIndex, path);
 
                 default -> textParser.string(valueHolder, lastIndex, path);
             };

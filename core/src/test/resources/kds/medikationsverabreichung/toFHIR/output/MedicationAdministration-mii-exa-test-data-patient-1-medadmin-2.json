@@ -14,6 +14,21 @@
           {
             "resourceType": "Medication",
             "id": "1",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ifa/pzn",
+                  "code": "15205222",
+                  "display": "XYDALBA"
+                },
+                {
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "code": "J01XA04",
+                  "display": "Dalbavancin"
+                }
+              ],
+              "text": "XYDALBA"
+            },
             "form": {
               "coding": [
                 {

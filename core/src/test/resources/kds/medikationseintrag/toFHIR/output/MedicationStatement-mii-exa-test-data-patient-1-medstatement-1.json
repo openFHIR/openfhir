@@ -100,6 +100,19 @@
           "start": "2020-08-30T00:00:00+02:00"
         },
         "dateAsserted": "2020-08-30T00:00:00+02:00",
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "version": "20230731",
+                "code": "787930001",
+                "display": "Direct thrombin inhibitor prophylaxis indicated (situation)"
+              }
+            ],
+            "text": "Direct thrombin inhibitor prophylaxis indicated (situation)"
+          }
+        ],
         "dosage": [
           {
             "route": {

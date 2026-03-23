@@ -14,6 +14,21 @@
           {
             "resourceType": "Medication",
             "id": "1",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/ifa/pzn",
+                  "code": "00651306",
+                  "display": "Metamizol HEXAL® 500 mg"
+                },
+                {
+                  "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "code": "N02BB02",
+                  "display": "Metamizol-Natrium"
+                }
+              ],
+              "text": "Metamizol HEXAL\u00ae 500 mg"
+            },
             "form": {
               "coding": [
                 {
