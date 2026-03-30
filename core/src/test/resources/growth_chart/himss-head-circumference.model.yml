@@ -38,6 +38,16 @@ mappings:
       fhir: "$resource.value"
       openehr: "$archetype/data[at0001]/events[at0010]/data[at0003]/items[at0004]"
 
+  - name: "category"
+    with:
+      fhir: "$resource.category.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "hciCategory"
+        fhir:
+          - path: "code"
+            value: "head_circumference"
+
   - name: "time"
     with:
       fhir: "$resource.effective"

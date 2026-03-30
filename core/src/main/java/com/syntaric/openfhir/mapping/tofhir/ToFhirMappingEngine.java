@@ -1,25 +1,25 @@
 package com.syntaric.openfhir.mapping.tofhir;
 
-import static com.syntaric.openfhir.fc.FhirConnectConst.CONDITION_OPERATOR_NOT_OF;
-import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOFHIR;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
-import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.BidirectionalMappingEngine;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
-import com.syntaric.openfhir.util.FhirInstanceCreator;
-import com.syntaric.openfhir.util.FhirInstanceCreatorUtility;
-import com.syntaric.openfhir.util.FhirInstancePopulator;
-import com.syntaric.openfhir.util.OpenEhrConditionEvaluator;
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
-import com.syntaric.openfhir.util.OpenFhirStringUtils;
+import com.syntaric.openfhir.util.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
+import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.StringType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,16 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.StringType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOFHIR;
 
 @Slf4j
 @Component
@@ -96,12 +87,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 copiesToIterateOver.forEach(helper -> helper.setGeneratingFhirResource(generatedResource));
                 returningBundle.addEntry(new Bundle.BundleEntryComponent().setResource(generatedResource));
 
-                handleMappingIterations(copiesToIterateOver, jsonObject, true);
-
-                postProcessMappingFromCoverConditions(generatedResource,
-                        mappingHelpers.get(0).getPreprocessorFhirConditions(),
-                        archetype,
-                        mappingHelpers.get(0).getTerminology());
+                handleMappingIterations(copiesToIterateOver, jsonObject);
 
             }
         });
@@ -111,8 +97,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     }
 
     public void handleMappingIterations(final List<MappingHelper> helpers,
-                                        final JsonObject jsonObject,
-                                        final boolean isFirstEntryIntoModelMapping) {
+                                        final JsonObject jsonObject) {
         for (final MappingHelper mappingHelper : helpers) {
             final JsonObject relevantJsonObject = getRelevantJsonObject(jsonObject,
                     mappingHelper.getPreprocessorOpenEhrCondition(),
@@ -141,20 +126,6 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 handleHardcodedIteration(mappingHelper);
             } else {
                 handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject);
-            }
-        }
-
-
-        if (isFirstEntryIntoModelMapping) {
-            final MappingHelper aHelper = helpers.get(0);
-            final List<Condition> preprocessorFhirConditions = aHelper.getPreprocessorFhirConditions();
-            final Object generatingFhirRoot = aHelper.getGeneratingFhirRoot();
-            if (preprocessorFhirConditions != null && !preprocessorFhirConditions.isEmpty()
-                    && generatingFhirRoot != null) {
-                postProcessMappingFromCoverConditions((Base) generatingFhirRoot,
-                        preprocessorFhirConditions,
-                        aHelper.getGeneratingResourceType(),
-                        aHelper.getTerminology());
             }
         }
     }
@@ -334,7 +305,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             child.setGeneratingFhirRoot(newRoot);
             child.setGeneratingFhirResource(mappingHelper.getGeneratingFhirResource());
         });
-        handleMappingIterations(mappingHelper.getChildren(), jsonObject, mappingHelper.isHasSlot());
+        handleMappingIterations(mappingHelper.getChildren(), jsonObject);
     }
 
     /**
@@ -349,56 +320,6 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             // Compare the numbers
             return Integer.compare(num1, num2);
         });
-    }
-
-    /**
-     * Post processing that handles hard-coding of Resource data based on FhirConfig conditions in the header
-     * of each mapping
-     *
-     * @param creatingResource a created resources
-     * @param conditions       conditions in the header of a mapping
-     */
-    private void postProcessMappingFromCoverConditions(final Base creatingResource,
-                                                       final List<Condition> conditions,
-                                                       final String modelName,
-                                                       final Terminology terminology) {
-        if (conditions == null || conditions.isEmpty()) {
-            return;
-        }
-        for (Condition condition : conditions) {
-            if (condition.getCriteria() == null || CONDITION_OPERATOR_NOT_OF.equals(condition.getOperator())) {
-                continue;
-            }
-
-            final String conditionFhirPathWithConditions = openFhirStringUtils.getFhirPathWithConditions(
-                    condition.getTargetRoot(), condition, creatingResource.fhirType(), null);
-
-            // check if it exists
-            final List<Base> alreadyExists = fhirPath.evaluate(creatingResource, conditionFhirPathWithConditions,
-                    Base.class);
-            if (alreadyExists != null && !alreadyExists.isEmpty()) {
-                continue;
-            }
-            final FhirInstanceCreator.InstantiateAndSetReturn hardcodedReturn = fhirInstanceCreator.instantiateAndSetElement(
-                    creatingResource,
-                    creatingResource.getClass(),
-                    condition.getTargetRoot() + "." + condition.getTargetAttribute(),
-                    null);
-
-            final Object toSetCriteriaOn = toFhirInstantiator.getLastReturn(hardcodedReturn).getReturning();
-            final Coding stringFromCriteria = openFhirStringUtils.getStringFromCriteria(
-                    condition.getCriteria());
-            fhirInstancePopulator.populateElement(null,
-                    toSetCriteriaOn,
-                    new StringType(stringFromCriteria.getCode()),
-                    modelName,
-                    "Cover Condition",
-                    // todo: not sure what value this path will have and whether its ok for it to be a mappingName in analytics
-                    null, // null since its hardcoding
-                    conditionFhirPathWithConditions,
-                    -1,
-                    terminology);
-        }
     }
 
     /**

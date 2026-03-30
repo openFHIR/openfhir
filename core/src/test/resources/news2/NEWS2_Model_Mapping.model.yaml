@@ -27,6 +27,7 @@ preprocessor:
       criteria: "survey"
 
 mappings:
+
   - name: "nationalEarlyWarningScoreNEWS2"
     with:
       fhir: "$resource.value.as(Quantity)"
@@ -211,3 +212,22 @@ mappings:
               fhir:
                 - path: "code.coding.code"
                   value: "1104351000000103"
+
+
+  - name: "hardcodedMappings"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code.coding.code"
+            value: "1104051000000101"
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "final"
+      - name: "category"
+        fhir:
+          - path: "category.coding.code"
+            value: "survey"

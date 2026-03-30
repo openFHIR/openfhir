@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - MappingHelper to the `PrePostFhirInstancePopulator` method signature
 
+### Fixed
+- criterias are properly evaluated when multiple (previously only 0th criteria was evaluated)
+- preprocessor fhircondition no longer results in a mapping going openehr->fhir [#35](https://github.com/openFHIR/openfhir/issues/35)                                                                                                                                                                                                            
+
+
 ## [2.0.5] - 2026-03-23
 
 ### Added

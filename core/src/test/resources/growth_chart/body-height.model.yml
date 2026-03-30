@@ -32,6 +32,16 @@ mappings:
       fhir: "$resource.value"
       openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
 
+  - name: "category"
+    with:
+      fhir: "$resource.category.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "heightCategory"
+        fhir:
+          - path: "code"
+            value: "height"
+
   - name: "code"
     unidirectional: "openehr->fhir"
     with:

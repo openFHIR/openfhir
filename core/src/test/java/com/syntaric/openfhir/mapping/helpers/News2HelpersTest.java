@@ -53,7 +53,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         final List<MappingHelper> news2LeafHelpers = news2Slot.getChildren();
         // 9 leaf helpers from NEWS2_Model_Mapping: nationalEarlyWarningScoreNEWS2, time, rrs, spos1, airOrOxygenScore,
         //                                          systolic, consciousness, temperature, pulse
-        Assert.assertEquals(9, news2LeafHelpers.size());
+        Assert.assertEquals(10, news2LeafHelpers.size());
 
         final MappingHelper news2Score = news2LeafHelpers.get(0);
         Assert.assertEquals("nationalEarlyWarningScoreNEWS2", news2Score.getMappingName());
@@ -164,7 +164,7 @@ public class News2HelpersTest extends GenericHelpersTest {
         Assert.assertTrue(bloodPressureSlot.isHasSlot());
 
         final List<MappingHelper> bpLeafHelpers = bloodPressureSlot.getChildren();
-        Assert.assertEquals(5, bpLeafHelpers.size());
+        Assert.assertEquals(6, bpLeafHelpers.size());
 
         final MappingHelper bpSystolic = bpLeafHelpers.get(0);
         Assert.assertEquals("componentSystolic", bpSystolic.getMappingName());

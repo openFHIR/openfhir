@@ -31,4 +31,22 @@ mappings:
     with:
       fhir: "$resource.value"
       openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+
+  - name: "hardcodedMappings"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code.coding.code"
+            value: "1104441000000107"
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "final"
+      - name: "category"
+        fhir:
+          - path: "category.coding.code"
+            value: "survey"
       
