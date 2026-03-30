@@ -5,7 +5,7 @@ mongock:
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://openfhir_tests:X5DNIzlyAHyx2AX7@vonk-gandrejc.s9qr7n0.mongodb.net/openfhir_development
+      uri:
   application:
     name: open-fhir-impl
 db:
