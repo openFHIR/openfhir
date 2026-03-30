@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5f241c26-f3a0-4c16-92c7-29c37f68c270",
+		"_postman_id": "34426edd-55a4-465c-a499-717ebf5e5807",
 		"name": "openFHIR Test Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1515623"
@@ -426,11 +426,12 @@
 									"    const response = pm.response.json();",
 									"    pm.expect(response.spec.fhirConfig.structureDefinition).to.eql('http://hl7.org/fhir/StructureDefinition/Observation');",
 									"    pm.expect(response.spec.openEhrConfig.archetype).to.eql('openEHR-EHR-OBSERVATION.body_weight.v2');",
-									"    pm.expect(response.mappings.length).to.eql(5);",
+									"    pm.expect(response.mappings.length).to.eql(6);",
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -439,7 +440,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.body_weight.v2\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.body_weight.v2\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0002]/events[at0003]\"\n    split:\n      fhir:\n        create: \"resource\"\n\n  fhirCondition:\n    targetRoot: \"$resource\"\n    targetAttribute: \"category.coding.code\"\n    operator: \"one of\"\n    criteria: \"weight\"\n\nmappings:\n\n  - name: \"weight\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]\"\n      \n  - name: \"time\"\n    with:\n      fhir: \"$resource.effective\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/time\"\n      \n  - name: \"comment\"\n    with:\n      fhir: \"$resource.note.text\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0024]\"\n      \n\n  - name: \"stateOfDress\"\n    with:\n      fhir: \"$resource.component.value\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/state[at0008]/items[at0009]\"\n      \n    fhirCondition:\n      targetRoot: \"$resource.component\"\n      targetAttribute: \"code.coding.code\"\n      operator: \"one of\"\n      criteria: \"9999-9\"\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"29463-7\"",
+							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.body_weight.v2\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.body_weight.v2\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0002]/events[at0003]\"\n    split:\n      fhir:\n        create: \"resource\"\n\n  fhirCondition:\n    targetRoot: \"$resource\"\n    targetAttribute: \"category.coding.code\"\n    operator: \"one of\"\n    criteria: \"weight\"\n\nmappings:\n\n  - name: \"weight\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]\"\n  - name: \"category\"\n    with:\n      fhir: \"$resource.category.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"weightCategory\"\n        fhir:\n          - path: \"code\"\n            value: \"weight\"      \n  - name: \"time\"\n    with:\n      fhir: \"$resource.effective\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/time\"\n      \n  - name: \"comment\"\n    with:\n      fhir: \"$resource.note.text\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0024]\"\n      \n\n  - name: \"stateOfDress\"\n    with:\n      fhir: \"$resource.component.value\"\n      openehr: \"$archetype/data[at0002]/events[at0003]/state[at0008]/items[at0009]\"\n      \n    fhirCondition:\n      targetRoot: \"$resource.component\"\n      targetAttribute: \"code.coding.code\"\n      operator: \"one of\"\n      criteria: \"9999-9\"\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"29463-7\"",
 							"options": {
 								"raw": {
 									"language": "text"
@@ -473,11 +474,12 @@
 									"    const response = pm.response.json();",
 									"    pm.expect(response.spec.fhirConfig.structureDefinition).to.eql('http://hl7.org/fhir/StructureDefinition/Observation');",
 									"    pm.expect(response.spec.openEhrConfig.archetype).to.eql('openEHR-EHR-OBSERVATION.height.v2');",
-									"    pm.expect(response.mappings.length).to.eql(2);",
+									"    pm.expect(response.mappings.length).to.eql(3);",
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -486,7 +488,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.height.v2\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.height.v2\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0001]/events[at0002]\"\n    split:\n      fhir:\n        create: \"resource\"\n  fhirCondition:\n    targetRoot: \"$resource\"\n    targetAttribute: \"category.coding.code\"\n    operator: \"one of\"\n    criteria: \"height\"\n\nmappings:\n\n  - name: \"height\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]\"\n\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"8302-2\"\n      ",
+							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.height.v2\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.height.v2\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0001]/events[at0002]\"\n    split:\n      fhir:\n        create: \"resource\"\n  fhirCondition:\n    targetRoot: \"$resource\"\n    targetAttribute: \"category.coding.code\"\n    operator: \"one of\"\n    criteria: \"height\"\n\nmappings:\n\n  - name: \"height\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]\"\n\n  - name: \"category\"\n    with:\n      fhir: \"$resource.category.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"heightCategory\"\n        fhir:\n          - path: \"code\"\n            value: \"height\"  \n\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"8302-2\"\n      ",
 							"options": {
 								"raw": {
 									"language": "text"
@@ -520,11 +522,12 @@
 									"    const response = pm.response.json();",
 									"    pm.expect(response.spec.fhirConfig.structureDefinition).to.eql('http://hl7.org/fhir/StructureDefinition/Observation');",
 									"    pm.expect(response.spec.openEhrConfig.archetype).to.eql('openEHR-EHR-OBSERVATION.body_mass_index.v2');",
-									"    pm.expect(response.mappings.length).to.eql(3);",
+									"    pm.expect(response.mappings.length).to.eql(4);",
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -534,7 +537,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -543,7 +547,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.body_mass_index.v2\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.body_mass_index.v2\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0001]/events[at0002]\"\n    split:\n      fhir:\n        create: \"resource\"\n  fhirCondition:\n    targetRoot: \"$resource\"\n    targetAttribute: \"category.coding.code\"\n    operator: \"one of\"\n    criteria: \"bmi\"\n\nmappings:\n  - name: \"bmi\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]\"\n\n  - name: \"time\"\n    with:\n      fhir: \"$resource.effective\"\n      openehr: \"$archetype/data[at0001]/events[at0002]/time\"\n\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"39156-5\"\n      ",
+							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.body_mass_index.v2\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.body_mass_index.v2\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0001]/events[at0002]\"\n    split:\n      fhir:\n        create: \"resource\"\n  fhirCondition:\n    targetRoot: \"$resource\"\n    targetAttribute: \"category.coding.code\"\n    operator: \"one of\"\n    criteria: \"bmi\"\n\nmappings:\n  - name: \"bmi\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0004]\"\n  - name: \"category\"\n    with:\n      fhir: \"$resource.category.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"bmiCategory\"\n        fhir:\n          - path: \"code\"\n            value: \"bmi\"\n  - name: \"time\"\n    with:\n      fhir: \"$resource.effective\"\n      openehr: \"$archetype/data[at0001]/events[at0002]/time\"\n\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"39156-5\"\n      ",
 							"options": {
 								"raw": {
 									"language": "text"
@@ -577,13 +581,14 @@
 									"    const response = pm.response.json();",
 									"    pm.expect(response.spec.fhirConfig.structureDefinition).to.eql('http://hl7.org/fhir/StructureDefinition/Observation');",
 									"    pm.expect(response.spec.openEhrConfig.archetype).to.eql('openEHR-EHR-OBSERVATION.head_circumference.v1');",
-									"    pm.expect(response.mappings.length).to.eql(4);",
+									"    pm.expect(response.mappings.length).to.eql(5);",
 									"",
 									"    pm.environment.set('model_id', response.id);",
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -593,7 +598,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -602,7 +608,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.head_circumference.v1\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.head_circumference.v1\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0001]/events[at0010]\"\n    split:\n      fhir:\n        create: \"resource\"\n\n  fhirConditions:\n    - targetRoot: \"$resource\"\n      targetAttribute: \"category.coding.code\"\n      operator: \"one of\"\n      criteria: \"head_circumference\"\n\n    - targetRoot: \"$resource\"\n      targetAttribute: \"status\"\n      operator: \"one of\"\n      criteria: \"final\"\n\nmappings:\n\n  - name: \"headCircumference\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0001]/events[at0010]/data[at0003]/items[at0004]\"\n\n  - name: \"time\"\n    with:\n      fhir: \"$resource.effective\"\n      openehr: \"$archetype/data[at0001]/events[at0010]/time\"\n  - name: \"status\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"status\"\n        fhir:\n          - path: \"status\"\n            value: \"final\"\n\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"8287-5\"\n      ",
+							"raw": "grammar: FHIRConnect/v0.0.1\ntype: model\nmetadata:\n  name: \"OBSERVATION.head_circumference.v1\"\n  version: 0.0.1a # version of this particular mapping\nspec: # schema specific to the FHIRConnect v0.0.1 engine\n  system: FHIR\n  version: R4\n  openEhrConfig:\n    archetype: \"openEHR-EHR-OBSERVATION.head_circumference.v1\"\n  fhirConfig:\n    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation\n\npreprocessor:\n  hierarchy:\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype/data[at0001]/events[at0010]\"\n    split:\n      fhir:\n        create: \"resource\"\n\n  fhirConditions:\n    - targetRoot: \"$resource\"\n      targetAttribute: \"category.coding.code\"\n      operator: \"one of\"\n      criteria: \"head_circumference\"\n\n    - targetRoot: \"$resource\"\n      targetAttribute: \"status\"\n      operator: \"one of\"\n      criteria: \"final\"\n\nmappings:\n\n  - name: \"headCircumference\"\n    with:\n      fhir: \"$resource.value\"\n      openehr: \"$archetype/data[at0001]/events[at0010]/data[at0003]/items[at0004]\"\n  - name: \"category\"\n    with:\n      fhir: \"$resource.category.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"hciCategory\"\n        fhir:\n          - path: \"code\"\n            value: \"head_circumference\"\n  - name: \"time\"\n    with:\n      fhir: \"$resource.effective\"\n      openehr: \"$archetype/data[at0001]/events[at0010]/time\"\n  - name: \"status\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"status\"\n        fhir:\n          - path: \"status\"\n            value: \"final\"\n\n  - name: \"code\"\n    unidirectional: \"openehr->fhir\"\n    with:\n      fhir: \"$resource.code.coding\"\n      openehr: \"$archetype\"\n    manual:\n      - name: \"code\"\n        fhir:\n          - path: \"code\"\n            value: \"8287-5\"\n      ",
 							"options": {
 								"raw": {
 									"language": "text"
