@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 ## [Unreleased]
 
-## [2.0.6] - 2026-04-07
+## [2.1.0] - 2026-04-07
 ### Added
 - MappingHelper to the `PrePostFhirInstancePopulator` method signature
 - Added ability to collect metrics for mapping executions (see `MappingMetricsLogger`)
