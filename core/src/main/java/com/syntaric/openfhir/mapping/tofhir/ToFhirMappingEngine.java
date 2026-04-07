@@ -10,11 +10,12 @@ import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
+import com.syntaric.openfhir.metrics.MappingMetricsLogger;
+import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
-import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
@@ -34,19 +35,17 @@ import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOFHIR;
 public class ToFhirMappingEngine extends BidirectionalMappingEngine {
 
     final private OpenEhrConditionEvaluator openEhrConditionEvaluator;
-    final private FhirInstanceCreator fhirInstanceCreator;
     final private FhirInstanceCreatorUtility fhirInstanceCreatorUtility;
-    final private FhirPathR4 fhirPath;
     final private OpenEhrFlatPathDataExtractor openEhrFlatPathDataExtractor;
     final private OpenFhirStringUtils openFhirStringUtils;
     final private FhirInstancePopulator fhirInstancePopulator;
     final private ToFhirInstantiator toFhirInstantiator;
     final private CustomMappingRegistry customMappingRegistry;
     final private OpenFhirMapperUtils openFhirMapperUtils;
+    final private MappingMetricsLogger metricsLogger;
 
     @Autowired
     public ToFhirMappingEngine(final OpenEhrConditionEvaluator openEhrConditionEvaluator,
-                               final FhirInstanceCreator fhirInstanceCreator,
                                final FhirInstanceCreatorUtility fhirInstanceCreatorUtility,
                                final FhirPathR4 fhirPath,
                                final OpenEhrFlatPathDataExtractor openEhrFlatPathDataExtractor,
@@ -54,27 +53,28 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                final FhirInstancePopulator fhirInstancePopulator,
                                final ToFhirInstantiator toFhirInstantiator,
                                final CustomMappingRegistry customMappingRegistry,
-                               final OpenFhirMapperUtils openFhirMapperUtils) {
+                               final OpenFhirMapperUtils openFhirMapperUtils,
+                               final MappingMetricsLogger metricsLogger) {
         super(fhirPath);
         this.openEhrConditionEvaluator = openEhrConditionEvaluator;
-        this.fhirInstanceCreator = fhirInstanceCreator;
         this.fhirInstanceCreatorUtility = fhirInstanceCreatorUtility;
-        this.fhirPath = fhirPath;
         this.openEhrFlatPathDataExtractor = openEhrFlatPathDataExtractor;
         this.openFhirStringUtils = openFhirStringUtils;
         this.fhirInstancePopulator = fhirInstancePopulator;
         this.toFhirInstantiator = toFhirInstantiator;
         this.customMappingRegistry = customMappingRegistry;
         this.openFhirMapperUtils = openFhirMapperUtils;
+        this.metricsLogger = metricsLogger;
     }
 
     public Bundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
                             final JsonObject flatJsonObject) {
         final Bundle returningBundle = new Bundle();
         mappingHelpersByArchetype.forEach((archetype, mappingHelpers) -> {
+            final MappingTimer archetypeTimer = MappingTimer.start();
+
             final List<JsonObject> splitForEachResource = splitByHierarchy(flatJsonObject, mappingHelpers.get(0)
                     .getOpenEhrHierarchySplitFlatPath());
-
 
             for (final JsonObject jsonObject : splitForEachResource) {
                 // we need to clone MappingHelpers because we're adding things on them as we go
@@ -88,10 +88,10 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 returningBundle.addEntry(new Bundle.BundleEntryComponent().setResource(generatedResource));
 
                 handleMappingIterations(copiesToIterateOver, jsonObject);
-
             }
-        });
 
+            metricsLogger.record("mapToFhir.archetype", "archetype=" + archetype, archetypeTimer.elapsedMs());
+        });
 
         return returningBundle;
     }
@@ -99,6 +99,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     public void handleMappingIterations(final List<MappingHelper> helpers,
                                         final JsonObject jsonObject) {
         for (final MappingHelper mappingHelper : helpers) {
+            final MappingTimer mappingTimer = MappingTimer.start();
+
             final JsonObject relevantJsonObject = getRelevantJsonObject(jsonObject,
                     mappingHelper.getPreprocessorOpenEhrCondition(),
                     mappingHelper);
@@ -127,6 +129,10 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             } else {
                 handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject);
             }
+
+            metricsLogger.record("mapping.iteration",
+                    "mapping=" + mappingHelper.getMappingName() + " model=" + mappingHelper.getModelMetadataName(),
+                    mappingTimer.elapsedMs());
         }
     }
 

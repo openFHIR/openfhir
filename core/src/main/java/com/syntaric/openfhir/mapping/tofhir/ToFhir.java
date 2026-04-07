@@ -8,7 +8,9 @@ import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
-import com.syntaric.openfhir.util.OpenEhrCachedUtils;
+import com.syntaric.openfhir.metrics.MappingMetricsLogger;
+import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.marshal.FlatJsonMarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -27,21 +29,23 @@ import java.util.Map;
 public class ToFhir {
 
     final private FlatJsonMarshaller flatJsonMarshaller;
-    final private OpenEhrCachedUtils openEhrApplicationScopedUtils;
+    final private OpenEhrTemplateUtils openEhrApplicationScopedUtils;
     final private Gson gson;
     final private HelpersCreator helpersCreator;
     final private ToFhirPrePostProcessorInterface toFhirPrePostProcessor;
     final private ToFhirMappingEngine toFhirMappingEngine;
     final private ContentItemCompositionBuilder contentItemCompositionBuilder;
+    final private MappingMetricsLogger metricsLogger;
 
     @Autowired
     public ToFhir(final FlatJsonMarshaller flatJsonMarshaller,
-                  final OpenEhrCachedUtils openEhrApplicationScopedUtils,
+                  final OpenEhrTemplateUtils openEhrApplicationScopedUtils,
                   final Gson gson,
                   final HelpersCreator helpersCreator,
                   final ToFhirPrePostProcessorInterface toFhirPrePostProcessor,
                   final ToFhirMappingEngine toFhirMappingEngine,
-                  final ContentItemCompositionBuilder contentItemCompositionBuilder) {
+                  final ContentItemCompositionBuilder contentItemCompositionBuilder,
+                  final MappingMetricsLogger metricsLogger) {
         this.flatJsonMarshaller = flatJsonMarshaller;
         this.openEhrApplicationScopedUtils = openEhrApplicationScopedUtils;
         this.gson = gson;
@@ -49,6 +53,7 @@ public class ToFhir {
         this.toFhirPrePostProcessor = toFhirPrePostProcessor;
         this.toFhirMappingEngine = toFhirMappingEngine;
         this.contentItemCompositionBuilder = contentItemCompositionBuilder;
+        this.metricsLogger = metricsLogger;
     }
 
     public Bundle contentItemsToFhir(final FhirConnectContext context,
@@ -74,25 +79,34 @@ public class ToFhir {
         toFhirPrePostProcessor.preProcess(context, compositions, operationaltemplate);
 
         final Bundle returningBundle = prepareBundle();
+        int compositionIndex = 0;
         for (final Composition composition : compositions) {
+            final String compositionContext = "template=" + templateId + " composition#" + compositionIndex++;
+
+            final MappingTimer flatTimer = MappingTimer.start();
             final String flatJson = flatJsonMarshaller.toFlatJson(composition, webTemplate);
             final JsonObject flatJsonObject = gson.fromJson(flatJson, JsonObject.class);
+            metricsLogger.record("compositionsToFhir.flatJson", compositionContext, flatTimer.elapsedMs());
 
+            final MappingTimer helpersTimer = MappingTimer.start();
             final Map<String, List<MappingHelper>> mappingHelpers = helpersCreator.constructHelpers(templateId,
                                                                                                     context.getContext()
                                                                                                             .getStart(),
                                                                                                     context.getContext()
                                                                                                             .getArchetypes(),
                                                                                                     webTemplate);
+            metricsLogger.record("compositionsToFhir.constructHelpers", compositionContext, helpersTimer.elapsedMs());
 
+            final MappingTimer mapTimer = MappingTimer.start();
             final Bundle creatingBundle = toFhirMappingEngine.mapToFhir(mappingHelpers, flatJsonObject);
+            metricsLogger.record("compositionsToFhir.mapToFhir", compositionContext, mapTimer.elapsedMs());
 
             returningBundle.getEntry().addAll(creatingBundle.getEntry());
         }
 
         final Bundle relevantBundle = extractBundleFromBundle(returningBundle);
-
-        return toFhirPrePostProcessor.postProcess(relevantBundle, context, compositions, operationaltemplate);
+        return toFhirPrePostProcessor.postProcess(relevantBundle, context, compositions,
+                operationaltemplate);
     }
 
     private Bundle extractBundleFromBundle(final Bundle returningBundle) {

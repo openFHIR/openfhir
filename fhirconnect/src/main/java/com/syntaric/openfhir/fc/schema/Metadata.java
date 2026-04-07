@@ -4,13 +4,14 @@ package com.syntaric.openfhir.fc.schema;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
     "version"
 })
-public class Metadata {
+public class Metadata implements Serializable {
 
     /**
      * 

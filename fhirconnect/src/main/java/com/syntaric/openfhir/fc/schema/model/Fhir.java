@@ -5,20 +5,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.syntaric.openfhir.fc.schema.model.Condition;
+import java.io.Serializable;
 
 
 /**
  * FHIR
  * <p>
- * 
- * 
+ *
+ *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "resourceType",
     "condition"
 })
-public class Fhir {
+public class Fhir implements Serializable {
 
     /**
      * 

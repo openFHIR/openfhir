@@ -5,9 +5,7 @@ import com.syntaric.openfhir.db.entity.OptEntity;
 import com.syntaric.openfhir.db.repository.OptRepository;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.rest.RequestValidationException;
-import com.syntaric.openfhir.util.OpenEhrCachedUtils;
-import java.util.Date;
-import java.util.List;
+import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.xmlbeans.XmlException;
@@ -17,18 +15,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.List;
+
 @Component
 @Slf4j
 @Transactional
 public class OptService {
 
     private final OptRepository optRepository;
-    private final OpenEhrCachedUtils openEhrApplicationScopedUtils;
+    private final OpenEhrTemplateUtils openEhrApplicationScopedUtils;
     private final UserContextProducerInterface openFhirUser;
 
     @Autowired
     public OptService(final OptRepository optRepository,
-                      final OpenEhrCachedUtils openEhrApplicationScopedUtils,
+                      final OpenEhrTemplateUtils openEhrApplicationScopedUtils,
                       final UserContextProducerInterface openFhirUser) {
         this.optRepository = optRepository;
         this.openEhrApplicationScopedUtils = openEhrApplicationScopedUtils;
@@ -45,8 +46,6 @@ public class OptService {
     public OptEntity upsert(final String opt, String id, final String reqId) {
         log.debug("Receive CREATE/UPDATE OPT, id {}, reqId: {}", id, reqId);
         try {
-            openEhrApplicationScopedUtils.clearCaches();
-
             id = resolveOptId(id);
 
             final OPERATIONALTEMPLATE operationaltemplate = parseOptFromString(opt);
@@ -97,33 +96,42 @@ public class OptService {
                                      final OPERATIONALTEMPLATE operationaltemplate,
                                      final String normalizedTemplateId) {
         final OptEntity entity = new OptEntity(StringUtils.isEmpty(id) ? null : id, opt, normalizedTemplateId,
-                                               operationaltemplate.getTemplateId().getValue(),
-                                               operationaltemplate.getTemplateId().getValue());
+                operationaltemplate.getTemplateId().getValue(),
+                operationaltemplate.getTemplateId().getValue());
         entity.setUser(openFhirUser.getAuthContext().getUserId());
         entity.setOrganisation(openFhirUser.getAuthContext().getTenant());
         entity.setCreated(new Date());
         return entity;
     }
 
-    public String getContent(final String id, final String reqId) {
+    public String getContent(final String id) {
         final OptEntity byIdAndOrganisation = optRepository.findByIdAndOrganisation(id,
-                                                                                    openFhirUser.getAuthContext()
-                                                                                            .getTenant());
+                openFhirUser.getAuthContext()
+                        .getTenant());
         return byIdAndOrganisation == null ? null : byIdAndOrganisation.getContent();
     }
 
-    public String getContentByTemplateId(final String templateId, final String reqId) {
+    public String getContentByTemplateId(final String templateId) {
         final OptEntity foundOpt = optRepository.findByTemplateIdAndOrganisation(templateId,
-                                                                                 openFhirUser.getAuthContext()
-                                                                                         .getTenant());
+                openFhirUser.getAuthContext()
+                        .getTenant());
         if (foundOpt == null) {
             return null;
         }
         return foundOpt.getContent();
     }
 
+    public OptEntity byTemplateIdAndOrganization(final String templateId) {
+        return optRepository.findByTemplateIdAndOrganisation(templateId,
+                openFhirUser.getAuthContext().getTenant());
+    }
+
     public List<OptEntity> allOfUser(final String reqId) {
         return optRepository.findByOrganisation(openFhirUser.getAuthContext().getTenant());
+    }
+
+    public void deleteAllTenant() {
+        optRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
     }
 
     /**

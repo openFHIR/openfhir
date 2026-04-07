@@ -5,6 +5,7 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import lombok.Data;
 
 
@@ -20,7 +21,7 @@ import lombok.Data;
         "revision"
 })
 @Data
-public class OpenEhrConfig {
+public class OpenEhrConfig implements Serializable {
 
     /**
      *

@@ -4,6 +4,7 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "type"
 })
 
-public class With {
+public class With implements Serializable {
 
     /**
      * (Required)

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.syntaric.openfhir.fc.schema.terminology.TerminologyMappings;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
@@ -16,7 +17,7 @@ import lombok.Data;
         "conceptmap"
 })
 @Data
-public class Terminology {
+public class Terminology implements Serializable {
 
     @JsonProperty("type")
     private String type;

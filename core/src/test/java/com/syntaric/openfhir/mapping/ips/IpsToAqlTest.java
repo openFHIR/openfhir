@@ -5,21 +5,21 @@ import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.syntaric.openfhir.TestOpenFhirMappingContext;
 import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
+import com.syntaric.openfhir.manager.FhirConnectManager;
+import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
-import com.syntaric.openfhir.db.repository.FhirConnectContextRepository;
+import com.syntaric.openfhir.db.entity.OptEntity;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.mapping.helpers.AqlToFlatPathConverter;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.toaql.OpenEhrAqlPopulator;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.toaql.ToAqlMappingEngine;
-import com.syntaric.openfhir.producers.NoOpUserContextProducer;
 import com.syntaric.openfhir.util.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -33,7 +33,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
@@ -42,10 +41,13 @@ public class IpsToAqlTest {
     AutoCloseable closeable;
 
     @Mock
-    protected FhirConnectContextRepository contextRepository;
+    protected FhirConnectManager fhirConnectManager;
 
     @Mock
-    protected OpenEhrCachedUtils openEhrCachedUtils;
+    protected OptManager optManager;
+
+    @Mock
+    protected OpenEhrTemplateUtils openEhrTemplateUtils;
 
     final String DIR = getClass().getResource("/ips/").getFile();
     final String CONTEXT_DIR = getClass().getResource("/ips/").getFile();
@@ -63,12 +65,12 @@ public class IpsToAqlTest {
             fhirConnectContextEntity.setFhirConnectContext(parseContext(x));
             return fhirConnectContextEntity;
         }).toList();
-        doReturn(allContextEntities).when(contextRepository).findByTenant(any());
+        doReturn(allContextEntities).when(fhirConnectManager).allUserContextEntities();
 
         for (String contextFile : contextFiles()) {
             try {
                 final FhirConnectContext context = parseContext(contextFile);
-                final OPERATIONALTEMPLATE operationalTemplate = getOperationalTemplate(contextFile);
+                final OPERATIONALTEMPLATE operationalTemplate = getOperationalTemplate();
                 repo.initRepository(context, operationalTemplate, DIR);
 
                 final FhirConnectContextEntity toBeReturned = new FhirConnectContextEntity();
@@ -76,10 +78,12 @@ public class IpsToAqlTest {
 
                 final String templateId = operationalTemplate.getTemplateId().getValue();
                 final String normalizedTemplateId = OpenFhirMappingContext.normalizeTemplateId(templateId);
-                doReturn(toBeReturned).when(contextRepository).findByTemplateIdAndTenant(eq(normalizedTemplateId), any());
+                doReturn(toBeReturned).when(fhirConnectManager).findContextByTemplateId(eq(normalizedTemplateId));
 
-                doReturn(new OPTParser(operationalTemplate).parse()).when(openEhrCachedUtils).parseWebTemplate(eq(operationalTemplate));
-                doReturn(operationalTemplate).when(openEhrCachedUtils).getOperationalTemplate(any(), eq(normalizedTemplateId));
+                doReturn(new OPTParser(operationalTemplate).parse()).when(openEhrTemplateUtils).parseWebTemplate(eq(operationalTemplate));
+                OptEntity optEntity = new OptEntity();
+                optEntity.setContent(getOperationalTemplateContent());
+                doReturn(optEntity).when(optManager).byTemplateIdAndOrganization(eq(normalizedTemplateId));
 
             } catch (Exception e) {
                 log.error("{}", e.getMessage());
@@ -89,8 +93,8 @@ public class IpsToAqlTest {
         final HelpersCreator helpersCreator1 = new HelpersCreator(repo, new AqlToFlatPathConverter(
                 new OpenFhirStringUtils(),
                 new OpenFhirMapperUtils()), new OpenFhirStringUtils());
-        toAql = new ToAql(contextRepository, new OpenFhirMapperUtils(), new NoOpUserContextProducer(), repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
-                openEhrCachedUtils, null);
+        toAql = new ToAql(fhirConnectManager, new OpenFhirMapperUtils(), repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
+                openEhrTemplateUtils, null, optManager);
     }
 
     @Test
@@ -104,14 +108,22 @@ public class IpsToAqlTest {
                 .findAny().orElse(null);
     }
 
-    private OPERATIONALTEMPLATE getOperationalTemplate(final String contextFilePath) {
+    private OPERATIONALTEMPLATE getOperationalTemplate() {
+        try {
+            return TemplateDocument.Factory.parse(getOperationalTemplateContent()).getTemplate();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getOperationalTemplateContent() {
         final File optDir = new File(DIR, "");
         final File[] optFiles = optDir.listFiles(f -> f.getName().endsWith(".opt"));
         if (optFiles == null || optFiles.length == 0) {
             throw new RuntimeException("No .opt file found in " + optDir.getAbsolutePath());
         }
         try {
-            return TemplateDocument.Factory.parse(optFiles[0]).getTemplate();
+            return FileUtils.readFileToString(optFiles[0]);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.syntaric.openfhir.fc.schema.model.FhirConfig;
 import com.syntaric.openfhir.fc.schema.model.OpenEhrConfig;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ import java.util.Map;
     "openEhrConfig",
     "fhirConfig"
 })
-public class Spec {
+public class Spec implements Serializable {
 
     /**
      * 

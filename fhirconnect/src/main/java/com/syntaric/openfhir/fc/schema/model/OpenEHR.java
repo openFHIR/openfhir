@@ -4,21 +4,22 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import java.util.List;
 
 
 /**
  * openEHR
  * <p>
- * 
- * 
+ *
+ *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "templateId",
     "archetypes"
 })
-public class OpenEHR {
+public class OpenEHR implements Serializable {
 
     /**
      * 
