@@ -11,6 +11,7 @@ import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.FhirConnectReference;
 import com.syntaric.openfhir.fc.schema.model.FollowedBy;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ import lombok.Setter;
         "reference",
         "terminology"
 })
-public class Mapping {
+public class Mapping implements Serializable {
 
     /**
      * (Required)

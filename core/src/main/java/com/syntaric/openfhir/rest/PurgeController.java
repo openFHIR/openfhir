@@ -1,9 +1,7 @@
 package com.syntaric.openfhir.rest;
 
-import com.syntaric.openfhir.db.repository.FhirConnectContextRepository;
-import com.syntaric.openfhir.db.repository.FhirConnectModelRepository;
-import com.syntaric.openfhir.db.repository.OptRepository;
-import com.syntaric.openfhir.producers.UserContextProducerInterface;
+import com.syntaric.openfhir.manager.FhirConnectManager;
+import com.syntaric.openfhir.manager.OptManager;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,20 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class PurgeController {
 
 
-    private final OptRepository optRepository;
-    private final FhirConnectModelRepository fhirConnectMapperRepository;
-    private final FhirConnectContextRepository fhirConnectContextRepository;
-    private final UserContextProducerInterface userContextProducer;
+    private final OptManager optManager;
+    private final FhirConnectManager fhirConnectManager;
 
     @Autowired
-    public PurgeController(final OptRepository optRepository,
-                           final FhirConnectModelRepository fhirConnectMapperRepository,
-                           final FhirConnectContextRepository fhirConnectContextRepository,
-                           final UserContextProducerInterface userContextProducer) {
-        this.optRepository = optRepository;
-        this.fhirConnectMapperRepository = fhirConnectMapperRepository;
-        this.fhirConnectContextRepository = fhirConnectContextRepository;
-        this.userContextProducer = userContextProducer;
+    public PurgeController(final OptManager optManager,
+                           final FhirConnectManager fhirConnectManager) {
+        this.optManager = optManager;
+        this.fhirConnectManager = fhirConnectManager;
     }
 
     @GetMapping("/$purge")
@@ -46,9 +38,8 @@ public class PurgeController {
     )
     ResponseEntity purge(@RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
-            optRepository.deleteAllTenant(userContextProducer.getAuthContext().getTenant());
-            fhirConnectMapperRepository.deleteAllTenant(userContextProducer.getAuthContext().getTenant());
-            fhirConnectContextRepository.deleteAllTenant(userContextProducer.getAuthContext().getTenant());
+            optManager.deleteAllTenant();
+            fhirConnectManager.deleteAllTenant();
         } catch (final Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }

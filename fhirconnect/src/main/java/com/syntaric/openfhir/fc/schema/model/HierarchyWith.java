@@ -3,6 +3,7 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import lombok.Data;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -11,7 +12,7 @@ import lombok.Data;
         "openehr"
 })
 @Data
-public class HierarchyWith {
+public class HierarchyWith implements Serializable {
 
     @JsonProperty("fhir")
     private String fhir;

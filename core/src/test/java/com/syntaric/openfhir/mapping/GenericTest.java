@@ -106,7 +106,6 @@ public abstract class GenericTest {
                 new NoOpPrePostFhirInstancePopulator(), new NoOpTerminologyTranslator());
         toFhirMappingEngine = new ToFhirMappingEngine(
                 new OpenEhrConditionEvaluator(openFhirStringUtils),
-                fhirInstanceCreator,
                 fhirInstanceCreatorUtility,
                 new FhirPathR4(ctx),
                 openEhrFlatPathDataExtractor,
@@ -114,14 +113,16 @@ public abstract class GenericTest {
                 fhirInstancePopulator,
                 new ToFhirInstantiator(fhirInstanceCreator),
                 new CustomMappingRegistry(),
-                openFhirMapperUtils);
+                openFhirMapperUtils,
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
         toFhir = new ToFhir(new FlatJsonMarshaller(),
-                new OpenEhrCachedUtils(null),
+                new OpenEhrTemplateUtils(),
                 new Gson(),
                 helpersCreator,
                 new ToFhirPrePostProcessor(FhirContext.forR4Cached()),
                 toFhirMappingEngine,
-                new ContentItemCompositionBuilder());
+                new ContentItemCompositionBuilder(),
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
 
         final OpenEhrPopulator openEhrPopulator = new OpenEhrPopulator(openFhirMapperUtils,
                 new NoOpTerminologyTranslator(),
@@ -129,7 +130,7 @@ public abstract class GenericTest {
                 openFhirStringUtils);
         toOpenEhr = new ToOpenEhr(new ToOpenEhrPrePostProcessor(ctx),
                 new FlatJsonUnmarshaller(),
-                new OpenEhrCachedUtils(null),
+                new OpenEhrTemplateUtils(),
                 helpersCreator,
                 new Gson(),
                 new ToOpenEhrMappingEngine(fhirPath,
@@ -139,9 +140,11 @@ public abstract class GenericTest {
                         new ToOpenEhrNullFlavour(openFhirStringUtils,
                                 openEhrPopulator,
                                 fhirPath),
-                        new CustomMappingRegistry()),
+                        new CustomMappingRegistry(),
+                        (section, context, elapsedMs) -> { /* no-op metrics in tests */ }),
                 fhirPath,
-                openFhirStringUtils);
+                openFhirStringUtils,
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
 
 
         prepareState();

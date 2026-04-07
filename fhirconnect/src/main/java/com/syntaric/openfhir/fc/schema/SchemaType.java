@@ -2,10 +2,11 @@ package com.syntaric.openfhir.fc.schema;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum SchemaType {
+public enum SchemaType implements Serializable {
     CONTEXT("context"),
     MODEL("model"),
     EXTENSION("extension");

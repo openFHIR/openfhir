@@ -10,6 +10,8 @@ import com.syntaric.openfhir.fc.schema.Spec;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 
 /**
  * FHIRConnect Context Schema
@@ -26,7 +28,7 @@ import lombok.Setter;
         "spec",
         "context"
 })
-public class FhirConnectContext {
+public class FhirConnectContext implements Serializable {
     @Getter
     @Setter
     @JsonProperty("id")

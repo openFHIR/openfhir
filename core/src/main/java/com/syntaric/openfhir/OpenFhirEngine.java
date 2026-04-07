@@ -9,15 +9,17 @@ import com.nedap.archie.rm.composition.Composition;
 import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
+import com.syntaric.openfhir.manager.FhirConnectManager;
+import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
-import com.syntaric.openfhir.db.repository.FhirConnectContextRepository;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
-import com.syntaric.openfhir.producers.UserContextProducerInterface;
-import com.syntaric.openfhir.util.OpenEhrCachedUtils;
+import com.syntaric.openfhir.metrics.MappingMetricsLogger;
+import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,54 +35,55 @@ import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
 @Component
 @Slf4j
-@Transactional
 public class OpenFhirEngine {
 
     private final ToOpenEhr fhirToOpenEhr;
     private final ToFhir openEhrToFhir;
-    private final FhirConnectContextRepository fhirConnectContextRepository;
+    private final FhirConnectManager fhirConnectManager;
+    private final OptManager optManager;
     private final ToAql toAql;
     private final JsonParser jsonParser;
-    private final OpenEhrCachedUtils cachedUtils;
+    private final OpenEhrTemplateUtils templateUtils;
     private final FlatJsonUnmarshaller flatJsonUnmarshaller;
     private final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext;
     private final OpenFhirStringUtils openFhirStringUtils;
     private final FhirPathR4 fhirPathR4;
     private final Gson gson;
-    private final UserContextProducerInterface openFhirUser;
+    private final MappingMetricsLogger metricsLogger;
 
     @Autowired
     public OpenFhirEngine(final ToOpenEhr fhirToOpenEhr,
                           final ToFhir openEhrToFhir,
-                          final FhirConnectContextRepository fhirConnectContextRepository,
+                          final FhirConnectManager fhirConnectManager,
+                          final OptManager optManager,
                           final ToAql toAql,
                           final JsonParser jsonParser,
-                          final OpenEhrCachedUtils cachedUtils,
+                          final OpenEhrTemplateUtils templateUtils,
                           final FlatJsonUnmarshaller flatJsonUnmarshaller,
                           final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext,
                           final OpenFhirStringUtils openFhirStringUtils,
                           final FhirPathR4 fhirPathR4,
                           final Gson gson,
-                          final UserContextProducerInterface openFhirUser) {
+                          final MappingMetricsLogger metricsLogger) {
         this.fhirToOpenEhr = fhirToOpenEhr;
         this.openEhrToFhir = openEhrToFhir;
-        this.fhirConnectContextRepository = fhirConnectContextRepository;
+        this.fhirConnectManager = fhirConnectManager;
+        this.optManager = optManager;
         this.toAql = toAql;
         this.jsonParser = jsonParser;
-        this.cachedUtils = cachedUtils;
+        this.templateUtils = templateUtils;
         this.flatJsonUnmarshaller = flatJsonUnmarshaller;
         this.prodOpenFhirMappingContext = prodOpenFhirMappingContext;
         this.openFhirStringUtils = openFhirStringUtils;
         this.fhirPathR4 = fhirPathR4;
         this.gson = gson;
-        this.openFhirUser = openFhirUser;
+        this.metricsLogger = metricsLogger;
     }
 
     /**
@@ -89,13 +92,12 @@ public class OpenFhirEngine {
      * fhir condition on them.
      */
     private FhirConnectContextEntity getContextForFhir(final String templateId,
-                                                       final String user,
                                                        final String incomingFhirResource) {
-        log.debug("Getting context for user {} for template {}", user, templateId);
+        log.debug("Getting context for template {}", templateId);
         if (StringUtils.isNotBlank(templateId)) {
-            return fhirConnectContextRepository.findByTemplateIdAndTenant(templateId, user);
+            return fhirConnectManager.findContextByTemplateId(templateId);
         }
-        final List<FhirConnectContextEntity> allUserContexts = fhirConnectContextRepository.findByTenant(user);
+        final List<FhirConnectContextEntity> allUserContexts = fhirConnectManager.allUserContextEntities();
 
         FhirConnectContextEntity fallbackContext = null;
 
@@ -152,12 +154,11 @@ public class OpenFhirEngine {
      * Returns context for when mapping from openEHR to FHIR. It will first take the templateId from the incoming
      * payload (flatJson or Composition JSON) and then find it by user and templateId
      */
-    private FhirConnectContextEntity getContextForOpenEhr(final String user,
-                                                          final String incomingOpenEhr,
+    private FhirConnectContextEntity getContextForOpenEhr(final String incomingOpenEhr,
                                                           final String incomingTemplateId) {
-        log.debug("Getting context for user {} for template {}", user, incomingTemplateId);
+        log.debug("Getting context for template {}", incomingTemplateId);
         if (StringUtils.isNotBlank(incomingTemplateId)) {
-            return fhirConnectContextRepository.findByTemplateIdAndTenant(incomingTemplateId, user);
+            return fhirConnectManager.findContextByTemplateId(incomingTemplateId);
         }
         log.debug("Will try to obtain template id from the incoming openEhr object");
         final String templateId = getTemplateIdFromOpenEhr(incomingOpenEhr);
@@ -165,7 +166,7 @@ public class OpenFhirEngine {
             log.warn("No templateId provided in the request nor could it be deduced from the payload.");
             return null;
         }
-        return fhirConnectContextRepository.findByTemplateIdAndTenant(templateId, user);
+        return fhirConnectManager.findContextByTemplateId(templateId);
     }
 
     String getTemplateIdFromOpenEhr(final String incomingOpenEhr) {
@@ -200,7 +201,6 @@ public class OpenFhirEngine {
         // get context and operational template
         final Resource resource = parseIncomingFhirResource(incomingFhirResource);
         final FhirConnectContextEntity fhirConnectContext = getContextForFhir(incomingTemplateId,
-                openFhirUser.getAuthContext().getTenant(),
                 incomingFhirResource);
         if (fhirConnectContext == null) {
             final String logMsg = String.format(
@@ -213,12 +213,11 @@ public class OpenFhirEngine {
 
         validatePrerequisites(fhirConnectContext, templateIdToUse);
 
-        final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
-                openFhirUser.getAuthContext().getTenant(), templateIdToUse);
-        final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
+        final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateIdToUse)));
+        final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
 
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext(), operationalTemplate,
-                webTemplate, openFhirUser.getAuthContext().getTenant());
+                webTemplate);
 
 
         if (flat != null && flat) {
@@ -244,26 +243,30 @@ public class OpenFhirEngine {
     }
 
     public String toFhir(final String openEhrCompositionJson, final String incomingTemplateId) {
+        final MappingTimer totalTimer = MappingTimer.start();
+
         // find the context mapper for the given template
-        final FhirConnectContextEntity fhirConnectContext = getContextForOpenEhr(
-                openFhirUser.getAuthContext().getTenant(), openEhrCompositionJson, incomingTemplateId);
+        final FhirConnectContextEntity fhirConnectContext = getContextForOpenEhr(openEhrCompositionJson,
+                incomingTemplateId);
 
         // validate prerequisites before starting any kind of mapping logic
         validatePrerequisites(fhirConnectContext,
                 fhirConnectContext != null ? fhirConnectContext.getFhirConnectContext().getContext()
-                        .getTemplate().getId() : incomingTemplateId);
+                                             .getTemplate().getId() : incomingTemplateId);
 
         final String templateIdToUse = fhirConnectContext.getFhirConnectContext().getContext().getTemplate()
                 .getId(); // fhirConnectContext can not be null because prerequisites are validated above
 
-        final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
-                openFhirUser.getAuthContext().getTenant(), templateIdToUse);
-        final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
-
+        final MappingTimer cacheTimer = MappingTimer.start();
+        final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(
+                optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateIdToUse)));
+        final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext(), operationalTemplate,
-                webTemplate, openFhirUser.getAuthContext().getTenant());
+                webTemplate);
+        metricsLogger.record("toFhir.initCache", "template=" + templateIdToUse, cacheTimer.elapsedMs());
 
         final IncomingOpenEhrType incomingOpenEhrType = deduceIncomingPayloadType(openEhrCompositionJson);
+        final MappingTimer mappingTimer = MappingTimer.start();
         final Bundle fhir;
         if (incomingOpenEhrType == IncomingOpenEhrType.COMPOSITION) {
             final List<Composition> compositions = parseCompositions(openEhrCompositionJson);
@@ -282,8 +285,12 @@ public class OpenFhirEngine {
                     compositions,
                     operationalTemplate);
         }
+        metricsLogger.record("toFhir.mapping", "template=" + templateIdToUse + " type=" + incomingOpenEhrType,
+                mappingTimer.elapsedMs());
 
-        return jsonParser.encodeResourceToString(fhir);
+        final String encoded = jsonParser.encodeResourceToString(fhir);
+        metricsLogger.record("toFhir.total", "template=" + templateIdToUse, totalTimer.elapsedMs());
+        return encoded;
     }
 
     List<Composition> parseCompositions(final String marshalled) {
@@ -329,7 +336,7 @@ public class OpenFhirEngine {
                                 final OPERATIONALTEMPLATE operationalTemplate) {
         final List<Composition> compositions = new ArrayList<>();
         compositions.add(flatJsonUnmarshaller.unmarshal(marshalled,
-                cachedUtils.parseWebTemplate(operationalTemplate)));
+                templateUtils.parseWebTemplate(operationalTemplate)));
         if (compositions.stream().anyMatch(s -> s.getContent().isEmpty())) {
             log.error("Composition not properly unmarshalled. Empty content. Aborting translation.");
             throw new IllegalArgumentException(
@@ -353,14 +360,13 @@ public class OpenFhirEngine {
             log.error(format);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, format);
         }
-        final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
-                openFhirUser.getAuthContext().getTenant(), templateId);
+        final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateId)));
         if (operationalTemplate == null) {
             log.error("Operational template {} could not be found.", templateId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
                     "Context for this template '%s' found, but no OPT has been found for it.", templateId));
         }
-        final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
+        final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
         if (webTemplate == null) {
             log.error("Web template couldn't be created from an operation template {}.", templateId);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format(

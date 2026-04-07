@@ -1,8 +1,8 @@
 package com.syntaric.openfhir.bootstrap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.syntaric.openfhir.db.FhirConnectService;
-import com.syntaric.openfhir.db.OptService;
+import com.syntaric.openfhir.manager.FhirConnectManager;
+import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.db.entity.BootstrapEntity;
 import com.syntaric.openfhir.db.repository.BootstrapRepository;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
@@ -27,7 +27,7 @@ public class BootstrapRunner implements ApplicationRunner {
     @Value("${bootstrap.dir:/app/bootstrap/}")
     private String bootstrapDir;
 
-    @Value("${bootstrap.recursively-open-directories:false}")
+    @Value("${bootstrap.recursively-open-directories:true}")
     private boolean recursivelyOpenDirectories;
 
     final String MODEL_SUFFIX = ".yaml";
@@ -38,18 +38,18 @@ public class BootstrapRunner implements ApplicationRunner {
     final String OPT_SUFFIX = ".opt";
 
     private final BootstrapRepository bootstrapRepository;
-    private final FhirConnectService service;
-    private final OptService optService;
+    private final FhirConnectManager fhirConnectManager;
+    private final OptManager optManager;
     private final ObjectMapper yamlParser;
 
     @Autowired
     public BootstrapRunner(final BootstrapRepository bootstrapRepository,
-                           final FhirConnectService service,
-                           final OptService optService,
+                           final FhirConnectManager fhirConnectManager,
+                           final OptManager optManager,
                            final ObjectMapper yamlParser) {
         this.bootstrapRepository = bootstrapRepository;
-        this.service = service;
-        this.optService = optService;
+        this.fhirConnectManager = fhirConnectManager;
+        this.optManager = optManager;
         this.yamlParser = yamlParser;
     }
 
@@ -115,13 +115,13 @@ public class BootstrapRunner implements ApplicationRunner {
 
             if (fileType == FileType.MODEL) {
                 log.info("Creating model file {} from bootstrap.", fileName);
-                service.upsertModelMapper(yamlParser.readValue(fileContents, FhirConnectModel.class), null, "bootstrap-req");
+                fhirConnectManager.upsertModelMapper(yamlParser.readValue(fileContents, FhirConnectModel.class), null, "bootstrap-req");
             } else if (fileType == FileType.CONTEXT) {
                 log.info("Creating context file {} from bootstrap.", fileName);
-                service.upsertContextMapper(yamlParser.readValue(fileContents, FhirConnectContext.class), null, "bootstrap-req");
+                fhirConnectManager.upsertContextMapper(yamlParser.readValue(fileContents, FhirConnectContext.class), null, "bootstrap-req");
             } else if (fileType == FileType.OPT) {
                 log.info("Creating OPT file {} from bootstrap.", fileName);
-                optService.upsert(fileContents, null, "bootstrap-req");
+                optManager.upsert(fileContents, null, "bootstrap-req");
             }
 
             bootstrapRepository.save(new BootstrapEntity(UUID.randomUUID().toString(),

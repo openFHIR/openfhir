@@ -6,8 +6,9 @@ import com.syntaric.openfhir.ProdDefaultOpenFhirMappingContext;
 import com.syntaric.openfhir.aql.FhirQueryParam;
 import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
+import com.syntaric.openfhir.manager.FhirConnectManager;
+import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
-import com.syntaric.openfhir.db.repository.FhirConnectContextRepository;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.Mapping;
@@ -16,7 +17,7 @@ import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.rest.RequestValidationException;
-import com.syntaric.openfhir.util.OpenEhrCachedUtils;
+import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import lombok.Builder;
 import lombok.Data;
@@ -38,31 +39,31 @@ import static com.syntaric.openfhir.fc.FhirConnectConst.CONDITION_OPERATOR_ONE_O
 @Slf4j
 public class ToAql {
 
-    private final FhirConnectContextRepository fhirConnectContextRepository;
+    private final FhirConnectManager fhirConnectManager;
     private final OpenFhirMapperUtils openFhirMapperUtils;
-    private final UserContextProducerInterface openFhirUser;
     private final OpenFhirMappingContext openFhirMappingContext;
     private final ToAqlMappingEngine toAqlMappingEngine;
     private final HelpersCreator helpersCreator;
-    private final OpenEhrCachedUtils cachedUtils;
+    private final OpenEhrTemplateUtils templateUtils;
     private final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext;
+    private final OptManager optManager;
 
     @Autowired
-    public ToAql(final FhirConnectContextRepository fhirConnectContextRepository,
+    public ToAql(final FhirConnectManager fhirConnectManager,
                  final OpenFhirMapperUtils openFhirMapperUtils,
-                 final UserContextProducerInterface openFhirUser,
                  final OpenFhirMappingContext openFhirMappingContext,
                  final ToAqlMappingEngine toAqlMappingEngine, HelpersCreator helpersCreator,
-                 final OpenEhrCachedUtils cachedUtils,
-                 final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext) {
-        this.fhirConnectContextRepository = fhirConnectContextRepository;
+                 final OpenEhrTemplateUtils templateUtils,
+                 final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext,
+                 final OptManager optManager) {
+        this.fhirConnectManager = fhirConnectManager;
         this.openFhirMapperUtils = openFhirMapperUtils;
-        this.openFhirUser = openFhirUser;
         this.openFhirMappingContext = openFhirMappingContext;
         this.toAqlMappingEngine = toAqlMappingEngine;
         this.helpersCreator = helpersCreator;
-        this.cachedUtils = cachedUtils;
+        this.templateUtils = templateUtils;
         this.prodOpenFhirMappingContext = prodOpenFhirMappingContext;
+        this.optManager = optManager;
     }
 
     public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {
@@ -86,9 +87,8 @@ public class ToAql {
 
         for (final ToAqlModels aModel : narrowedByResourceType) {
             final String templateId = OpenFhirMappingContext.normalizeTemplateId(aModel.getContext().getTemplateId());
-            final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
-                    openFhirUser.getAuthContext().getTenant(), templateId);
-            final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
+            final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(optManager.byTemplateIdAndOrganization(templateId));
+            final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
 
             final List<MappingHelper> mappingHelpers = helpersCreator.constructHelpers(templateId,
                     aModel.getModelMappers(),
@@ -237,7 +237,7 @@ public class ToAql {
             return List.of(contextToToAqlModels(relevantContext));
         }
         // no specific context found — search across all tenant contexts
-        return fhirConnectContextRepository.findByTenant(openFhirUser.getAuthContext().getTenant()).stream()
+        return fhirConnectManager.allUserContextEntities().stream()
                 .map(this::contextToToAqlModels)
                 .toList();
     }
@@ -261,22 +261,21 @@ public class ToAql {
             return;
         }
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(context.getTemplateId());
-        final OPERATIONALTEMPLATE operationalTemplate = cachedUtils.getOperationalTemplate(
-                openFhirUser.getAuthContext().getTenant(), templateId);
-        final WebTemplate webTemplate = cachedUtils.parseWebTemplate(operationalTemplate);
+        final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(optManager.byTemplateIdAndOrganization(templateId));
+        final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
         prodOpenFhirMappingContext.initMappingCache(context.getFhirConnectContext(), operationalTemplate,
-                webTemplate, openFhirUser.getAuthContext().getTenant());
+                webTemplate);
     }
 
     private FhirConnectContextEntity getContext(final String templateId,
                                                 final String profileUrl) {
         if (StringUtils.isNotEmpty(templateId)) {
             log.debug("Finding context by templateId {}", templateId);
-            return fhirConnectContextRepository.findByTemplateIdAndTenant(templateId, openFhirUser.getAuthContext().getTenant());
+            return fhirConnectManager.findContextByTemplateId(templateId);
         }
         if (StringUtils.isNotEmpty(profileUrl)) {
             log.debug("Finding context by profile url {}", profileUrl);
-            List<FhirConnectContextEntity> byTenant = fhirConnectContextRepository.findByTenant(openFhirUser.getAuthContext().getTenant());
+            List<FhirConnectContextEntity> byTenant = fhirConnectManager.allUserContextEntities();
             return byTenant.stream()
                     .filter(c -> profileUrl.equals(c.getFhirConnectContext().getContext().getProfile().getUrl()))
                     .findAny()

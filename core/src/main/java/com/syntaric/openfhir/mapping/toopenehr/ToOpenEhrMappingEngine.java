@@ -7,6 +7,8 @@ import com.syntaric.openfhir.mapping.BidirectionalMappingEngine;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.metrics.MappingMetricsLogger;
+import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
@@ -35,6 +37,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     final private OpenFhirMapperUtils openFhirMapperUtils;
     final private ToOpenEhrNullFlavour toOpenEhrNullFlavour;
     final private CustomMappingRegistry customMappingRegistry;
+    final private MappingMetricsLogger metricsLogger;
 
     @Autowired
     public ToOpenEhrMappingEngine(final FhirPathR4 fhirPath,
@@ -42,7 +45,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                   final OpenEhrPopulator openEhrPopulator,
                                   final OpenFhirMapperUtils openFhirMapperUtils,
                                   final ToOpenEhrNullFlavour toOpenEhrNullFlavour,
-                                  final CustomMappingRegistry customMappingRegistry) {
+                                  final CustomMappingRegistry customMappingRegistry,
+                                  final MappingMetricsLogger metricsLogger) {
         super(fhirPath);
         this.fhirPath = fhirPath;
         this.stringUtils = stringUtils;
@@ -50,6 +54,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         this.openFhirMapperUtils = openFhirMapperUtils;
         this.toOpenEhrNullFlavour = toOpenEhrNullFlavour;
         this.customMappingRegistry = customMappingRegistry;
+        this.metricsLogger = metricsLogger;
     }
 
     public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
@@ -65,6 +70,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                 dataPoint)) {
             return finalFlat;
         }
+
+        final MappingTimer helpersTimer = MappingTimer.start();
 
         boolean somethingWasAdded = false;
         for (final MappingHelper helper : mappingHelpers) {
@@ -95,6 +102,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
             somethingWasAdded = somethingWasAdded || (finalFlat.size() > previousFinalFlatSize);
         }
+
+        metricsLogger.record("mapToOpenEhr.helpers", openEhrHierarchySplitFlatPath, helpersTimer.elapsedMs());
 
         if (somethingWasAdded && firstWalkOverModelMapping) {
             indexByHierarchyPath.put(openEhrHierarchySplitFlatPath, relevantIndex + 1);
@@ -215,20 +224,31 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     boolean doMapping(final MappingHelper helper, final JsonObject flatComposition, final Base toResolveOn,
                       final Map<String, Integer> indexByHierarchyPath) {
+        final MappingTimer mappingTimer = MappingTimer.start();
+
         final String fhirPath =
                 StringUtils.isEmpty(helper.getFhirWithCondition()) ? helper.getFhir() : helper.getFhirWithCondition();
 
         final List<Base> results = resolveFhirResults(helper, fhirPath, toResolveOn);
         if (results == null) {
+            metricsLogger.record("doMapping",
+                    "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
+                    mappingTimer.elapsedMs());
             return false; // evaluation error already logged
         }
 
+        final boolean result;
         if (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results)) {
-            return handleMissingResults(helper, flatComposition, toResolveOn, fhirPath);
+            result = handleMissingResults(helper, flatComposition, toResolveOn, fhirPath);
+        } else {
+            populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath, indexByHierarchyPath);
+            result = true;
         }
 
-        populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath, indexByHierarchyPath);
-        return true;
+        metricsLogger.record("doMapping",
+                "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
+                mappingTimer.elapsedMs());
+        return result;
     }
 
     /**

@@ -30,7 +30,8 @@ public class ToOpenEhrMappingEngineTest {
                 mapperUtils, new ToOpenEhrNullFlavour(stringUtils,
                                                       null,
                                                       null),
-                new CustomMappingRegistry());
+                new CustomMappingRegistry(),
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
     }
 
     // -------------------------------------------------------------------------

@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
         "sem_ver"
 })
 @Data
-public class ContextTemplate {
+public class ContextTemplate implements Serializable {
 
     @JsonProperty("id")
     private String id;

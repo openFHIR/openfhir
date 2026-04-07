@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -23,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
         "identifying",
 })
 
-public class Condition {
+public class Condition implements Serializable {
 
     /**
      * (Required)

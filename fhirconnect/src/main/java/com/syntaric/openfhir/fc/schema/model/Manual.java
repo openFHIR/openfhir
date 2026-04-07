@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.ManualEntry;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
@@ -19,7 +20,7 @@ import lombok.Data;
         "openehrCondition"
 })
 @Data
-public class Manual {
+public class Manual implements Serializable {
 
     @JsonProperty("name")
     private String name;
