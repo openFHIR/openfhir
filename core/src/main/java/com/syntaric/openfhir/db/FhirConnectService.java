@@ -225,4 +225,21 @@ public class FhirConnectService {
         return byTenant == null ? null : byTenant.stream().map(
                 FhirConnectContextEntity::getFhirConnectContext).collect(Collectors.toList());
     }
+
+    public FhirConnectContextEntity findContextByTemplateId(final String templateId) {
+        return contextRepository.findByTemplateIdAndTenant(templateId, openFhirUser.getAuthContext().getTenant());
+    }
+
+    public List<FhirConnectContextEntity> allUserContextEntities() {
+        return contextRepository.findByTenant(openFhirUser.getAuthContext().getTenant());
+    }
+
+    public List<FhirConnectModelEntity> findModelsByNames(final List<String> names) {
+        return modelRepository.findByTenantAndName(names, openFhirUser.getAuthContext().getTenant());
+    }
+
+    public void deleteAllTenant() {
+        modelRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
+        contextRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
+    }
 }

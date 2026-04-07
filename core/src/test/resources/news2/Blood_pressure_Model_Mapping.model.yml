@@ -94,3 +94,21 @@ mappings:
     with:
       fhir: "$resource.method"
       openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at1042]/width"
+
+  - name: "hardcodedMappings"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code.coding.code"
+            value: "75367002"
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "final"
+      - name: "category"
+        fhir:
+          - path: "category.coding.code"
+            value: "vital-signs"

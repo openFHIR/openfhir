@@ -93,7 +93,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertFalse(heightSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(heightSlot.isUseParentRoot());
         Assert.assertTrue(heightSlot.isHasSlot());
-        Assert.assertEquals(2, heightSlot.getChildren().size());
+        Assert.assertEquals(3, heightSlot.getChildren().size());
 
         // height
         final MappingHelper height = heightSlot.getChildren().get(0);
@@ -122,7 +122,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, height.getChildren().size());
 
         // code (under heightSlot)
-        final MappingHelper heightCode = heightSlot.getChildren().get(1);
+        final MappingHelper heightCode = heightSlot.getChildren().get(2);
         Assert.assertEquals("code", heightCode.getMappingName());
         Assert.assertEquals("Observation", heightCode.getGeneratingResourceType());
         Assert.assertEquals("$resource.code.coding", heightCode.getOriginalFhirPath());
@@ -215,7 +215,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertFalse(weightSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(weightSlot.isUseParentRoot());
         Assert.assertTrue(weightSlot.isHasSlot());
-        Assert.assertEquals(5, weightSlot.getChildren().size());
+        Assert.assertEquals(6, weightSlot.getChildren().size());
 
         // weight
         final MappingHelper weight = weightSlot.getChildren().get(0);
@@ -243,7 +243,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, weight.getChildren().size());
 
         // time (weight)
-        final MappingHelper weightTime = weightSlot.getChildren().get(1);
+        final MappingHelper weightTime = weightSlot.getChildren().get(2);
         Assert.assertEquals("time", weightTime.getMappingName());
         Assert.assertEquals("Observation", weightTime.getGeneratingResourceType());
         Assert.assertEquals("$resource.effective", weightTime.getOriginalFhirPath());
@@ -262,7 +262,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, weightTime.getChildren().size());
 
         // comment
-        final MappingHelper comment = weightSlot.getChildren().get(2);
+        final MappingHelper comment = weightSlot.getChildren().get(3);
         Assert.assertEquals("comment", comment.getMappingName());
         Assert.assertEquals("Observation", comment.getGeneratingResourceType());
         Assert.assertEquals("$resource.note.text", comment.getOriginalFhirPath());
@@ -282,7 +282,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, comment.getChildren().size());
 
         // stateOfDress
-        final MappingHelper stateOfDress = weightSlot.getChildren().get(3);
+        final MappingHelper stateOfDress = weightSlot.getChildren().get(4);
         Assert.assertEquals("stateOfDress", stateOfDress.getMappingName());
         Assert.assertEquals("Observation", stateOfDress.getGeneratingResourceType());
         Assert.assertEquals("$resource.component.value", stateOfDress.getOriginalFhirPath());
@@ -308,7 +308,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, stateOfDress.getChildren().size());
 
         // code (under weightSlot)
-        final MappingHelper weightCode = weightSlot.getChildren().get(4);
+        final MappingHelper weightCode = weightSlot.getChildren().get(5);
         Assert.assertEquals("code", weightCode.getMappingName());
         Assert.assertEquals("Observation", weightCode.getGeneratingResourceType());
         Assert.assertEquals("$resource.code.coding", weightCode.getOriginalFhirPath());
@@ -399,7 +399,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertFalse(bmiSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(bmiSlot.isUseParentRoot());
         Assert.assertTrue(bmiSlot.isHasSlot());
-        Assert.assertEquals(3, bmiSlot.getChildren().size());
+        Assert.assertEquals(4, bmiSlot.getChildren().size());
 
         // bmi
         final MappingHelper bmi = bmiSlot.getChildren().get(0);
@@ -424,7 +424,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, bmi.getChildren().size());
 
         // time (bmi)
-        final MappingHelper bmiTime = bmiSlot.getChildren().get(1);
+        final MappingHelper bmiTime = bmiSlot.getChildren().get(2);
         Assert.assertEquals("time", bmiTime.getMappingName());
         Assert.assertEquals("Observation", bmiTime.getGeneratingResourceType());
         Assert.assertEquals("$resource.effective", bmiTime.getOriginalFhirPath());
@@ -443,7 +443,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, bmiTime.getChildren().size());
 
         // code (under bmiSlot)
-        final MappingHelper bmiCode = bmiSlot.getChildren().get(2);
+        final MappingHelper bmiCode = bmiSlot.getChildren().get(3);
         Assert.assertEquals("code", bmiCode.getMappingName());
         Assert.assertEquals("Observation", bmiCode.getGeneratingResourceType());
         Assert.assertEquals("$resource.code.coding", bmiCode.getOriginalFhirPath());
@@ -533,7 +533,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertFalse(headCircumferenceSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(headCircumferenceSlot.isUseParentRoot());
         Assert.assertTrue(headCircumferenceSlot.isHasSlot());
-        Assert.assertEquals(4, headCircumferenceSlot.getChildren().size());
+        Assert.assertEquals(5, headCircumferenceSlot.getChildren().size());
 
         // headCircumference
         final MappingHelper headCircumference = headCircumferenceSlot.getChildren().get(0);
@@ -559,7 +559,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, headCircumference.getChildren().size());
 
         // time (head circumference)
-        final MappingHelper headCircumferenceTime = headCircumferenceSlot.getChildren().get(1);
+        final MappingHelper headCircumferenceTime = headCircumferenceSlot.getChildren().get(2);
         Assert.assertEquals("time", headCircumferenceTime.getMappingName());
         Assert.assertEquals("Observation", headCircumferenceTime.getGeneratingResourceType());
         Assert.assertEquals("$resource.effective", headCircumferenceTime.getOriginalFhirPath());
@@ -578,7 +578,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, headCircumferenceTime.getChildren().size());
 
         // status (head circumference)
-        final MappingHelper headStatus = headCircumferenceSlot.getChildren().get(2);
+        final MappingHelper headStatus = headCircumferenceSlot.getChildren().get(3);
         Assert.assertEquals("status", headStatus.getMappingName());
         Assert.assertEquals("Observation", headStatus.getGeneratingResourceType());
         Assert.assertEquals("$resource", headStatus.getOriginalFhirPath());
@@ -615,7 +615,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals(0, headStatusStatus.getChildren().size());
 
         // code (under headCircumferenceSlot)
-        final MappingHelper headCode = headCircumferenceSlot.getChildren().get(3);
+        final MappingHelper headCode = headCircumferenceSlot.getChildren().get(4);
         Assert.assertEquals("code", headCode.getMappingName());
         Assert.assertEquals("Observation", headCode.getGeneratingResourceType());
         Assert.assertEquals("$resource.code.coding", headCode.getOriginalFhirPath());

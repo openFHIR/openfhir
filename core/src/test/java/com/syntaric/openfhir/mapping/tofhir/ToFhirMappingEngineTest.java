@@ -57,8 +57,6 @@ public class ToFhirMappingEngineTest {
         final FhirContext ctx = FhirContext.forR4();
         engine = new ToFhirMappingEngine(
                 new OpenEhrConditionEvaluator(openFhirStringUtils),
-                new FhirInstanceCreator(openFhirStringUtils,
-                                        fhirInstanceCreatorUtility),
                 fhirInstanceCreatorUtility,
                 new FhirPathR4(ctx),
                 new OpenEhrFlatPathDataExtractor(openFhirStringUtils,
@@ -77,7 +75,8 @@ public class ToFhirMappingEngineTest {
                 new FhirInstancePopulator(new NoOpPrePostFhirInstancePopulator(), new NoOpTerminologyTranslator()),
                 new ToFhirInstantiator(fhirInstanceCreator),
                 new CustomMappingRegistry(),
-                openFhirMapperUtils);
+                openFhirMapperUtils,
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
     }
 
     // -----------------------------------------------------------------------

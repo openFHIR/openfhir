@@ -1,6 +1,6 @@
 package com.syntaric.openfhir.rest;
 
-import com.syntaric.openfhir.db.FhirConnectService;
+import com.syntaric.openfhir.manager.FhirConnectManager;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.db.entity.FhirConnectModelEntity;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
@@ -32,11 +32,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "FHIR Connect API", description = "Operations related to FHIR Connect models (context and model mappings)")
 public class FhirConnectController {
 
-    private final FhirConnectService service;
+    private final FhirConnectManager fhirConnectManager;
 
     @Autowired
-    public FhirConnectController(final FhirConnectService service) {
-        this.service = service;
+    public FhirConnectController(final FhirConnectManager fhirConnectManager) {
+        this.fhirConnectManager = fhirConnectManager;
     }
 
     /**
@@ -66,7 +66,7 @@ public class FhirConnectController {
     ResponseEntity newModel(@RequestBody FhirConnectModel yamlMapper,
                             @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
-            final FhirConnectModelEntity body = service.upsertModelMapper(yamlMapper, null, reqId);
+            final FhirConnectModelEntity body = fhirConnectManager.upsertModelMapper(yamlMapper, null, reqId);
             return ResponseEntity.ok(body.getFhirConnectModel());
         } catch (Exception e) {
             if (e instanceof RequestValidationException) {
@@ -100,7 +100,7 @@ public class FhirConnectController {
             throw new IllegalArgumentException("Id must no be empty when updating.");
         }
         try {
-            return ResponseEntity.ok(service.upsertModelMapper(yamlMapper, id, reqId).getFhirConnectModel());
+            return ResponseEntity.ok(fhirConnectManager.upsertModelMapper(yamlMapper, id, reqId).getFhirConnectModel());
         } catch (Exception e) {
             if (e instanceof RequestValidationException) {
                 return ResponseEntity.badRequest().body(((RequestValidationException) e).getMessages());
@@ -121,7 +121,7 @@ public class FhirConnectController {
     )
     List<FhirConnectModel> userModelMappers(
             @RequestHeader(value = "x-req-id", required = false) final String reqId) {
-        return service.allUserModelMappers(reqId);
+        return fhirConnectManager.allUserModelMappers(reqId);
     }
 
     @GetMapping(value = "/fc/model/{id}", produces = {"application/json", "application/x-yaml"})
@@ -134,7 +134,7 @@ public class FhirConnectController {
     )
     FhirConnectModel readModelMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
                                      @PathVariable String id) {
-        return service.readModelMappers(id);
+        return fhirConnectManager.readModelMappers(id);
     }
 
     /**
@@ -165,7 +165,7 @@ public class FhirConnectController {
     ResponseEntity newContext(@RequestBody FhirConnectContext yamlMapper,
                               @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
-            final FhirConnectContextEntity body = service.upsertContextMapper(yamlMapper, null, reqId);
+            final FhirConnectContextEntity body = fhirConnectManager.upsertContextMapper(yamlMapper, null, reqId);
             return ResponseEntity.ok(body.getFhirConnectContext());
         } catch (Exception e) {
             if (e instanceof RequestValidationException) {
@@ -198,7 +198,7 @@ public class FhirConnectController {
             throw new IllegalArgumentException("Id must no be empty when updating.");
         }
         try {
-            final FhirConnectContextEntity body = service.upsertContextMapper(yamlMapper, id, reqId);
+            final FhirConnectContextEntity body = fhirConnectManager.upsertContextMapper(yamlMapper, id, reqId);
             return ResponseEntity.ok(body.getFhirConnectContext());
         } catch (Exception e) {
             if (e instanceof RequestValidationException) {
@@ -220,7 +220,7 @@ public class FhirConnectController {
     )
     List<FhirConnectContext> userContextMappers(
             @RequestHeader(value = "x-req-id", required = false) final String reqId) {
-        return service.allUserContextMappers(reqId);
+        return fhirConnectManager.allUserContextMappers(reqId);
     }
 
     @GetMapping(value = "/fc/context/{id}", produces = {"application/json", "application/x-yaml"})
@@ -233,7 +233,7 @@ public class FhirConnectController {
     )
     FhirConnectContext readContextMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
                                          @PathVariable String id) {
-        return service.readContextMappers(id);
+        return fhirConnectManager.readContextMappers(id);
     }
 
 }

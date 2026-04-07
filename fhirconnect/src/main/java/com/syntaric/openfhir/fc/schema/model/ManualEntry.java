@@ -4,6 +4,7 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import lombok.Data;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,7 +13,7 @@ import lombok.Data;
         "path"
 })
 @Data
-public class ManualEntry {
+public class ManualEntry implements Serializable {
 
     @JsonProperty("value")
     private String value;

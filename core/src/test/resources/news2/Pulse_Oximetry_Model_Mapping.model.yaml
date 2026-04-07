@@ -27,7 +27,26 @@ preprocessor:
       criteria: "vital-signs"
 
 mappings:
+
+
   - name: "value"
     with:
       fhir: "$resource.value"
       openehr: "$archetype/data[at0001]/events[at0002]/data[at0003]/items[at0006]"
+  - name: "hardcodedMappings"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code.coding.code"
+            value: "103228002"
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "final"
+      - name: "category"
+        fhir:
+          - path: "category.coding.code"
+            value: "vital-signs"

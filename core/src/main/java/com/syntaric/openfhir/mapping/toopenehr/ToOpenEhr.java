@@ -9,7 +9,9 @@ import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
-import com.syntaric.openfhir.util.OpenEhrCachedUtils;
+import com.syntaric.openfhir.metrics.MappingMetricsLogger;
+import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,22 +34,24 @@ public class ToOpenEhr {
 
     private final ToOpenEhrPrePostProcessorInterface prePostProcessor;
     private final FlatJsonUnmarshaller flatJsonUnmarshaller;
-    private final OpenEhrCachedUtils openEhrApplicationScopedUtils;
+    private final OpenEhrTemplateUtils openEhrApplicationScopedUtils;
     private final HelpersCreator helpersCreator;
     private final Gson gson;
     private final ToOpenEhrMappingEngine toOpenEhrMappingEngine;
     private final FhirPathR4 fhirPathR4;
     private final OpenFhirStringUtils openFhirStringUtils;
+    private final MappingMetricsLogger metricsLogger;
 
     @Autowired
     public ToOpenEhr(final ToOpenEhrPrePostProcessorInterface prePostProcessor,
                      final FlatJsonUnmarshaller flatJsonUnmarshaller,
-                     final OpenEhrCachedUtils openEhrApplicationScopedUtils,
+                     final OpenEhrTemplateUtils openEhrApplicationScopedUtils,
                      final HelpersCreator helpersCreator,
                      final Gson gson,
                      final ToOpenEhrMappingEngine toOpenEhrMappingEngine,
                      final FhirPathR4 fhirPathR4,
-                     final OpenFhirStringUtils openFhirStringUtils) {
+                     final OpenFhirStringUtils openFhirStringUtils,
+                     final MappingMetricsLogger metricsLogger) {
         this.prePostProcessor = prePostProcessor;
         this.flatJsonUnmarshaller = flatJsonUnmarshaller;
         this.openEhrApplicationScopedUtils = openEhrApplicationScopedUtils;
@@ -56,6 +60,7 @@ public class ToOpenEhr {
         this.toOpenEhrMappingEngine = toOpenEhrMappingEngine;
         this.fhirPathR4 = fhirPathR4;
         this.openFhirStringUtils = openFhirStringUtils;
+        this.metricsLogger = metricsLogger;
     }
 
 
@@ -71,6 +76,10 @@ public class ToOpenEhr {
      */
     public Composition fhirToCompositionRm(final FhirConnectContext context, final Resource resource,
                                            final OPERATIONALTEMPLATE operationaltemplate) {
+        final String templateId = OpenFhirMappingContext.normalizeTemplateId(
+                context.getContext().getTemplate().getId());
+        final MappingTimer compositionRmTimer = MappingTimer.start();
+
         final WebTemplate webTemplate = openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
 
         // invoke the actual mapping logic
@@ -80,6 +89,8 @@ public class ToOpenEhr {
         final Composition composition = flatJsonUnmarshaller.unmarshal(gson.toJson(flattenedWithValues), webTemplate);
 
         prePostProcessor.postProcess(composition);
+
+        metricsLogger.record("fhirToCompositionRm", "template=" + templateId, compositionRmTimer.elapsedMs());
 
         return composition;
     }
@@ -112,12 +123,15 @@ public class ToOpenEhr {
 
         final JsonObject finalFlat = new JsonObject();
 
+        final MappingTimer helpersTimer = MappingTimer.start();
         final Map<String, List<MappingHelper>> mappersOfMainArchetype = helpersCreator.constructHelpers(templateId,
                                                                                                         context.getContext()
                                                                                                                 .getStart(),
                                                                                                         context.getContext()
                                                                                                                 .getArchetypes(),
                                                                                                         webTemplate);
+        metricsLogger.record("fhirToFlatJsonObject.constructHelpers", "template=" + templateId, helpersTimer.elapsedMs());
+
         // apply limiting criteria and find the starting point within the Bundle
         final List<MappingHelper> mappingHelpersOfMainArchetype = mappersOfMainArchetype.get(
                 context.getContext().getStart());
@@ -140,11 +154,14 @@ public class ToOpenEhr {
                     mh.setGeneratingFhirResource(startingResource);
                     mh.setGeneratingFhirRoot(startingResource);
                 });
+                final MappingTimer mapTimer = MappingTimer.start();
                 toOpenEhrMappingEngine.mapToOpenEhr(mappingHelpersOfMainArchetype,
                                                     finalFlat,
                                                     startingResource,
                                                     true,
                                                     indexByHierarchyPath);
+                metricsLogger.record("fhirToFlatJsonObject.mapToOpenEhr",
+                        "template=" + templateId + " resources=" + startingResources.size(), mapTimer.elapsedMs());
             }
         } else {
             prepareBundle(startingResources.get(0));
@@ -153,11 +170,14 @@ public class ToOpenEhr {
                 mh.setGeneratingFhirResource(startingResources.get(0));
                 mh.setGeneratingFhirRoot(startingResources.get(0));
             });
+            final MappingTimer mapTimer = MappingTimer.start();
             toOpenEhrMappingEngine.mapToOpenEhr(mappingHelpersOfMainArchetype,
                                                 finalFlat,
                                                 startingResources.get(0),
                                                 true,
                                                 new HashMap<>());
+            metricsLogger.record("fhirToFlatJsonObject.mapToOpenEhr",
+                    "template=" + templateId + " resources=" + startingResources.size(), mapTimer.elapsedMs());
         }
 
         prePostProcessor.postProcess(finalFlat);

@@ -54,6 +54,15 @@ public class GrowthChartToAqlTest extends GenericToAqlTest {
     }
 
     @Override
+    protected String operationaltemplateContent() {
+        try {
+            return IOUtils.toString(this.getClass().getResourceAsStream(HELPER_LOCATION + OPT));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     protected FhirConnectContext context() {
         return getContext(CONTEXT_MAPPING);
     }

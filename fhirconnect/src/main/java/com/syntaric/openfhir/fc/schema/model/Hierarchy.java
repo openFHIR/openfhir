@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.syntaric.openfhir.fc.schema.model.HierarchyWith;
+import java.io.Serializable;
 import lombok.Data;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,7 +13,7 @@ import lombok.Data;
         "split"
 })
 @Data
-public class Hierarchy {
+public class Hierarchy implements Serializable {
 
     @JsonProperty("with")
     private HierarchyWith with;

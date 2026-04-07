@@ -32,6 +32,16 @@ mappings:
     with:
       fhir: "$resource.value"
       openehr: "$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]"
+
+  - name: "category"
+    with:
+      fhir: "$resource.category.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "weightCategory"
+        fhir:
+          - path: "code"
+            value: "weight"
       
   - name: "time"
     with:

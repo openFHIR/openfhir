@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 ## [Unreleased]
 
+## [2.0.6] - 2026-04-07
+### Added
+- MappingHelper to the `PrePostFhirInstancePopulator` method signature
+- Added ability to collect metrics for mapping executions (see `MappingMetricsLogger`)
+- `*Manager` as a proxy class inbetween consumers and transactional `*Services`
+
+### Fixed
+- criterias are properly evaluated when multiple (previously only 0th criteria was evaluated)
+- preprocessor fhircondition no longer results in a mapping going openehr->fhir [#35](https://github.com/openFHIR/openfhir/issues/35)                                                                                                                                                                                                            
+
+### Changed
+- `bootstrap.recursively-open-directories` now defaults to true, meaning openfhir engine will go through all directories and subdirectories of the bootstrap location to find mappings and contexts
+
 ## [2.0.5] - 2026-03-23
 
 ### Added

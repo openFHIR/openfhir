@@ -8,6 +8,7 @@ import com.syntaric.openfhir.fc.schema.Metadata;
 import com.syntaric.openfhir.fc.schema.SchemaType;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
+import java.io.Serializable;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +29,7 @@ import lombok.Setter;
         "spec",
         "terminology"
 })
-public class FhirConnectModel {
+public class FhirConnectModel implements Serializable {
 
 
     @Getter

@@ -1,6 +1,6 @@
 package com.syntaric.openfhir.rest;
 
-import com.syntaric.openfhir.db.OptService;
+import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.db.entity.OptEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Operational Template (openEHR) API", description = "Operations related to Operational Template as one of the states of the engine (if engine isn't integrated with an openEHR CDR directly)")
 public class OptController {
 
-    private final OptService optService;
+    private final OptManager optManager;
 
     @Autowired
-    public OptController(final OptService optService) {
-        this.optService = optService;
+    public OptController(final OptManager optManager) {
+        this.optManager = optManager;
     }
 
     /**
@@ -60,7 +60,7 @@ public class OptController {
     ResponseEntity newOpt(@RequestBody String opt,
                           @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
-            final OptEntity body = optService.upsert(opt, null, reqId);
+            final OptEntity body = optManager.upsert(opt, null, reqId);
             return ResponseEntity.ok(body);
         } catch (Exception e) {
             if (e instanceof RequestValidationException) {
@@ -92,7 +92,7 @@ public class OptController {
             throw new IllegalArgumentException("Id must no be empty when updating.");
         }
         try {
-            final OptEntity body = optService.upsert(opt, id, reqId);
+            final OptEntity body = optManager.upsert(opt, id, reqId);
             return ResponseEntity.ok(body);
         } catch (Exception e) {
             if (e instanceof RequestValidationException) {
@@ -122,14 +122,13 @@ public class OptController {
             }
     )
     List<OptEntity> usersOpts(@RequestHeader(value = "x-req-id", required = false) final String reqId) {
-        return optService.allOfUser(reqId);
+        return optManager.allOfUser(reqId);
     }
 
     /**
      * reads a specific operational template with content
      *
      * @param id id of the template as it was assigned to the OptEntity at the time of the creation
-     * @param reqId request id that will be logged
      * @return a specific operational template with content
      */
     @GetMapping(value = "/opt/{id}")
@@ -140,9 +139,8 @@ public class OptController {
                     @ApiResponse(responseCode = "200", description = "OK")
             }
     )
-    ResponseEntity<String> read(@PathVariable String id,
-                                @RequestHeader(value = "x-req-id", required = false) final String reqId) {
-        final String content = optService.getContent(id, reqId);
+    ResponseEntity<String> read(@PathVariable String id) {
+        final String content = optManager.getContent(id);
         return ResponseEntity.ok().contentType(MediaType.TEXT_XML).body(content);
     }
 
@@ -150,7 +148,6 @@ public class OptController {
      * reads a specific operational template with content
      *
      * @param templateId id of the template as it was assigned to the OptEntity at the time of the creation
-     * @param reqId request id that will be logged
      * @return a specific operational template with content
      */
     @GetMapping(value = "/opt")
@@ -161,9 +158,8 @@ public class OptController {
                     @ApiResponse(responseCode = "200", description = "OK")
             }
     )
-    ResponseEntity<String> find(@RequestParam(required = false) String templateId,
-                                @RequestHeader(value = "x-req-id", required = false) final String reqId) {
-        final String content = optService.getContentByTemplateId(templateId, reqId);
+    ResponseEntity<String> find(@RequestParam(required = false) String templateId) {
+        final String content = optManager.getContentByTemplateId(templateId);
         return ResponseEntity.ok().contentType(MediaType.TEXT_XML).body(content);
     }
 

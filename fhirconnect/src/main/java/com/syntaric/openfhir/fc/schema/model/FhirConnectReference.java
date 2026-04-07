@@ -3,6 +3,7 @@ package com.syntaric.openfhir.fc.schema.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
         "resourceType",
         "mappings"
 })
-public class FhirConnectReference {
+public class FhirConnectReference implements Serializable {
 
     @JsonProperty("mappings")
     private List<Mapping> mappings;
