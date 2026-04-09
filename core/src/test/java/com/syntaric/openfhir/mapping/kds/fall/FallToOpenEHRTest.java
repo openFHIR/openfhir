@@ -73,7 +73,7 @@ public class FallToOpenEHRTest extends KdsGenericTest {
                 toOpenEhr.fhirToCompositionRm(
                         context,
                         getTestBundle(FHIR_ENCOUNTERS[index]),
-                        operationaltemplate
+                        webTemplate
                 );
         standardsAsserter.assertComposition(composition, OPENEHR_COMPOSITIONS[index], operationaltemplate);
     }
@@ -180,7 +180,7 @@ public class FallToOpenEHRTest extends KdsGenericTest {
     public JsonObject toOpenEhr() {
         final Bundle testBundle = getTestBundle(FALL_EINFACH);
 
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
         Assert.assertEquals("einrichtungskontakt",
                 jsonObject.get("kds_fall_einfach/context/falltyp|code").getAsString());

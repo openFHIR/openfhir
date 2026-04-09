@@ -45,10 +45,10 @@ public class GrowthChartBidirectionalTest extends GenericTest {
                                                                              webTemplate);
 
         // transform it to FHIR
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
 
         // transform it back to openEHR
-        final Composition rmComposition = toOpenEhr.fhirToCompositionRm(context, bundle, operationaltemplate);
+        final Composition rmComposition = toOpenEhr.fhirToCompositionRm(context, bundle, webTemplate);
 
         final String weightPath = "/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value";
         final String weightCommentPath = "/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0024]/value";
@@ -96,9 +96,9 @@ public class GrowthChartBidirectionalTest extends GenericTest {
     public void growthChartToOpenEhrToFhir() throws IOException {
         final Bundle testBundle = GrowthChartToOpenEhrTest.growthChartTestBundle();
 
-        final Composition composition = toOpenEhr.fhirToCompositionRm(context, testBundle, operationaltemplate);
+        final Composition composition = toOpenEhr.fhirToCompositionRm(context, testBundle, webTemplate);
 
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
 
 //        compareFlatJsons(context, operationalTemplate, testBundle, bundle); can't compare because for some reason archie has a bug when deserializing flat json; it just added a time
 

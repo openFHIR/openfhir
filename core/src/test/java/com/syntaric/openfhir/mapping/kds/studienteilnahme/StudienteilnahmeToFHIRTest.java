@@ -71,14 +71,14 @@ public class StudienteilnahmeToFHIRTest extends KdsGenericTest {
     @Test
     public void assertToFHIRBundle() {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITION_BUNDLE), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_BUNDLE);
     }
 
     @SneakyThrows
     private void assertToFHIR(int index) {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[index]), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_CONSENTS[index]);
     }
 
@@ -178,7 +178,7 @@ public class StudienteilnahmeToFHIRTest extends KdsGenericTest {
     @Test
     public void assertToFHIRFlatFields() {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(getFile(FLAT), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
         final List<Bundle.BundleEntryComponent> allConsents = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof Consent)
                 .collect(Collectors.toList());

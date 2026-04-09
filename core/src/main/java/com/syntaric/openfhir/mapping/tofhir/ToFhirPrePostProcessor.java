@@ -7,6 +7,7 @@ import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Bundle;
@@ -27,19 +28,19 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
     public Bundle postProcess(final Bundle mappedResource,
                               final FhirConnectContext context,
                               final List<Composition> compositions,
-                              final OPERATIONALTEMPLATE operationaltemplate) {
+                              final WebTemplate webTemplate) {
         stripEmptyContained(mappedResource);
         return mappedResource;
     }
 
     @Override
     public void preProcess(final FhirConnectContext context, final List<Composition> compositions,
-                           final OPERATIONALTEMPLATE operationaltemplate) {
+                           final WebTemplate webTemplate) {
 
     }
 
     @Override
-    public void preProcessContentItems(FhirConnectContext context, List<ContentItem> contentItems, OPERATIONALTEMPLATE operationaltemplate) {
+    public void preProcessContentItems(FhirConnectContext context, List<ContentItem> contentItems, WebTemplate webTemplate) {
 
     }
 

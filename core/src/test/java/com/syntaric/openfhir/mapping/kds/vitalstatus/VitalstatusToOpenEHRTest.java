@@ -51,7 +51,7 @@ public class VitalstatusToOpenEHRTest extends KdsGenericTest {
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), webTemplate);
         assertCompositionIgnoringVolatileContextStartTime(composition, OPENEHR_OUTPUTS[index]);
     }
 
@@ -145,7 +145,7 @@ public class VitalstatusToOpenEHRTest extends KdsGenericTest {
     @SneakyThrows
     public void assertToOpenEHRDetailedFields() {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[0]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[0]), webTemplate);
         final JSONObject actual = new JSONObject(new CanonicalJson().marshal(composition));
         final JSONObject vitalStatusCode = actual.getJSONArray("content").getJSONObject(0)
                 .getJSONObject("data")

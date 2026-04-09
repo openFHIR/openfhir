@@ -6,16 +6,15 @@ import com.syntaric.openfhir.ProdDefaultOpenFhirMappingContext;
 import com.syntaric.openfhir.aql.FhirQueryParam;
 import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
-import com.syntaric.openfhir.manager.FhirConnectManager;
-import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.Preprocessor;
+import com.syntaric.openfhir.manager.FhirConnectManager;
+import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
-import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.rest.RequestValidationException;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
@@ -24,7 +23,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
-import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -87,8 +85,7 @@ public class ToAql {
 
         for (final ToAqlModels aModel : narrowedByResourceType) {
             final String templateId = OpenFhirMappingContext.normalizeTemplateId(aModel.getContext().getTemplateId());
-            final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(optManager.byTemplateIdAndOrganization(templateId));
-            final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
+            final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(templateId));
 
             final List<MappingHelper> mappingHelpers = helpersCreator.constructHelpers(templateId,
                     aModel.getModelMappers(),
@@ -261,10 +258,8 @@ public class ToAql {
             return;
         }
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(context.getTemplateId());
-        final OPERATIONALTEMPLATE operationalTemplate = templateUtils.getOperationalTemplate(optManager.byTemplateIdAndOrganization(templateId));
-        final WebTemplate webTemplate = templateUtils.parseWebTemplate(operationalTemplate);
-        prodOpenFhirMappingContext.initMappingCache(context.getFhirConnectContext(), operationalTemplate,
-                webTemplate);
+        final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(templateId));
+        prodOpenFhirMappingContext.initMappingCache(context.getFhirConnectContext());
     }
 
     private FhirConnectContextEntity getContext(final String templateId,

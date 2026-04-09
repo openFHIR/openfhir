@@ -45,7 +45,7 @@ public class TodesursacheToFHIRTest extends KdsGenericTest {
     private void assertToFHIR(int index) {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[index]),
                 Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_BUNDLES[index]);
     }
 
@@ -84,7 +84,7 @@ public class TodesursacheToFHIRTest extends KdsGenericTest {
     public void assertToFHIRDetailedFields() {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[0]),
                 Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
 
         final List<Condition> conditions = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof Condition)

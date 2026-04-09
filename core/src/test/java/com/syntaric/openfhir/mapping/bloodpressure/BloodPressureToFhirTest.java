@@ -39,7 +39,7 @@ public class BloodPressureToFhirTest extends GenericTest {
         final Composition composition = new FlatJsonUnmarshaller().unmarshal(getFlat(HELPER_LOCATION + FLAT),
                                                                              new OPTParser(
                                                                                      operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
 
         assertBloodPressureFhir(bundle);
     }

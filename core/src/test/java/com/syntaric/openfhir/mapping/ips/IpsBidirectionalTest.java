@@ -42,7 +42,7 @@ public class IpsBidirectionalTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
@@ -55,11 +55,11 @@ public class IpsBidirectionalTest extends GenericTest {
         assertProblemList(composition);
         assertAllergies(composition);
 
-        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
         final Composition roundTwoCompositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
-        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), operationaltemplate);
+        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
 
@@ -73,7 +73,7 @@ public class IpsBidirectionalTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + REAL_FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
@@ -86,11 +86,11 @@ public class IpsBidirectionalTest extends GenericTest {
         assertProblemList(composition);
         assertAllergies(composition);
 
-        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
         final Composition roundTwoCompositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
-        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), operationaltemplate);
+        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
 

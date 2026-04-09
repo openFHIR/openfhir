@@ -41,12 +41,12 @@ public class BloodPressureBidirectionalTest extends GenericTest {
                                                                              webTemplate);
 
         // transform it to FHIR
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         BloodPressureToFhirTest.assertBloodPressureFhir(
                 bundle); // this is being tested elsewhere but whatever.., why not
 
         // transform it back to openEHR
-        final Composition rmComposition = toOpenEhr.fhirToCompositionRm(context, bundle, operationaltemplate);
+        final Composition rmComposition = toOpenEhr.fhirToCompositionRm(context, bundle, webTemplate);
         final String systolicPath = "/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value";
         final String diastolicPath = "/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value";
 

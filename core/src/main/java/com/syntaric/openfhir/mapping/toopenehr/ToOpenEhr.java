@@ -13,19 +13,19 @@ import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
-import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -71,19 +71,16 @@ public class ToOpenEhr {
      *
      * @param context fhir connect context being used for the mappings
      * @param resource FHIR Resource that's being mapped to openEHR
-     * @param operationaltemplate openEHR template being referenced by this context mapper
      * @return Composition that's been created based on the FHIR input and fhir connect mappers
      */
     public Composition fhirToCompositionRm(final FhirConnectContext context, final Resource resource,
-                                           final OPERATIONALTEMPLATE operationaltemplate) {
+                                           final WebTemplate webTemplate) {
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
         final MappingTimer compositionRmTimer = MappingTimer.start();
 
-        final WebTemplate webTemplate = openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
-
         // invoke the actual mapping logic
-        final JsonObject flattenedWithValues = fhirToFlatJsonObject(context, resource, operationaltemplate);
+        final JsonObject flattenedWithValues = fhirToFlatJsonObject(context, resource, webTemplate);
 
         // unmarshall flat path to a canonical json format
         final Composition composition = flatJsonUnmarshaller.unmarshal(gson.toJson(flattenedWithValues), webTemplate);
@@ -101,13 +98,11 @@ public class ToOpenEhr {
      *
      * @param context fhir connect context mapper
      * @param resource that needs to be mapped to openEHR, can be a Bundle or a single Resource
-     * @param operationaltemplate that is linked to the context mapper
      * @return JsonObject representing a flat path structure/format of the mapped openEHR Composition
      */
     public JsonObject fhirToFlatJsonObject(final FhirConnectContext context,
                                            final Resource resource,
-                                           final OPERATIONALTEMPLATE operationaltemplate) {
-        final WebTemplate webTemplate = openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
+                                           final WebTemplate webTemplate) {
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
 
