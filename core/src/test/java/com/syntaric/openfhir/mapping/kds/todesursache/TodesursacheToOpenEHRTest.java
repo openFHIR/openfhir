@@ -42,7 +42,7 @@ public class TodesursacheToOpenEHRTest extends KdsGenericTest {
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), webTemplate);
         standardsAsserter.assertComposition(composition, OPENEHR_OUTPUTS[index], operationaltemplate);
     }
 
@@ -79,7 +79,7 @@ public class TodesursacheToOpenEHRTest extends KdsGenericTest {
     @Test
     public void assertToOpenEHRDetailedFields() {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[0]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[0]), webTemplate);
         final JsonObject compositionJson =
                 JsonParser.parseString(new CanonicalJson().marshal(composition)).getAsJsonObject();
 

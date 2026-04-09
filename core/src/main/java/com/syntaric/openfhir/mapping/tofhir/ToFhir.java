@@ -17,7 +17,6 @@ import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
-import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,25 +57,22 @@ public class ToFhir {
 
     public Bundle contentItemsToFhir(final FhirConnectContext context,
                                      final List<ContentItem> contentItems,
-                                     final OPERATIONALTEMPLATE operationaltemplate) {
-        toFhirPrePostProcessor.preProcessContentItems(context, contentItems, operationaltemplate);
+                                     final WebTemplate webTemplate) {
+        toFhirPrePostProcessor.preProcessContentItems(context, contentItems, webTemplate);
 
-        final WebTemplate webTemplate = openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
         final Composition composition = contentItemCompositionBuilder.buildComposition(contentItems,
                 webTemplate);
-        return compositionsToFhir(context, List.of(composition), operationaltemplate);
+        return compositionsToFhir(context, List.of(composition), webTemplate);
     }
 
     public Bundle compositionsToFhir(final FhirConnectContext context,
                                      final List<Composition> compositions,
-                                     final OPERATIONALTEMPLATE operationaltemplate) {
+                                     final WebTemplate webTemplate) {
         // create flat from composition
-        final WebTemplate webTemplate = openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
-
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
 
-        toFhirPrePostProcessor.preProcess(context, compositions, operationaltemplate);
+        toFhirPrePostProcessor.preProcess(context, compositions, webTemplate);
 
         final Bundle returningBundle = prepareBundle();
         int compositionIndex = 0;
@@ -105,8 +101,7 @@ public class ToFhir {
         }
 
         final Bundle relevantBundle = extractBundleFromBundle(returningBundle);
-        return toFhirPrePostProcessor.postProcess(relevantBundle, context, compositions,
-                operationaltemplate);
+        return toFhirPrePostProcessor.postProcess(relevantBundle, context, compositions, webTemplate);
     }
 
     private Bundle extractBundleFromBundle(final Bundle returningBundle) {

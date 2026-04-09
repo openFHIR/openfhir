@@ -51,7 +51,6 @@ public class OptService {
             final OPERATIONALTEMPLATE operationaltemplate = parseOptFromString(opt);
             final String normalizedTemplateId = OpenFhirMappingContext.normalizeTemplateId(
                     operationaltemplate.getTemplateId().getValue());
-            openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
 
             checkTemplateIdNotTaken(operationaltemplate, normalizedTemplateId, id);
 

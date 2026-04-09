@@ -1,25 +1,23 @@
 package com.syntaric.openfhir;
 
-import com.syntaric.openfhir.manager.FhirConnectManager;
 import com.syntaric.openfhir.db.entity.FhirConnectModelEntity;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
 import com.syntaric.openfhir.fc.schema.context.Context;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.FhirConnectModel;
+import com.syntaric.openfhir.manager.FhirConnectManager;
 import com.syntaric.openfhir.util.FhirConnectModelMerger;
-import com.syntaric.openfhir.util.OpenFhirStringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
-import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.RequestScope;
 
 /**
  * RequestScoped cache of all the needed information for mapping (Context mappers, Model mappers and parsed
@@ -40,9 +38,7 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
         this.fhirConnectManager = fhirConnectManager;
     }
 
-    public void initMappingCache(final FhirConnectContext context,
-                                 final OPERATIONALTEMPLATE operationaltemplate,
-                                 final WebTemplate webTemplate) {
+    public void initMappingCache(final FhirConnectContext context) {
         final String templateId = context.getContext().getTemplate().getId();
         final String normalizedRepoId = normalizeTemplateId(templateId);
         if (repository.containsKey(normalizedRepoId)) {
@@ -50,8 +46,6 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
             return;
         }
         final OpenFhirContextRepository fhirContextRepo = new OpenFhirContextRepository();
-        fhirContextRepo.setOperationaltemplate(operationaltemplate);
-        fhirContextRepo.setWebTemplate(webTemplate);
 
         final List<OpenFhirFhirConnectModelMapper> openFhirFhirConnectModelMappers = prepareJoinedModels(
                 context.getContext());

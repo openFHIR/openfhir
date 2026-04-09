@@ -40,7 +40,7 @@ public class ProblemListToFhirTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         final Condition condition = (Condition) composition.getSectionFirstRep().getEntryFirstRep().getResource();
@@ -54,7 +54,7 @@ public class ProblemListToFhirTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT_CODEABLE_CONCEPT), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         final Condition condition = (Condition) composition.getSectionFirstRep().getEntryFirstRep().getResource();

@@ -46,7 +46,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
             final String serializedComposition = composition.toString();
             contentItemList.add(new CanonicalJson().unmarshal(serializedComposition, ContentItem.class));
         }
-        final Bundle bundle = toFhir.contentItemsToFhir(context, contentItemList, operationaltemplate);
+        final Bundle bundle = toFhir.contentItemsToFhir(context, contentItemList, webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition =
                 (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();

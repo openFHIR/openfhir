@@ -92,7 +92,7 @@ public class MedikamentenverabreichungenToFHIRTest extends KdsGenericTest {
     private void assertToFHIR(int index) {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[index]),
                                                                                 Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         assertBundleWithNormalizedEffectivePeriod(bundle, FHIR_BUNDLES[index]);
     }
 
@@ -372,7 +372,7 @@ public class MedikamentenverabreichungenToFHIRTest extends KdsGenericTest {
     @Test
     public void kdsMedicationAdministrations_toFhir_fromFlat() {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(getFile(FLAT), webTemplate);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final List<MedicationAdministration> administrations = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof MedicationAdministration)

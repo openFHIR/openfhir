@@ -57,7 +57,7 @@ public class MedicationOrderToOpenEhrTest extends GenericTest {
                                                             Base.class);
         Assert.assertEquals("medication text", medicationText.get(0).toString());
 
-        final Composition composition = toOpenEhr.fhirToCompositionRm(context, bundle, operationaltemplate);
+        final Composition composition = toOpenEhr.fhirToCompositionRm(context, bundle, webTemplate);
         final String medicationTextPath = "/content[openEHR-EHR-INSTRUCTION.medication_order.v2]/activities[at0001]/description[at0002]/items[at0070]/value";
         final String doseAmountPath = "/content[openEHR-EHR-INSTRUCTION.medication_order.v2]/activities[at0001]/description[at0002]/items[openEHR-EHR-CLUSTER.therapeutic_direction.v1]/items[openEHR-EHR-CLUSTER.dosage.v1]/items[at0144]/value";
         Assert.assertEquals("medication text", ((DvText) composition.itemAtPath(medicationTextPath)).getValue());

@@ -80,9 +80,9 @@ public class IpsToAqlTest {
                 final String normalizedTemplateId = OpenFhirMappingContext.normalizeTemplateId(templateId);
                 doReturn(toBeReturned).when(fhirConnectManager).findContextByTemplateId(eq(normalizedTemplateId));
 
-                doReturn(new OPTParser(operationalTemplate).parse()).when(openEhrTemplateUtils).parseWebTemplate(eq(operationalTemplate));
-                OptEntity optEntity = new OptEntity();
+                final OptEntity optEntity = new OptEntity();
                 optEntity.setContent(getOperationalTemplateContent());
+                doReturn(new OPTParser(operationalTemplate).parse()).when(openEhrTemplateUtils).parseWebTemplate(eq(optEntity));
                 doReturn(optEntity).when(optManager).byTemplateIdAndOrganization(eq(normalizedTemplateId));
 
             } catch (Exception e) {

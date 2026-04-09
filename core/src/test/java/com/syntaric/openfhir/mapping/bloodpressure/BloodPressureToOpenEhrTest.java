@@ -42,7 +42,7 @@ public class BloodPressureToOpenEhrTest extends GenericTest {
     public void testBloodPressure_flat() {
 
         final JsonObject flat = toOpenEhr.fhirToFlatJsonObject(context, testBloodPressureObservation(),
-                                                               operationaltemplate);
+                webTemplate);
 
 //        Assert.assertEquals(13, flat.size());
         Assert.assertEquals("456.0",
@@ -81,7 +81,7 @@ public class BloodPressureToOpenEhrTest extends GenericTest {
     public void testBloodPressure_RM() {
         final Composition composition = toOpenEhr.fhirToCompositionRm(context,
                                                                       testBloodPressureObservation(),
-                                                                      operationaltemplate);
+                webTemplate);
         final String systolicPath = "/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value";
         final String diastolicPath = "/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value";
 
