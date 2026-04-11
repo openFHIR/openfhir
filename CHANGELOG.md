@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 - Added mongo indexes to optimize performance
+- `DELETE /opt/{id}` — delete an Operational Template by ID
+- `DELETE /fc/model/{id}` — delete a FHIR Connect model mapper by ID
+- `DELETE /fc/context/{id}` — delete a FHIR Connect context mapper by ID
+
 
 ## [2.1.0] - 2026-04-07
 ### Added

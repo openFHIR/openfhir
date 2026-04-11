@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -100,6 +101,20 @@ public class OptController {
             }
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @DeleteMapping(value = "/opt/{id}")
+    @Operation(
+            summary = "Delete an existing Operational Template",
+            description = "Deletes an existing Operational Template by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Deleted")
+            }
+    )
+    ResponseEntity deleteOpt(@PathVariable String id,
+                             @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        optManager.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**

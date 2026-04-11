@@ -20,4 +20,7 @@ public interface FhirConnectContextMongoRepository extends FhirConnectContextRep
 
     @Query(value = "{'organisation': ?0}", delete = true)
     void deleteAllTenant(@NonNull String tenant);
+
+    @Query(value = "{'id': ?0, 'organisation': ?1}", delete = true)
+    void deleteByIdAndOrganisation(@NonNull String id, @NonNull String tenant);
 }

@@ -15,4 +15,5 @@ public interface OptRepository {
 
     void deleteAll();
     void deleteAllTenant(final String user);
+    void deleteByIdAndOrganisation(final String id, final String user);
 }

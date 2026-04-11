@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,6 +108,20 @@ public class FhirConnectController {
             }
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @DeleteMapping(value = "/fc/model/{id}")
+    @Operation(
+            summary = "Delete an existing FHIR Connect model mapper",
+            description = "Deletes an existing FHIR Connect model mapper by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Deleted")
+            }
+    )
+    ResponseEntity deleteModel(@PathVariable String id,
+                               @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        fhirConnectManager.deleteModel(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/fc/model", produces = {"application/json", "application/x-yaml"})
@@ -206,6 +221,20 @@ public class FhirConnectController {
             }
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @DeleteMapping(value = "/fc/context/{id}")
+    @Operation(
+            summary = "Delete an existing FHIR Connect context mapper",
+            description = "Deletes an existing FHIR Connect context mapper by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Deleted")
+            }
+    )
+    ResponseEntity deleteContext(@PathVariable String id,
+                                 @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        fhirConnectManager.deleteContext(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/fc/context", produces = {"application/json", "application/x-yaml"})
