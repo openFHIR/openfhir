@@ -129,6 +129,10 @@ public class OptService {
         return optRepository.findByOrganisation(openFhirUser.getAuthContext().getTenant());
     }
 
+    public void delete(final String id) {
+        optRepository.deleteByIdAndOrganisation(id, openFhirUser.getAuthContext().getTenant());
+    }
+
     public void deleteAllTenant() {
         optRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
     }

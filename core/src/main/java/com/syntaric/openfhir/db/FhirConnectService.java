@@ -238,6 +238,14 @@ public class FhirConnectService {
         return modelRepository.findByTenantAndName(names, openFhirUser.getAuthContext().getTenant());
     }
 
+    public void deleteModel(final String id) {
+        modelRepository.deleteByIdAndOrganisation(id, openFhirUser.getAuthContext().getTenant());
+    }
+
+    public void deleteContext(final String id) {
+        contextRepository.deleteByIdAndOrganisation(id, openFhirUser.getAuthContext().getTenant());
+    }
+
     public void deleteAllTenant() {
         modelRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
         contextRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
