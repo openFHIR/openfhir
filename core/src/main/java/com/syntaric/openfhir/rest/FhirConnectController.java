@@ -147,9 +147,13 @@ public class FhirConnectController {
                     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = FhirConnectModel.class)))
             }
     )
-    FhirConnectModel readModelMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
-                                     @PathVariable String id) {
-        return fhirConnectManager.readModelMappers(id);
+    ResponseEntity<FhirConnectModel> readModelMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
+                                                      @PathVariable String id) {
+        final FhirConnectModel model = fhirConnectManager.readModelMappers(id);
+        if (model == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(model);
     }
 
     /**
@@ -260,9 +264,13 @@ public class FhirConnectController {
                     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = FhirConnectContext.class)))
             }
     )
-    FhirConnectContext readContextMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
-                                         @PathVariable String id) {
-        return fhirConnectManager.readContextMappers(id);
+    ResponseEntity<FhirConnectContext> readContextMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
+                                                          @PathVariable String id) {
+        final FhirConnectContext context = fhirConnectManager.readContextMappers(id);
+        if (context == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(context);
     }
 
 }

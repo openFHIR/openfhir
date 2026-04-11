@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `DELETE /fc/model/{id}` — delete a FHIR Connect model mapper by ID
 - `DELETE /fc/context/{id}` — delete a FHIR Connect context mapper by ID
 
+### Fixed
+- `GET /opt/{id}`, `GET /fc/model/{id}`, `GET /fc/context/{id}` now return 404 instead of 200 with empty body when the resource is not found
+
 
 ## [2.1.0] - 2026-04-07
 ### Added

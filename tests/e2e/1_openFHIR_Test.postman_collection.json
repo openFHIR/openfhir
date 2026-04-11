@@ -1675,11 +1675,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"OPT no longer returned after deletion\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    const response = pm.response.json();",
-                  "    const deleted = response.find(opt => opt.id === pm.environment.get(\"opt_template\"));",
-                  "    pm.expect(deleted).to.be.undefined;",
+                  "pm.test(\"OPT returns 404 after deletion\", function () {",
+                  "    pm.response.to.have.status(404);",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1691,14 +1688,15 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/opt",
+              "raw": "http://localhost:8080/opt/{{opt_template}}",
               "protocol": "http",
               "host": [
                 "localhost"
               ],
               "port": "8080",
               "path": [
-                "opt"
+                "opt",
+                "{{opt_template}}"
               ]
             }
           },
@@ -1746,11 +1744,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Model mapper no longer returned after deletion\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    const response = pm.response.json();",
-                  "    const deleted = response.find(m => m.id === pm.environment.get(\"model_id\"));",
-                  "    pm.expect(deleted).to.be.undefined;",
+                  "pm.test(\"Model mapper returns 404 after deletion\", function () {",
+                  "    pm.response.to.have.status(404);",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1762,7 +1757,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/fc/model",
+              "raw": "http://localhost:8080/fc/model/{{model_id}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1770,7 +1765,8 @@
               "port": "8080",
               "path": [
                 "fc",
-                "model"
+                "model",
+                "{{model_id}}"
               ]
             }
           },
@@ -1818,11 +1814,8 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Context mapper no longer returned after deletion\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    const response = pm.response.json();",
-                  "    const deleted = response.find(c => c.id === pm.environment.get(\"context_id\"));",
-                  "    pm.expect(deleted).to.be.undefined;",
+                  "pm.test(\"Context mapper returns 404 after deletion\", function () {",
+                  "    pm.response.to.have.status(404);",
                   "});"
                 ],
                 "type": "text/javascript",
@@ -1834,7 +1827,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/fc/context",
+              "raw": "http://localhost:8080/fc/context/{{context_id}}",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -1842,7 +1835,8 @@
               "port": "8080",
               "path": [
                 "fc",
-                "context"
+                "context",
+                "{{context_id}}"
               ]
             }
           },
