@@ -8,8 +8,9 @@ spring:
       uri:
   application:
     name: open-fhir-impl
-db:
-  type: mongo
+openfhir:
+  db:
+    type: mongo
 
 server:
   error:
