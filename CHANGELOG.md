@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - added mongo indexes to optimize performance
 - memory optimizations
+### Changed
+- All openfhir-specific configuration properties now use the `openfhir.` prefix for consistency:
+  - `bootstrap.dir` → `openfhir.bootstrap.dir`
+  - `bootstrap.recursively-open-directories` → `openfhir.bootstrap.recursively-open-directories`
+  - `db.type` → `openfhir.db.type`
+
+### Added
+- Added mongo indexes to optimize performance
 
 ## [2.1.0] - 2026-04-07
 ### Added
