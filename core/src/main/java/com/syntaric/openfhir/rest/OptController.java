@@ -156,6 +156,9 @@ public class OptController {
     )
     ResponseEntity<String> read(@PathVariable String id) {
         final String content = optManager.getContent(id);
+        if (content == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().contentType(MediaType.TEXT_XML).body(content);
     }
 
