@@ -7,9 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## [Unreleased]
-### Added
-- added mongo indexes to optimize performance
-- memory optimizations
+
 ### Changed
 - All openfhir-specific configuration properties now use the `openfhir.` prefix for consistency:
   - `bootstrap.dir` → `openfhir.bootstrap.dir`
@@ -18,9 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 - Added mongo indexes to optimize performance
+- memory optimizations
 - `DELETE /opt/{id}` — delete an Operational Template by ID
 - `DELETE /fc/model/{id}` — delete a FHIR Connect model mapper by ID
 - `DELETE /fc/context/{id}` — delete a FHIR Connect context mapper by ID
+- Creating a new release now triggers a workflow publishing Maven packages to GitHub Packages
 
 ### Fixed
 - `GET /opt/{id}`, `GET /fc/model/{id}`, `GET /fc/context/{id}` now return 404 instead of 200 with empty body when the resource is not found
