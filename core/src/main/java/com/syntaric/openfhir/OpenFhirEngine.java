@@ -1,6 +1,7 @@
 package com.syntaric.openfhir;
 
-import ca.uhn.fhir.parser.JsonParser;
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.IParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -47,7 +48,7 @@ public class OpenFhirEngine {
     private final FhirConnectManager fhirConnectManager;
     private final OptManager optManager;
     private final ToAql toAql;
-    private final JsonParser jsonParser;
+    private final FhirContext fhirContext;
     private final OpenEhrTemplateUtils templateUtils;
     private final FlatJsonUnmarshaller flatJsonUnmarshaller;
     private final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext;
@@ -62,7 +63,7 @@ public class OpenFhirEngine {
                           final FhirConnectManager fhirConnectManager,
                           final OptManager optManager,
                           final ToAql toAql,
-                          final JsonParser jsonParser,
+                          final FhirContext fhirContext,
                           final OpenEhrTemplateUtils templateUtils,
                           final FlatJsonUnmarshaller flatJsonUnmarshaller,
                           final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext,
@@ -75,7 +76,7 @@ public class OpenFhirEngine {
         this.fhirConnectManager = fhirConnectManager;
         this.optManager = optManager;
         this.toAql = toAql;
-        this.jsonParser = jsonParser;
+        this.fhirContext = fhirContext;
         this.templateUtils = templateUtils;
         this.flatJsonUnmarshaller = flatJsonUnmarshaller;
         this.prodOpenFhirMappingContext = prodOpenFhirMappingContext;
@@ -232,10 +233,11 @@ public class OpenFhirEngine {
     }
 
     private Resource parseIncomingFhirResource(final String incomingFhirResource) {
+        final IParser parser = fhirContext.newJsonParser();
         try {
-            return jsonParser.parseResource(Bundle.class, incomingFhirResource);
+            return parser.parseResource(Bundle.class, incomingFhirResource);
         } catch (final Exception e) {
-            return (Resource) jsonParser.parseResource(incomingFhirResource);
+            return (Resource) parser.parseResource(incomingFhirResource);
         }
     }
 
@@ -282,7 +284,7 @@ public class OpenFhirEngine {
         metricsLogger.record("toFhir.mapping", "template=" + templateIdToUse + " type=" + incomingOpenEhrType,
                 mappingTimer.elapsedMs());
 
-        final String encoded = jsonParser.encodeResourceToString(fhir);
+        final String encoded = fhirContext.newJsonParser().encodeResourceToString(fhir);
         metricsLogger.record("toFhir.total", "template=" + templateIdToUse, totalTimer.elapsedMs());
         return encoded;
     }
