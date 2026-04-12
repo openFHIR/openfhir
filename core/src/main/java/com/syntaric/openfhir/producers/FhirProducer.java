@@ -2,7 +2,6 @@ package com.syntaric.openfhir.producers;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fhirpath.IFhirPathEvaluationContext;
-import ca.uhn.fhir.parser.JsonParser;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import org.hl7.fhir.instance.model.api.IBase;
@@ -41,8 +40,4 @@ public class FhirProducer {
     }
 
 
-    @Bean
-    public JsonParser getJsonParser() {
-        return (JsonParser) FhirContext.forR4().newJsonParser();
-    }
 }
