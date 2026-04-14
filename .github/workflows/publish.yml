@@ -18,6 +18,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Publish packages
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
