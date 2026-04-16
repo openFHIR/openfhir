@@ -105,6 +105,7 @@ public class OpenFhirFhirConnectModelMapper {
                 toReturn.add(mapping);
             } else {
                 expandManualMappings(mapping, toReturn);
+                mapping.getWith().setType("NONE"); // when a manual mapping is present, dynamic shouldn't happen at all https://github.com/openFHIR/openfhir/issues/54
             }
         }
         return toReturn;

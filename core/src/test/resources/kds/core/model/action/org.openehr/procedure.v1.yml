@@ -1,9 +1,9 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
-  name:  ACTION.procedure.v1
-  version: 0.0.1-alpha 
-spec: 
+  name: ACTION.procedure.v1
+  version: 0.0.1-alpha
+spec:
   system: FHIR
   version: R4
   openEhrConfig:
@@ -12,67 +12,75 @@ spec:
   fhirConfig:
     structureDefinition: http://hl7.org/fhir/StructureDefinition/Procedure
 
+preprocessor:
+  hierarchy:
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    split:
+      fhir:
+        create: "resource"
+
 mappings:
-#  - name: "participations"
-#    with:
-#      fhir: "$resource.performer.actor"
-#      openehr: "$composition/context/participations"  # reference to part
-#      type: "NONE"
-#    followedBy:
-#      mappings:
-#         - name : "participationFunction"
-#           with:
-#             fhir: "$fhirRoot"
-#             openehr: "$openEHRRoot"
-#           manual:
-#             - name: "function"
-#               openehr:
-#                 - path: "function"
-#                   value: "asserter"
-#         - name: "performer"
-#           with:
-#             fhir: "$fhirRoot"
-#             openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+  - name: "participations"
+    with:
+      fhir: "$resource.performer.actor"
+      openehr: "$composition/context/participations"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "asserter"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
-#  - name: "other_participations"
-#    with:
-#      fhir: "$resource.performer.actor"
-#      openehr: "$archetype/other_participation"  # reference to part
-#      type: "NONE"
-#    followedBy:
-#      mappings:
-#         - name : "participationFunction"
-#           with:
-#             fhir: "$fhirRoot"
-#             openehr: "$openEHRRoot"
-#           manual:
-#             - name: "function"
-#               openehr:
-#                 - path: "function"
-#                   value: "asserter"
-#         - name: "performer"
-#           with:
-#             fhir: "$fhirRoot"
-#             openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+  - name: "other_participations"
+    with:
+      fhir: "$resource.performer.actor"
+      openehr: "$archetype/other_participation"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "asserter"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
-#  - name: "provider"
-#    with:
-#      fhir: "$resource.performer.actor"
-#      openehr: "$composition/provider"  # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
-
-# reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
-#  - name: "composer"
-#    with:
-#      fhir: "$resource.recorder"
-#      openehr: "$composition/composer"
+  - name: "provider"
+    with:
+      fhir: "$resource.performer.actor"
+      openehr: "$composition/provider"  # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
 
+  - name: "composer"
+    with:
+      fhir: "$resource.recorder"
+      openehr: "$composition/composer"
 
 
   - name: "effectivePeriodContext"
     with:
       fhir: "$resource.performed.as(Period)"
       openehr: "$composition"
+      type: "NONE"
     openehrCondition:
       targetRoot: "$composition/context"
       targetAttribute: "_end_time"
@@ -115,27 +123,6 @@ mappings:
     with:
       fhir: "$resource.performed.as(DateTime)"
       openehr: "$archetype/time" # this field is more fiting then start_time thats why it overwrites the initial performed in fhir.
-
-
-  # ISM transition mapping summary
-  #
-  # 1) ISMTransitionFhirToOpenEhr (fhir->openehr)
-  # - preparation -> 526 (Planned)
-  # - in-progress -> 245 (Active)
-  # - not-done -> 528 (Cancelled)
-  # - on-hold -> 530 (Suspended)
-  # - completed -> 532 (Completed)
-  # - stopped -> 531 (Aborted)
-  # - entered-in-error -> no mapping (handled as invalid record/audit metadata)
-  # - unknown -> 524 (Initial) + explicit unknown marker outside ISM state
-  #
-  # 2) ISMTransitionOpenEhrToFhir (openehr->fhir)
-  # - 245 (Active) -> in-progress
-  # - 530 (Suspended) -> on-hold
-  # - 531 (Aborted) -> stopped
-  # - 532 (Completed) -> completed
-  # - 528 (Cancelled) -> not-done
-  # - 524/526/527/529/533 (Initial/Planned/Postponed/Scheduled/Expired) -> unknown
 
   - name: "ISMTransitionFhirToOpenEhr"
     unidirectional: "fhir->openehr"
@@ -381,21 +368,17 @@ mappings:
       fhir: "$resource.code"
       openehr: "$archetype/description[at0001]/items[at0002]"
 
-
   - name: "comment"
     with:
       fhir: "$resource.note.text"
       openehr: "$archetype/description[at0001]/items[at0005]"
-      
 
   - name: "category"
     with:
       fhir: "$resource.category"
       openehr: "$archetype/description[at0001]/items[at0067]"
-      
 
   - name: "bodySite"
     with:
       fhir: "$resource.bodySite"
       openehr: "$archetype/description[at0001]/items[at0063]"
-      

@@ -1,9 +1,9 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
   name:  ACTION.medication.v1
-  version: 0.0.1-alpha 
-spec: 
+  version: 0.0.1-alpha
+spec:
   system: FHIR
   version: R4
   openEhrConfig:
@@ -12,22 +12,28 @@ spec:
   fhirConfig:
     structureDefinition: http://hl7.org/fhir/StructureDefinition/MedicationAdministration
 
-mappings:
-#  - name: "hierarchyMappings" # is defined by the
+#preprocessor:
+#  hierarchy:
 #    with:
 #      fhir: "$resource.dosage"
-#      openEHR: "$archetype
-#    hierarchy:
-#      fhirCreate: "resource"
-#      openehrCreate: "archetype"
-#      uniqueValueFHIR: "[route, site]" # if route value is different per dosage slice make a new archetype
-#      uniqueValueOpenEHR: "['/data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]/items[at0132]']"
+#      openehr: "$archetype/data[at0001]/events[at0002]"
+#    split:
+#      fhir:
+#        create: "resource"
+#        unique:
+#          - "data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]/items[at0132]"
+#      openehr:
+#        create: "event"
+#        path: "$archetype/data[at0001]/events[at0002]"
+#        unique:
+#          - "route"
+#          - "timing.event" # If the route value differs per dosage slice, create a new event
 
-# unsupported, reference to party_identified mappings
-#  - name: "healthcareFacility"
-#    with:
-#      fhir: "$resource.requester.as(Organization)"
-#      openehr: "$archetype.context._health_care_facility"
+mappings:
+  - name: "healthcareFacility"
+    with:
+      fhir: "$resource.request.requester"
+      openehr: "$archetype/context/health_care_facility"
 
   - name: "effectivePeriodContext"
     with:
@@ -67,23 +73,20 @@ mappings:
       fhir: "$resource.effective.as(DateTime)"
       openehr: "$archetype/time"
 
+  - name: "composer"
+    with:
+      fhir: "$resource.request.requester" # take identifier
+      openehr: "$composition/composer"
 
-#party_identified to reference unsupported
-#  - name: "composer"
-#    with:
-#      fhir: "$resource.request.requester" # take identifier
-#      openehr: "$composition/composer"
-#
-#  - name: "provider"
-#    with:
-#      fhir: "$resource.actor.performer"
-#      openehr: "$archetype/provider"
+  - name: "provider"
+    with:
+      fhir: "$resource.actor.performer"
+      openehr: "$archetype/provider"
 
   - name: "category"
     with:
       fhir: "$resource.category.coding"
-      openehr: "$composition/context/setting" # TODO Incorrect mapping should be cluster ? Since we got no inpatient or outpatient as category
-      type: NONE
+      openehr: "$composition/context/setting"
     manual:
       - name: "outpatient"
         fhir:
@@ -94,7 +97,7 @@ mappings:
           - path: "display"
             value: "Outpatient"
         openehrCondition:
-          targetRoot: "$composition/context/setting"
+          targetRoot: "$openehrRoot"
           targetAttribute: "defining_code/code_string"
           operator: "one of"
           criteria: "228"
@@ -120,7 +123,7 @@ mappings:
           - path: "display"
             value: "Inpatient"
         openehrCondition:
-          targetRoot: "$composition/context/setting"
+          targetRoot: "$openehrRoot"
           targetAttribute: "defining_code/code_string"
           operator: "one of"
           criteria: "232"
@@ -146,7 +149,7 @@ mappings:
           - path: "display"
             value: "Community"
         openehrCondition:
-          targetRoot: "$composition/context/setting"
+          targetRoot: "$openehrRoot"
           targetAttribute: "defining_code/code_string"
           operator: "one of"
           criteria: "238"
@@ -167,7 +170,6 @@ mappings:
     with:
       fhir: "$resource.note.text"
       openehr: "$archetype/description[at0017]/items[at0024]"
-      
 
   - name: "dosage"
     with:
@@ -180,19 +182,16 @@ mappings:
           with:
             fhir: "route"
             openehr: "$archetype/description[at0017]/items[at0140]/items[at0147]"
-            
 
         - name: "bodySite"
           with:
             fhir: "site"
             openehr: "$archetype/description[at0017]/items[at0140]/items[at0141]"
-            
 
         - name: "method"
           with:
             fhir: "method"
             openehr: "$archetype/description[at0017]/items[at0140]/items[at0143]"
-            
 
   - name: "medication"
     with:
@@ -212,7 +211,6 @@ mappings:
     with:
       fhir: "$resource.medication.as(CodeableConcept)"
       openehr: "$archetype/description[at0017]/items[openEHR-EHR-CLUSTER.medication.v2]/items[at0132]"
-      
     openehrCondition:
       targetRoot: "$archetype/description[at0017]/items[openEHR-EHR-CLUSTER.medication.v2]"
       targetAttributes:
@@ -239,36 +237,18 @@ mappings:
     with:
       fhir: "$resource.reasonCode"
       openehr: "$archetype/description[at0017]/items[at0156]"
-      
 
-  #  - name: "partOf"
-  #    with:
-  #      fhir: "$resource.partOf"
-  #      openehr: "$reference"
-  #    reference:
-  #      mappings:
-  #        - name: "partOfReference"
-  #          with:
-  #            fhir: "$fhirRoot"
-  #            openehr: "$archetype/links" # will use link
-  #          openehrLink:
-  #            meaning: "part of a other medication administration"
-  #            type: "partOf"
+  - name: "partOf"
+    with:
+      fhir: "$resource.partOf"
+      openehr: "$archetype/links" # will use link
+    link:
+      meaning: "part of a other medication administration"
+      type: "partOf"
 
   - name: "request"
     with:
-      fhir: "$resource.request.as(Reference).identifier" # or should resolve reference and take the identifier from there.
-      openehr: "$archetype/protocol[at0030]/items[at0103]"
-      
-    fhirCondition:
-      targetRoot: "$resource.request.as(Reference)"
-      targetAttribute: "identifier"
-      operator: "not empty"
-
-
-  - name: "request"
-    with:
-      fhir: "$resource.request"
+      fhir: "$resource.request" # overwrites request
       openehr: "$archetype/protocol[at0030]/items[at0103]"
     followedBy:
       mappings:
@@ -276,7 +256,6 @@ mappings:
           with:
             fhir: "$fhirRoot.as(Reference).identifier"
             openehr: "$openehrRoot"
-            
           openehrCondition:
             targetRoot: "$openehrRoot"
             targetAttribute: "links"
@@ -297,14 +276,13 @@ mappings:
                 with:
                   fhir: "$fhirRoot.identifier"
                   openehr: "$openehrRoot"
-                  
-#              - name: "medicationRequestMapping"
-#                with:
-#                  fhir: "$fhirRoot"
-#                  openehr: "$openehrRoot/links" # will use link
-#                openehrLink:
-#                  meaning: "the medication request for this medication"
-#                  type: "medicationRequest"
+              - name: "medicationRequestMapping"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$openehrRoot/links" # will use link
+                link:
+                  meaning: "the medication request for this medication"
+                  type: "medicationRequest"
 
   # ISM transition mapping summary
   #
@@ -329,7 +307,6 @@ mappings:
     with:
       fhir: "$resource"
       openehr: "$archetype/ism_transition/current_state"
-      type: NONE
     manual:
       - name: "in-progress"
         fhir:
@@ -454,11 +431,10 @@ mappings:
       #     criteria: "unknown"
 
   - name: "ISMTransitionOpenEhrToFhir"
-    unidirectional: "openEHR->fhir"
+    unidirectional: "openehr->fhir"
     with:
       fhir: "$resource"
       openehr: "$archetype/ism_transition/current_state"
-      type: NONE
     manual:
       - name: "activeToInProgress"
         fhirCondition:
