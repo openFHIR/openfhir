@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
   name:  CLUSTER.multiple_coding_icd10gm.v1
@@ -39,7 +39,7 @@ mappings:
           - path: "system"
             value: "http://fhir.de/CodeSystem/icd-10-gm-mehrfachcodierungs-kennzeichen"
         openehrCondition:
-          targetRoot: "$openehrRoot/items[at0001]"
+          targetRoot: "$openehrRoot"
           targetAttribute: "defining_code/code_string"
           operator: "one of"
           criteria: "at0003"
@@ -65,7 +65,7 @@ mappings:
           - path: "system"
             value: "http://fhir.de/CodeSystem/icd-10-gm-mehrfachcodierungs-kennzeichen"
         openehrCondition:
-          targetRoot: "$openehrRoot/items[at0001]"
+          targetRoot: "$openehrRoot"
           targetAttribute: "defining_code/code_string"
           operator: "one of"
           criteria: "at0002"
@@ -79,7 +79,7 @@ mappings:
           - path: "system"
             value: "http://fhir.de/CodeSystem/icd-10-gm-mehrfachcodierungs-kennzeichen"
         openehrCondition:
-          targetRoot: "$openehrRoot/items[at0001]"
+          targetRoot: "$openehrRoot"
           targetAttribute: "defining_code/code_string"
           operator: "one of"
           criteria: "at0004"
