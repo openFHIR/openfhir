@@ -66,7 +66,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
 
     /**
      * Input: /kds/laborbericht/toOpenEHR/output/Composition-KDS_Laborbericht_bundle.json
-     * Expected: /kds/laborbericht/toFHIR/output/DiagnosticReport-KDS_Laborbericht_bundle.json
+     * Expected: /kds/laborbericht/toFHIR/output/KDS_Laborbericht_bundle.json
      */
     @SneakyThrows
     @Test
