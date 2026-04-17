@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name: KDS_laborbericht
@@ -52,6 +52,7 @@ mappings:
       openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
     slotArchetype: "CLUSTER.case_identification.v0"
 
+
   - name: "fallIdentifikationReference" # if reference is accessible overwrite fallIdentifikationIdentifier
     extension: "add"
     with:
@@ -65,13 +66,13 @@ mappings:
             fhir: "$fhirRoot.identifier"
             openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
           slotArchetype: "CLUSTER.case_identification.v0"
-  #        - name: "encounterMapping" # link mappings not suppoorted
-  #          with:
-  #            fhir: "$fhirRoot"
-  #            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-  #            openehrLink:
-  #              meaning: "the case this composition relates to"
-  #              type: "case"
+        - name: "encounterMapping" # link mappings not suppoorted
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
+          link:
+            meaning: "the case this composition relates to"
+            type: "case"
 
 
   - name: "status" #TODO @deprecated needs to go once mapping is updated
@@ -79,14 +80,7 @@ mappings:
     with:
       fhir: "$resource.status"
       openehr: "$composition/context/other_context[at0001]/items[at0005]"
-      
 
-#TODO does not work
-#  - name: "eventTime" #TODO @deprecated needs to go once mapping is updated
-#    extension: "overwrite"
-#    with:
-#      fhir: "$resource.effective.as(DateTime)"
-#      openEHR: "$archetype/data[at0001]/events[at0002]/time" # period -> interval event, datetime to pointInTime event
 
   - name: "berichtIdParent"
     extension: "add"
@@ -115,7 +109,6 @@ mappings:
           with:
             fhir: "value"
             openehr: "$composition/context/other_context[at0001]/items[at0002]"
-            
 
 
 

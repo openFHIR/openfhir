@@ -33,7 +33,7 @@ mappings:
           with:
             fhir: "$fhirRoot"
             openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-          openehrLink:
+          link:
             meaning: "the case this composition relates to"
             type: "case"
 

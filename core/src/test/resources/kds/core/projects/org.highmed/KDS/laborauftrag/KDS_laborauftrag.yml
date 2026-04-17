@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name: KDS_laborauftrag
@@ -16,7 +16,7 @@ mappings:
       openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
     slotArchetype: "CLUSTER.case_identification.v0"
 
-  - name: "fallIdentifikationReference" # if reference is accessible overwrite fallIdentifikationIdentifier
+  - name: "fallIdentifikationReference" # if reference is accessible will overwrite fallIdentifikationIdentifier
     extension: "add"
     with:
       fhir: "$resource.encounter"
@@ -29,13 +29,13 @@ mappings:
             fhir: "$fhirRoot.identifier"
             openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
           slotArchetype: "CLUSTER.case_identification.v0"
-#        - name: "encounterMapping"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-#            openehrLink:
-#              meaning: "the case this composition relates to"
-#              type: "case"
+        - name: "encounterMapping"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
+          link:
+            meaning: "the case this composition relates to"
+            type: "case"
 
 
 
@@ -64,8 +64,6 @@ mappings:
                       with:
                         fhir: "identifier"
                         openehr: "items[at0001]"
-                  
-
 
 
   - name: "intent"
