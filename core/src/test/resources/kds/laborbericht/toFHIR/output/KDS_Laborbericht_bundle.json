@@ -16,6 +16,13 @@
             "id": "1",
             "identifier": [
               {
+                "type": {
+                  "coding": [
+                    {
+                      "code": "VN"
+                    }
+                  ]
+                },
                 "system": "http://hospital.smarthealthit.org",
                 "value": "encounter-id-1245"
               }
