@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name: KDS_vital_status
@@ -42,20 +42,18 @@ mappings:
             fhir: "$fhirRoot.identifier"
             openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
           slotArchetype: "CLUSTER.case_identification.v0"
-#        - name: "encounterMapping"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-#          openehrLink:
-#            meaning: "the case this composition relates to"
-#            type: "case"
-
+        - name: "encounterMapping"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
+          link:
+            meaning: "the case this composition relates to"
+            type: "case"
   - name: "status"
     extension: "add"
     with:
       fhir: "$resource.status"
       openehr: "$composition/context/other_context[at0001]/items[at0005]"
-
   - name: "category"
     extension: "add"
     with:

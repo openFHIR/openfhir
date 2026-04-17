@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name:  KDS_problem_qualifier_todesursache
@@ -13,6 +13,5 @@ mappings:
     extension: "add"
     with:
       fhir: "$resource.clinicalStatus"
-      openehr: "$archetype/items[at0003]"
-
+      openehr: "$archetype/items[at0003]" #/data[at0001]/items[at0073]
 
