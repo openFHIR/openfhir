@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   - `bootstrap.dir` → `openfhir.bootstrap.dir`
   - `bootstrap.recursively-open-directories` → `openfhir.bootstrap.recursively-open-directories`
   - `db.type` → `openfhir.db.type`
+  - behavior when a mappins is only a manual mapping, in which case a NONE is now implied [#54](https://github.com/openFHIR/openfhir/issues/54)
 
 ### Added
 - Added mongo indexes to optimize performance
@@ -21,11 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `DELETE /fc/model/{id}` — delete a FHIR Connect model mapper by ID
 - `DELETE /fc/context/{id}` — delete a FHIR Connect context mapper by ID
 - Creating a new release now triggers a workflow publishing Maven packages to GitHub Packages
+- `link` is now a supported keyword in model mapping (although not yet implemented, but mapping creation won't fail if it contains this option)
+- KDS mappings and tests amended to support FhirConnect release1 of the library 
 
 ### Fixed
 - `GET /opt/{id}`, `GET /fc/model/{id}`, `GET /fc/context/{id}` now return 404 instead of 200 with empty body when the resource is not found
 - search of opt by templateId now filters properly (before it returned all)
 - `IParser` is now created per-call instead of shared as a singleton, fixing a potential thread-safety issue under concurrent requests
+- when a `manual` mapping has a `fhirCondition`with `$fhirRoot`, this is now correctly evaluated 
 
 
 ## [2.1.0] - 2026-04-07
