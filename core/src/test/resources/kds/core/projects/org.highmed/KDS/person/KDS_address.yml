@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name: KDS_address
@@ -35,70 +35,76 @@ mappings:
           with:
             fhir: "type"
             openehr: "items[at0010]"
-          manual:
-            - name: "physical"
-              openehr:
-                - path: "defining_code/terminology_id"
-                  value: "local"
-                - path: "defining_code/code_string"
-                  value: "at0011"
-                - path: "value"
-                  value: "Physical"
-              fhirCondition:
-                targetRoot: "$fhirRoot"
-                targetAttribute: "code"
-                operator: "one of"
-                criteria: "physical"
+          followedBy:
+            mappings:
+              - name: "manual"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$openehrRoot"
+                manual:
+                  - name: "physical"
+                    openehr:
+                      - path: "defining_code/terminology_id"
+                        value: "local"
+                      - path: "defining_code/code_string"
+                        value: "at0011"
+                      - path: "value"
+                        value: "Physical"
+                    fhirCondition:
+                      targetRoot: "$fhirRoot"
+                      targetAttribute: "code"
+                      operator: "one of"
+                      criteria: "physical"
 
-              fhir:
-                - path: "code"
-                  value: "physical"
-              openehrCondition:
-                targetRoot: "$openehrRoot"
-                targetAttribute: "defining_code/code_string"
-                operator: "one of"
-                criteria: "at0011"
+                    fhir:
+                      - path: "code"
+                        value: "physical"
+                    openehrCondition:
+                      targetRoot: "$openehrRoot"
+                      targetAttribute: "defining_code/code_string"
+                      operator: "one of"
+                      criteria: "at0011"
 
-            - name: "postal"
-              openehr:
-                - path: "defining_code/terminology_id"
-                  value: "local"
-                - path: "defining_code/code_string"
-                  value: "at0012"
-                - path: "value"
-                  value: "Postal"
-              fhirCondition:
-                targetRoot: "$fhirRoot"
-                targetAttribute: "code"
-                operator: "one of"
-                criteria: "postal"
-              fhir:
-                - path: "code"
-                  value: "postal"
-              openehrCondition:
-                targetRoot: "$openehrRoot"
-                targetAttribute: "defining_code/code_string"
-                operator: "one of"
-                criteria: "at0012"
+                  - name: "postal"
+                    openehr:
+                      - path: "defining_code/terminology_id"
+                        value: "local"
+                      - path: "defining_code/code_string"
+                        value: "at0012"
+                      - path: "value"
+                        value: "Postal"
+                    fhirCondition:
+                      targetRoot: "$fhirRoot"
+                      targetAttribute: "code"
+                      operator: "one of"
+                      criteria: "postal"
+                    fhir:
+                      - path: "code"
+                        value: "postal"
+                    openehrCondition:
+                      targetRoot: "$openehrRoot"
+                      targetAttribute: "defining_code/code_string"
+                      operator: "one of"
+                      criteria: "at0012"
 
-            - name: "both"
-              openehr:
-                - path: "defining_code/terminology_id"
-                  value: "local"
-                - path: "defining_code/code_string"
-                  value: "at0013"
-                - path: "value"
-                  value: "Both"
-              fhirCondition:
-                targetRoot: "$fhirRoot"
-                targetAttribute: "code"
-                operator: "one of"
-                criteria: "both"
-              fhir:
-                - path: "code"
-                  value: "both"
-              openehrCondition:
-                targetRoot: "$openehrRoot"
-                targetAttribute: "defining_code/code_string"
-                operator: "one of"
-                criteria: "at0013"
+                  - name: "both"
+                    openehr:
+                      - path: "defining_code/terminology_id"
+                        value: "local"
+                      - path: "defining_code/code_string"
+                        value: "at0013"
+                      - path: "value"
+                        value: "Both"
+                    fhirCondition:
+                      targetRoot: "$fhirRoot"
+                      targetAttribute: "code"
+                      operator: "one of"
+                      criteria: "both"
+                    fhir:
+                      - path: "code"
+                        value: "both"
+                    openehrCondition:
+                      targetRoot: "$openehrRoot"
+                      targetAttribute: "defining_code/code_string"
+                      operator: "one of"
+                      criteria: "at0013"

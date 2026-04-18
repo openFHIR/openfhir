@@ -14,8 +14,10 @@ import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.OpenEhrConfig;
 import com.syntaric.openfhir.fc.schema.model.With;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,9 +62,9 @@ public class OpenFhirFhirConnectModelMapper {
                 new OpenEhrConfig().withArchetype(fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype()));
 
         openFhirFhirConnectModelMapper.setFhirConfig(new OpenFhirFhirConfig()
-                                                             .withCondition(
-                                                                     getPreprocessingFhirConditions(fhirConnectModel))
-                                                             .withResource(parseResourceType(fhirConnectModel)));
+                .withCondition(
+                        getPreprocessingFhirConditions(fhirConnectModel))
+                .withResource(parseResourceType(fhirConnectModel)));
         openFhirFhirConnectModelMapper.setName(fhirConnectModel.getMetadata().getName());
         openFhirFhirConnectModelMapper.setTerminology(fhirConnectModel.getTerminology());
         openFhirFhirConnectModelMapper.setOriginalModel(fhirConnectModel);
@@ -105,6 +107,7 @@ public class OpenFhirFhirConnectModelMapper {
                 toReturn.add(mapping);
             } else {
                 expandManualMappings(mapping, toReturn);
+                mapping.getWith().setType(FhirConnectConst.OPENEHR_TYPE_NONE); // when a manual mapping is present, dynamic shouldn't happen at all https://github.com/openFHIR/openfhir/issues/54
             }
         }
         return toReturn;
@@ -133,11 +136,16 @@ public class OpenFhirFhirConnectModelMapper {
             fromManual.setUnidirectional(UNIDIRECTIONAL_TOOPENEHR);
             fromManual.setName(mapping.getName() + "." + manual.getName());
             fromManual.setWith(new With()
-                                       .withValue(openEhrManualEntry.getValue())
-                                       .withOpenehr(mapping.getWith().getOpenehr() + manualSuffix));
-            fromManual.setFhirCondition(manual.getFhirCondition() == null
-                                                ? mapping.getFhirCondition()
-                                                : manual.getFhirCondition().copy());
+                    .withValue(openEhrManualEntry.getValue())
+                    .withOpenehr(mapping.getWith().getOpenehr() + manualSuffix));
+            final Condition manualCondition = manual.getFhirCondition();
+            if (manualCondition != null && manualCondition.getTargetRoot().startsWith(FhirConnectConst.FHIR_ROOT_FC)) {
+                manualCondition.setTargetRoot(manualCondition.getTargetRoot().replace(FhirConnectConst.FHIR_ROOT_FC,
+                        mapping.getWith().getFhir()));
+            }
+            fromManual.setFhirCondition(manualCondition == null
+                    ? mapping.getFhirCondition()
+                    : manualCondition.copy());
             result.add(fromManual);
         }
         return result;
@@ -153,9 +161,9 @@ public class OpenFhirFhirConnectModelMapper {
             fromManual.setUnidirectional(UNIDIRECTIONAL_TOFHIR);
             fromManual.setName(mapping.getName() + "." + manual.getName());
             fromManual.setWith(new With()
-                                       .withValue(fhirManualEntry.getValue())
-                                       .withOpenehr(mapping.getWith().getOpenehr())
-                                       .withFhir(fhirManualEntry.getPath()));
+                    .withValue(fhirManualEntry.getValue())
+                    .withOpenehr(mapping.getWith().getOpenehr())
+                    .withFhir(fhirManualEntry.getPath()));
             fromManual.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
             followedBy.getMappings().add(fromManual);
         }
@@ -177,32 +185,32 @@ public class OpenFhirFhirConnectModelMapper {
         if (mapping.getWith() == null || mapping.getWith().getFhir() == null) {
             return;
         }
-        
+
         final String fhirPath = mapping.getWith().getFhir();
         if (!isFhirPathConcatination(fhirPath)) {
             return;
         }
-        
+
         String modifiedFhirPath = fhirPath;
-        
+
         // Process prefix concatenation
         final String prefixConcat = getPrefixConcat(fhirPath);
         if (prefixConcat != null) {
             modifiedFhirPath = modifiedFhirPath.replace(prefixConcat, "");
             mapping.setPrefixConcat(prefixConcat.trim()
-                                            .replace("'", "")
-                                            .replace("&", "").trim());
+                    .replace("'", "")
+                    .replace("&", "").trim());
         }
-        
+
         // Process suffix concatenation
         final String suffixConcat = getSuffixConcat(modifiedFhirPath);
         if (suffixConcat != null) {
             modifiedFhirPath = modifiedFhirPath.replace(suffixConcat, "");
             mapping.setSuffixConcat(suffixConcat.trim()
-                                            .replace("'", "")
-                                            .replace("&", "").trim());
+                    .replace("'", "")
+                    .replace("&", "").trim());
         }
-        
+
         // Update the mapping with the cleaned fhir path
         mapping.getWith().setFhir(modifiedFhirPath.trim());
     }
@@ -215,14 +223,14 @@ public class OpenFhirFhirConnectModelMapper {
     }
 
     String getPrefixConcat(final String fhirPath) {
-        if(fhirPath.startsWith("'")) {
-            return fhirPath.substring(0, fhirPath.lastIndexOf("&")+1);
+        if (fhirPath.startsWith("'")) {
+            return fhirPath.substring(0, fhirPath.lastIndexOf("&") + 1);
         }
         return null;
     }
 
     String getSuffixConcat(final String fhirPath) {
-        if(fhirPath.endsWith("'")) {
+        if (fhirPath.endsWith("'")) {
             return fhirPath.substring(fhirPath.indexOf("&"));
         }
         return null;

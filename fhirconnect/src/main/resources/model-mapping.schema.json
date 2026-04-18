@@ -277,6 +277,18 @@
             }
           }
         },
+        "link": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "meaning": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        },
         "unidirectional": {
           "type": "string"
         },

@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: context
 metadata:
   name:  KDS_Studienteilnahme.context

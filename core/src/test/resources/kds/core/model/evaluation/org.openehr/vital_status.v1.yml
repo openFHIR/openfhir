@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
   name: EVALUATION.vital_status.v1
@@ -14,156 +14,115 @@ spec:
 
 mappings:
 
-# unsupported, reference to party_identified mappings
-#  - name: "healthCareFacility"
-#    with:
-#      fhir: "$resource.performer"
-#      openehr: "$archetype/context/health_care_facility"
+  - name: "healthCareFacility"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$archetype/context/health_care_facility"
 
-#  - name: "participations"
-#    with:
-#      fhir: "$resource.performer"
-#      openehr: "$composition/context/participations"  # reference to part
-#      type: "NONE"
-#    followedBy:
-#      mappings:
-#        - name : "participationFunction"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$openEHRRoot"
-#          manual:
-#            - name: "function"
-#              openehr:
-#                - path: "function"
-#                  value: "performer"
-#        - name: "performer"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+  - name: "participations"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$composition/context/participations"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "performer"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
-# unsupported, reference to party_identified mappings
-#  - name: "composer"
-#    with:
-#      fhir: "$resource.performer"
-#      openehr: "$composition/composer"
+  - name: "composer"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$composition/composer"
 
-# unsupported, reference to party_identified mappings
-#  - name: "performer"
-#    with:
-#      fhir: "$resource.performer"
-#      openehr: "$archetype/perfomer"
+  - name: "performer"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$archetype/perfomer"
 
-#  - name: "other_participations"
-#    with:
-#      fhir: "$resource.performer"
-#      openehr: "$archetype/other_participations"
-#      type: "NONE"
-#    followedBy:
-#      mappings:
-#        - name : "participationFunction"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$openEHRRoot"
-#          manual:
-#            - name: "function"
-#              openehr:
-#                - path: "function"
-#                  value: "performer"
-#        - name: "performer"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+  - name: "other_participations"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$archetype/other_participations"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "performer"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
   - name: "effective"
     with:
       fhir: "$resource.effective"
       openehr: "$archetype/protocol[at0002]/items[at0018]"
-      
 
   - name: "vitalStatus"
     with:
       fhir: "$resource.value"
       openehr: "$archetype/data[at0001]/items[at0006]"
-      
 
   - name: "note"
     with:
       fhir: "$resource.note.text"
       openehr: "$archetype/data[at0001]/items[at0013]"
-      
 
-#  - name: "partOf"
-#    with:
-#      fhir: "$resource.partOf.reference"
-#      openehr: "$reference"
-#    reference:
-#      mappings:
-#        - name: "partOfReference"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$archetype/links" # will use link
+  - name: "partOfReference"
+    with:
+      fhir: "$resource.partOf"
+      openehr: "$archetype/links" # will use link
+    link:
+      meaning: "Part of referenced event"
+      type: "partOf"
 
-#            openehrLink:
-#              meaning: "Part of referenced event"
-#              type: "partOf"
-#
-#  - name: "basedOn"
-#    with:
-#      fhir: "$resource.basedOn.reference"
-#      openehr: "$reference"
-#    reference:
-#      mappings:
-#        - name: "partOfReference"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$archetype/links" # will use link
+  - name: "partOfReference"
+    with:
+      fhir: "$resource.basedOn"
+      openehr: "$archetype/links" # will use link
+    link:
+      meaning: "Fulfills plan, proposal or order"
+      type: "basedOn"
 
-#            openehrLink:
-#              meaning: "Fulfills plan, proposal or order"
-#              type: "basedOn"
-#
-#  - name: "focus"
-#    with:
-#      fhir: "$resource.basedOn.reference"
-#      openehr: "$reference"
-#    reference:
-#      mappings:
-#        - name: "partOfReference"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$archetype/links" # will use link
+  - name: "partOfReference"
+    with:
+      fhir: "$resource.basedOn"
+      openehr: "$archetype/links" # will use link
+    link:
+      meaning: "What the observation is about, when it is not about the subject of record"
+      type: "focus"
 
-#            openehrLink:
-#              meaning: "What the observation is about, when it is not about the subject of record"
-#              type: "focus"
-#
-#  - name: "encounter"
-#    with:
-#      fhir: "$resource.encounter.reference"
-#      openehr: "$reference"
-#    reference:
-#      mappings:
-#        - name: "partOfReference"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$archetype/links" # will use link
+  - name: "partOfReference"
+    with:
+      fhir: "$resource.encounter"
+      openehr: "$archetype/links" # will use link
+    link:
+      meaning: "case or contact"
+      type: "case"
 
-#            openehrLink:
-#              meaning: "case or contact"
-#              type: "case"
-#
-#
-#  - name: "hasMember"
-#    with:
-#      fhir: "$resource.hasMember.reference"
-#      openehr: "$reference"
-#    reference:
-#      mappings:
-#        - name: "partOfReference"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$archetype/links" # will use link
+  - name: "partOfReference"
+    with:
+      fhir: "$resource.hasMember"
+      openehr: "$archetype/links" # will use link
+    link:
+      meaning: "Related resource that belongs to the Observation group"
+      type: "hasMember"
 
-#            openehrLink:
-#              meaning: "Related resource that belongs to the Observation group"
-#              type: "hasMember"
