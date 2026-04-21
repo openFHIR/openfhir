@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `IParser` is now created per-call instead of shared as a singleton, fixing a potential thread-safety issue under concurrent requests
 - when a `manual` mapping has a `fhirCondition`with `$fhirRoot`, this is now correctly evaluated
 - fhircondition `type` is now properly evaluated even when fhirPath has a resolve()
+- fhircondition `type` is now properly evaluated even when Resources are nested in a Bundle
 
 
 ## [2.1.0] - 2026-04-07
