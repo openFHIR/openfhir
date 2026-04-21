@@ -120,11 +120,11 @@ public class BidirectionalMappingEngine {
         if (!fhirPathExpr.contains(RESOLVE)) {
             return initialResource;
         }
-        final String fhirPathWithoutResolve = fhirPathExpr.split(RESOLVE)[0];
+        final String fhirPathWithoutResolve = fhirPathExpr.split(String.format(".%s", RESOLVE))[0];
         try {
-            final Reference reference = (Reference) fhirPath.evaluateFirst(initialResource,
+            final Reference reference = fhirPath.evaluateFirst(initialResource,
                     fhirPathWithoutResolve,
-                    Reference.class).get().getResource();
+                    Reference.class).get();
             return (Resource) reference.getResource();
         } catch (Exception e) {
             log.warn("Nothing resolved by evaluating {}", fhirPathWithoutResolve);
