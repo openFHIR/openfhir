@@ -74,8 +74,9 @@ public class BidirectionalMappingEngine {
             }
 
             final String targetRoot = fhirCondition.getTargetRoot();
-            final Base instance = mappingHelper.getGeneratingFhirResource();
-            final String fhirPathType = String.format("%s[0].type()", targetRoot);
+            final boolean takeFhirRoot = targetRoot.equals(mappingHelper.getFullFhirPath());
+            final Base instance = takeFhirRoot ? (Base) mappingHelper.getGeneratingFhirRoot() : mappingHelper.getGeneratingFhirResource();
+            final String fhirPathType = String.format("%s[0].type()", takeFhirRoot ? mappingHelper.getFhir() : targetRoot);
 
             if (fhirPathType.contains(RESOLVE)) {
                 final String fhirPathAfterResolve = fhirPathType.split(".resolve\\(\\)")[1].substring(1);
