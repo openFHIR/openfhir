@@ -82,7 +82,7 @@ public class DiagnoseToFHIRTest extends KdsGenericTest {
     public void assertToFHIRBundle() {
         Composition composition = JacksonUtil.getObjectMapper()
                 .readValue(getFile(COMPOSITION_SINGLE), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, BUNDLE_SINGLE);
     }
 
@@ -97,7 +97,7 @@ public class DiagnoseToFHIRTest extends KdsGenericTest {
     public void assertToFHIRBundleWhole() {
         Composition composition = JacksonUtil.getObjectMapper()
                 .readValue(getFile(COMPOSITION_MULTIPLE), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, BUNDLE_MULTIPLE);
 
 
@@ -107,7 +107,7 @@ public class DiagnoseToFHIRTest extends KdsGenericTest {
     private void assertToFHIR(int index) {
         Composition composition = JacksonUtil.getObjectMapper()
                 .readValue(getFile(OPENEHR_COMPOSITIONS[index]), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_CONDITIONS[index]);
     }
 
@@ -318,7 +318,7 @@ public class DiagnoseToFHIRTest extends KdsGenericTest {
     public void toFhir() {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFile(FLAT_MULTIPLE), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
         final List<Bundle.BundleEntryComponent> allConditions = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof Condition).collect(Collectors.toList());
         Assert.assertEquals(2, allConditions.size());

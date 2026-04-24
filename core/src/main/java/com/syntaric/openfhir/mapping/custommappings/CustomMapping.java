@@ -8,6 +8,8 @@ import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import java.util.List;
 import java.util.Set;
+
+import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.r4.model.Base;
 
 /**
@@ -27,7 +29,7 @@ public abstract class CustomMapping {
      * @return true if the mapping was applied.
      */
     public boolean applyFhirToOpenEhrMapping(final MappingHelper mappingHelper,
-                                             final Base fhirValue,
+                                             final IBase fhirValue,
                                              final List<String> possibleRmTypes,
                                              final JsonObject flat,
                                              final OpenEhrPopulator populator,

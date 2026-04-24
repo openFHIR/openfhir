@@ -7,10 +7,13 @@ import com.nedap.archie.rm.composition.Composition;
 import com.nedap.archie.rm.datatypes.CodePhrase;
 import com.nedap.archie.rm.generic.PartySelf;
 import com.nedap.archie.rm.support.identification.TerminologyId;
+import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.instance.model.api.IAnyResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Reference;
@@ -18,10 +21,10 @@ import org.hl7.fhir.r4.model.Resource;
 @Slf4j
 public class ToOpenEhrPrePostProcessor implements ToOpenEhrPrePostProcessorInterface {
 
-    private final FhirContext context;
+    private final FhirContextRegistry fhirContextRegistry;
 
-    public ToOpenEhrPrePostProcessor(final FhirContext context) {
-        this.context = context;
+    public ToOpenEhrPrePostProcessor(final FhirContextRegistry fhirContextRegistry) {
+        this.fhirContextRegistry = fhirContextRegistry;
     }
 
     @Override
@@ -44,10 +47,17 @@ public class ToOpenEhrPrePostProcessor implements ToOpenEhrPrePostProcessorInter
     }
 
     @Override
-    public void preProcess(final FhirConnectContext context, final Resource startingResource) {
+    public void preProcess(final FhirConnectContext context, final IAnyResource startingResource) {
         if(startingResource instanceof Bundle bundle) {
-            fixReferencedResources(bundle);
+            fixReferencedResources(bundle, fhirContextRegistry.getContext(getVersion(context)));
         }
+    }
+
+    private Spec.Version getVersion(final FhirConnectContext context) {
+        if (context != null && context.getSpec() != null && context.getSpec().getVersion() != null) {
+            return context.getSpec().getVersion();
+        }
+        return Spec.Version.R4;
     }
 
     /**
@@ -55,9 +65,9 @@ public class ToOpenEhrPrePostProcessor implements ToOpenEhrPrePostProcessorInter
      * because our resolve() only works if reference has a contains, see FhirProducer setEvaluationContext on
      * fhirPath
      */
-    private void fixReferencedResources(final Bundle bundle) {
+    private void fixReferencedResources(final Bundle bundle, final FhirContext fhirContext) {
         bundle.getEntry().forEach(entry -> {
-            final FhirTerser fhirTerser = context.newTerser();
+            final FhirTerser fhirTerser = fhirContext.newTerser();
             final List<Reference> allReferences = fhirTerser.getAllPopulatedChildElementsOfType(
                     entry.getResource(), Reference.class);
             // check if they're resolveable from within the Bundle

@@ -506,7 +506,7 @@ public class GrowthChartToFhirTest extends GenericTest {
                 "      }";
         final com.nedap.archie.rm.composition.Observation unmarshalled = new CanonicalJson().unmarshal(observation, com.nedap.archie.rm.composition.Observation.class);
 
-        Bundle bundle = toFhir.contentItemsToFhir(context, List.of(unmarshalled), webTemplate);
+        Bundle bundle = (Bundle) toFhir.contentItemsToFhir(context, List.of(unmarshalled), webTemplate);
         System.out.println();
     }
 
@@ -515,7 +515,7 @@ public class GrowthChartToFhirTest extends GenericTest {
         final Composition composition = new FlatJsonUnmarshaller().unmarshal(getFlat(HELPER_LOCATION + FLAT),
                                                                              new OPTParser(
                                                                                      operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         Assert.assertEquals(12, bundle.getEntry().size());
         // 3x weight
         // 3x height

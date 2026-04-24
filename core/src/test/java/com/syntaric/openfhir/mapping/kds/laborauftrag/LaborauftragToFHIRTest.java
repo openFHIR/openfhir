@@ -71,7 +71,7 @@ public class LaborauftragToFHIRTest extends KdsGenericTest {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[index]),
                                                                                 Composition.class);
         final Bundle bundle =
-                toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+                (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_BUNDLES[index]);
     }
 
@@ -170,7 +170,7 @@ public class LaborauftragToFHIRTest extends KdsGenericTest {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(getFile(FLAT),
                                                                                      new OPTParser(
                                                                                              operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
         final List<Bundle.BundleEntryComponent> allServiceRequests = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof ServiceRequest).collect(Collectors.toList());
         assertEquals(1, allServiceRequests.size());

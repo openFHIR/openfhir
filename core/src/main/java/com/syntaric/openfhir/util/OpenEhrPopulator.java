@@ -9,8 +9,14 @@ import com.syntaric.openfhir.terminology.OfCoding;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.Enumeration;
+import org.hl7.fhir.instance.model.api.IBase;
+import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
+import org.hl7.fhir.instance.model.api.IBaseCoding;
+import org.hl7.fhir.instance.model.api.IBaseEnumeration;
+import org.hl7.fhir.instance.model.api.IBaseExtension;
+import org.hl7.fhir.instance.model.api.IBaseIntegerDatatype;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
+import org.hl7.fhir.r4.model.Coding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -85,7 +91,7 @@ public class OpenEhrPopulator {
      */
     public void setOpenEhrValue(final MappingHelper mappingHelper,
                                 String openEhrPath,
-                                final Base extractedValue,
+                                final IBase extractedValue,
                                 final String openEhrType,
                                 final boolean isMultipleTypes, // true if there can be multiple types for a certain field, in which case we need to add the leaf type suffix (i.e. quantity_value)
                                 final JsonObject constructingFlat,
@@ -125,7 +131,7 @@ public class OpenEhrPopulator {
 
     private void setOpenEhrValueInternal(final MappingHelper mappingHelper,
                                          String openEhrPath,
-                                         final Base extractedValue,
+                                         final IBase extractedValue,
                                          final String openEhrType,
                                          final boolean isMultipleTypes,
                                          final JsonObject constructingFlat,
@@ -236,10 +242,10 @@ public class OpenEhrPopulator {
                     return;
                 }
             case FhirConnectConst.DV_TEXT:
-                if (extractedValue instanceof CodeableConcept codeableConcept && !codeableConcept.getCoding().isEmpty()) {
+                if (isCodeableConcept(extractedValue) && !getCodeableConceptCodings(extractedValue).isEmpty()) {
                     handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes, constructingFlat, terminology);
-                } else if (extractedValue instanceof CodeableConcept codeableConcept && StringUtils.isNotEmpty(codeableConcept.getText())) {
-                    addValuePerFhirType(mappingHelper, new StringType(codeableConcept.getText()), openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
+                } else if (isCodeableConcept(extractedValue) && StringUtils.isNotEmpty(getCodeableConceptText(extractedValue))) {
+                    addValuePerFhirType(mappingHelper, primitiveStringValue(getCodeableConceptText(extractedValue)), openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
                             terminology, availableCodings);
                 } else {
                     addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
@@ -278,31 +284,68 @@ public class OpenEhrPopulator {
         }
     }
 
-    private void addPrimitive(final Base fhirValue, final String openEhrPath,
+    private static boolean hasPrimitiveValue(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Base r4Base) {
+            return r4Base.hasPrimitiveValue();
+        } else if (value instanceof org.hl7.fhir.dstu3.model.Base stu3Base) {
+            return stu3Base.hasPrimitiveValue();
+        } else if (value instanceof org.hl7.fhir.r4b.model.Base r4bBase) {
+            return r4bBase.hasPrimitiveValue();
+        } else if (value instanceof org.hl7.fhir.r5.model.Base r5Base) {
+            return r5Base.hasPrimitiveValue();
+        }
+        return false;
+    }
+
+    private static String getPrimitiveValue(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Base r4Base) {
+            return r4Base.primitiveValue();
+        } else if (value instanceof org.hl7.fhir.dstu3.model.Base stu3Base) {
+            return stu3Base.primitiveValue();
+        } else if (value instanceof org.hl7.fhir.r4b.model.Base r4bBase) {
+            return r4bBase.primitiveValue();
+        } else if (value instanceof org.hl7.fhir.r5.model.Base r5Base) {
+            return r5Base.primitiveValue();
+        }
+        return null;
+    }
+
+    private void addPrimitive(final IBase fhirValue, final String openEhrPath,
                               final JsonObject constructingFlat, final Terminology terminology) {
-        final String primitiveValue = fhirValue.primitiveValue();
+        final String primitiveValue = getPrimitiveValue(fhirValue);
         addToConstructingFlat(openEhrPath, translate(primitiveValue, null, terminology), constructingFlat);
     }
 
-    private void handleDvMultimedia(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private void handleDvMultimedia(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA;
         }
-        if (value instanceof Attachment attachment) {
-            int size = (attachment.getSize() == 0 && attachment.getData() != null) ? attachment.getData().length
-                    : attachment.getSize();
-            addToConstructingFlat(path + "|size", String.valueOf(size), flat);
-            addToConstructingFlat(path + "|mediatype", attachment.getContentType(), flat);
-            if (StringUtils.isNotEmpty(attachment.getUrl())) {
-                addToConstructingFlat(path + "|url", attachment.getUrl(), flat);
-            } else if (attachment.getData() != null) {
-                final String dataString = new String(attachment.getData(), StandardCharsets.UTF_8);
-                final String dataToStore = isLikelyBase64(dataString) ? dataString
-                        : Base64.getEncoder().encodeToString(attachment.getData());
-                addToConstructingFlat(path + "|data", dataToStore, flat);
-            }
+        final byte[] data;
+        final int size;
+        final String contentType;
+        final String url;
+        if (value instanceof org.hl7.fhir.r4.model.Attachment a) {
+            data = a.getData(); size = a.getSize(); contentType = a.getContentType(); url = a.getUrl();
+        } else if (value instanceof org.hl7.fhir.dstu3.model.Attachment a) {
+            data = a.getData(); size = a.getSize(); contentType = a.getContentType(); url = a.getUrl();
+        } else if (value instanceof org.hl7.fhir.r4b.model.Attachment a) {
+            data = a.getData(); size = (int) a.getSize(); contentType = a.getContentType(); url = a.getUrl();
+        } else if (value instanceof org.hl7.fhir.r5.model.Attachment a) {
+            data = a.getData(); size = (int) a.getSize(); contentType = a.getContentType(); url = a.getUrl();
         } else {
             log.warn("openEhrType is MULTIMEDIA but extracted value is not Attachment; is {}", value.getClass());
+            return;
+        }
+        final int effectiveSize = (size == 0 && data != null) ? data.length : size;
+        addToConstructingFlat(path + "|size", String.valueOf(effectiveSize), flat);
+        addToConstructingFlat(path + "|mediatype", contentType, flat);
+        if (StringUtils.isNotEmpty(url)) {
+            addToConstructingFlat(path + "|url", url, flat);
+        } else if (data != null) {
+            final String dataString = new String(data, StandardCharsets.UTF_8);
+            final String dataToStore = isLikelyBase64(dataString) ? dataString
+                    : Base64.getEncoder().encodeToString(data);
+            addToConstructingFlat(path + "|data", dataToStore, flat);
         }
     }
 
@@ -329,7 +372,7 @@ public class OpenEhrPopulator {
 
     private boolean handleDvQuantity(final MappingHelper helper,
                                      String path,
-                                     final Base value,
+                                     final IBase value,
                                      final JsonObject flat,
                                      final Terminology terminology,
                                      final boolean isMultipleTypes,
@@ -337,67 +380,72 @@ public class OpenEhrPopulator {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_QUANTITY_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_QUANTITY_VALUE;
         }
-        if (value instanceof Quantity quantity) {
-            if (quantity.getValue() != null) {
-                addToConstructingFlatDouble(path + "|magnitude", quantity.getValue().doubleValue(), flat);
+        if (isQuantity(value)) {
+            final java.math.BigDecimal qValue = getQuantityValue(value);
+            if (qValue != null) {
+                addToConstructingFlatDouble(path + "|magnitude", qValue.doubleValue(), flat);
             }
             // openEHR DV_QUANTITY.units expects the canonical unit code (UCUM by default),
             // therefore prefer FHIR Quantity.code and fall back to unit display text.
-            String unit = quantity.getCode();
+            String unit = getQuantityCode(value);
             if (StringUtils.isBlank(unit)) {
-                unit = quantity.getUnit();
+                unit = getQuantityUnit(value);
             }
-            addToConstructingFlat(path + "|unit", translate(unit, quantity.getSystem(), terminology), flat);
+            addToConstructingFlat(path + "|unit", translate(unit, getQuantitySystem(value), terminology), flat);
             return true;
-        } else if (value instanceof Ratio ratio) {
-            setOpenEhrValue(helper, path, ratio.getNumerator(), FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, terminology,
+        } else if (isRatio(value)) {
+            setOpenEhrValue(helper, path, getRatioNumerator(value), FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, terminology,
                     availableCodings);
             return true;
-        } else if (value instanceof StringType stringType) {
-            addToConstructingFlatDouble(path + "|magnitude", Double.valueOf(stringType.getValue()), flat);
-            return true;
-        } else {
-            log.warn("openEhrType is DV_QUANTITY but extracted value is not Quantity and not Ratio; is {}",
-                    value.getClass());
+        } else if (value instanceof IPrimitiveType<?> prim && prim.getValueAsString() != null) {
+            try {
+                addToConstructingFlatDouble(path + "|magnitude", Double.valueOf(prim.getValueAsString()), flat);
+                return true;
+            } catch (NumberFormatException ignored) {
+                // fall through
+            }
         }
+        log.warn("openEhrType is DV_QUANTITY but extracted value is not Quantity and not Ratio; is {}",
+                value.getClass());
         return false;
     }
 
-    private boolean handleDvDuration(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleDvDuration(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                      final Terminology terminology) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DURATION_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_DURATION_VALUE;
         }
-        if (value instanceof StringType stringType) {
-            if (StringUtils.isNotBlank(stringType.getValue())) {
-                addToConstructingFlat(path, translate(stringType.getValue(), null, terminology), flat);
+        if (value instanceof IPrimitiveType<?> prim) {
+            final String v = prim.getValueAsString();
+            if (StringUtils.isNotBlank(v)) {
+                addToConstructingFlat(path, translate(v, null, terminology), flat);
                 return true;
             }
-        } else if (value instanceof Quantity quantity) {
-            if (quantity.getValue() != null) {
-                addToConstructingFlat(path, quantity.getValue().toPlainString(), flat);
+        } else if (isQuantity(value)) {
+            final java.math.BigDecimal qValue = getQuantityValue(value);
+            if (qValue != null) {
+                addToConstructingFlat(path, qValue.toPlainString(), flat);
                 return true;
             }
-        } else if (value != null && value.hasPrimitiveValue()) {
-            addToConstructingFlat(path, translate(value.primitiveValue(), null, terminology), flat);
+        } else if (value != null && hasPrimitiveValue(value)) {
+            addToConstructingFlat(path, translate(getPrimitiveValue(value), null, terminology), flat);
             return true;
         }
         return false;
     }
 
-    private boolean handleDvOrdinal(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleDvOrdinal(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                     final Terminology terminology) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_ORDINAL_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_ORDINAL_VALUE;
         }
-        if (value instanceof Quantity quantity) {
-            if (quantity.getValue() != null) {
-                addToConstructingFlat(path + "|ordinal", quantity.getValue().toPlainString(), flat);
+        if (isQuantity(value)) {
+            final java.math.BigDecimal qValue = getQuantityValue(value);
+            if (qValue != null) {
+                addToConstructingFlat(path + "|ordinal", qValue.toPlainString(), flat);
             }
-            addToConstructingFlat(path + "|value", translate(quantity.getUnit(), quantity.getSystem(), terminology),
-                    flat);
-            addToConstructingFlat(path + "|code", translate(quantity.getCode(), quantity.getSystem(), terminology),
-                    flat);
+            addToConstructingFlat(path + "|value", translate(getQuantityUnit(value), getQuantitySystem(value), terminology), flat);
+            addToConstructingFlat(path + "|code", translate(getQuantityCode(value), getQuantitySystem(value), terminology), flat);
             return true;
         } else {
             log.warn("openEhrType is DV_ORDINAL but extracted value is not Quantity; is {}", value.getClass());
@@ -405,16 +453,17 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvProportion(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvProportion(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE;
         }
-        if (value instanceof Quantity quantity) {
-            if ("%".equals(quantity.getCode())) {
+        if (isQuantity(value)) {
+            if ("%".equals(getQuantityCode(value))) {
                 addToConstructingFlatDouble(path + "|denominator", 100.0, flat);
             }
-            if (quantity.getValue() != null) {
-                addToConstructingFlatDouble(path + "|numerator", quantity.getValue().doubleValue(), flat);
+            final java.math.BigDecimal qValue = getQuantityValue(value);
+            if (qValue != null) {
+                addToConstructingFlatDouble(path + "|numerator", qValue.doubleValue(), flat);
             }
             addToConstructingFlat(path + "|type", "2", flat); // hardcoded?
             return true;
@@ -424,16 +473,17 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvCount(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvCount(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_COUNT_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_COUNT_VALUE;
         }
-        if (value instanceof Quantity quantity) {
-            if (quantity.getValue() != null) {
-                addToConstructingFlatInteger(path, quantity.getValue().intValueExact(), flat);
+        if (isQuantity(value)) {
+            final java.math.BigDecimal qValue = getQuantityValue(value);
+            if (qValue != null) {
+                addToConstructingFlatInteger(path, qValue.intValueExact(), flat);
             }
             return true;
-        } else if (value instanceof IntegerType integerType) {
+        } else if (value instanceof IBaseIntegerDatatype integerType) {
             if (integerType.getValue() != null) {
                 addToConstructingFlatInteger(path, integerType.getValue(), flat);
             }
@@ -445,89 +495,83 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvDateTime(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvDateTime(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE;
         }
-        if (value instanceof DateTimeType dateTime) {
-            if (dateTime.getValue() != null) {
-                final String formattedDate = openFhirMapperUtils.dateTimeToString(dateTime.getValue());
-                addToConstructingFlat(path, formattedDate, flat);
+        final String fhirType = value != null ? value.fhirType() : null;
+        if ("dateTime".equals(fhirType) || "instant".equals(fhirType)) {
+            final java.util.Date date = getDateValue(value);
+            if (date != null) {
+                addToConstructingFlat(path, openFhirMapperUtils.dateTimeToString(date), flat);
             }
             return true;
-        } else if (value instanceof DateType date) {
-            if (date.getValue() != null) {
-                final String formattedDate = openFhirMapperUtils.dateToString(date.getValue());
-                addToConstructingFlat(path, formattedDate, flat);
+        } else if ("date".equals(fhirType)) {
+            final java.util.Date date = getDateValue(value);
+            if (date != null) {
+                addToConstructingFlat(path, openFhirMapperUtils.dateToString(date), flat);
             }
             return true;
-        } else if (value instanceof TimeType time) {
-            if (time.getValue() != null) {
-                addToConstructingFlat(path, time.getValue(), flat);
-            }
-            return true;
-        } else if (value instanceof InstantType instant) {
-            if (instant.getValue() != null) {
-                addToConstructingFlat(path, openFhirMapperUtils.dateTimeToString(instant.getValue()), flat);
+        } else if ("time".equals(fhirType)) {
+            final String timeStr = getPrimitiveValue(value);
+            if (timeStr != null) {
+                addToConstructingFlat(path, timeStr, flat);
             }
             return true;
         }
         return false;
     }
 
-    private boolean handleDvDate(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvDate(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DATE_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_DATE_VALUE;
         }
-        if (value instanceof DateTimeType dateTime) {
-            if (dateTime.getValue() != null) {
-                final String formattedDate = openFhirMapperUtils.dateToString(dateTime.getValue());
-                addToConstructingFlat(path, formattedDate, flat);
-            }
-            return true;
-        } else if (value instanceof DateType date) {
-            if (date.getValue() != null) {
-                final String formattedDate = openFhirMapperUtils.dateToString(date.getValue());
-                addToConstructingFlat(path, formattedDate, flat);
+        final String fhirType = value != null ? value.fhirType() : null;
+        if ("dateTime".equals(fhirType) || "date".equals(fhirType)) {
+            final java.util.Date date = getDateValue(value);
+            if (date != null) {
+                addToConstructingFlat(path, openFhirMapperUtils.dateToString(date), flat);
             }
             return true;
         }
         return false;
     }
 
-    private boolean handleDvInterval(final MappingHelper mappingHelper, final String path, final Base value, final JsonObject flat,
+    private boolean handleDvInterval(final MappingHelper mappingHelper, final String path, final IBase value, final JsonObject flat,
                                      final Terminology terminology, final boolean isMultipleTypes, final List<OfCoding> availableCodings) {
-        if (value instanceof Period period) {
-            if (period.getStart() != null) {
+        if (isPeriod(value)) {
+            final java.util.Date start = getPeriodStart(value);
+            final java.util.Date end = getPeriodEnd(value);
+            if (start != null) {
                 addToConstructingFlat(path + "/lower|value",
-                        openFhirMapperUtils.dateTimeToString(period.getStart()), flat);
+                        openFhirMapperUtils.dateTimeToString(start), flat);
 //                addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_DATE_TIME, flat);
 //                addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
             }
-            if (period.getEnd() != null) {
+            if (end != null) {
                 addToConstructingFlat(path + "/upper|value",
-                        openFhirMapperUtils.dateTimeToString(period.getEnd()), flat);
+                        openFhirMapperUtils.dateTimeToString(end), flat);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_DATE_TIME, flat);
                 //               addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
             }
-            if (period.getStart() != null || period.getEnd() != null) {
+            if (start != null || end != null) {
 //                addToConstructingFlat(path + "|_type", FhirConnectConst.DV_INTERVAL, flat);
             }
             return true;
-        } else if (value instanceof Range range) {
+        } else if (isRange(value)) {
             boolean lowerPopulated = false;
             boolean upperPopulated = false;
 
-            Quantity low = range.getLow();
-            if (hasQuantityContent(low)) {
+            IBase low = getRangeLow(value);
+            if (low != null && isQuantityWithContent(low)) {
                 handleDvQuantity(mappingHelper, path + "/lower", low, flat, terminology, isMultipleTypes, availableCodings);
                 //               addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_QUANTITY, flat);
                 //               addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
                 lowerPopulated = true;
             }
 
-            Quantity high = range.getHigh();
-            if (hasQuantityContent(high)) {
+            IBase high = getRangeHigh(value);
+            if (high != null && isQuantityWithContent(high)) {
                 handleDvQuantity(mappingHelper, path + "/upper", high, flat, terminology, isMultipleTypes, availableCodings);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_QUANTITY, flat);
 //                addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
@@ -542,60 +586,56 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean hasQuantityContent(final Quantity quantity) {
-        if (quantity == null) {
+    private boolean isQuantityWithContent(final IBase value) {
+        if (!isQuantity(value)) {
             return false;
         }
-        return quantity.getValue() != null
-                || StringUtils.isNotBlank(quantity.getUnit())
-                || StringUtils.isNotBlank(quantity.getCode());
+        return getQuantityValue(value) != null
+                || StringUtils.isNotBlank(getQuantityUnit(value))
+                || StringUtils.isNotBlank(getQuantityCode(value));
     }
 
-    private boolean handleDvTime(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvTime(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_TIME_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_TIME_VALUE;
         }
-        if (value instanceof DateTimeType dateTime) {
-            if (dateTime.getValue() != null) {
-                final String formattedDate = openFhirMapperUtils.timeToString(dateTime.getValue());
-                addToConstructingFlat(path, formattedDate, flat);
+        final String fhirType = value != null ? value.fhirType() : null;
+        if ("dateTime".equals(fhirType) || "date".equals(fhirType)) {
+            final java.util.Date date = getDateValue(value);
+            if (date != null) {
+                addToConstructingFlat(path, openFhirMapperUtils.timeToString(date), flat);
             }
             return true;
-        } else if (value instanceof DateType date) {
-            if (date.getValue() != null) {
-                final String formattedDate = openFhirMapperUtils.timeToString(date.getValue());
-                addToConstructingFlat(path, formattedDate, flat);
-            }
-            return true;
-        } else if (value instanceof TimeType time) {
-            if (time.getValue() != null) {
-                addToConstructingFlat(path, time.getValue(), flat);
+        } else if ("time".equals(fhirType)) {
+            final String timeStr = getPrimitiveValue(value);
+            if (timeStr != null) {
+                addToConstructingFlat(path, timeStr, flat);
             }
             return true;
         }
         return false;
     }
 
-    private boolean handleDvCodedText(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleDvCodedText(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                       final Terminology terminology) {
 //        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
 //            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE; //todo: I really don't understand when this should be here as leaf type and when not
 //        }
-        if (value instanceof CodeableConcept codeableConcept) {
-            List<Coding> codings = codeableConcept.getCoding().stream()
+        if (isCodeableConcept(value)) {
+            List<IBaseCoding> codings = getCodeableConceptCodings(value).stream()
                     .filter(coding -> StringUtils.isNotBlank(coding.getCode()))
                     .toList();
             if (!codings.isEmpty()) {
                 // Handle the first coding as the primary coded text
-                Coding primaryCoding = codings.get(0);
+                IBaseCoding primaryCoding = codings.get(0);
                 addToConstructingFlat(path + "|code",
                         translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology), flat);
                 setTerminology(path + "|terminology", primaryCoding, flat, terminology);
-                if (primaryCoding.hasDisplay()) {
+                if (StringUtils.isNotBlank(primaryCoding.getDisplay())) {
                     addToConstructingFlat(path + "|value",
                             translate(primaryCoding.getDisplay(), primaryCoding.getSystem(), terminology),
                             flat);
-                } else if (primaryCoding.hasCode()) {
+                } else if (StringUtils.isNotBlank(primaryCoding.getCode())) {
                     addToConstructingFlat(path + "|value",
                             translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology),
                             flat);
@@ -603,13 +643,13 @@ public class OpenEhrPopulator {
 
                 // Handle additional codings as mappings
                 addAdditionalCodingsAsMappings(path, codings, flat, terminology);
-                addToConstructingFlat(path + "|value", translate(codeableConcept.getText(), null, terminology), flat);
+                addToConstructingFlat(path + "|value", translate(getCodeableConceptText(value), null, terminology), flat);
             } else {
                 // No codings with code: skip mapping entirely
                 return true;
             }
             return true;
-        } else if (value instanceof Coding coding) {
+        } else if (value instanceof IBaseCoding coding) {
             if (StringUtils.isBlank(coding.getCode())) {
                 return true;
             }
@@ -619,27 +659,24 @@ public class OpenEhrPopulator {
             addToConstructingFlat(path + "|value", translate(coding.getDisplay(), coding.getSystem(), terminology),
                     flat);
             return true;
-        } else if (value instanceof StringType extractedString && path.contains("|")) {
-            addToConstructingFlat(path, translate(extractedString.getValue(), null, terminology), flat);
+        } else if (value instanceof IPrimitiveType<?> prim && path.contains("|")) {
+            addToConstructingFlat(path, translate(prim.getValueAsString(), null, terminology), flat);
             return true;
-        } else if (value instanceof Identifier identifier) {
-            addToConstructingFlat(path + "|code", translate(identifier.getValue(), identifier.getSystem(), terminology),
+        } else if (isIdentifier(value)) {
+            addToConstructingFlat(path + "|code", translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
                     flat);
-            addToConstructingFlat(path + "|terminology", identifier.getSystem(), flat);
+            addToConstructingFlat(path + "|terminology", getIdentifierSystem(value), flat);
             addToConstructingFlat(path + "|value",
-                    translate(identifier.getValue(), identifier.getSystem(), terminology), flat);
+                    translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
             return true;
-        } else if (value instanceof Enumeration enumeration) {
-            addToConstructingFlat(path + "|code", translate(enumeration.getValueAsString(), null, terminology),
-                    flat);
-            addToConstructingFlat(path + "|terminology", translateSystem(enumeration.getValueAsString(),
-                    null,
-                    terminology), flat);
-            addToConstructingFlat(path + "|value",
-                    translate(enumeration.getValueAsString(), null, terminology), flat);
+        } else if (value instanceof IBaseEnumeration<?> enumeration) {
+            final String enumVal = enumeration.getValueAsString();
+            addToConstructingFlat(path + "|code", translate(enumVal, null, terminology), flat);
+            addToConstructingFlat(path + "|terminology", translateSystem(enumVal, null, terminology), flat);
+            addToConstructingFlat(path + "|value", translate(enumVal, null, terminology), flat);
             return true;
-        } else if (value instanceof StringType stringType) {
-            addToConstructingFlat(path + "|value", translate(stringType.getValue(), null, terminology), flat);
+        } else if (value instanceof IPrimitiveType<?> prim) {
+            addToConstructingFlat(path + "|value", translate(prim.getValueAsString(), null, terminology), flat);
             return true;
         } else {
             log.warn("openEhrType is DV_CODED_TEXT but extracted value is not CodeableConcept; is {}",
@@ -649,31 +686,30 @@ public class OpenEhrPopulator {
     }
 
 
-    private void setDisplay(String path, Coding coding, JsonObject flat, Terminology terminology) {
-        if (coding.hasDisplay()) {
+    private void setDisplay(String path, IBaseCoding coding, JsonObject flat, Terminology terminology) {
+        if (StringUtils.isNotBlank(coding.getDisplay())) {
             addToConstructingFlat(path + "|value", translate(coding.getDisplay(), coding.getSystem(), terminology),
                     flat);
-        } else if (coding.hasCode()) {
+        } else if (StringUtils.isNotBlank(coding.getCode())) {
             addToConstructingFlat(path + "|value", translate(coding.getCode(), coding.getSystem(), terminology), flat);
         }
     }
 
 
-    private void setTerminology(String path, Coding coding, JsonObject flat,
+    private void setTerminology(String path, IBaseCoding coding, JsonObject flat,
                                 final Terminology terminology) {
         final String translatedSystem = translateSystem(coding.getCode(),
                 coding.getSystem(),
                 terminology);
-        if (translatedSystem == null && coding.hasVersion() & !Objects.equals(coding.getVersion(), "")) {
-            String version;
-            if (coding.getVersion()
-                    .contains("http://snomed.info/sct")) { // might be ugly but is defined by spec like that.
-                version = coding.getVersion()
-                        .substring(coding.getVersion().lastIndexOf("/version/") + "/version/".length());
+        final String version = coding.getVersion();
+        if (translatedSystem == null && StringUtils.isNotBlank(version)) {
+            String displayVersion;
+            if (version.contains("http://snomed.info/sct")) { // might be ugly but is defined by spec like that.
+                displayVersion = version.substring(version.lastIndexOf("/version/") + "/version/".length());
             } else {
-                version = coding.getVersion();
+                displayVersion = version;
             }
-            addToConstructingFlat(path, coding.getSystem() + " (" + version + ")", flat);
+            addToConstructingFlat(path, coding.getSystem() + " (" + displayVersion + ")", flat);
         } else {
             addToConstructingFlat(path, translatedSystem == null ? coding.getSystem() : translatedSystem, flat);
         }
@@ -686,11 +722,11 @@ public class OpenEhrPopulator {
      * @param codings The list of codings (first one is skipped as it's the primary coding)
      * @param flat    The JSON object to add the mappings to
      */
-    private void addAdditionalCodingsAsMappings(String path, List<Coding> codings, JsonObject flat,
+    private void addAdditionalCodingsAsMappings(String path, List<IBaseCoding> codings, JsonObject flat,
                                                 Terminology terminology) {
         int mappingIndex = 0;
         for (int i = 1; i < codings.size(); i++) {
-            Coding coding = codings.get(i);
+            IBaseCoding coding = codings.get(i);
             if (StringUtils.isBlank(coding.getCode())) {
                 continue;
             }
@@ -706,7 +742,7 @@ public class OpenEhrPopulator {
     }
 
     public boolean setNullFlavourForDataAbsentReason(final String openEhrPath,
-                                                     final Base dataAbsentReasonValue,
+                                                     final IBase dataAbsentReasonValue,
                                                      final JsonObject constructingFlat) {
         if (constructingFlat == null || StringUtils.isBlank(openEhrPath) || dataAbsentReasonValue == null) {
             return false;
@@ -734,44 +770,38 @@ public class OpenEhrPopulator {
         return openEhrPath;
     }
 
-    private NullFlavourAttributes resolveNullFlavour(final Base value) {
+    private NullFlavourAttributes resolveNullFlavour(final IBase value) {
         if (value == null) {
             return null;
         }
-        if (value instanceof Extension extension) {
+        if (value instanceof IBaseExtension<?, ?> extension) {
             if (!DATA_ABSENT_REASON_URL.equals(extension.getUrl())) {
                 return null;
             }
             return resolveNullFlavour(extension.getValue());
         }
-        if (value instanceof CodeableConcept concept) {
-            for (Coding coding : concept.getCoding()) {
+        if (isCodeableConcept(value)) {
+            for (IBaseCoding coding : getCodeableConceptCodings(value)) {
                 final NullFlavourAttributes mapped = resolveNullFlavourFromCoding(coding);
                 if (mapped != null) {
                     return mapped;
                 }
             }
-            return mapDataAbsentReasonCode(concept.getText());
+            return mapDataAbsentReasonCode(getCodeableConceptText(value));
         }
-        if (value instanceof Coding coding) {
+        if (value instanceof IBaseCoding coding) {
             return resolveNullFlavourFromCoding(coding);
         }
-        if (value instanceof Enumeration<?> enumeration) {
+        if (value instanceof IBaseEnumeration<?> enumeration) {
             return mapDataAbsentReasonCode(enumeration.getValueAsString());
         }
-        if (value instanceof CodeType codeType) {
-            return mapDataAbsentReasonCode(codeType.getCode());
-        }
-        if (value instanceof StringType stringType) {
-            return mapDataAbsentReasonCode(stringType.getValue());
-        }
-        if (value.hasPrimitiveValue()) {
-            return mapDataAbsentReasonCode(value.primitiveValue());
+        if (hasPrimitiveValue(value)) {
+            return mapDataAbsentReasonCode(getPrimitiveValue(value));
         }
         return null;
     }
 
-    private NullFlavourAttributes resolveNullFlavourFromCoding(final Coding coding) {
+    private NullFlavourAttributes resolveNullFlavourFromCoding(final IBaseCoding coding) {
         if (coding == null) {
             return null;
         }
@@ -812,20 +842,20 @@ public class OpenEhrPopulator {
         }
     }
 
-    private boolean handleIdentifier(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleIdentifier(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                      final Terminology terminology) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE;
         }
-        if (value instanceof Identifier identifier) {
-            addToConstructingFlat(path + "|id", translate(identifier.getValue(), identifier.getSystem(), terminology),
+        if (isIdentifier(value)) {
+            addToConstructingFlat(path + "|id", translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
                     flat);
-            addToConstructingFlat(path + "|issuer", normalizeIdentifierSystem(identifier.getSystem()), flat);
-            addToConstructingFlat(path + "|type", buildIdentifierTypeString(identifier), flat);
-            addToConstructingFlat(path + "|assigner", buildIdentifierAssignerString(identifier), flat);
+            addToConstructingFlat(path + "|issuer", normalizeIdentifierSystem(getIdentifierSystem(value)), flat);
+            addToConstructingFlat(path + "|type", buildIdentifierTypeString(value), flat);
+            addToConstructingFlat(path + "|assigner", buildIdentifierAssignerString(value), flat);
             return true;
-        } else if (value instanceof StringType identifier) {
-            addToConstructingFlat(path + "|id", translate(identifier.getValue(), null, terminology), flat);
+        } else if (value instanceof IPrimitiveType<?> prim) {
+            addToConstructingFlat(path + "|id", translate(prim.getValueAsString(), null, terminology), flat);
             return true;
         } else {
             log.warn("openEhrType is IDENTIFIER but extracted value is not Identifier; is {}", value.getClass());
@@ -848,11 +878,11 @@ public class OpenEhrPopulator {
         return system;
     }
 
-    private String buildIdentifierTypeString(final Identifier identifier) {
-        if (identifier == null || !identifier.hasType() || !identifier.getType().hasCoding()) {
+    private String buildIdentifierTypeString(final IBase value) {
+        final IBaseCoding coding = getIdentifierTypeCodingFirstRep(value);
+        if (coding == null) {
             return null;
         }
-        final Coding coding = identifier.getType().getCodingFirstRep();
         final String code = coding.getCode();
         if (StringUtils.isBlank(code)) {
             return null;
@@ -863,39 +893,42 @@ public class OpenEhrPopulator {
         return code;
     }
 
-    private String buildIdentifierAssignerString(final Identifier identifier) {
-        if (identifier == null || !identifier.hasAssigner()) {
+    private String buildIdentifierAssignerString(final IBase value) {
+        final String[] assignerInfo = getIdentifierAssignerInfo(value);
+        if (assignerInfo == null) {
             return null;
         }
-        final Reference assigner = identifier.getAssigner();
-        final String display = assigner.getDisplay();
-        if (!assigner.hasIdentifier()) {
+        // assignerInfo[0] = display, assignerInfo[1] = assignerIdentifierSystem, assignerInfo[2] = assignerIdentifierValue
+        final String display = assignerInfo[0];
+        final String assignerIdSystem = assignerInfo[1];
+        final String assignerIdValue = assignerInfo[2];
+        if (assignerIdSystem == null && assignerIdValue == null) {
             return display;
         }
-        final Identifier assignerIdentifier = assigner.getIdentifier();
-        final String system = assignerIdentifier.getSystem();
-        final String value = assignerIdentifier.getValue();
-        final String chosenValue = StringUtils.isNotBlank(value) ? value : display;
+        final String chosenValue = StringUtils.isNotBlank(assignerIdValue) ? assignerIdValue : display;
         if (StringUtils.isBlank(chosenValue)) {
             return null;
         }
-        if (StringUtils.isNotBlank(system)) {
-            return system + "::" + chosenValue;
+        if (StringUtils.isNotBlank(assignerIdSystem)) {
+            return assignerIdSystem + "::" + chosenValue;
         }
         return chosenValue;
     }
 
-    private boolean handlePartyIdentifier(final String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handlePartyIdentifier(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                           final Terminology terminology) {
-        if (value instanceof StringType string) {
-            addToConstructingFlat(path + "|name", translate(string.getValue(), null, terminology), flat);
+        if (value instanceof IPrimitiveType<?> prim) {
+            addToConstructingFlat(path + "|name", translate(prim.getValueAsString(), null, terminology), flat);
             return true;
-        } else if (value instanceof Identifier id) {
-            addToConstructingFlat(path + "|id", translate(id.getValue(), id.getSystem(), terminology), flat);
-            addToConstructingFlat(path + "|assigner", id.getSystem(), flat);
-            addToConstructingFlat(path + "|type", id.getType().getText(), flat);
+        } else if (isIdentifier(value)) {
+            addToConstructingFlat(path + "|id", translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
+            addToConstructingFlat(path + "|assigner", getIdentifierSystem(value), flat);
+            addToConstructingFlat(path + "|type", getIdentifierTypeText(value), flat);
             // if coding.code exists, it should override the type
-            addToConstructingFlat(path + "|type", id.getType().getCodingFirstRep().getCode(), flat);
+            final IBaseCoding typeCoding = getIdentifierTypeCodingFirstRep(value);
+            if (typeCoding != null) {
+                addToConstructingFlat(path + "|type", typeCoding.getCode(), flat);
+            }
             return true;
         } else {
             log.warn(
@@ -905,10 +938,10 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handlePartyProxy(final String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handlePartyProxy(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                      final Terminology terminology) {
-        if (value instanceof StringType string) {
-            addToConstructingFlat(path + "|name", translate(string.getValue(), null, terminology), flat);
+        if (value instanceof IPrimitiveType<?> prim) {
+            addToConstructingFlat(path + "|name", translate(prim.getValueAsString(), null, terminology), flat);
             return true;
         } else {
             log.warn(
@@ -918,38 +951,42 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDateTimeEvent(final String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
-        if (value instanceof DateTimeType dateTimeType) {
-            addToConstructingFlat(path + "/time", openFhirMapperUtils.dateTimeToString(dateTimeType.getValue()), flat);
+    private boolean handleDateTimeEvent(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
+        if (value != null && "dateTime".equals(value.fhirType())) {
+            final java.util.Date date = getDateValue(value);
+            if (date != null) {
+                addToConstructingFlat(path + "/time", openFhirMapperUtils.dateTimeToString(date), flat);
+            }
             return true;
         } else {
             log.warn(
                     "openEhrType is EVENT but extracted value is not DateTimeType; is {}",
-                    value.getClass());
+                    value != null ? value.getClass() : "null");
         }
         return false;
     }
 
-    private boolean handleCodePhrase(final MappingHelper mappingHelper, String path, final Base value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleCodePhrase(final MappingHelper mappingHelper, String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                      final String openEhrType, final Terminology terminology,
                                      final List<OfCoding> availableCodes) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
         }
-        if (value instanceof Coding coding) {
+        if (value instanceof IBaseCoding coding) {
             addToConstructingFlat(path + "|code", translate(coding.getCode(), coding.getSystem(), terminology), flat);
             addToConstructingFlat(path + "|value", translate(coding.getCode(), coding.getSystem(), terminology), flat);
             setTerminology(path + "|terminology", coding, flat, terminology);
             return true;
-        } else if (value instanceof Extension extension) {
+        } else if (value instanceof IBaseExtension<?, ?> extension) {
             setOpenEhrValue(mappingHelper, path, extension.getValue(), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
             return true;
-        } else if (value instanceof CodeableConcept concept) {
-            setOpenEhrValue(mappingHelper, path, concept.getCodingFirstRep(), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
+        } else if (isCodeableConcept(value)) {
+            setOpenEhrValue(mappingHelper, path, getCodeableConceptCodingFirstRep(value), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
             return true;
-        } else if (value instanceof Enumeration<?> enumeration) {
-            addToConstructingFlat(path + "|code", translate(enumeration.getValueAsString(), null, terminology), flat);
-            addToConstructingFlat(path + "|value", translate(enumeration.getValueAsString(), null, terminology), flat);
+        } else if (value instanceof IBaseEnumeration<?> enumeration) {
+            final String enumVal = enumeration.getValueAsString();
+            addToConstructingFlat(path + "|code", translate(enumVal, null, terminology), flat);
+            addToConstructingFlat(path + "|value", translate(enumVal, null, terminology), flat);
             return true;
         } else {
             log.warn(
@@ -959,11 +996,11 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvBool(String path, final Base value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvBool(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_BOOLEAN_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_BOOLEAN_VALUE;
         }
-        if (value instanceof BooleanType booleanType) {
+        if (value instanceof IBaseBooleanDatatype booleanType) {
             addToConstructingBoolean(path, booleanType.getValue(), flat);
             return true;
         } else {
@@ -972,7 +1009,7 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private void addValuePerFhirType(final MappingHelper mappingHelper, final Base fhirValue, String openEhrPath,
+    private void addValuePerFhirType(final MappingHelper mappingHelper, final IBase fhirValue, String openEhrPath,
                                      final boolean isMultipleTypes, final JsonObject constructingFlat,
                                      final String openehrType, final Terminology terminology,
                                      final List<OfCoding> availableCodes) {
@@ -980,31 +1017,33 @@ public class OpenEhrPopulator {
             openEhrPath = openEhrPath + "/" + FhirConnectConst.getLeafTypeForRmType(openehrType);
         }
 
-        if (fhirValue instanceof Quantity extractedQuantity) {
-            if (extractedQuantity.getValue() != null) {
-                addToConstructingFlat(openEhrPath, extractedQuantity.getValue().toPlainString(), constructingFlat);
+        if (isQuantity(fhirValue)) {
+            final java.math.BigDecimal qValue = getQuantityValue(fhirValue);
+            if (qValue != null) {
+                addToConstructingFlat(openEhrPath, qValue.toPlainString(), constructingFlat);
             }
-        } else if (fhirValue instanceof Coding extractedCoding) {
+        } else if (fhirValue instanceof IBaseCoding extractedCoding) {
             handleCodePhrase(mappingHelper, openEhrPath, extractedCoding, false, constructingFlat, openehrType, terminology, availableCodes);
-        } else if (fhirValue instanceof CodeableConcept codeableConcept) {
-            handleDvCodedText(openEhrPath, codeableConcept.getCodingFirstRep(), false, constructingFlat, terminology);
-        } else if (fhirValue instanceof DateTimeType extractedQuantity) {
-            String dt = openFhirMapperUtils.dateTimeToString(extractedQuantity.getValue());
-            addToConstructingFlat(openEhrPath, dt, constructingFlat);
-        } else if (fhirValue instanceof Annotation extracted) {
-            addToConstructingFlat(openEhrPath, translate(extracted.getText(), null, terminology), constructingFlat);
-        } else if (fhirValue instanceof Address extracted) {
-            addToConstructingFlat(openEhrPath, translate(extracted.getText(), null, terminology), constructingFlat);
-        } else if (fhirValue instanceof HumanName extracted) {
-            addToConstructingFlat(openEhrPath, translate(extracted.getNameAsSingleString(), null, terminology),
-                    constructingFlat);
-        } else if (fhirValue instanceof Extension extracted) {
-            if (extracted.getValue().hasPrimitiveValue()) {
+        } else if (isCodeableConcept(fhirValue)) {
+            handleDvCodedText(openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false, constructingFlat, terminology);
+        } else if (fhirValue != null && "dateTime".equals(fhirValue.fhirType())) {
+            final java.util.Date date = getDateValue(fhirValue);
+            if (date != null) {
+                addToConstructingFlat(openEhrPath, openFhirMapperUtils.dateTimeToString(date), constructingFlat);
+            }
+        } else if (fhirValue != null && "Annotation".equals(fhirValue.fhirType())) {
+            addToConstructingFlat(openEhrPath, translate(getAnnotationText(fhirValue), null, terminology), constructingFlat);
+        } else if (fhirValue != null && "Address".equals(fhirValue.fhirType())) {
+            addToConstructingFlat(openEhrPath, translate(getAddressText(fhirValue), null, terminology), constructingFlat);
+        } else if (fhirValue != null && "HumanName".equals(fhirValue.fhirType())) {
+            addToConstructingFlat(openEhrPath, translate(getHumanNameText(fhirValue), null, terminology), constructingFlat);
+        } else if (fhirValue instanceof IBaseExtension<?, ?> extracted) {
+            if (hasPrimitiveValue(extracted.getValue())) {
                 addValuePerFhirType(mappingHelper, extracted.getValue(), openEhrPath, false, constructingFlat, openehrType, terminology,
                         availableCodes);
             }
-        } else if (fhirValue.hasPrimitiveValue()) {
-            addToConstructingFlat(openEhrPath, translate(fhirValue.primitiveValue(), null, terminology),
+        } else if (hasPrimitiveValue(fhirValue)) {
+            addToConstructingFlat(openEhrPath, translate(getPrimitiveValue(fhirValue), null, terminology),
                     constructingFlat);
         } else {
             log.error("Unsupported fhir value toString!: {}", fhirValue);
@@ -1114,5 +1153,234 @@ public class OpenEhrPopulator {
             return;
         }
         constructingFlat.add(key, new JsonPrimitive(value));
+    }
+
+    // ── Version-agnostic type helpers ──────────────────────────────────────────
+
+    private static boolean isQuantity(final IBase value) {
+        return value != null && "Quantity".equals(value.fhirType());
+    }
+
+    private static java.math.BigDecimal getQuantityValue(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getValue();
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getValue();
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getValue();
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getValue();
+        return null;
+    }
+
+    private static String getQuantityUnit(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getUnit();
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getUnit();
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getUnit();
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getUnit();
+        return null;
+    }
+
+    private static String getQuantityCode(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getCode();
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getCode();
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getCode();
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getCode();
+        return null;
+    }
+
+    private static String getQuantitySystem(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getSystem();
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getSystem();
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getSystem();
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getSystem();
+        return null;
+    }
+
+    private static boolean isRatio(final IBase value) {
+        return value != null && "Ratio".equals(value.fhirType());
+    }
+
+    private static IBase getRatioNumerator(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Ratio r) return r.getNumerator();
+        if (value instanceof org.hl7.fhir.dstu3.model.Ratio r) return r.getNumerator();
+        if (value instanceof org.hl7.fhir.r4b.model.Ratio r) return r.getNumerator();
+        if (value instanceof org.hl7.fhir.r5.model.Ratio r) return r.getNumerator();
+        return null;
+    }
+
+    private static boolean isPeriod(final IBase value) {
+        return value != null && "Period".equals(value.fhirType());
+    }
+
+    private static java.util.Date getPeriodStart(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Period p) return p.getStart();
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) return p.getStart();
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) return p.getStart();
+        if (value instanceof org.hl7.fhir.r5.model.Period p) return p.getStart();
+        return null;
+    }
+
+    private static java.util.Date getPeriodEnd(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Period p) return p.getEnd();
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) return p.getEnd();
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) return p.getEnd();
+        if (value instanceof org.hl7.fhir.r5.model.Period p) return p.getEnd();
+        return null;
+    }
+
+    private static boolean isRange(final IBase value) {
+        return value != null && "Range".equals(value.fhirType());
+    }
+
+    private static IBase getRangeLow(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Range r) return r.getLow();
+        if (value instanceof org.hl7.fhir.dstu3.model.Range r) return r.getLow();
+        if (value instanceof org.hl7.fhir.r4b.model.Range r) return r.getLow();
+        if (value instanceof org.hl7.fhir.r5.model.Range r) return r.getLow();
+        return null;
+    }
+
+    private static IBase getRangeHigh(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Range r) return r.getHigh();
+        if (value instanceof org.hl7.fhir.dstu3.model.Range r) return r.getHigh();
+        if (value instanceof org.hl7.fhir.r4b.model.Range r) return r.getHigh();
+        if (value instanceof org.hl7.fhir.r5.model.Range r) return r.getHigh();
+        return null;
+    }
+
+    private static boolean isCodeableConcept(final IBase value) {
+        return value != null && "CodeableConcept".equals(value.fhirType());
+    }
+
+    private static List<IBaseCoding> getCodeableConceptCodings(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.CodeableConcept cc)
+            return new java.util.ArrayList<>(cc.getCoding());
+        if (value instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc)
+            return new java.util.ArrayList<>(cc.getCoding());
+        if (value instanceof org.hl7.fhir.r4b.model.CodeableConcept cc)
+            return new java.util.ArrayList<>(cc.getCoding());
+        if (value instanceof org.hl7.fhir.r5.model.CodeableConcept cc)
+            return new java.util.ArrayList<>(cc.getCoding());
+        return java.util.Collections.emptyList();
+    }
+
+    private static IBaseCoding getCodeableConceptCodingFirstRep(final IBase value) {
+        final List<IBaseCoding> codings = getCodeableConceptCodings(value);
+        return codings.isEmpty() ? null : codings.get(0);
+    }
+
+    private static String getCodeableConceptText(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.CodeableConcept cc) return cc.getText();
+        if (value instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) return cc.getText();
+        if (value instanceof org.hl7.fhir.r4b.model.CodeableConcept cc) return cc.getText();
+        if (value instanceof org.hl7.fhir.r5.model.CodeableConcept cc) return cc.getText();
+        return null;
+    }
+
+    private static boolean isIdentifier(final IBase value) {
+        return value != null && "Identifier".equals(value.fhirType());
+    }
+
+    private static String getIdentifierValue(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) return id.getValue();
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) return id.getValue();
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) return id.getValue();
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) return id.getValue();
+        return null;
+    }
+
+    private static String getIdentifierSystem(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) return id.getSystem();
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) return id.getSystem();
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) return id.getSystem();
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) return id.getSystem();
+        return null;
+    }
+
+    private static String getIdentifierTypeText(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) return id.getType().getText();
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) return id.getType().getText();
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) return id.getType().getText();
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) return id.getType().getText();
+        return null;
+    }
+
+    private static IBaseCoding getIdentifierTypeCodingFirstRep(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id)
+            return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id)
+            return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id)
+            return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id)
+            return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
+        return null;
+    }
+
+    /** Returns [display, assignerIdSystem, assignerIdValue] or null if no assigner. */
+    private static String[] getIdentifierAssignerInfo(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) {
+            if (!id.hasAssigner()) return null;
+            final org.hl7.fhir.r4.model.Reference assigner = id.getAssigner();
+            final String display = assigner.getDisplay();
+            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) {
+            if (!id.hasAssigner()) return null;
+            final org.hl7.fhir.dstu3.model.Reference assigner = id.getAssigner();
+            final String display = assigner.getDisplay();
+            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) {
+            if (!id.hasAssigner()) return null;
+            final org.hl7.fhir.r4b.model.Reference assigner = id.getAssigner();
+            final String display = assigner.getDisplay();
+            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) {
+            if (!id.hasAssigner()) return null;
+            final org.hl7.fhir.r5.model.Reference assigner = id.getAssigner();
+            final String display = assigner.getDisplay();
+            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
+        }
+        return null;
+    }
+
+    private static java.util.Date getDateValue(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.BaseDateTimeType dt) return dt.getValue();
+        if (value instanceof org.hl7.fhir.dstu3.model.BaseDateTimeType dt) return dt.getValue();
+        if (value instanceof org.hl7.fhir.r4b.model.BaseDateTimeType dt) return dt.getValue();
+        if (value instanceof org.hl7.fhir.r5.model.BaseDateTimeType dt) return dt.getValue();
+        return null;
+    }
+
+    private static String getAnnotationText(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Annotation a) return a.getText();
+        if (value instanceof org.hl7.fhir.dstu3.model.Annotation a) return a.getText();
+        if (value instanceof org.hl7.fhir.r4b.model.Annotation a) return a.getText();
+        if (value instanceof org.hl7.fhir.r5.model.Annotation a) return a.getText();
+        return null;
+    }
+
+    private static String getAddressText(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Address a) return a.getText();
+        if (value instanceof org.hl7.fhir.dstu3.model.Address a) return a.getText();
+        if (value instanceof org.hl7.fhir.r4b.model.Address a) return a.getText();
+        if (value instanceof org.hl7.fhir.r5.model.Address a) return a.getText();
+        return null;
+    }
+
+    private static String getHumanNameText(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.HumanName n) return n.getNameAsSingleString();
+        if (value instanceof org.hl7.fhir.dstu3.model.HumanName n) return n.getNameAsSingleString();
+        if (value instanceof org.hl7.fhir.r4b.model.HumanName n) return n.getNameAsSingleString();
+        if (value instanceof org.hl7.fhir.r5.model.HumanName n) return n.getNameAsSingleString();
+        return null;
+    }
+
+    /** Wraps a plain string as a version-agnostic IPrimitiveType for use as IBase. */
+    private static IPrimitiveType<String> primitiveStringValue(final String value) {
+        return new org.hl7.fhir.r4.model.StringType(value);
     }
 }

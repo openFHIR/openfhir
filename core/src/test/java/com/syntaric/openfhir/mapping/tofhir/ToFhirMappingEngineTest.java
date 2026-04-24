@@ -14,6 +14,7 @@ import com.syntaric.openfhir.mapping.helpers.parser.QuantityParser;
 import com.syntaric.openfhir.mapping.helpers.parser.TemporalParser;
 import com.syntaric.openfhir.mapping.helpers.parser.TextParser;
 import com.syntaric.openfhir.mapping.helpers.parser.ValueToFHIRParser;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.terminology.NoOpTerminologyTranslator;
 import com.syntaric.openfhir.util.FhirInstanceCreator;
 import com.syntaric.openfhir.util.FhirInstanceCreatorUtility;
@@ -24,6 +25,7 @@ import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import java.util.List;
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.junit.Assert;
 import org.junit.Before;
@@ -54,11 +56,10 @@ public class ToFhirMappingEngineTest {
                                                                                 fhirInstanceCreatorUtility);
         final OpenFhirMapperUtils openFhirMapperUtils = new OpenFhirMapperUtils();
         final FhirValueReaders readers = new FhirValueReaders(openFhirMapperUtils);
-        final FhirContext ctx = FhirContext.forR4();
         engine = new ToFhirMappingEngine(
                 new OpenEhrConditionEvaluator(openFhirStringUtils),
                 fhirInstanceCreatorUtility,
-                new FhirPathR4(ctx),
+                new FhirContextRegistry(),
                 new OpenEhrFlatPathDataExtractor(openFhirStringUtils,
                                                  new ValueToFHIRParser(
                                                          new TemporalParser(

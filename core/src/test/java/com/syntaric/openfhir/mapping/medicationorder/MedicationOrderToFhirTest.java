@@ -39,7 +39,7 @@ public class MedicationOrderToFhirTest extends GenericTest {
         final Composition composition = new FlatJsonUnmarshaller().unmarshal(getFlat(HELPER_LOCATION + FLAT),
                                                                              new OPTParser(
                                                                                      operationaltemplate).parse());
-        final Bundle createdResources = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle createdResources = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         Assert.assertEquals(2, createdResources.getEntry().size());
         final MedicationRequest medicationRequestOne = createdResources.getEntry().stream()
                 .map(res -> (MedicationRequest) res.getResource())

@@ -7,6 +7,7 @@ import com.syntaric.openfhir.terminology.OfCoding;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
+import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.r4.model.Base;
 
 @Data
@@ -60,7 +61,7 @@ public class MappingHelper {
     private List<MappingHelper> children;
 
     @JsonIgnore
-    private Base generatingFhirResource;
+    private IBase generatingFhirResource;
 
     @JsonIgnore
     private Object generatingFhirRoot;

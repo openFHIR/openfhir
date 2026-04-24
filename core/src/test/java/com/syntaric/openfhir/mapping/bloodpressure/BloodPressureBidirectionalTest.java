@@ -41,7 +41,7 @@ public class BloodPressureBidirectionalTest extends GenericTest {
                                                                              webTemplate);
 
         // transform it to FHIR
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         BloodPressureToFhirTest.assertBloodPressureFhir(
                 bundle); // this is being tested elsewhere but whatever.., why not
 
