@@ -104,7 +104,7 @@ public class KdsToAqlTest {
                 .findAny().orElse(null);
         final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
                 .findAny().orElse(null);
-        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}' and c/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]/value = 'final'", compositionAql.getAql());
+        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}' and c/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]/defining_code/code_string = 'final'", compositionAql.getAql());
         Assert.assertNull(entryAql); // because its a contex aql
     }
 
@@ -117,7 +117,7 @@ public class KdsToAqlTest {
                 .findAny().orElse(null);
         final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
                 .findAny().orElse(null);
-        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}' and c/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]/value = 'final' AND c/content[openEHR-EHR-OBSERVATION.medication_statement.v0]/protocol[at0004]/items[openEHR-EHR-CLUSTER.entry_category.v0]/items[at0002]/value = '456'", compositionAql.getAql());
+        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.medication_statement.v0] WHERE e/ehr_id/value='{{ehrid}}' and c/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]/defining_code/code_string = 'final' AND c/content[openEHR-EHR-OBSERVATION.medication_statement.v0]/protocol[at0004]/items[openEHR-EHR-CLUSTER.entry_category.v0]/items[at0002]/defining_code/code_string = '456'", compositionAql.getAql());
         Assert.assertNull(entryAql); // because its a contex aql
     }
 
