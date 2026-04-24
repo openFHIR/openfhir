@@ -1,6 +1,5 @@
 package com.syntaric.openfhir.mapping.tofhir;
 
-import ca.uhn.fhir.fhirpath.IFhirPath;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
@@ -93,7 +92,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 copiesToIterateOver.forEach(helper -> helper.setGeneratingFhirResource(generatedResource));
                 addBundleEntry(returningBundle, generatedResource, fhirVersion);
 
-                handleMappingIterations(copiesToIterateOver, jsonObject, modelPackage, fhirVersion);
+                handleMappingIterations(copiesToIterateOver, jsonObject, fhirVersion);
             }
 
             metricsLogger.record("mapToFhir.archetype", "archetype=" + archetype, archetypeTimer.elapsedMs());
@@ -157,27 +156,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         }
     }
 
-    public List<org.hl7.fhir.instance.model.api.IBaseResource> getBundleResources(final IBaseBundle bundle,
-                                                                                    final Spec.Version fhirVersion) {
-        return switch (fhirVersion) {
-            case STU3 -> ((org.hl7.fhir.dstu3.model.Bundle) bundle).getEntry().stream()
-                    .map(org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent::getResource)
-                    .collect(java.util.stream.Collectors.toList());
-            case R4B -> ((org.hl7.fhir.r4b.model.Bundle) bundle).getEntry().stream()
-                    .map(org.hl7.fhir.r4b.model.Bundle.BundleEntryComponent::getResource)
-                    .collect(java.util.stream.Collectors.toList());
-            case R5 -> ((org.hl7.fhir.r5.model.Bundle) bundle).getEntry().stream()
-                    .map(org.hl7.fhir.r5.model.Bundle.BundleEntryComponent::getResource)
-                    .collect(java.util.stream.Collectors.toList());
-            default -> ((Bundle) bundle).getEntry().stream()
-                    .map(Bundle.BundleEntryComponent::getResource)
-                    .collect(java.util.stream.Collectors.toList());
-        };
-    }
-
     public void handleMappingIterations(final List<MappingHelper> helpers,
                                         final JsonObject jsonObject,
-                                        final String modelPackage,
                                         final Spec.Version fhirVersion) {
         for (final MappingHelper mappingHelper : helpers) {
             final MappingTimer mappingTimer = MappingTimer.start();
@@ -204,11 +184,11 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             }
 
             if (isChildrenOnlyIteration(mappingHelper, extractedData)) {
-                handleChildrenOnlyIteration(mappingHelper, relevantJsonObject, modelPackage, fhirVersion);
+                handleChildrenOnlyIteration(mappingHelper, relevantJsonObject, fhirVersion);
             } else if (mappingHelper.getManualFhirValue() != null) {
-                handleHardcodedIteration(mappingHelper, modelPackage);
+                handleHardcodedIteration(mappingHelper, fhirVersion.modelPackage());
             } else {
-                handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject, modelPackage, fhirVersion);
+                handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject, fhirVersion);
             }
 
             metricsLogger.record("mapping.iteration",
@@ -278,20 +258,19 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      */
     private void handleChildrenOnlyIteration(final MappingHelper mappingHelper,
                                              final JsonObject relevantJsonObject,
-                                             final String modelPackage,
                                              final Spec.Version fhirVersion) {
         final String fullOpenEhrFlatPath = mappingHelper.getFullOpenEhrFlatPath();
         final List<JsonObject> jsonObjects = splitByHierarchy(relevantJsonObject, fullOpenEhrFlatPath);
         for (final JsonObject object : jsonObjects) {
             final Object newRoot = resolveNewRootForChildrenIteration(mappingHelper, object, fullOpenEhrFlatPath,
-                    modelPackage);
+                    fhirVersion.modelPackage());
             if (newRoot == null && fullOpenEhrFlatPath != null) {
                 continue;
             }
             if (mappingHelper.getManualFhirValue() != null) {
                 handleHardcodedMapping(mappingHelper, newRoot);
             }
-            propagateToChildrenAndRecurse(mappingHelper, newRoot, object, modelPackage, fhirVersion);
+            propagateToChildrenAndRecurse(mappingHelper, newRoot, object, fhirVersion);
         }
     }
 
@@ -343,7 +322,6 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     private void handleExtractedDataIteration(final MappingHelper mappingHelper,
                                               final List<DataWithIndex> extractedData,
                                               final JsonObject relevantJsonObject,
-                                              final String modelPackage,
                                               final Spec.Version fhirVersion) {
         final List<DataWithIndex> modifiableList = new ArrayList<>(extractedData);
         sortByLastIndex(modifiableList);
@@ -353,15 +331,15 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                     mappingHelper,
                     extractedDataPoint.getData().getClass().getSimpleName(),
                     extractedDataPoint.getIndex(),
-                    modelPackage);
+                    fhirVersion.modelPackage());
 
             populateExtractedDataPoint(mappingHelper, instantiated, extractedDataPoint);
-            propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, modelPackage, fhirVersion);
+            propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, fhirVersion);
         }
 
         if (modifiableList.isEmpty() && !mappingHelper.getChildren().isEmpty()) {
             propagateToChildrenAndRecurse(mappingHelper, mappingHelper.getGeneratingFhirRoot(), relevantJsonObject,
-                    modelPackage, fhirVersion);
+                    fhirVersion);
         }
     }
 
@@ -393,7 +371,6 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     private void propagateToChildrenAndRecurse(final MappingHelper mappingHelper,
                                                final Object newRoot,
                                                final JsonObject jsonObject,
-                                               final String modelPackage,
                                                final Spec.Version fhirVersion) {
         if (mappingHelper.getChildren().isEmpty()) {
             return;
@@ -402,7 +379,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             child.setGeneratingFhirRoot(newRoot);
             child.setGeneratingFhirResource(mappingHelper.getGeneratingFhirResource());
         });
-        handleMappingIterations(mappingHelper.getChildren(), jsonObject, modelPackage, fhirVersion);
+        handleMappingIterations(mappingHelper.getChildren(), jsonObject, fhirVersion);
     }
 
     /**

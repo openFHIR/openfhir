@@ -17,6 +17,7 @@ import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.marshal.FlatJsonMa
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,8 +57,8 @@ public class ToFhir {
     }
 
     public IBaseBundle contentItemsToFhir(final FhirConnectContext context,
-                                     final List<ContentItem> contentItems,
-                                     final WebTemplate webTemplate) {
+                                          final List<ContentItem> contentItems,
+                                          final WebTemplate webTemplate) {
         toFhirPrePostProcessor.preProcessContentItems(context, contentItems, webTemplate);
 
         final Composition composition = contentItemCompositionBuilder.buildComposition(contentItems,
@@ -66,8 +67,8 @@ public class ToFhir {
     }
 
     public IBaseBundle compositionsToFhir(final FhirConnectContext context,
-                                     final List<Composition> compositions,
-                                     final WebTemplate webTemplate) {
+                                          final List<Composition> compositions,
+                                          final WebTemplate webTemplate) {
         // create flat from composition
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
@@ -89,11 +90,11 @@ public class ToFhir {
 
             final MappingTimer helpersTimer = MappingTimer.start();
             final Map<String, List<MappingHelper>> mappingHelpers = helpersCreator.constructHelpers(templateId,
-                                                                                                    context.getContext()
-                                                                                                            .getStart(),
-                                                                                                    context.getContext()
-                                                                                                            .getArchetypes(),
-                                                                                                    webTemplate);
+                    context.getContext()
+                            .getStart(),
+                    context.getContext()
+                            .getArchetypes(),
+                    webTemplate);
             metricsLogger.record("compositionsToFhir.constructHelpers", compositionContext, helpersTimer.elapsedMs());
 
             final MappingTimer mapTimer = MappingTimer.start();
@@ -108,11 +109,29 @@ public class ToFhir {
     }
 
     private IBaseBundle extractBundleFromBundle(final IBaseBundle returningBundle, final Spec.Version fhirVersion) {
-        for (final IBaseResource entry : toFhirMappingEngine.getBundleResources(returningBundle, fhirVersion)) {
+        for (final IBaseResource entry : getBundleResources(returningBundle, fhirVersion)) {
             if (entry instanceof IBaseBundle nestedBundle) {
                 return nestedBundle;
             }
         }
         return returningBundle;
+    }
+
+    private List<org.hl7.fhir.instance.model.api.IBaseResource> getBundleResources(final IBaseBundle bundle,
+                                                                                   final Spec.Version fhirVersion) {
+        return switch (fhirVersion) {
+            case STU3 -> ((org.hl7.fhir.dstu3.model.Bundle) bundle).getEntry().stream()
+                    .map(org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent::getResource)
+                    .collect(java.util.stream.Collectors.toList());
+            case R4B -> ((org.hl7.fhir.r4b.model.Bundle) bundle).getEntry().stream()
+                    .map(org.hl7.fhir.r4b.model.Bundle.BundleEntryComponent::getResource)
+                    .collect(java.util.stream.Collectors.toList());
+            case R5 -> ((org.hl7.fhir.r5.model.Bundle) bundle).getEntry().stream()
+                    .map(org.hl7.fhir.r5.model.Bundle.BundleEntryComponent::getResource)
+                    .collect(java.util.stream.Collectors.toList());
+            default -> ((Bundle) bundle).getEntry().stream()
+                    .map(Bundle.BundleEntryComponent::getResource)
+                    .collect(java.util.stream.Collectors.toList());
+        };
     }
 }

@@ -73,14 +73,12 @@ public class FhirInstanceCreator {
         }
         final Object generatedInstance = fhirInstanceCreatorUtility.newInstance(aClass);
 
-        Object setObj = fhirInstanceCreatorUtility.handleSpecialThisKeyword(generatedInstance, resolveFollows, theField,
+        Object setObj = fhirInstanceCreatorUtility.handleSet(generatedInstance, resolveFollows, theField,
                 resource, modelPackage);
 
         if (originalResource instanceof List) {
             ((List<Object>) originalResource).add(generatedInstance);
         }
-        final String path =
-                splitPath + (StringUtils.isBlank(followingWhereCondition) ? "" : ("." + followingWhereCondition));
         return InstantiateAndSetReturn.builder()
                 .returning(setObj)
                 .isList(theField.getType() == List.class)
@@ -121,17 +119,6 @@ public class FhirInstanceCreator {
      * @return all elements that were instantiated throughout the fhirPath evaluation together with corresponding
      *         fhirPaths
      */
-    public InstantiateAndSetReturn instantiateAndSetElement(final Object resource, final Class clazz,
-                                                            final String fhirPath, final String forcingClass) {
-        return instantiateAndSetElement(resource, clazz, fhirPath, forcingClass, null, "org.hl7.fhir.r4.model.");
-    }
-
-    public InstantiateAndSetReturn instantiateAndSetElement(final Object resource, final Class clazz,
-                                                            final String fhirPath, final String forcingClass,
-                                                            final String modelPackage) {
-        return instantiateAndSetElement(resource, clazz, fhirPath, forcingClass, null, modelPackage);
-    }
-
     public InstantiateAndSetReturn instantiateAndSetElement(Object resource, Class clazz, String fhirPath,
                                                             final String forcingClass,
                                                             final String resolveResourceType,

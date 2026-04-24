@@ -26,18 +26,18 @@ public class FhirInstanceCreatorTest {
 
     @Test
     public void testInstantiation() {
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category.coding.code", null)).getReturning() instanceof CodeType);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category.coding.display", null)).getReturning() instanceof StringType);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category", null)).getReturning() instanceof List);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category.coding", null)).getReturning() instanceof List);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.status", null)).getReturning() instanceof Enumeration);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.statusReason", null)).getReturning() instanceof CodeableConcept);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.doNotPerform", null)).getReturning() instanceof BooleanType);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.subject", null)).getReturning() instanceof Reference);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.groupIdentifier", null)).getReturning() instanceof Identifier);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.dosageInstruction", null)).getReturning() instanceof List);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.note", null)).getReturning() instanceof List);
-        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.dispenseRequest", null)).getReturning() instanceof MedicationRequest.MedicationRequestDispenseRequestComponent);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category.coding.code", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof CodeType);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category.coding.display", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof StringType);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof List);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.category.coding", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof List);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.status", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof Enumeration);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.statusReason", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof CodeableConcept);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.doNotPerform", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof BooleanType);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.subject", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof Reference);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.groupIdentifier", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof Identifier);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.dosageInstruction", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof List);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.note", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof List);
+        Assert.assertTrue(getLastReturn(fhirInstanceCreator.instantiateAndSetElement(new MedicationRequest(), MedicationRequest.class, "MedicationRequest.dispenseRequest", null, null, "org.hl7.fhir.r4.model.")).getReturning() instanceof MedicationRequest.MedicationRequestDispenseRequestComponent);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class FhirInstanceCreatorTest {
         final String fhirPath = "MedicationRequest.note";
         final Object returning = fhirInstanceCreator.instantiateAndSetElement(resource,
                 MedicationRequest.class,
-                fhirPath, null).getReturning();
+                fhirPath, null, null, "org.hl7.fhir.r4.model.").getReturning();
         final Annotation annotation = (Annotation) ((List) returning).get(0);
         annotation.setText("annotation text");
         final Optional<Annotation> evaluate = fhirPathR4.evaluateFirst(resource, fhirPath, Annotation.class);
@@ -55,7 +55,7 @@ public class FhirInstanceCreatorTest {
         // since this is actually a list, see if the first one is deleted when adding another one
         final Object returning1 = fhirInstanceCreator.instantiateAndSetElement(resource,
                 MedicationRequest.class,
-                fhirPath, null).getReturning();
+                fhirPath, null, null, "org.hl7.fhir.r4.model.").getReturning();
         final Annotation secondAnnotation = (Annotation) ((List) returning1).get(1);
         secondAnnotation.setText("2annotation text2");
         final List<Annotation> evaluatedAll = fhirPathR4.evaluate(resource, fhirPath, Annotation.class);
@@ -70,7 +70,7 @@ public class FhirInstanceCreatorTest {
         final String fhirPath = "MedicationRequest.doNotPerform";
         final BooleanType doNotPerform = (BooleanType) fhirInstanceCreator.instantiateAndSetElement(resource,
                 MedicationRequest.class,
-                fhirPath, null).getReturning();
+                fhirPath, null, null, "org.hl7.fhir.r4.model.").getReturning();
         doNotPerform.setValue(true);
         final Optional<BooleanType> evaluate = fhirPathR4.evaluateFirst(resource, fhirPath, BooleanType.class);
         Assert.assertEquals(true, evaluate.get().getValue());
@@ -82,7 +82,7 @@ public class FhirInstanceCreatorTest {
         final String fhirPath = "MedicationRequest.category.coding.code";
         final com.syntaric.openfhir.util.FhirInstanceCreator.InstantiateAndSetReturn instantiateAndSetReturn = fhirInstanceCreator.instantiateAndSetElement(resource,
                                                                                                                                                             MedicationRequest.class,
-                                                                                                                                                            fhirPath, null);
+                                                                                                                                                            fhirPath, null, null, "org.hl7.fhir.r4.model.");
         final CodeType categoryDodingCode = (CodeType) getLastReturn(instantiateAndSetReturn).getReturning();
         categoryDodingCode.setValue("category coding code value");
         final Optional<CodeType> evaluate = fhirPathR4.evaluateFirst(resource, fhirPath, CodeType.class);

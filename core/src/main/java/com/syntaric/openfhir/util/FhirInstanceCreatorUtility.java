@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IAnyResource;
 import org.hl7.fhir.instance.model.api.IBaseEnumeration;
-import org.hl7.fhir.instance.model.api.IBaseExtension;
 import org.hl7.fhir.instance.model.api.IBaseReference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.instance.model.api.IDomainResource;
@@ -104,10 +103,10 @@ public class FhirInstanceCreatorUtility {
                 .collect(Collectors.toList());
     }
 
-    public Object handleSpecialThisKeyword(final Object generatedInstance, final boolean resolveFollows,
-                                           final Field theField,
-                                           final Object resource,
-                                           final String modelPackage) {
+    public Object handleSet(final Object generatedInstance, final boolean resolveFollows,
+                            final Field theField,
+                            final Object resource,
+                            final String modelPackage) {
         final boolean isReference = generatedInstance instanceof IDomainResource && !resolveFollows;
         Object objectToReturn = isReference ? newReference(modelPackage) : generatedInstance;
         final boolean isEnumeration =

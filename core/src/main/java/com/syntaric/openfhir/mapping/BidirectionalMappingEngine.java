@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.instance.model.api.IBase;
+import org.hl7.fhir.instance.model.api.IBaseReference;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.StringType;
 
@@ -144,14 +146,11 @@ public class BidirectionalMappingEngine {
                 return initialResource;
             }
             final IBase ref = reference.get();
-            // Handle R4, R4B, R5 Reference types via reflection to stay version-agnostic
-            try {
-                final Object resource = ref.getClass().getMethod("getResource").invoke(ref);
+            if (ref instanceof IBaseReference) {
+                final IBaseResource resource = ((IBaseReference) ref).getResource();
                 if (resource instanceof Base) {
                     return (Base) resource;
                 }
-            } catch (final Exception ignored) {
-                // not a Reference or no getResource method
             }
             return initialResource;
         } catch (Exception e) {

@@ -67,21 +67,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                    final JsonObject finalFlat,
                                    final IBase dataPoint,
                                    final boolean firstWalkOverModelMapping,
-                                   final Map<String, Integer> indexByHierarchyPath) {
-        return mapToOpenEhr(mappingHelpers, finalFlat, dataPoint, firstWalkOverModelMapping, indexByHierarchyPath,
-                Spec.Version.R4);
-    }
-
-    public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
-                                   final JsonObject finalFlat,
-                                   final IBase dataPoint,
-                                   final boolean firstWalkOverModelMapping,
                                    final Map<String, Integer> indexByHierarchyPath,
                                    final Spec.Version fhirVersion) {
-        final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
         final Class<? extends IBase> baseClass = resolveBaseClass(fhirVersion);
         return mapToOpenEhr(mappingHelpers, finalFlat, dataPoint, firstWalkOverModelMapping, indexByHierarchyPath,
-                versionedFhirPath, baseClass, fhirVersion);
+                baseClass, fhirVersion);
     }
 
     private JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
@@ -89,12 +79,12 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                     final IBase dataPoint,
                                     final boolean firstWalkOverModelMapping,
                                     final Map<String, Integer> indexByHierarchyPath,
-                                    final IFhirPath versionedFhirPath,
                                     final Class<? extends IBase> baseClass,
                                     final Spec.Version fhirVersion) {
 
         final String openEhrHierarchySplitFlatPath = mappingHelpers.get(0).getOpenEhrHierarchySplitFlatPath();
         int relevantIndex = indexByHierarchyPath.getOrDefault(openEhrHierarchySplitFlatPath, 0);
+        final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
 
         if (firstWalkOverModelMapping && !fhirPreconditionPasses(mappingHelpers.get(0).getPreprocessorFhirConditions(),
                 dataPoint, versionedFhirPath, baseClass)) {
@@ -127,7 +117,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
             int previousFinalFlatSize = finalFlat.size();
 
-            doMapping(clonedHelper, finalFlat, dataPoint, indexByHierarchyPath, versionedFhirPath, baseClass, fhirVersion);
+            doMapping(clonedHelper, finalFlat, dataPoint, indexByHierarchyPath, baseClass, fhirVersion);
 
             somethingWasAdded = somethingWasAdded || (finalFlat.size() > previousFinalFlatSize);
         }
@@ -265,7 +255,6 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     boolean doMapping(final MappingHelper helper, final JsonObject flatComposition, final IBase iteratingBase,
                       final Map<String, Integer> indexByHierarchyPath,
-                      final IFhirPath versionedFhirPath,
                       final Class<? extends IBase> baseClass,
                       final Spec.Version fhirVersion) {
         final MappingTimer mappingTimer = MappingTimer.start();
@@ -274,6 +263,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                 StringUtils.isEmpty(helper.getFhirWithCondition()) ? helper.getFhir() : helper.getFhirWithCondition();
 
         final IBase toResolveOn = getToResolveOn(iteratingBase, helper);
+
+        final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
 
         final List<? extends IBase> results = resolveFhirResults(helper, fhirPath, toResolveOn, versionedFhirPath, baseClass);
         if (results == null) {
@@ -406,7 +397,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             }
 
             recurseIntoChildren(clonedHelper, result, helper, flatComposition, indexByHierarchyPath,
-                    versionedFhirPath, baseClass, fhirVersion);
+                    baseClass, fhirVersion);
         }
     }
 
@@ -515,7 +506,6 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     private void recurseIntoChildren(final MappingHelper clonedHelper, final IBase result,
                                      final MappingHelper parentHelper, final JsonObject flatComposition,
                                      final Map<String, Integer> indexByHierarchyPath,
-                                     final IFhirPath versionedFhirPath,
                                      final Class<? extends IBase> baseClass,
                                      final Spec.Version fhirVersion) {
         if (clonedHelper.getChildren().isEmpty()) {
@@ -532,7 +522,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             }
         });
         mapToOpenEhr(clonedHelper.getChildren(), flatComposition, result,
-                clonedHelper.isHasSlot(), indexByHierarchyPath, versionedFhirPath, baseClass, fhirVersion);
+                clonedHelper.isHasSlot(), indexByHierarchyPath, baseClass, fhirVersion);
     }
 
     private void invokeProgrammedMapping(final MappingHelper mappingHelper,

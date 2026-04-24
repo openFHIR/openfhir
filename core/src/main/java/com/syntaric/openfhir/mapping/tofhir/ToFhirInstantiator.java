@@ -1,14 +1,14 @@
 package com.syntaric.openfhir.mapping.tofhir;
 
-import com.syntaric.openfhir.fc.schema.Spec;
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.util.FhirInstanceCreator;
 import com.syntaric.openfhir.util.FhirInstanceCreator.InstantiateAndSetReturn;
-import com.syntaric.openfhir.fc.FhirConnectConst;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -23,26 +23,10 @@ public class ToFhirInstantiator {
 
     public Object instantiateElement(final MappingHelper mappingHelper,
                                       final String forcingClass,
-                                      final int index) {
-        return instantiateElement(mappingHelper, forcingClass, mappingHelper.getResolveResourceType(), index,
-                                  "org.hl7.fhir.r4.model.");
-    }
-
-    public Object instantiateElement(final MappingHelper mappingHelper,
-                                      final String forcingClass,
                                       final int index,
                                       final String modelPackage) {
         return instantiateElement(mappingHelper, forcingClass, mappingHelper.getResolveResourceType(), index,
                                   modelPackage);
-    }
-
-    // kept for test access — defaults to R4 model package
-    Object instantiateElement(final MappingHelper mappingHelper,
-                              final String forcingClass,
-                              final String resolveResourceType,
-                              final int index) {
-        return instantiateElement(mappingHelper, forcingClass, resolveResourceType, index,
-                                  Spec.Version.R4.modelPackage());
     }
 
     Object instantiateElement(final MappingHelper mappingHelper,
