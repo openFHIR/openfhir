@@ -31,7 +31,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -65,7 +66,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -106,7 +108,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -191,7 +194,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -236,7 +240,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -277,7 +282,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -362,7 +368,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -407,7 +414,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -448,7 +456,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -533,7 +542,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -578,7 +588,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -619,7 +630,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -704,7 +716,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -749,7 +762,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -790,7 +804,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -875,7 +890,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -920,7 +936,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -961,7 +978,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1046,7 +1064,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1091,7 +1110,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1251,7 +1271,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1336,7 +1357,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1421,7 +1443,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1506,7 +1529,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1591,7 +1615,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1676,10 +1701,12 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1775,7 +1802,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "CLUSTER.study_participation.v1",
       "archetype" : "openEHR-EHR-CLUSTER.study_participation.v1",
@@ -1809,10 +1837,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "CLUSTER.study_participation.v1",
     "archetype" : "openEHR-EHR-CLUSTER.study_participation.v1",
@@ -1846,8 +1876,10 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 } ]

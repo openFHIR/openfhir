@@ -31,7 +31,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -96,7 +97,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -130,7 +132,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -164,10 +167,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -201,7 +206,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -235,7 +241,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -300,7 +307,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -334,7 +342,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -368,10 +377,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -436,7 +447,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -470,10 +482,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -507,7 +521,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -541,7 +556,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -606,7 +622,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -702,7 +719,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -736,7 +754,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -770,10 +789,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -838,7 +859,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -872,7 +894,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -906,10 +929,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -974,13 +999,16 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : true,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -1014,7 +1042,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -1048,7 +1077,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -1082,7 +1112,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -1116,7 +1147,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -1183,7 +1215,7 @@
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "specimenReference",
-        "generatingResourceType" : "Specimen",
+        "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot",
         "originalOpenEhrPath" : "$openehrRoot",
@@ -1243,7 +1275,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1315,7 +1348,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1356,7 +1390,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1390,7 +1425,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1424,7 +1460,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1458,7 +1495,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1492,10 +1530,12 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1529,7 +1569,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1563,7 +1604,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1597,7 +1639,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1631,7 +1674,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1665,7 +1709,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1699,7 +1744,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1769,7 +1815,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1810,7 +1857,7 @@
               "modelMetadataName" : "CLUSTER.specimen.v1",
               "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
               "mappingName" : "identifierInReference",
-              "generatingResourceType" : "Specimen",
+              "generatingResourceType" : "BackboneElement",
               "resolveResourceType" : null,
               "originalFhirPath" : "$fhirRoot.identifier",
               "originalOpenEhrPath" : "$openehrRoot",
@@ -1839,12 +1886,13 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             }, {
               "modelMetadataName" : "CLUSTER.specimen.v1",
               "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
               "mappingName" : "specimenLink",
-              "generatingResourceType" : "Specimen",
+              "generatingResourceType" : "BackboneElement",
               "resolveResourceType" : null,
               "originalFhirPath" : "$fhirRoot",
               "originalOpenEhrPath" : "$openehrRoot/links",
@@ -1873,13 +1921,16 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : true,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             } ],
             "useParentRoot" : true,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1920,7 +1971,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1961,7 +2013,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2002,7 +2055,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2043,7 +2097,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2084,7 +2139,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2125,7 +2181,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2166,7 +2223,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2207,7 +2265,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2248,7 +2307,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2327,7 +2387,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2368,7 +2429,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2409,19 +2471,24 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         } ],
         "useParentRoot" : true,
-        "hasSlot" : true
+        "hasSlot" : true,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -2486,7 +2553,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -2520,10 +2588,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -2590,7 +2660,7 @@
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "observationRecurring",
-        "generatingResourceType" : "Observation",
+        "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot",
         "originalOpenEhrPath" : "$openehrRoot",
@@ -2657,7 +2727,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2698,7 +2769,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2739,7 +2811,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2780,7 +2853,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2821,7 +2895,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2862,7 +2937,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2903,7 +2979,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2944,7 +3021,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2985,7 +3063,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3026,7 +3105,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3067,7 +3147,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3108,7 +3189,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3149,7 +3231,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3190,7 +3273,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3231,7 +3315,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3272,7 +3357,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3313,7 +3399,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3354,7 +3441,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3395,7 +3483,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3436,7 +3525,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3477,7 +3567,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3518,7 +3609,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3559,7 +3651,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3600,7 +3693,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3672,7 +3766,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3713,7 +3808,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3754,7 +3850,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3795,7 +3892,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3836,7 +3934,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3877,7 +3976,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3918,7 +4018,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3959,7 +4060,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4000,10 +4102,12 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4037,7 +4141,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4071,7 +4176,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4105,7 +4211,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4139,7 +4246,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4173,7 +4281,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4243,7 +4352,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4284,7 +4394,7 @@
               "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
               "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
               "mappingName" : "identifierInReference",
-              "generatingResourceType" : "Specimen",
+              "generatingResourceType" : "BackboneElement",
               "resolveResourceType" : null,
               "originalFhirPath" : "identifier",
               "originalOpenEhrPath" : "$openehrRoot",
@@ -4313,12 +4423,13 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             }, {
               "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
               "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
               "mappingName" : "specimenLink",
-              "generatingResourceType" : "Specimen",
+              "generatingResourceType" : "BackboneElement",
               "resolveResourceType" : null,
               "originalFhirPath" : "$fhirRoot",
               "originalOpenEhrPath" : "$openehrRoot/links",
@@ -4347,13 +4458,16 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : true,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             } ],
             "useParentRoot" : true,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -4387,19 +4501,24 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         } ],
         "useParentRoot" : true,
-        "hasSlot" : true
+        "hasSlot" : true,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4433,7 +4552,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4498,10 +4618,12 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4635,16 +4757,20 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4680,7 +4806,7 @@
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "identifierInReference",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot.identifier",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
@@ -4809,21 +4935,25 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "encounterMapping",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
@@ -4852,10 +4982,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4958,7 +5090,8 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4992,10 +5125,12 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -5029,8 +5164,10 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 } ]

@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - when a `manual` mapping has a `fhirCondition`with `$fhirRoot`, this is now correctly evaluated
 - fhircondition `type` is now properly evaluated even when fhirPath has a resolve()
 - fhircondition `type` is now properly evaluated even when Resources are nested in a Bundle
+- when followed-by mapping is referencing a `$resource`, it is now correctly evaluated
 
 
 ## [2.1.0] - 2026-04-07

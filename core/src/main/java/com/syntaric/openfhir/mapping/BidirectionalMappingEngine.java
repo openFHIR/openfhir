@@ -80,7 +80,7 @@ public class BidirectionalMappingEngine {
 
             if (fhirPathType.contains(RESOLVE)) {
                 final String fhirPathAfterResolve = fhirPathType.split(".resolve\\(\\)")[1].substring(1);
-                final Resource resolvedInstance = getReferencedResource((Resource) instance, fhirPathType);
+                final Base resolvedInstance = getReferencedResource(instance, fhirPathType);
                 final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(resolvedInstance,
                         fhirPathAfterResolve,
                         ClassTypeInfo.class);
@@ -117,7 +117,7 @@ public class BidirectionalMappingEngine {
         });
     }
 
-    private Resource getReferencedResource(final Resource initialResource, final String fhirPathExpr) {
+    private Base getReferencedResource(final Base initialResource, final String fhirPathExpr) {
         if (!fhirPathExpr.contains(RESOLVE)) {
             return initialResource;
         }

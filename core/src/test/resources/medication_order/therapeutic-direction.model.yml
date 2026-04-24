@@ -25,4 +25,9 @@ mappings:
             fhir: "additionalInstruction"
             openehr: "$archetype/items[at0066]/value"
 
+        - name: "testFromResource"
+          with:
+            fhir: "$resource.category.coding.code"
+            openehr: "items[at0178]"
+
       

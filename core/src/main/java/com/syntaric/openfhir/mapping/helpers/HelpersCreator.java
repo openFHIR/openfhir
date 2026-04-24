@@ -18,11 +18,13 @@ import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -78,11 +80,11 @@ public class HelpersCreator {
         final List<MappingHelper> allHelpers = new ArrayList<>();
         for (final OpenFhirFhirConnectModelMapper theMapper : mappers) {
             final List<MappingHelper> helpers = createHelpers(theMapper.getOriginalModel(),
-                                                              theMapper.getFhirConfig()
-                                                                      .getResource(),
-                                                              theMapper.getMappings(),
-                                                              templateId,
-                                                              webTemplate);
+                    theMapper.getFhirConfig()
+                            .getResource(),
+                    theMapper.getMappings(),
+                    templateId,
+                    webTemplate);
             allHelpers.addAll(helpers);
         }
         return allHelpers;
@@ -94,13 +96,14 @@ public class HelpersCreator {
                                       final String templateId,
                                       final WebTemplate webTemplate) {
         final List<MappingHelper> result = new ArrayList<>();
-        createHelpers(fhirConnectModel, fhirDataType, mappings, null, result, templateId, null, null, null,
-                      webTemplate, fhirConnectModel.getTerminology());
+        createHelpers(fhirConnectModel, fhirDataType, fhirDataType, mappings, null, result, templateId, null, null, null,
+                false, webTemplate, fhirConnectModel.getTerminology());
         return result;
     }
 
     public void createHelpers(final FhirConnectModel fhirConnectModel,
                               final String fhirDataType,
+                              final String referenceDataType,
                               final List<Mapping> mappings,
                               final MappingHelper parentHelper,
                               final List<MappingHelper> creatingHelpers,
@@ -108,16 +111,17 @@ public class HelpersCreator {
                               final String fullSlotPath,
                               final String fullFhirSlotPath,
                               final String slotArchetype,
+                              final boolean isFollowedBy,
                               final WebTemplate webTemplate,
                               final Terminology parentTerminology) {
         if (mappings == null) {
             log.error("No mappings in this mapping file id: {}, metadata.name: {}", fhirConnectModel.getId(),
-                      fhirConnectModel.getMetadata().getName());
+                    fhirConnectModel.getMetadata().getName());
             return;
         }
 
         final String hierarchySplitFlatPath = getHierarchySplitFlatPath(fhirConnectModel, webTemplate, fullSlotPath,
-                                                                        parentHelper);
+                parentHelper);
 
         for (final Mapping mapping : mappings) {
             final MappingHelper mappingHelper = new MappingHelper();
@@ -134,36 +138,38 @@ public class HelpersCreator {
 
             mappingHelper.setOpenEhrHierarchySplitFlatPath(hierarchySplitFlatPath);
             mappingHelper.setPreprocessorFhirConditions(handlePreprocessorFhirConditions(fhirConnectModel,
-                                                                                         mapping,
-                                                                                         fhirDataType,
-                                                                                         parentHelper,
-                                                                                         fullFhirSlotPath));
+                    mapping,
+                    fhirDataType,
+                    parentHelper,
+                    fullFhirSlotPath));
+
+            mappingHelper.setFollowedBy(isFollowedBy);
 
             // terminology
             final Terminology relevantTerminology = getRelevantTerminology(mapping, fhirConnectModel);
             mappingHelper.setTerminology(relevantTerminology == null ? parentTerminology : relevantTerminology);
 
             // Set FHIR paths
-            setFhirPaths(mappingHelper, mapping, fhirDataType, parentHelper, fullFhirSlotPath);
+            setFhirPaths(mappingHelper, mapping, fhirDataType, referenceDataType, parentHelper, fullFhirSlotPath);
 
             // Set OpenEHR paths
             setOpenEhrPaths(mappingHelper, mapping.getWith().getOpenehr(),
-                            fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper,
-                            fullSlotPath);
+                    fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper,
+                    fullSlotPath);
 
             // Find flat paths
             if (webTemplate != null) {
                 aqlToFlatPathConverter.convert(mappingHelper, webTemplate);
                 mappingHelper.setPreprocessorOpenEhrCondition(
                         handlePreprocessorOpenEhrCondition(fhirConnectModel,
-                                                           webTemplate,
-                                                           fullSlotPath));
+                                webTemplate,
+                                fullSlotPath));
             }
 
             // Set conditions with amended paths
             setConditions(mappingHelper, mapping, fhirDataType,
-                          fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper, fullSlotPath,
-                          fullFhirSlotPath, webTemplate);
+                    fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper, fullSlotPath,
+                    fullFhirSlotPath, webTemplate);
 
             mappingHelper.setHardcodedType(mapping.getWith().getType());
 
@@ -188,19 +194,36 @@ public class HelpersCreator {
             // Process nested mappings recursively
             final FollowedBy followedBy = mapping.getFollowedBy();
             final FhirConnectReference reference = mapping.getReference();
-            if (followedBy != null || reference != null) {
-                mappingHelper.setResolveResourceType(reference == null ? null : reference.getResourceType());
+            if (reference != null) {
+                mappingHelper.setResolveResourceType(reference.getResourceType());
                 createHelpers(fhirConnectModel,
-                              followedBy != null ? fhirDataType : reference.getResourceType(),
-                              followedBy != null ? followedBy.getMappings() : reference.getMappings(),
-                              mappingHelper,
-                              null,
-                              templateId,
-                              fullSlotPath,
-                              fullFhirSlotPath,
-                              slotArchetype,
-                              webTemplate,
-                              relevantTerminology);
+                        fhirDataType,
+                        reference.getResourceType(),
+                        reference.getMappings(),
+                        mappingHelper,
+                        null,
+                        templateId,
+                        fullSlotPath,
+                        fullFhirSlotPath,
+                        slotArchetype,
+                        false,
+                        webTemplate,
+                        relevantTerminology);
+            }
+            if (followedBy != null) {
+                createHelpers(fhirConnectModel,
+                        fhirDataType,
+                        fhirDataType,
+                        followedBy.getMappings(),
+                        mappingHelper,
+                        null,
+                        templateId,
+                        fullSlotPath,
+                        fullFhirSlotPath,
+                        slotArchetype,
+                        true,
+                        webTemplate,
+                        relevantTerminology);
             }
             if (mapping.getSlotArchetype() != null) {
                 if (mapping.getSlotArchetype().equals(slotArchetype)) {
@@ -216,16 +239,18 @@ public class HelpersCreator {
                 mappingHelper.setHasSlot(true);
                 for (final OpenFhirFhirConnectModelMapper nextModelMapper : nextModelMappers) {
                     createHelpers(nextModelMapper.getOriginalModel(),
-                                  nextModelMapper.getFhirConfig().getResource(),
-                                  nextModelMapper.getMappings(),
-                                  mappingHelper,
-                                  creatingHelpers,
-                                  templateId,
-                                  mappingHelper.getFullOpenEhrPath(),
-                                  mappingHelper.getFullFhirPath(),
-                                  mapping.getSlotArchetype(),
-                                  webTemplate,
-                                  relevantTerminology);
+                            nextModelMapper.getFhirConfig().getResource(),
+                            nextModelMapper.getFhirConfig().getResource(),
+                            nextModelMapper.getMappings(),
+                            mappingHelper,
+                            creatingHelpers,
+                            templateId,
+                            mappingHelper.getFullOpenEhrPath(),
+                            mappingHelper.getFullFhirPath(),
+                            mapping.getSlotArchetype(),
+                            false,
+                            webTemplate,
+                            relevantTerminology);
                 }
             }
         }
@@ -239,7 +264,7 @@ public class HelpersCreator {
                                                final FhirConnectModel model) {
         final Terminology specificTerminology = specificMapping.getTerminology();
         final Terminology modelTerminology = model.getTerminology();
-        return specificTerminology != null ?  specificTerminology : modelTerminology;
+        return specificTerminology != null ? specificTerminology : modelTerminology;
     }
 
     private String getHierarchySplitFlatPath(final FhirConnectModel fhirConnectModel,
@@ -254,9 +279,9 @@ public class HelpersCreator {
 
         final String fallback = amendOpenEhrPath(openEhrPath, openEhrPath, parentHelper);
         final String resolvedOpenEhrPath = resolveFullOpenEhrPath(openEhrPath,
-                                                                  fhirConnectModel.getSpec().getOpenEhrConfig()
-                                                                          .getArchetype(),
-                                                                  fallback, parentHelper, fullSlotPath);
+                fhirConnectModel.getSpec().getOpenEhrConfig()
+                        .getArchetype(),
+                fallback, parentHelper, fullSlotPath);
 
         return aqlToFlatPathConverter.convert(resolvedOpenEhrPath, null, webTemplate)
                 .flatPath();
@@ -270,13 +295,13 @@ public class HelpersCreator {
             return null;
         }
         return amendCondition(preprocessor.getOpenehrCondition(),
-                              null,
-                              fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(),
-                              null,
-                              fullSlotPath,
-                              false,
-                              null,
-                              webTemplate);
+                null,
+                fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(),
+                null,
+                fullSlotPath,
+                false,
+                null,
+                webTemplate);
     }
 
     private List<Condition> handlePreprocessorFhirConditions(final FhirConnectModel fhirConnectModel,
@@ -290,23 +315,23 @@ public class HelpersCreator {
         }
         if (preprocessor.getFhirCondition() != null) {
             return List.of(amendCondition(preprocessor.getFhirCondition(),
-                                          coreResource,
-                                          null,
-                                          parentHelper,
-                                          null,
-                                          true,
-                                          fullFhirSlotPath,
-                                          null));
+                    coreResource,
+                    null,
+                    parentHelper,
+                    null,
+                    true,
+                    fullFhirSlotPath,
+                    null));
         } else if (preprocessor.getFhirConditions() != null) {
             return preprocessor.getFhirConditions().stream()
                     .map(condition -> amendCondition(condition,
-                                                     coreResource,
-                                                     null,
-                                                     parentHelper,
-                                                     null,
-                                                     true,
-                                                     fullFhirSlotPath,
-                                                     null))
+                            coreResource,
+                            null,
+                            parentHelper,
+                            null,
+                            true,
+                            fullFhirSlotPath,
+                            null))
                     .collect(Collectors.toList());
         } else {
             return null;
@@ -316,6 +341,7 @@ public class HelpersCreator {
     private void setFhirPaths(final MappingHelper mappingHelper,
                               final Mapping mapping,
                               final String coreResource,
+                              final String referenceResource,
                               final MappingHelper parentHelper,
                               final String fullFhirSlotPath) {
         final String fhirPath = mapping.getWith().getFhir();
@@ -329,8 +355,11 @@ public class HelpersCreator {
         mappingHelper.setFhir(relativeFhirPath + resolveAndCastSuffix);
         mappingHelper.setUseParentRoot(FHIR_ROOT_FC.equals(fhirPath));
 
-        final String absoluteFhirPath = getAbsoluteFhirPath(fhirPath, relativeFhirPath, coreResource, parentHelper,
-                                                            fullFhirSlotPath);
+        final String absoluteFhirPath = getAbsoluteFhirPath(fhirPath,
+                relativeFhirPath,
+                coreResource,
+                parentHelper,
+                fullFhirSlotPath);
         mappingHelper.setFullFhirPath(absoluteFhirPath + resolveAndCastSuffix);
     }
 
@@ -347,7 +376,7 @@ public class HelpersCreator {
             if (parentHelper == null && StringUtils.isEmpty(fullSlotPath)) {
                 // it means $reference really is on the first very level
                 relativeOpenEhrPath = String.format("$composition/content[%s]",
-                                                    coreArchetype);
+                        coreArchetype);
             } else {
                 relativeOpenEhrPath = amendOpenEhrPath(coreArchetype, OPENEHR_ARCHETYPE_FC, parentHelper);
             }
@@ -359,7 +388,7 @@ public class HelpersCreator {
 
         mappingHelper.setFullOpenEhrPath(
                 resolveFullOpenEhrPath(openEhrPath, coreArchetype, relativeOpenEhrPath, parentHelper,
-                                       fullSlotPath));
+                        fullSlotPath));
     }
 
     private void setConditions(final MappingHelper mappingHelper,
@@ -374,21 +403,21 @@ public class HelpersCreator {
         if (mapping.getFhirCondition() != null) {
 
             final Condition amendedFhirCondition = amendCondition(mapping.getFhirCondition(),
-                                                                  coreResource, coreArchetype,
-                                                                  parentHelper, fullSlotPath, true,
-                                                                  fullFhirSlotPath, webTemplate);
+                    coreResource, coreArchetype,
+                    parentHelper, fullSlotPath, true,
+                    fullFhirSlotPath, webTemplate);
             mappingHelper.setFhirConditions(List.of(amendedFhirCondition));
 
             final String originalFhirPath =
                     mappingHelper.getOriginalFhirPath() == null ? "" : mappingHelper.getOriginalFhirPath();
             final String fhir = mappingHelper.getFhir();
             final String fhirWithCondition = openFhirStringUtils.getFhirPathWithConditions(originalFhirPath,
-                                                                                           mapping.getFhirCondition(),
-                                                                                           mappingHelper.getGeneratingResourceType(),
-                                                                                           fhir == null
-                                                                                                   ? originalFhirPath
-                                                                                                   : originalFhirPath.replace(
-                                                                                                           fhir, ""));
+                    mapping.getFhirCondition(),
+                    mappingHelper.getGeneratingResourceType(),
+                    fhir == null
+                            ? originalFhirPath
+                            : originalFhirPath.replace(
+                            fhir, ""));
             mappingHelper.setFhirWithCondition(
                     fhirWithCondition.startsWith(".") ? fhirWithCondition.substring(1) : fhirWithCondition);
         }
@@ -396,9 +425,9 @@ public class HelpersCreator {
         // Amend OpenEHR condition
         if (mapping.getOpenehrCondition() != null) {
             final Condition amendedOpenEhrCondition = amendCondition(mapping.getOpenehrCondition(),
-                                                                     coreResource, coreArchetype,
-                                                                     parentHelper, fullSlotPath, false,
-                                                                     null, webTemplate);
+                    coreResource, coreArchetype,
+                    parentHelper, fullSlotPath, false,
+                    null, webTemplate);
             mappingHelper.setOpenEhrConditions(List.of(amendedOpenEhrCondition));
         }
     }
@@ -417,13 +446,13 @@ public class HelpersCreator {
         if (isFhirCondition) {
             final String condTargetRoot = amendedCondition.getTargetRoot();
             final String relativeFhirPath = getRelativeFhirPath(coreResource, condTargetRoot, parentHelper,
-                                                                fullFhirSlotPath);
+                    fullFhirSlotPath);
             amendedTargetRoot = getAbsoluteFhirPath(condTargetRoot, relativeFhirPath,
-                                                    coreResource, parentHelper, fullFhirSlotPath);
+                    coreResource, parentHelper, fullFhirSlotPath);
         } else {
             final String targetRoot = amendedCondition.getTargetRoot();
             amendedTargetRoot = resolveFullOpenEhrPath(targetRoot, coreArchetype, targetRoot, parentHelper,
-                                                       fullSlotPath);
+                    fullSlotPath);
 
             // Populate flat path alternatives for openEHR conditions
             if (webTemplate != null && StringUtils.isNotBlank(amendedTargetRoot)) {
@@ -443,10 +472,10 @@ public class HelpersCreator {
                     final String attributeFlatPath = fullFlatPath.replace(rootResult.flatPath() + "/", "");
                     final String replaceTerminologyAqlSyntax =
                             attributeFlatPath.contains("terminology") ? attributeFlatPath : attributeFlatPath
-                                    .replace("/defining_code/code_string", "|code")
-                                    .replace("/defining_code", "|code")
-                                    .replace("defining_code/code_string", "|code")
-                                    .replace("defining_code", "|code");
+                                                                                            .replace("/defining_code/code_string", "|code")
+                                                                                            .replace("/defining_code", "|code")
+                                                                                            .replace("defining_code/code_string", "|code")
+                                                                                            .replace("defining_code", "|code");
                     amendedCondition.getTargetAttributesFlatPath()
                             .add(replaceTerminologyAqlSyntax);
                 }

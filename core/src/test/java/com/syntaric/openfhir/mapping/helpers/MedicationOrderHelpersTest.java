@@ -94,7 +94,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("medication_order/medication_order/order[n]/therapeutic_direction/dosage",
                             dosage.getFullOpenEhrFlatPath());
 //        Assert.assertTrue(dosage.getPossibleRmTypes().contains("CLUSTER"));
-        Assert.assertEquals(2, dosage.getChildren().size());
+        Assert.assertEquals(3, dosage.getChildren().size());
 
         // --- directionDuration (first child of dosage) ---
         final MappingHelper directionDuration = dosage.getChildren().get(0);
@@ -112,7 +112,7 @@ public class MedicationOrderHelpersTest extends GenericHelpersTest {
         Assert.assertTrue(directionDuration.getPossibleRmTypes().contains("DV_CODED_TEXT"));
 
         // --- doseQuantityValue (second child of dosage) ---
-        final MappingHelper doseQuantityValue = dosage.getChildren().get(1);
+        final MappingHelper doseQuantityValue = dosage.getChildren().get(2);
         Assert.assertEquals("doseQuantityValue", doseQuantityValue.getMappingName());
         Assert.assertEquals("doseAndRate.dose", doseQuantityValue.getFhir());
         Assert.assertEquals("MedicationRequest.dosageInstruction.doseAndRate.dose",

@@ -66,6 +66,7 @@ public class MappingHelper {
     private Object generatingFhirRoot;
     private boolean useParentRoot;
     private boolean hasSlot;
+    private boolean isFollowedBy;
 
     @JsonIgnore
     private Object generatingFhirBase;
@@ -100,6 +101,7 @@ public class MappingHelper {
         clone.openEhrHierarchySplitFlatPath = this.openEhrHierarchySplitFlatPath;
         clone.fhir = this.fhir;
         clone.hasSlot = this.hasSlot;
+        clone.isFollowedBy = this.isFollowedBy;
         clone.fhirWithCondition = this.fhirWithCondition;
         clone.fullFhirPath = this.fullFhirPath;
         clone.openEhr = this.openEhr;

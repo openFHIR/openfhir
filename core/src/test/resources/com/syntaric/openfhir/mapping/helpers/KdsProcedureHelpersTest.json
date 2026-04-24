@@ -62,7 +62,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -96,7 +97,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -130,10 +132,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -198,7 +202,8 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -232,7 +237,8 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -266,10 +272,12 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -303,7 +311,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -337,7 +346,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -407,7 +417,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -441,7 +452,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -475,10 +487,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -517,7 +531,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -551,7 +566,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -585,7 +601,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -626,7 +643,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -671,7 +689,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -752,7 +771,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -793,7 +813,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -838,7 +859,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -919,7 +941,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -960,7 +983,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1005,7 +1029,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1086,7 +1111,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1127,7 +1153,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1172,7 +1199,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1253,7 +1281,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1294,7 +1323,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1339,7 +1369,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1420,7 +1451,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1461,7 +1493,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1506,7 +1539,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1587,7 +1621,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1661,7 +1696,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1813,7 +1849,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1894,7 +1931,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -1975,7 +2013,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2056,7 +2095,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2137,7 +2177,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2218,7 +2259,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2299,7 +2341,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2380,7 +2423,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2461,7 +2505,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2542,7 +2587,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2623,7 +2669,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2704,7 +2751,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2785,7 +2833,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2866,7 +2915,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -2947,7 +2997,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3028,7 +3079,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3109,10 +3161,12 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3246,7 +3300,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "ACTION.procedure.v1",
         "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3311,19 +3366,24 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : true,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3357,7 +3417,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3391,7 +3452,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3497,10 +3559,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "CLUSTER.anatomical_location.v1",
     "archetype" : "openEHR-EHR-CLUSTER.anatomical_location.v1",
@@ -3534,7 +3598,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "CLUSTER.anatomical_location.v1",
     "archetype" : "openEHR-EHR-CLUSTER.anatomical_location.v1",
@@ -3568,10 +3633,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3636,10 +3703,12 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3773,16 +3842,20 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -3818,7 +3891,7 @@
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
     "mappingName" : "identifierInReference",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "Procedure",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot.identifier",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
@@ -3947,21 +4020,25 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
     "mappingName" : "encounterMapping",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "Procedure",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
@@ -3990,10 +4067,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -4027,7 +4106,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -4099,7 +4179,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.procedure.v1",
     "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -4164,13 +4245,16 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.procedure.v1",
   "archetype" : "openEHR-EHR-ACTION.procedure.v1",
@@ -4273,11 +4357,14 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 } ]

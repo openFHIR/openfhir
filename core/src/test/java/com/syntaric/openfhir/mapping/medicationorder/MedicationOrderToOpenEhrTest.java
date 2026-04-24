@@ -14,14 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IIdType;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Dosage;
-import org.hl7.fhir.r4.model.Medication;
-import org.hl7.fhir.r4.model.MedicationRequest;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,7 +53,9 @@ public class MedicationOrderToOpenEhrTest extends GenericTest {
         final Composition composition = toOpenEhr.fhirToCompositionRm(context, bundle, webTemplate);
         final String medicationTextPath = "/content[openEHR-EHR-INSTRUCTION.medication_order.v2]/activities[at0001]/description[at0002]/items[at0070]/value";
         final String doseAmountPath = "/content[openEHR-EHR-INSTRUCTION.medication_order.v2]/activities[at0001]/description[at0002]/items[openEHR-EHR-CLUSTER.therapeutic_direction.v1]/items[openEHR-EHR-CLUSTER.dosage.v1]/items[at0144]/value";
+        final String doseDescription = "/content[openEHR-EHR-INSTRUCTION.medication_order.v2]/activities[at0001]/description[at0002]/items[openEHR-EHR-CLUSTER.therapeutic_direction.v1]/items[openEHR-EHR-CLUSTER.dosage.v1]/items[at0178]/value";
         Assert.assertEquals("medication text", ((DvText) composition.itemAtPath(medicationTextPath)).getValue());
+        Assert.assertEquals("2", ((DvText) composition.itemAtPath(doseDescription)).getValue());
         Assert.assertEquals(Double.valueOf(111.0),
                             ((DvQuantity) composition.itemAtPath(doseAmountPath)).getMagnitude());
     }
@@ -86,6 +81,7 @@ public class MedicationOrderToOpenEhrTest extends GenericTest {
         final Reference value = new Reference("Medication/" + medicationUuid);
         value.setResource(medication);
         medicationRequest.setMedication(value);
+        medicationRequest.addCategory(new CodeableConcept(new Coding("1", "2", "3")));
         medicationRequestEntry.setResource(medicationRequest);
         bundle.addEntry(medicationRequestEntry);
         return bundle;
