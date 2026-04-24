@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `link` is now a supported keyword in model mapping (although not yet implemented, but mapping creation won't fail if it contains this option)
 - KDS mappings and tests amended to support FhirConnect release1 of the library 
 - Additional openEHR Data Types for AQL mappings
+- Support for different FHIR versions: STU3, R4 (was supported before), R4B, R5
 
 ### Fixed
 - `GET /opt/{id}`, `GET /fc/model/{id}`, `GET /fc/context/{id}` now return 404 instead of 200 with empty body when the resource is not found

@@ -38,7 +38,7 @@ public class News2ToFhirTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         // news2
         final List<Observation> news2Observation = bundle.getEntry().stream()

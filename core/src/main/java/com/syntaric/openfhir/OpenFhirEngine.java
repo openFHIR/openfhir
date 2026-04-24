@@ -1,6 +1,7 @@
 package com.syntaric.openfhir;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import ca.uhn.fhir.parser.IParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -12,6 +13,7 @@ import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.FhirConnectConst;
+import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.manager.FhirConnectManager;
 import com.syntaric.openfhir.manager.OptManager;
@@ -20,6 +22,7 @@ import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
 import org.ehrbase.openehr.sdk.serialisation.jsonencoding.CanonicalJson;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
+import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Bundle;
@@ -48,12 +51,11 @@ public class OpenFhirEngine {
     private final FhirConnectManager fhirConnectManager;
     private final OptManager optManager;
     private final ToAql toAql;
-    private final FhirContext fhirContext;
+    private final FhirContextRegistry fhirContextRegistry;
     private final OpenEhrTemplateUtils templateUtils;
     private final FlatJsonUnmarshaller flatJsonUnmarshaller;
     private final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext;
     private final OpenFhirStringUtils openFhirStringUtils;
-    private final FhirPathR4 fhirPathR4;
     private final Gson gson;
     private final MappingMetricsLogger metricsLogger;
 
@@ -63,12 +65,11 @@ public class OpenFhirEngine {
                           final FhirConnectManager fhirConnectManager,
                           final OptManager optManager,
                           final ToAql toAql,
-                          final FhirContext fhirContext,
+                          final FhirContextRegistry fhirContextRegistry,
                           final OpenEhrTemplateUtils templateUtils,
                           final FlatJsonUnmarshaller flatJsonUnmarshaller,
                           final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext,
                           final OpenFhirStringUtils openFhirStringUtils,
-                          final FhirPathR4 fhirPathR4,
                           final Gson gson,
                           final MappingMetricsLogger metricsLogger) {
         this.fhirToOpenEhr = fhirToOpenEhr;
@@ -76,12 +77,11 @@ public class OpenFhirEngine {
         this.fhirConnectManager = fhirConnectManager;
         this.optManager = optManager;
         this.toAql = toAql;
-        this.fhirContext = fhirContext;
+        this.fhirContextRegistry = fhirContextRegistry;
         this.templateUtils = templateUtils;
         this.flatJsonUnmarshaller = flatJsonUnmarshaller;
         this.prodOpenFhirMappingContext = prodOpenFhirMappingContext;
         this.openFhirStringUtils = openFhirStringUtils;
-        this.fhirPathR4 = fhirPathR4;
         this.gson = gson;
         this.metricsLogger = metricsLogger;
     }
@@ -101,7 +101,7 @@ public class OpenFhirEngine {
 
         FhirConnectContextEntity fallbackContext = null;
 
-        final Resource resource = parseIncomingFhirResource(incomingFhirResource);
+        final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getDefaultContext());
         for (final FhirConnectContextEntity context : allUserContexts) {
             final Condition condition = getContextCondition(
                     context.getFhirConnectContext().getContext().getProfile().getUrl(),
@@ -114,7 +114,8 @@ public class OpenFhirEngine {
                 log.warn("No fhirpath defined for resource type, context relevant for all?");
                 fallbackContext = context; // assign it to the variable in case there really is no other suitable one.. in which case, this will be returned (or the last occurrence of such a context mapper 'for all'
             } else {
-                final Optional<Base> evaluated = fhirPathR4.evaluateFirst(resource, fhirPathWithCondition, Base.class);
+                final IFhirPath fhirPath = fhirContextRegistry.getDefaultFhirPath();
+                final Optional<Base> evaluated = fhirPath.evaluateFirst(resource, fhirPathWithCondition, Base.class);
                 // if is present and is of type boolean, it also needs to be true
                 // if is present and is not of type boolean, then the mere presence means the mapper is for this resource
                 if (evaluated.isPresent() && ((!(evaluated.get() instanceof BooleanType)
@@ -199,13 +200,11 @@ public class OpenFhirEngine {
      */
     public String toOpenEhr(final String incomingFhirResource, final String incomingTemplateId, final Boolean flat) {
         // get context and operational template
-        final Resource resource = parseIncomingFhirResource(incomingFhirResource);
         final FhirConnectContextEntity fhirConnectContext = getContextForFhir(incomingTemplateId,
                 incomingFhirResource);
         if (fhirConnectContext == null) {
-            final String logMsg = String.format(
-                    "Couldn't find any Context mapper for the given Resource. Make sure at least one Context mapper exists where fhir.resourceType is of this type (%s) and condition within the context mapper allows for it to be applied on this specific resource.",
-                    resource.getResourceType().name());
+            final String logMsg =
+                    "Couldn't find any Context mapper for the given Resource. Make sure at least one Context mapper exists where fhir.resourceType is of this type and condition within the context mapper allows for it to be applied on this specific resource.";
             log.error(logMsg);
             throw new IllegalArgumentException(logMsg);
         }
@@ -213,10 +212,12 @@ public class OpenFhirEngine {
 
         validatePrerequisites(fhirConnectContext, templateIdToUse);
 
+        final Spec.Version fhirVersion = getFhirVersion(fhirConnectContext);
+        final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getContext(fhirVersion));
+
         final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateIdToUse)));
 
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext());
-
 
         if (flat != null && flat) {
             final JsonObject jsonObject = fhirToOpenEhr.fhirToFlatJsonObject(fhirConnectContext.getFhirConnectContext(),
@@ -232,13 +233,25 @@ public class OpenFhirEngine {
         }
     }
 
-    private Resource parseIncomingFhirResource(final String incomingFhirResource) {
+    private Resource parseIncomingFhirResource(final String incomingFhirResource, final FhirContext fhirContext) {
         final IParser parser = fhirContext.newJsonParser();
         try {
             return parser.parseResource(Bundle.class, incomingFhirResource);
         } catch (final Exception e) {
             return (Resource) parser.parseResource(incomingFhirResource);
         }
+    }
+
+    private Spec.Version getFhirVersion(final FhirConnectContextEntity contextEntity) {
+        try {
+            final Spec spec = contextEntity.getFhirConnectContext().getSpec();
+            if (spec != null && spec.getVersion() != null) {
+                return spec.getVersion();
+            }
+        } catch (final Exception e) {
+            log.warn("Could not determine FHIR version from context, defaulting to R4", e);
+        }
+        return Spec.Version.R4;
     }
 
     public String toFhir(final String openEhrCompositionJson, final String incomingTemplateId) {
@@ -263,7 +276,7 @@ public class OpenFhirEngine {
 
         final IncomingOpenEhrType incomingOpenEhrType = deduceIncomingPayloadType(openEhrCompositionJson);
         final MappingTimer mappingTimer = MappingTimer.start();
-        final Bundle fhir;
+        final IBaseBundle fhir;
         if (incomingOpenEhrType == IncomingOpenEhrType.COMPOSITION) {
             final List<Composition> compositions = parseCompositions(openEhrCompositionJson);
             fhir = openEhrToFhir.compositionsToFhir(fhirConnectContext.getFhirConnectContext(),
@@ -284,7 +297,8 @@ public class OpenFhirEngine {
         metricsLogger.record("toFhir.mapping", "template=" + templateIdToUse + " type=" + incomingOpenEhrType,
                 mappingTimer.elapsedMs());
 
-        final String encoded = fhirContext.newJsonParser().encodeResourceToString(fhir);
+        final Spec.Version fhirVersion = getFhirVersion(fhirConnectContext);
+        final String encoded = fhirContextRegistry.getContext(fhirVersion).newJsonParser().encodeResourceToString(fhir);
         metricsLogger.record("toFhir.total", "template=" + templateIdToUse, totalTimer.elapsedMs());
         return encoded;
     }

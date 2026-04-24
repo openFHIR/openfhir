@@ -92,7 +92,7 @@ public class ProcedureToFHIRTest extends KdsGenericTest {
     private void assertToFHIR(int index) {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[index]),
                 Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_BUNDLES[index]);
     }
 
@@ -104,7 +104,7 @@ public class ProcedureToFHIRTest extends KdsGenericTest {
     public void assertToFHIRLegacyDetailed() {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(getFile("/kds/procedure/toOpenEHR/output/KDS_Prozedur.flat.json"),
                 new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
         final List<Bundle.BundleEntryComponent> allProcedures = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof Procedure).collect(Collectors.toList());
         Assert.assertEquals(1, allProcedures.size());

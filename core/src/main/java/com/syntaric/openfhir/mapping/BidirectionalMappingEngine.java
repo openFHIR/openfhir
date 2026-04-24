@@ -2,28 +2,27 @@ package com.syntaric.openfhir.mapping;
 
 import static com.syntaric.openfhir.util.OpenFhirStringUtils.RESOLVE;
 
-import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import com.syntaric.openfhir.fc.FhirConnectConst;
+import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
+import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 
 import java.util.List;
 import java.util.Optional;
-
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
+import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.utils.FHIRPathUtilityClasses.ClassTypeInfo;
 
 @Slf4j
 public class BidirectionalMappingEngine {
 
-    private final FhirPathR4 fhirPath;
+    private final FhirContextRegistry fhirContextRegistry;
 
-    protected BidirectionalMappingEngine(final FhirPathR4 fhirPath) {
-        this.fhirPath = fhirPath;
+    protected BidirectionalMappingEngine(final FhirContextRegistry fhirContextRegistry) {
+        this.fhirContextRegistry = fhirContextRegistry;
     }
 
     /**
@@ -35,7 +34,8 @@ public class BidirectionalMappingEngine {
      *                         {@link FhirConnectConst#UNIDIRECTIONAL_TOOPENEHR}
      */
     protected boolean shouldProcessMapping(final MappingHelper mappingHelper,
-                                           final String mappingDirection) {
+                                           final String mappingDirection,
+                                           final Spec.Version fhirVersion) {
         final boolean toFhir = FhirConnectConst.UNIDIRECTIONAL_TOFHIR.equals(mappingDirection);
         final String executionLog = toFhir ? "ToFhirExecution" : "ToOpenEhrExecution";
         final String blockedUnidirectional = toFhir
@@ -47,8 +47,8 @@ public class BidirectionalMappingEngine {
                     executionLog, blockedUnidirectional, mappingHelper.getMappingName());
             return false;
         }
-        final Base generatingFhirResource = mappingHelper.getGeneratingFhirResource();
-        if (!fhirTypePasses(mappingHelper, mappingHelper.getFhirConditions())) {
+        final IBase generatingFhirResource = mappingHelper.getGeneratingFhirResource();
+        if (!fhirTypePasses(mappingHelper, mappingHelper.getFhirConditions(), fhirVersion)) {
             log.info("[{}] FHIR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
                     executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
                     mappingHelper.getMappingName());
@@ -64,10 +64,12 @@ public class BidirectionalMappingEngine {
     }
 
     private boolean fhirTypePasses(final MappingHelper mappingHelper,
-                                   final List<Condition> fhirConditions) {
+                                   final List<Condition> fhirConditions,
+                                   final Spec.Version fhirVersion) {
         if (fhirConditions == null || fhirConditions.isEmpty()) {
             return true;
         }
+        final IFhirPath fhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
         return fhirConditions.stream().allMatch(fhirCondition -> {
             if (!fhirCondition.getOperator().equals(FhirConnectConst.CONDITION_OPERATOR_TYPE)) {
                 return true;
@@ -75,26 +77,37 @@ public class BidirectionalMappingEngine {
 
             final String targetRoot = fhirCondition.getTargetRoot();
             final boolean takeFhirRoot = targetRoot.equals(mappingHelper.getFullFhirPath());
-            final Base instance = takeFhirRoot ? (Base) mappingHelper.getGeneratingFhirRoot() : mappingHelper.getGeneratingFhirResource();
-            final String fhirPathType = String.format("%s[0].type()", takeFhirRoot ? mappingHelper.getFhir() : targetRoot);
+            final IBase instance = takeFhirRoot ? (Base) mappingHelper.getGeneratingFhirRoot() : mappingHelper.getGeneratingFhirResource();
+            final String fhirPathExpr = takeFhirRoot ? mappingHelper.getFhir() : targetRoot;
 
-            if (fhirPathType.contains(RESOLVE)) {
-                final String fhirPathAfterResolve = fhirPathType.split(".resolve\\(\\)")[1].substring(1);
-                final Base resolvedInstance = getReferencedResource(instance, fhirPathType);
-                final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(resolvedInstance,
-                        fhirPathAfterResolve,
-                        ClassTypeInfo.class);
-                return isCorrectType.map(cr -> ((StringType) cr.getProperty(0, "name", false)[0]).getValue()
-                                .equals(fhirCondition.getCriteria()))
+            if (fhirPathExpr.contains(RESOLVE)) {
+                final IBase resolvedInstance = getReferencedResource(instance, fhirPathExpr, fhirPath);
+                final String afterResolve = fhirPathExpr.split("\\.resolve\\(\\)")[1].substring(1);
+                return resolvesFhirTypeName(resolvedInstance, afterResolve + "[0].type().name", fhirPath)
+                        .map(name -> name.equals(fhirCondition.getCriteria()))
                         .orElse(true);
             } else {
-                final Optional<ClassTypeInfo> isCorrectType = fhirPath.evaluateFirst(instance, fhirPathType,
-                        ClassTypeInfo.class);
-                return isCorrectType.map(cr -> ((StringType) cr.getProperty(0, "name", false)[0]).getValue()
-                                .equals(fhirCondition.getCriteria()))
+                return resolvesFhirTypeName(instance, fhirPathExpr + "[0].type().name", fhirPath)
+                        .map(name -> name.equals(fhirCondition.getCriteria()))
                         .orElse(true);
             }
         });
+    }
+
+    private Optional<String> resolvesFhirTypeName(final IBase instance, final String fhirPathExpr,
+                                                   final IFhirPath fhirPath) {
+        try {
+            final Optional<IBase> result = fhirPath.evaluateFirst(instance, fhirPathExpr, IBase.class);
+            return result.map(r -> {
+                if (r instanceof StringType) {
+                    return ((StringType) r).getValue();
+                }
+                return r.toString();
+            });
+        } catch (final Exception e) {
+            log.debug("Could not evaluate type name via FHIRPath '{}': {}", fhirPathExpr, e.getMessage());
+            return Optional.empty();
+        }
     }
 
     private boolean openEhrTypePasses(final MappingHelper mappingHelper,
@@ -117,16 +130,30 @@ public class BidirectionalMappingEngine {
         });
     }
 
-    private Base getReferencedResource(final Base initialResource, final String fhirPathExpr) {
+    private IBase getReferencedResource(final IBase initialResource, final String fhirPathExpr,
+                                         final IFhirPath fhirPath) {
         if (!fhirPathExpr.contains(RESOLVE)) {
             return initialResource;
         }
-        final String fhirPathWithoutResolve = fhirPathExpr.split(String.format(".%s", RESOLVE))[0];
+        final String fhirPathWithoutResolve = fhirPathExpr.split(String.format("\\.%s", RESOLVE))[0];
         try {
-            final Reference reference = fhirPath.evaluateFirst(initialResource,
+            final Optional<IBase> reference = fhirPath.evaluateFirst(initialResource,
                     fhirPathWithoutResolve,
-                    Reference.class).get();
-            return (Resource) reference.getResource();
+                    IBase.class);
+            if (reference.isEmpty()) {
+                return initialResource;
+            }
+            final IBase ref = reference.get();
+            // Handle R4, R4B, R5 Reference types via reflection to stay version-agnostic
+            try {
+                final Object resource = ref.getClass().getMethod("getResource").invoke(ref);
+                if (resource instanceof Base) {
+                    return (Base) resource;
+                }
+            } catch (final Exception ignored) {
+                // not a Reference or no getResource method
+            }
+            return initialResource;
         } catch (Exception e) {
             log.warn("Nothing resolved by evaluating {}", fhirPathWithoutResolve);
             return initialResource;

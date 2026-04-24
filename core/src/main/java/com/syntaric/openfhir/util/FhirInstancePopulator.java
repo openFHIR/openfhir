@@ -6,6 +6,7 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,6 +17,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
+import org.hl7.fhir.instance.model.api.IBaseEnumeration;
 import org.hl7.fhir.r4.model.Attachment;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.BooleanType;
@@ -41,7 +43,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Used for populating a FHIR Base
+ * Used for populating a FHIR Base.
+ *
+ * <p>{@code data} is always an R4 {@link Base} (the internal representation produced by the
+ * openEHR extraction pipeline). {@code toPopulate} may be any FHIR version's type
+ * (STU3 / R4 / R4B / R5). Each {@code populate*} method first handles the R4 case
+ * (same-version copy) and then falls through to version-aware helpers that apply the
+ * extracted scalar values to the target object regardless of its FHIR version.
  */
 @Slf4j
 @Component
@@ -167,10 +175,11 @@ public class FhirInstancePopulator {
         }
         if (toPopulate instanceof Timing timingToPopulate) {
             data.copyValues(timingToPopulate);
-        }
-        if (toPopulate instanceof TimingRepeatComponent timingRepeatComponent) {
+        } else if (toPopulate instanceof TimingRepeatComponent timingRepeatComponent) {
             final TimingRepeatComponent repeat = data.getRepeat();
             repeat.copyValues(timingRepeatComponent);
+        } else {
+            populateTimingCrossVersion(toPopulate, data, terminology);
         }
     }
 
@@ -193,6 +202,8 @@ public class FhirInstancePopulator {
             ratioToPopulate.setNumerator(data);
         } else if (toPopulate instanceof IntegerType integerTypeToPopulate) {
             integerTypeToPopulate.setValue(data.getValue().intValue());
+        } else {
+            populateQuantityCrossVersion(toPopulate, data.getValue(), data.getCode(), data.getSystem(), data.getUnit());
         }
     }
 
@@ -201,6 +212,8 @@ public class FhirInstancePopulator {
             ((DateTimeType) toPopulate).setValue(data.getValue());
         } else if (toPopulate instanceof InstantType) {
             ((InstantType) toPopulate).setValue(data.getValue());
+        } else {
+            populateDateTimeCrossVersion(toPopulate, data.getValue(), data.getValueAsString());
         }
     }
 
@@ -213,6 +226,8 @@ public class FhirInstancePopulator {
             ((IntegerType) toPopulate).setValue(data.getValue());
         } else if (toPopulate instanceof Quantity) {
             ((Quantity) toPopulate).setValue(data.getValue());
+        } else {
+            populateIntegerTypeCrossVersion(toPopulate, data.getValue());
         }
     }
 
@@ -224,6 +239,8 @@ public class FhirInstancePopulator {
                     LocalTime.of(data.getHour(), data.getMinute(),
                             (int) data.getSecond()));
             ((DateTimeType) toPopulate).setValue(Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+        } else {
+            populateTimeTypeCrossVersion(toPopulate, data.getValue(), data.getHour(), data.getMinute(), (int) data.getSecond());
         }
     }
 
@@ -241,12 +258,16 @@ public class FhirInstancePopulator {
             data.copyValues((Identifier) toPopulate);
         } else if (toPopulate instanceof StringType stringType) {
             stringType.setValue(data.getValue());
+        } else {
+            populateIdentifierCrossVersion(toPopulate, data.getValue(), data.getSystem());
         }
     }
 
     private void populateDateType(Object toPopulate, DateType data) {
         if (toPopulate instanceof DateType) {
             ((DateType) toPopulate).setValue(data.getValue());
+        } else {
+            populateDateTypeCrossVersion(toPopulate, data.getValue(), data.getValueAsString());
         }
     }
 
@@ -257,8 +278,7 @@ public class FhirInstancePopulator {
         });
         if (toPopulate instanceof CodeableConcept) {
             data.copyValues((CodeableConcept) toPopulate);
-        }
-        if (toPopulate instanceof Coding coding) {
+        } else if (toPopulate instanceof Coding coding) {
             data.getCodingFirstRep().copyValues(coding);
         } else if (toPopulate instanceof Quantity q) {
             q.setValue(Long.parseLong(data.getText()));
@@ -270,6 +290,12 @@ public class FhirInstancePopulator {
             identifier.setSystem(data.getCodingFirstRep().getSystem());
             identifier.setValue(
                     data.getCodingFirstRep().getCode() == null ? data.getText() : data.getCodingFirstRep().getCode());
+        } else {
+            final String firstCode = data.getCodingFirstRep().getCode();
+            final String firstSystem = data.getCodingFirstRep().getSystem();
+            final String firstDisplay = data.getCodingFirstRep().getDisplay();
+            final String text = data.getText();
+            populateCodeableConceptCrossVersion(toPopulate, firstCode, firstSystem, firstDisplay, text);
         }
     }
 
@@ -282,12 +308,16 @@ public class FhirInstancePopulator {
             data.copyValues((Coding) toPopulate);
         } else if (toPopulate instanceof Enumeration<?>) {
             ((Enumeration<?>) toPopulate).setValueAsString(data.getCode());
+        } else {
+            populateCodingCrossVersion(toPopulate, data.getCode(), data.getSystem(), data.getDisplay());
         }
     }
 
     private void populateAttachment(Object toPopulate, Attachment data) {
         if (toPopulate instanceof Attachment) {
             data.copyValues((Attachment) toPopulate);
+        } else {
+            populateAttachmentCrossVersion(toPopulate, data.getContentType(), data.getData(), data.getUrl(), data.getTitle());
         }
     }
 
@@ -312,18 +342,347 @@ public class FhirInstancePopulator {
             ((PrimitiveType<String>) primitiveType).setValue(value);
         } else if (toPopulate instanceof XhtmlNode xhtmlNode) {
             xhtmlNode.setValueAsString(value);
+        } else {
+            populateStringTypeCrossVersion(toPopulate, value, data.getValueAsString());
         }
     }
 
     private void populateBooleanType(Object toPopulate, BooleanType data) {
         if (toPopulate instanceof BooleanType) {
             ((BooleanType) toPopulate).setValue(data.getValue());
+        } else {
+            populateBooleanTypeCrossVersion(toPopulate, data.getValue());
         }
     }
 
     private void populatePeriodType(Object toPopulate, Period data) {
         if (toPopulate instanceof Period period) {
             data.copyValues(period);
+        } else {
+            populatePeriodTypeCrossVersion(toPopulate, data.getStart(), data.getEnd());
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Cross-version helpers
+    // Each helper receives only Java primitives / java.util types extracted from
+    // the R4 source, and applies them to STU3 / R4B / R5 target objects.
+    // -------------------------------------------------------------------------
+
+    private void populateQuantityCrossVersion(final Object toPopulate,
+                                              final BigDecimal value,
+                                              final String code,
+                                              final String system,
+                                              final String unit) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            if (value != null) q.setValue(value);
+            if (code != null) q.setCode(code);
+            if (system != null) q.setSystem(system);
+            if (unit != null) q.setUnit(unit);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.IntegerType i) {
+            if (value != null) i.setValue(value.intValue());
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.Ratio r) {
+            final org.hl7.fhir.dstu3.model.Quantity num = new org.hl7.fhir.dstu3.model.Quantity();
+            if (value != null) num.setValue(value);
+            if (code != null) num.setCode(code);
+            if (system != null) num.setSystem(system);
+            if (unit != null) num.setUnit(unit);
+            r.setNumerator(num);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            if (value != null) q.setValue(value);
+            if (code != null) q.setCode(code);
+            if (system != null) q.setSystem(system);
+            if (unit != null) q.setUnit(unit);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.IntegerType i) {
+            if (value != null) i.setValue(value.intValue());
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Ratio r) {
+            final org.hl7.fhir.r4b.model.Quantity num = new org.hl7.fhir.r4b.model.Quantity();
+            if (value != null) num.setValue(value);
+            if (code != null) num.setCode(code);
+            if (system != null) num.setSystem(system);
+            if (unit != null) num.setUnit(unit);
+            r.setNumerator(num);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Quantity q) {
+            if (value != null) q.setValue(value);
+            if (code != null) q.setCode(code);
+            if (system != null) q.setSystem(system);
+            if (unit != null) q.setUnit(unit);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.IntegerType i) {
+            if (value != null) i.setValue(value.intValue());
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Ratio r) {
+            final org.hl7.fhir.r5.model.Quantity num = new org.hl7.fhir.r5.model.Quantity();
+            if (value != null) num.setValue(value);
+            if (code != null) num.setCode(code);
+            if (system != null) num.setSystem(system);
+            if (unit != null) num.setUnit(unit);
+            r.setNumerator(num);
+        }
+    }
+
+    private void populateDateTimeCrossVersion(final Object toPopulate,
+                                              final Date value,
+                                              final String valueAsString) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateTimeType dt) {
+            if (value != null) dt.setValue(value); else dt.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.InstantType it) {
+            if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateTimeType dt) {
+            if (value != null) dt.setValue(value); else dt.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.InstantType it) {
+            if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateTimeType dt) {
+            if (value != null) dt.setValue(value); else dt.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.InstantType it) {
+            if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
+        }
+    }
+
+    private void populateIntegerTypeCrossVersion(final Object toPopulate, final Integer value) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.IntegerType i) {
+            if (value != null) i.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            if (value != null) q.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.IntegerType i) {
+            if (value != null) i.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            if (value != null) q.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.IntegerType i) {
+            if (value != null) i.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Quantity q) {
+            if (value != null) q.setValue(value);
+        }
+    }
+
+    private void populateTimeTypeCrossVersion(final Object toPopulate,
+                                              final String timeValue,
+                                              final int hour,
+                                              final int minute,
+                                              final int second) {
+        final Date asDate = Date.from(
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute, second))
+                             .atZone(ZoneId.systemDefault()).toInstant());
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.TimeType t) {
+            t.setValue(timeValue);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateTimeType dt) {
+            dt.setValue(asDate);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.TimeType t) {
+            t.setValue(timeValue);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateTimeType dt) {
+            dt.setValue(asDate);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.TimeType t) {
+            t.setValue(timeValue);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateTimeType dt) {
+            dt.setValue(asDate);
+        }
+    }
+
+    private void populateIdentifierCrossVersion(final Object toPopulate,
+                                                final String value,
+                                                final String system) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Identifier id) {
+            if (value != null) id.setValue(value);
+            if (system != null) id.setSystem(system);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.StringType s) {
+            s.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Identifier id) {
+            if (value != null) id.setValue(value);
+            if (system != null) id.setSystem(system);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.StringType s) {
+            s.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Identifier id) {
+            if (value != null) id.setValue(value);
+            if (system != null) id.setSystem(system);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.StringType s) {
+            s.setValue(value);
+        }
+    }
+
+    private void populateDateTypeCrossVersion(final Object toPopulate,
+                                              final Date value,
+                                              final String valueAsString) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateType d) {
+            if (value != null) d.setValue(value); else d.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateType d) {
+            if (value != null) d.setValue(value); else d.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateType d) {
+            if (value != null) d.setValue(value); else d.setValueAsString(valueAsString);
+        }
+    }
+
+    private void populateCodeableConceptCrossVersion(final Object toPopulate,
+                                                     final String firstCode,
+                                                     final String firstSystem,
+                                                     final String firstDisplay,
+                                                     final String text) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) {
+            cc.getCodingFirstRep().setCode(firstCode).setSystem(firstSystem).setDisplay(firstDisplay);
+            if (text != null) cc.setText(text);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.Coding c) {
+            c.setCode(firstCode).setSystem(firstSystem).setDisplay(firstDisplay);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            if (text != null) q.setValue(Long.parseLong(text));
+            q.setCode(firstCode);
+            q.setUnit(firstDisplay);
+        } else if (toPopulate instanceof IBaseEnumeration<?> e) {
+            e.setValueAsString(firstCode);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.Identifier id) {
+            id.setSystem(firstSystem);
+            id.setValue(firstCode == null ? text : firstCode);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.CodeableConcept cc) {
+            cc.getCodingFirstRep().setCode(firstCode).setSystem(firstSystem).setDisplay(firstDisplay);
+            if (text != null) cc.setText(text);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Coding c) {
+            c.setCode(firstCode).setSystem(firstSystem).setDisplay(firstDisplay);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            if (text != null) q.setValue(Long.parseLong(text));
+            q.setCode(firstCode);
+            q.setUnit(firstDisplay);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Identifier id) {
+            id.setSystem(firstSystem);
+            id.setValue(firstCode == null ? text : firstCode);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.CodeableConcept cc) {
+            cc.getCodingFirstRep().setCode(firstCode).setSystem(firstSystem).setDisplay(firstDisplay);
+            if (text != null) cc.setText(text);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Coding c) {
+            c.setCode(firstCode).setSystem(firstSystem).setDisplay(firstDisplay);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Quantity q) {
+            if (text != null) q.setValue(Long.parseLong(text));
+            q.setCode(firstCode);
+            q.setUnit(firstDisplay);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Identifier id) {
+            id.setSystem(firstSystem);
+            id.setValue(firstCode == null ? text : firstCode);
+        }
+    }
+
+    private void populateCodingCrossVersion(final Object toPopulate,
+                                            final String code,
+                                            final String system,
+                                            final String display) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Coding c) {
+            if (code != null) c.setCode(code);
+            if (system != null) c.setSystem(system);
+            if (display != null) c.setDisplay(display);
+        } else if (toPopulate instanceof IBaseEnumeration<?> e) {
+            e.setValueAsString(code);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Coding c) {
+            if (code != null) c.setCode(code);
+            if (system != null) c.setSystem(system);
+            if (display != null) c.setDisplay(display);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Coding c) {
+            if (code != null) c.setCode(code);
+            if (system != null) c.setSystem(system);
+            if (display != null) c.setDisplay(display);
+        }
+    }
+
+    private void populateAttachmentCrossVersion(final Object toPopulate,
+                                                final String contentType,
+                                                final byte[] dataBytes,
+                                                final String url,
+                                                final String title) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Attachment a) {
+            if (contentType != null) a.setContentType(contentType);
+            if (dataBytes != null) a.setData(dataBytes);
+            if (url != null) a.setUrl(url);
+            if (title != null) a.setTitle(title);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Attachment a) {
+            if (contentType != null) a.setContentType(contentType);
+            if (dataBytes != null) a.setData(dataBytes);
+            if (url != null) a.setUrl(url);
+            if (title != null) a.setTitle(title);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Attachment a) {
+            if (contentType != null) a.setContentType(contentType);
+            if (dataBytes != null) a.setData(dataBytes);
+            if (url != null) a.setUrl(url);
+            if (title != null) a.setTitle(title);
+        }
+    }
+
+    private void populateStringTypeCrossVersion(final Object toPopulate,
+                                                final String value,
+                                                final String valueAsString) {
+        if (toPopulate instanceof IBaseEnumeration<?> e) {
+            e.setValueAsString(value);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateTimeType dt) {
+            dt.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) {
+            cc.setText(value);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.InstantType it) {
+            it.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.IntegerType i) {
+            if (value != null) i.setValue(Integer.valueOf(value));
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.BooleanType b) {
+            b.setValue(Boolean.valueOf(value));
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.PrimitiveType<?> pt) {
+            ((org.hl7.fhir.dstu3.model.PrimitiveType<String>) pt).setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateTimeType dt) {
+            dt.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.CodeableConcept cc) {
+            cc.setText(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.InstantType it) {
+            it.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.IntegerType i) {
+            if (value != null) i.setValue(Integer.valueOf(value));
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.BooleanType b) {
+            b.setValue(Boolean.valueOf(value));
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.PrimitiveType<?> pt) {
+            ((org.hl7.fhir.r4b.model.PrimitiveType<String>) pt).setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateTimeType dt) {
+            dt.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.CodeableConcept cc) {
+            cc.setText(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.InstantType it) {
+            it.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.IntegerType i) {
+            if (value != null) i.setValue(Integer.valueOf(value));
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.BooleanType b) {
+            b.setValue(Boolean.valueOf(value));
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.PrimitiveType<?> pt) {
+            ((org.hl7.fhir.r5.model.PrimitiveType<String>) pt).setValue(value);
+        } else if (toPopulate instanceof XhtmlNode xhtmlNode) {
+            xhtmlNode.setValueAsString(value);
+        }
+    }
+
+    private void populateBooleanTypeCrossVersion(final Object toPopulate, final Boolean value) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.BooleanType b) {
+            b.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.BooleanType b) {
+            b.setValue(value);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.BooleanType b) {
+            b.setValue(value);
+        }
+    }
+
+    private void populatePeriodTypeCrossVersion(final Object toPopulate,
+                                                final Date start,
+                                                final Date end) {
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Period p) {
+            if (start != null) p.setStart(start);
+            if (end != null) p.setEnd(end);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Period p) {
+            if (start != null) p.setStart(start);
+            if (end != null) p.setEnd(end);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Period p) {
+            if (start != null) p.setStart(start);
+            if (end != null) p.setEnd(end);
+        }
+    }
+
+    private void populateTimingCrossVersion(final Object toPopulate,
+                                            final Timing data,
+                                            final Terminology terminology) {
+        // Timing is complex — we only handle the common case of the target being an
+        // Enumeration/code derived from the timing code's first coding.
+        final String code = data.hasCode() && data.getCode().hasCoding()
+                ? data.getCode().getCodingFirstRep().getCode()
+                : null;
+        if (code == null) {
+            return;
+        }
+        if (toPopulate instanceof IBaseEnumeration<?> e) {
+            e.setValueAsString(code);
         }
     }
 

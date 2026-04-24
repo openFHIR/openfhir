@@ -70,7 +70,7 @@ public class FallToFHIRTest extends KdsGenericTest {
     @Test
     public void assertToFHIRBundle(){
         Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(FALL_EINFACH), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, BUNDLE_EINFACH);
     }
 
@@ -78,7 +78,7 @@ public class FallToFHIRTest extends KdsGenericTest {
     private void assertToFHIR(int index){
         Composition composition = JacksonUtil.getObjectMapper()
                 .readValue(getFile(OPENEHR_COMPOSITIONS[index]), Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_ENCOUNTERS[index]);
     }
 

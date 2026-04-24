@@ -16,7 +16,11 @@ import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
+import com.syntaric.openfhir.fc.schema.Spec;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
+import ca.uhn.fhir.fhirpath.IFhirPath;
+import org.hl7.fhir.instance.model.api.IAnyResource;
+import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +42,7 @@ public class ToOpenEhr {
     private final HelpersCreator helpersCreator;
     private final Gson gson;
     private final ToOpenEhrMappingEngine toOpenEhrMappingEngine;
-    private final FhirPathR4 fhirPathR4;
+    private final FhirContextRegistry fhirContextRegistry;
     private final OpenFhirStringUtils openFhirStringUtils;
     private final MappingMetricsLogger metricsLogger;
 
@@ -49,7 +53,7 @@ public class ToOpenEhr {
                      final HelpersCreator helpersCreator,
                      final Gson gson,
                      final ToOpenEhrMappingEngine toOpenEhrMappingEngine,
-                     final FhirPathR4 fhirPathR4,
+                     final FhirContextRegistry fhirContextRegistry,
                      final OpenFhirStringUtils openFhirStringUtils,
                      final MappingMetricsLogger metricsLogger) {
         this.prePostProcessor = prePostProcessor;
@@ -58,7 +62,7 @@ public class ToOpenEhr {
         this.helpersCreator = helpersCreator;
         this.gson = gson;
         this.toOpenEhrMappingEngine = toOpenEhrMappingEngine;
-        this.fhirPathR4 = fhirPathR4;
+        this.fhirContextRegistry = fhirContextRegistry;
         this.openFhirStringUtils = openFhirStringUtils;
         this.metricsLogger = metricsLogger;
     }
@@ -73,7 +77,7 @@ public class ToOpenEhr {
      * @param resource FHIR Resource that's being mapped to openEHR
      * @return Composition that's been created based on the FHIR input and fhir connect mappers
      */
-    public Composition fhirToCompositionRm(final FhirConnectContext context, final Resource resource,
+    public Composition fhirToCompositionRm(final FhirConnectContext context, final IAnyResource resource,
                                            final WebTemplate webTemplate) {
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
@@ -101,7 +105,7 @@ public class ToOpenEhr {
      * @return JsonObject representing a flat path structure/format of the mapped openEHR Composition
      */
     public JsonObject fhirToFlatJsonObject(final FhirConnectContext context,
-                                           final Resource resource,
+                                           final IAnyResource resource,
                                            final WebTemplate webTemplate) {
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
@@ -118,6 +122,9 @@ public class ToOpenEhr {
 
         final JsonObject finalFlat = new JsonObject();
 
+        final Spec.Version fhirVersion = context.getSpec() != null && context.getSpec().getVersion() != null
+                ? context.getSpec().getVersion() : Spec.Version.R4;
+
         final MappingTimer helpersTimer = MappingTimer.start();
         final Map<String, List<MappingHelper>> mappersOfMainArchetype = helpersCreator.constructHelpers(templateId,
                                                                                                         context.getContext()
@@ -132,8 +139,7 @@ public class ToOpenEhr {
                 context.getContext().getStart());
         final MappingHelper aMapper = mappingHelpersOfMainArchetype.get(0);
 
-        final List<Resource> startingResources = findStartingResource(aMapper,
-                                                                      resource); // could there be more than 1??
+        final List<IAnyResource> startingResources = findStartingResource(aMapper, resource, fhirVersion);
         if (startingResources == null) {
             log.error("No starting resources found for template: {}, archetype: {}", templateId,
                       context.getContext().getStart());
@@ -144,7 +150,7 @@ public class ToOpenEhr {
         if (startingResources.size() > 1) {
             final Map<String, Integer> indexByHierarchyPath = new HashMap<>();
             indexByHierarchyPath.put(aMapper.getOpenEhrHierarchySplitFlatPath(), 0);
-            for (Resource startingResource : startingResources) {
+            for (IAnyResource startingResource : startingResources) {
                 mappingHelpersOfMainArchetype.forEach(mh -> {
                     mh.setGeneratingFhirResource(startingResource);
                     mh.setGeneratingFhirRoot(startingResource);
@@ -154,12 +160,13 @@ public class ToOpenEhr {
                                                     finalFlat,
                                                     startingResource,
                                                     true,
-                                                    indexByHierarchyPath);
+                                                    indexByHierarchyPath,
+                                                    fhirVersion);
                 metricsLogger.record("fhirToFlatJsonObject.mapToOpenEhr",
                         "template=" + templateId + " resources=" + startingResources.size(), mapTimer.elapsedMs());
             }
         } else {
-            prepareBundle(startingResources.get(0));
+            prepareBundle(startingResources.get(0), fhirVersion);
 
             mappingHelpersOfMainArchetype.forEach(mh -> {
                 mh.setGeneratingFhirResource(startingResources.get(0));
@@ -170,7 +177,8 @@ public class ToOpenEhr {
                                                 finalFlat,
                                                 startingResources.get(0),
                                                 true,
-                                                new HashMap<>());
+                                                new HashMap<>(),
+                                                fhirVersion);
             metricsLogger.record("fhirToFlatJsonObject.mapToOpenEhr",
                     "template=" + templateId + " resources=" + startingResources.size(), mapTimer.elapsedMs());
         }
@@ -182,20 +190,21 @@ public class ToOpenEhr {
     }
 
 
-    private List<Resource> findStartingResource(final MappingHelper aMapperFromStartingArchetype,
-                                                final Resource toEvaluateOn) {
-
+    private List<IAnyResource> findStartingResource(final MappingHelper aMapperFromStartingArchetype,
+                                                     final IAnyResource toEvaluateOn,
+                                                     final Spec.Version fhirVersion) {
+        final IFhirPath fhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
         final List<Condition> preprocessorFhirConditions = aMapperFromStartingArchetype.getPreprocessorFhirConditions();
         if (preprocessorFhirConditions == null) {
             // still we need to narrow it down because entrypoint is always a Bundle
-            if (toEvaluateOn instanceof Bundle) {
+            if (toEvaluateOn instanceof IBaseBundle) {
                 if (aMapperFromStartingArchetype.getGeneratingResourceType().equals("Bundle")) {
                     return Collections.singletonList(toEvaluateOn);
                 }
-                return fhirPathR4.evaluate(toEvaluateOn,
-                                           String.format("entry.resource.ofType(%s)",
-                                                         aMapperFromStartingArchetype.getGeneratingResourceType()),
-                                           Resource.class);
+                return fhirPath.evaluate(toEvaluateOn,
+                                         String.format("entry.resource.ofType(%s)",
+                                                       aMapperFromStartingArchetype.getGeneratingResourceType()),
+                        IAnyResource.class);
             } else {
                 return Collections.singletonList(toEvaluateOn);
             }
@@ -204,9 +213,9 @@ public class ToOpenEhr {
                                                                                  aMapperFromStartingArchetype.getGeneratingResourceType());
 
         // apply limiting factor
-        final List<Resource> relevantDataPoints = fhirPathR4.evaluate(toEvaluateOn,
-                                                                      limitingCriteriaBasedOnCoverCondition,
-                                                                      Resource.class);
+        final List<IAnyResource> relevantDataPoints = fhirPath.evaluate(toEvaluateOn,
+                                                                        limitingCriteriaBasedOnCoverCondition,
+                IAnyResource.class);
 
         if (relevantDataPoints.isEmpty()) {
             log.warn("No relevant resources found for {}",
@@ -237,15 +246,34 @@ public class ToOpenEhr {
                              withoutResourceType);
     }
 
-    private Bundle prepareBundle(final Resource startingResource) {
-        final Bundle toRunEngineOn;
-        if (!(startingResource instanceof Bundle)) {
-            toRunEngineOn = new Bundle();
-            toRunEngineOn.addEntry(new Bundle.BundleEntryComponent().setResource(startingResource));
-        } else {
-            toRunEngineOn = (Bundle) startingResource;
+    private IBaseBundle prepareBundle(final IAnyResource startingResource, final Spec.Version fhirVersion) {
+        if (startingResource instanceof IBaseBundle) {
+            return (IBaseBundle) startingResource;
         }
-
-        return toRunEngineOn;
+        switch (fhirVersion) {
+            case STU3 -> {
+                final org.hl7.fhir.dstu3.model.Bundle b = new org.hl7.fhir.dstu3.model.Bundle();
+                b.addEntry(new org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent()
+                        .setResource((org.hl7.fhir.dstu3.model.Resource) startingResource));
+                return b;
+            }
+            case R4B -> {
+                final org.hl7.fhir.r4b.model.Bundle b = new org.hl7.fhir.r4b.model.Bundle();
+                b.addEntry(new org.hl7.fhir.r4b.model.Bundle.BundleEntryComponent()
+                        .setResource((org.hl7.fhir.r4b.model.Resource) startingResource));
+                return b;
+            }
+            case R5 -> {
+                final org.hl7.fhir.r5.model.Bundle b = new org.hl7.fhir.r5.model.Bundle();
+                b.addEntry(new org.hl7.fhir.r5.model.Bundle.BundleEntryComponent()
+                        .setResource((org.hl7.fhir.r5.model.Resource) startingResource));
+                return b;
+            }
+            default -> {
+                final Bundle b = new Bundle();
+                b.addEntry(new Bundle.BundleEntryComponent().setResource((Resource) startingResource));
+                return b;
+            }
+        }
     }
 }

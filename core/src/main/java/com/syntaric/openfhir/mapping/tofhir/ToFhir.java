@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.nedap.archie.rm.composition.Composition;
 import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.OpenFhirMappingContext;
+import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
@@ -14,9 +15,8 @@ import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.marshal.FlatJsonMarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.Bundle.BundleType;
+import org.hl7.fhir.instance.model.api.IBaseBundle;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,7 +55,7 @@ public class ToFhir {
         this.metricsLogger = metricsLogger;
     }
 
-    public Bundle contentItemsToFhir(final FhirConnectContext context,
+    public IBaseBundle contentItemsToFhir(final FhirConnectContext context,
                                      final List<ContentItem> contentItems,
                                      final WebTemplate webTemplate) {
         toFhirPrePostProcessor.preProcessContentItems(context, contentItems, webTemplate);
@@ -65,7 +65,7 @@ public class ToFhir {
         return compositionsToFhir(context, List.of(composition), webTemplate);
     }
 
-    public Bundle compositionsToFhir(final FhirConnectContext context,
+    public IBaseBundle compositionsToFhir(final FhirConnectContext context,
                                      final List<Composition> compositions,
                                      final WebTemplate webTemplate) {
         // create flat from composition
@@ -74,7 +74,10 @@ public class ToFhir {
 
         toFhirPrePostProcessor.preProcess(context, compositions, webTemplate);
 
-        final Bundle returningBundle = prepareBundle();
+        final Spec.Version fhirVersion = context.getSpec() != null && context.getSpec().getVersion() != null
+                ? context.getSpec().getVersion() : Spec.Version.R4;
+
+        final IBaseBundle returningBundle = toFhirMappingEngine.prepareBundle(fhirVersion);
         int compositionIndex = 0;
         for (final Composition composition : compositions) {
             final String compositionContext = "template=" + templateId + " composition#" + compositionIndex++;
@@ -94,28 +97,22 @@ public class ToFhir {
             metricsLogger.record("compositionsToFhir.constructHelpers", compositionContext, helpersTimer.elapsedMs());
 
             final MappingTimer mapTimer = MappingTimer.start();
-            final Bundle creatingBundle = toFhirMappingEngine.mapToFhir(mappingHelpers, flatJsonObject);
+            final IBaseBundle creatingBundle = toFhirMappingEngine.mapToFhir(mappingHelpers, flatJsonObject, fhirVersion);
             metricsLogger.record("compositionsToFhir.mapToFhir", compositionContext, mapTimer.elapsedMs());
 
-            returningBundle.getEntry().addAll(creatingBundle.getEntry());
+            toFhirMappingEngine.mergeEntries(returningBundle, creatingBundle, fhirVersion);
         }
 
-        final Bundle relevantBundle = extractBundleFromBundle(returningBundle);
+        final IBaseBundle relevantBundle = extractBundleFromBundle(returningBundle, fhirVersion);
         return toFhirPrePostProcessor.postProcess(relevantBundle, context, compositions, webTemplate);
     }
 
-    private Bundle extractBundleFromBundle(final Bundle returningBundle) {
-        for (final BundleEntryComponent bundleEntryComponent : returningBundle.getEntry()) {
-            if (bundleEntryComponent.getResource() instanceof Bundle bundle) {
-                return bundle;
+    private IBaseBundle extractBundleFromBundle(final IBaseBundle returningBundle, final Spec.Version fhirVersion) {
+        for (final IBaseResource entry : toFhirMappingEngine.getBundleResources(returningBundle, fhirVersion)) {
+            if (entry instanceof IBaseBundle nestedBundle) {
+                return nestedBundle;
             }
         }
         return returningBundle;
-    }
-
-    private Bundle prepareBundle() {
-        final Bundle bundle = new Bundle();
-        bundle.setType(BundleType.COLLECTION);
-        return bundle;
     }
 }

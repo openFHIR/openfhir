@@ -96,7 +96,7 @@ public class FhirInstanceCreatorTest {
         final String fhirPath = "MedicationRequest.medication.resolve().code.text";
         final com.syntaric.openfhir.util.FhirInstanceCreator.InstantiateAndSetReturn instantiateAndSetReturn = fhirInstanceCreator.instantiateAndSetElement(resource,
                                                                                                                                                             MedicationRequest.class,
-                                                                                                                                                            fhirPath, null, "Medication");
+                                                                                                                                                            fhirPath, null, "Medication", "org.hl7.fhir.r4.model.");
         StringType medicationText = (StringType) getLastReturn(instantiateAndSetReturn).getReturning();
         medicationText.setValue("This is medication text");
 

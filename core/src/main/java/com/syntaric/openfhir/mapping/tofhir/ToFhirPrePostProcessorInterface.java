@@ -6,12 +6,13 @@ import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import java.util.List;
 
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
+import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.Bundle;
 import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 
 public interface ToFhirPrePostProcessorInterface {
 
-    Bundle postProcess(final Bundle mappedResource,
+    IBaseBundle postProcess(final IBaseBundle mappedResource,
                        final FhirConnectContext context,
                        final List<Composition> compositions,
                        final WebTemplate webTemplate);
