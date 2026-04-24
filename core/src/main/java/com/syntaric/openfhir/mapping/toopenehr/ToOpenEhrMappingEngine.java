@@ -222,12 +222,14 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         return stringUtils.replaceLastIndexOf(path, RECURRING_SYNTAX, ":" + i);
     }
 
-    boolean doMapping(final MappingHelper helper, final JsonObject flatComposition, final Base toResolveOn,
+    boolean doMapping(final MappingHelper helper, final JsonObject flatComposition, final Base iteratingBase,
                       final Map<String, Integer> indexByHierarchyPath) {
         final MappingTimer mappingTimer = MappingTimer.start();
 
         final String fhirPath =
                 StringUtils.isEmpty(helper.getFhirWithCondition()) ? helper.getFhir() : helper.getFhirWithCondition();
+
+        final Base toResolveOn = getToResolveOn(iteratingBase, helper);
 
         final List<Base> results = resolveFhirResults(helper, fhirPath, toResolveOn);
         if (results == null) {
@@ -249,6 +251,14 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                 "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
                 mappingTimer.elapsedMs());
         return result;
+    }
+
+    private Base getToResolveOn(final Base iteratingBase,
+                                final MappingHelper helper) {
+        if(helper.getOriginalFhirPath() == null) {
+            return iteratingBase;
+        }
+        return helper.getOriginalFhirPath().startsWith(FHIR_RESOURCE_FC) ? helper.getGeneratingFhirResource() : iteratingBase;
     }
 
     /**
@@ -348,7 +358,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         if (result instanceof CodeableConcept) {
             if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
             if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
-        } if (result instanceof Enumeration<?>) {
+        }
+        if (result instanceof Enumeration<?>) {
             if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
             if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
         } else if (result instanceof Coding) {
@@ -430,7 +441,13 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         }
         clonedHelper.getChildren().forEach(c -> {
             c.setGeneratingFhirRoot(result);
-            c.setGeneratingFhirResource(parentHelper.getGeneratingFhirResource());
+            if(c.isFollowedBy()) {
+                c.setGeneratingFhirResource(parentHelper.getGeneratingFhirResource());
+            } else if(clonedHelper.isHasSlot()) {
+                c.setGeneratingFhirResource(result);
+            } else {
+                c.setGeneratingFhirResource(parentHelper.getGeneratingFhirResource());
+            }
         });
         mapToOpenEhr(clonedHelper.getChildren(), flatComposition, result,
                 clonedHelper.isHasSlot(), indexByHierarchyPath);

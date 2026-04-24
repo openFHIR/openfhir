@@ -31,7 +31,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -96,7 +97,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
     "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -130,7 +132,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
     "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -164,10 +167,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -201,7 +206,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -235,7 +241,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -300,7 +307,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
     "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -334,7 +342,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
     "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -368,10 +377,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -405,7 +416,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -439,7 +451,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -473,7 +486,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -507,7 +521,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -541,7 +556,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -575,7 +591,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -609,7 +626,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -643,7 +661,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -708,10 +727,12 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -845,16 +866,20 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -890,7 +915,7 @@
     "modelMetadataName" : "EVALUATION.vital_status.v1",
     "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
     "mappingName" : "identifierInReference",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "Observation",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot.identifier",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
@@ -1019,21 +1044,25 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "EVALUATION.vital_status.v1",
     "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
     "mappingName" : "encounterMapping",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "Observation",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
@@ -1062,10 +1091,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -1099,7 +1130,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -1195,7 +1227,8 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "EVALUATION.vital_status.v1",
       "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -1229,13 +1262,16 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "EVALUATION.vital_status.v1",
   "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -1331,7 +1367,8 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "EVALUATION.vital_status.v1",
       "archetype" : "openEHR-EHR-EVALUATION.vital_status.v1",
@@ -1365,11 +1402,14 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 } ]

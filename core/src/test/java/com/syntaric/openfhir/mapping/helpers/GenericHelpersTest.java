@@ -100,7 +100,7 @@ public abstract class GenericHelpersTest {
             final ObjectMapper mapper = new ObjectMapper();
             final String actual = mapper.writeValueAsString(helpers);
 
-            writeHelpersToJson(helpers, resourceName);
+//            writeHelpersToJson(helpers, resourceName);
 
             final InputStream is = getClass().getResourceAsStream(
                     "/com/syntaric/openfhir/mapping/helpers/" + resourceName);
