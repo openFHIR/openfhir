@@ -644,9 +644,8 @@ public class OpenEhrPopulator {
                 // Handle additional codings as mappings
                 addAdditionalCodingsAsMappings(path, codings, flat, terminology);
                 addToConstructingFlat(path + "|value", translate(getCodeableConceptText(value), null, terminology), flat);
-            } else {
-                // No codings with code: skip mapping entirely
-                return true;
+            } else if(isMultipleTypes) {
+                addToConstructingFlat(path + "|other", translate(getCodeableConceptText(value), null, terminology), flat);
             }
             return true;
         } else if (value instanceof IBaseCoding coding) {
