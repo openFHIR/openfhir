@@ -155,3 +155,10 @@ mappings:
               fhir:
                 - path: "text"
                   value: "THIS IS LOCATION OF MEASUREMENT"
+
+
+  - name: "narrativeGeneration"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype"
+    mappingCode: "generateNarrative"

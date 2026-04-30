@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Additional openEHR Data Types for AQL mappings
 - Support for different FHIR versions: STU3, R4 (was supported before), R4B, R5
 - mapping of `|other`
+- New `generateNarrative` custom mapping code: when referenced in a model mapping, automatically generates a FHIR narrative (`text`) on the resource being built during openEHR→FHIR mapping using HAPI's built-in Thymeleaf narrative generator
 
 ### Fixed
 - `GET /opt/{id}`, `GET /fc/model/{id}`, `GET /fc/context/{id}` now return 404 instead of 200 with empty body when the resource is not found
