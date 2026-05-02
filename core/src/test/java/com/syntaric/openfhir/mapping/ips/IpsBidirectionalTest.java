@@ -170,7 +170,7 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("Problem list Reported", coding.getDisplay());
 
         Assert.assertEquals("generated", section.getText().getStatusAsString());
-        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>", section.getText().getDivAsString());
+        Assert.assertTrue(section.getText().getDivAsString().startsWith("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Problem List</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Condition</th><th>Clinical Status</th><th>Verification Status</th><th>Severity</th><th>Onset</th><th>Abatement</th><th>Notes</th></tr></thead><tbody><tr>"));
 
         final Condition condition = (Condition) section.getEntry().stream()
                 .filter(e -> "#1".equals(e.getReference()))

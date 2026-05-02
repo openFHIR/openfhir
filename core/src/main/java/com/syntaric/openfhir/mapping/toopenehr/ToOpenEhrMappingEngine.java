@@ -651,7 +651,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         if (!(toResolveOn instanceof IBaseReference)) {
             return versionedFhirPath.evaluate(toResolveOn, mappingHelper.getFhir(), baseClass);
         }
-        if (mappingHelper.getOriginalOpenEhrPath().equals(FhirConnectConst.REFERENCE)) {
+        if (FhirConnectConst.REFERENCE.equals(mappingHelper.getOriginalOpenEhrPath())) {
             return versionedFhirPath.evaluate(toResolveOn, "resolve()", baseClass);
         } else {
             return null;

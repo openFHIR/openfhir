@@ -1,7 +1,10 @@
 package com.syntaric.openfhir.mapping.custommappings;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.fhirpath.IFhirPath;
+import ca.uhn.fhir.narrative.CustomThymeleafNarrativeGenerator;
 import ca.uhn.fhir.narrative.DefaultThymeleafNarrativeGenerator;
+import ca.uhn.fhir.util.BundleBuilder;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
@@ -13,17 +16,14 @@ import com.syntaric.openfhir.util.FhirInstanceCreator;
 import com.syntaric.openfhir.util.FhirInstanceCreatorUtility;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
-
-import java.util.List;
-import java.util.Set;
-
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.instance.model.api.IBase;
-import org.hl7.fhir.instance.model.api.IBaseResource;
-import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.instance.model.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Custom mapping that generates a FHIR narrative (text) on the resource being built when mapping
@@ -67,33 +67,110 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
                                                    final OpenFhirStringUtils stringUtils,
                                                    final OpenFhirMapperUtils mapperUtils) {
 
-        if(StringUtils.isEmpty(mappingHelper.getFhir()) || FhirConnectConst.FHIR_RESOURCE_FC.equals(mappingHelper.getOriginalFhirPath())) {
-            generateNarrativeOnResource((IBaseResource) mappingHelper.getGeneratingFhirRoot()); // todo test
-            return null;
+        try {
+            final String fhirPathForNarrativeGeneration = extractArgument(mappingHelper.getProgrammedMapping());
+            if (fhirPathForNarrativeGeneration != null) {
+                log.debug("generateNarrative: argument '{}' provided but not yet used", fhirPathForNarrativeGeneration);
+            }
+
+            final Spec.Version version = detectVersion(mappingHelper.getGeneratingFhirResource());
+
+            // get resource to generate narrative of
+            final IBaseResource resourceToGenerateNarrativeOf = getResourceToGenerateNarrativeOf(mappingHelper,
+                    fhirPathForNarrativeGeneration, version);
+
+            final String generatedNarrative = generateNarrative(resourceToGenerateNarrativeOf, version);
+
+            Object instantiated = toFhirInstantiator.instantiateElement(mappingHelper, null, -1, version.modelPackage()); // is it ok to be -1?
+            if (instantiated instanceof INarrative narrative) {
+                try {
+                    narrative.setStatusAsString("generated");
+                    narrative.setDivAsString(generatedNarrative);
+                } catch (final Exception e) {
+                    log.error("Exception trying to set narrative on div", e);
+                }
+            } else if (instantiated instanceof IPrimitiveType<?> primitiveType) {
+                primitiveType.setValueAsString(generatedNarrative);
+            }
+        } catch (final Exception e) {
+            log.error("Exception trying to generateNarrative; gracefully continuing with mappings", e);
         }
 
-//        Object instantiated = toFhirInstantiator.instantiateElement(
-//                mappingHelper,
-//                null,
-//                -1,
-//                version.modelPackage());
-//
-//        try {
-//            new DefaultThymeleafNarrativeGenerator().populateResourceNarrative(ctx, (IBaseResource) resource);
-//        } catch (Exception e) {
-//            log.warn("generateNarrative: narrative generation failed: {}", e.getMessage());
-//        }
         return null;
     }
 
-    private void generateNarrativeOnResource(final IBaseResource resource) {
+    IBaseResource getResourceToGenerateNarrativeOf(final MappingHelper mappingHelper,
+                                                   final String fhirPathForNarrativeGeneration,
+                                                   final Spec.Version version) {
+        if (fhirPathForNarrativeGeneration.equals(FhirConnectConst.FHIR_RESOURCE_FC)) {
+            return (IBaseResource) mappingHelper.getGeneratingFhirResource();
+        }
+        if (fhirPathForNarrativeGeneration.equals(FhirConnectConst.FHIR_ROOT_FC)) {
+            return (IBaseResource) mappingHelper.getGeneratingFhirRoot();
+        }
+        final IFhirPath fhirPath = fhirContextRegistry.getFhirPath(version);
+        boolean fhirPathOnResource = fhirPathForNarrativeGeneration.startsWith(FhirConnectConst.FHIR_RESOURCE_FC);
+        final Object generatingFhirRoot = fhirPathOnResource ?
+                mappingHelper.getGeneratingFhirResource() : mappingHelper.getGeneratingFhirRoot();
+
+        final String fhirPathForEvaluation = fhirPathOnResource ? fhirPathForNarrativeGeneration.replace(String.format("%s.",
+                FhirConnectConst.FHIR_RESOURCE_FC), "") : fhirPathForNarrativeGeneration;
+
+        final BundleBuilder builder = new BundleBuilder(fhirContextRegistry.getContext(version));
+        if (generatingFhirRoot instanceof List listOfGeneratedResources) {
+            for (Object listOfGeneratedResource : listOfGeneratedResources) {
+                final List<IBase> evaluated = fhirPath.evaluate((IBase) listOfGeneratedResource, fhirPathForEvaluation, IBase.class);
+                evaluated.forEach(ev -> {
+                    List<? extends IBaseResource> iBases = resolveReference(ev, mappingHelper, fhirPath);
+                    iBases.forEach(builder::addCollectionEntry);
+                });
+            }
+        } else {
+            final List<IBase> evaluated = fhirPath.evaluate((IBase) generatingFhirRoot, fhirPathForEvaluation, IBase.class);
+            if (evaluated.size() == 1) {
+                return resolveReference(evaluated.get(0), mappingHelper, fhirPath).get(0);
+            }
+            evaluated.forEach(ev -> {
+                List<? extends IBaseResource> iBases = resolveReference(ev, mappingHelper, fhirPath);
+                iBases.forEach(builder::addCollectionEntry);
+            });
+        }
+        return builder.getBundle();
+    }
+
+    private List<? extends IBaseResource> resolveReference(final IBase toResolveOn,
+                                                           final MappingHelper mappingHelper,
+                                                           final IFhirPath versionedFhirPath) {
+        if ("BundleEntryComponent".equals(toResolveOn.getClass().getSimpleName())
+                || toResolveOn instanceof IBaseReference) {
+            try {
+                final Object resource = toResolveOn.getClass().getMethod("getResource").invoke(toResolveOn);
+                return resource instanceof IBase ? List.of((IBaseResource) resource) : Collections.emptyList();
+            } catch (final Exception e) {
+                log.error("Could not get resource from BundleEntryComponent", e);
+                return Collections.emptyList();
+            }
+        }
+
+        if (FhirConnectConst.REFERENCE.equals(mappingHelper.getOriginalOpenEhrPath())) {
+            return versionedFhirPath.evaluate(toResolveOn, "resolve()", IBaseResource.class);
+        }
+        if (toResolveOn instanceof IBaseResource) {
+            return List.of((IBaseResource) toResolveOn);
+        }
+        return Collections.emptyList();
+    }
+
+    private String generateNarrative(final IBaseResource resource,
+                                     final Spec.Version version) {
         try {
-            final Spec.Version version = detectVersion(resource);
             final FhirContext ctx = fhirContextRegistry.getContext(version);
-            new DefaultThymeleafNarrativeGenerator().populateResourceNarrative(ctx, resource);
+            return new CustomThymeleafNarrativeGenerator("classpath:ca/uhn/fhir/narrative/narratives.properties",
+                    "classpath:openfhir-narratives.properties").generateResourceNarrative(ctx, resource);
         } catch (Exception e) {
             log.warn("generateNarrative: narrative generation failed: {}", e.getMessage());
         }
+        return null;
     }
 
     private Spec.Version detectVersion(final IBase resource) {
