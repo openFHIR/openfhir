@@ -37,7 +37,7 @@ public class CustomMappingRegistry {
         if (mappingCode == null) {
             return Optional.empty();
         }
-        return Optional.ofNullable(byCode.get(mappingCode));
+        return Optional.ofNullable(byCode.get(CustomMapping.extractCode(mappingCode)));
     }
 
     public Collection<CustomMapping> all() {

@@ -24,6 +24,34 @@ public abstract class CustomMapping {
     public abstract Set<String> mappingCodes();
 
     /**
+     * Extracts the base code from a raw mapping code that may carry arguments,
+     * e.g. {@code "generateNarrative(text)"} → {@code "generateNarrative"}.
+     */
+    public static String extractCode(final String rawCode) {
+        if (rawCode == null) {
+            return null;
+        }
+        final int paren = rawCode.indexOf('(');
+        return paren < 0 ? rawCode : rawCode.substring(0, paren);
+    }
+
+    /**
+     * Extracts the argument from a raw mapping code, or {@code null} if none is present,
+     * e.g. {@code "generateNarrative(text)"} → {@code "text"}.
+     */
+    public static String extractArgument(final String rawCode) {
+        if (rawCode == null) {
+            return null;
+        }
+        final int open = rawCode.indexOf('(');
+        final int close = rawCode.lastIndexOf(')');
+        if (open < 0 || close <= open + 1) {
+            return null;
+        }
+        return rawCode.substring(open + 1, close);
+    }
+
+    /**
      * Apply a custom mapping from FHIR to openEHR.
      *
      * @return true if the mapping was applied.
