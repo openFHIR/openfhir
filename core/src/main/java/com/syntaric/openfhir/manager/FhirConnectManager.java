@@ -57,6 +57,14 @@ public class FhirConnectManager {
         return fhirConnectService.findModelsByNames(names);
     }
 
+    public void deleteModel(final String id) {
+        fhirConnectService.deleteModel(id);
+    }
+
+    public void deleteContext(final String id) {
+        fhirConnectService.deleteContext(id);
+    }
+
     public void deleteAllTenant() {
         fhirConnectService.deleteAllTenant();
     }

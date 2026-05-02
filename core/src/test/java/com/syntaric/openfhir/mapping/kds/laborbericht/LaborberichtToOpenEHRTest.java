@@ -60,7 +60,7 @@ public class LaborberichtToOpenEHRTest extends KdsGenericTest {
     private void assertToOpenEHR(int index) {
         final Composition composition =
                 toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_DIAGNOSTIC_REPORTS[index]),
-                                              operationaltemplate);
+                        webTemplate);
         final String expectedCompositionLocation = OPENEHR_COMPOSITIONS[index];
         final String expectedComposition = IOUtils.toString(getClass().getResourceAsStream(expectedCompositionLocation));
 
@@ -74,7 +74,7 @@ public class LaborberichtToOpenEHRTest extends KdsGenericTest {
     private void assertToOpenEHRWihtoutOPTVal(int index) {
         final Composition composition =
                 toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_DIAGNOSTIC_REPORTS[index]),
-                                              operationaltemplate);
+                        webTemplate);
         standardsAsserter.assertCompositionWihtoutOPTValidataion(composition, OPENEHR_COMPOSITIONS[index],
                                                                  operationaltemplate);
     }
@@ -172,7 +172,7 @@ public class LaborberichtToOpenEHRTest extends KdsGenericTest {
     @Test
     public void toOpenEhr() {
         final Bundle testBundle = getTestBundle(BUNDLE);
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
         Assert.assertEquals("registered",
                             jsonObject.getAsJsonPrimitive("laborbericht/context/status|code").getAsString());

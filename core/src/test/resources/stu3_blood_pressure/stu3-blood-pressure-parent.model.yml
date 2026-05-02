@@ -1,0 +1,33 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "openEHR-EHR-COMPOSITION.blood_pressure.v0"
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: STU3
+  openEhrConfig:
+    archetype: "openEHR-EHR-COMPOSITION.blood_pressure.v0"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Bundle
+
+mappings:
+
+  - name: "bpParent"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]"
+    followedBy:
+      mappings:
+        - name: "iterateBpObservations"
+          with:
+            fhir: "resource"
+            openehr: "$reference"
+          reference:
+            resourceType: "Observation"
+            mappings:
+              - name: "bpSlot"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]"
+                slotArchetype: "OBSERVATION.blood_pressure.v2"

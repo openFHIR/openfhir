@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
   name: ADMIN_ENTRY.episode_institution_local.v0
@@ -14,11 +14,10 @@ spec:
 
 mappings:
 
-# reference to party identified, not supported
-#  - name: "healthcareFacility"
-#    with:
-#      fhir: "$resource.serviceProvider"
-#      openehr: "$composition/context/health_care_facility"
+  - name: "healthcareFacility"
+    with:
+      fhir: "$resource.serviceProvider"
+      openehr: "$composition/context/health_care_facility"
 
   - name: "contextPeriod"
     with:
@@ -30,12 +29,10 @@ mappings:
           with:
             fhir: "start"
             openehr: "start_time"
-
         - name: "contextEnd"
           with:
             fhir: "end"
             openehr: "end_time"
-
 
   - name: "location"
     with:
@@ -47,6 +44,7 @@ mappings:
     with:
       fhir: "$resource.period"
       openehr: "$archetype"
+      type: "NONE"
     followedBy:
       mappings:
         - name: "admissionDate"
@@ -74,144 +72,3 @@ mappings:
           with:
             fhir: "status"
             openehr: "items[at0028]"
-
-#  - name: "roomLocation"
-#    unidirectional: "fhir->openehr"
-#    with:
-#      fhir: "$resource.location.location.identifier"
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0023]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "ro"
-#
-#  - name: "stationLocation"
-#    unidirectional: "fhir->openehr"
-#    with:
-#      fhir: "$resource.location.location.identifier"
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0022]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "wa"
-
-#        - name: "bedParent"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$openehrRoot"
-#          fhirCondition:
-#            targetRoot: "$resource.location"
-#            targetAttribute: "physicalType.coding.code"
-#            operator: "one of"
-#            criteria: "bd"
-#
-#        - name: "stationParent"
-#          with:
-#            fhir: "$fhirRoot"
-#            openehr: "$openehrRoot"
-#          fhirCondition:
-#            targetRoot: "$resource.location"
-#            targetAttribute: "physicalType.coding.code"
-#            operator: "one of"
-#            criteria: "wa"
-
-#  - name: "room"
-#    with:
-#      fhir: "$resource.location.location.identifier"
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0023]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "ro"
-#    followedBy:
-#      mappings:
-#        - name: "hardcodingRoomSystem"
-#          with:
-#            fhir: "$resource.location.physicalType.coding"
-#          manual:
-#            - name: "physicalType"
-#              fhir:
-#                - path: "system"
-#                  value: "http://terminology.hl7.org/CodeSystem/location-physical-type"
-#                - path: "code"
-#                  value: "ro"
-#
-#  - name: "roomLocation"
-#    unidirectional: "fhir->openehr" #only fhir->openehr, because openehr->fhir we wouldn't be creating a new Location just for the identifier
-#    with:
-#      fhir: "$resource.location.location.identifier" # if resolved within the Location itself
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0023]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "ro"
-#
-#  - name: "bed"
-#    with:
-#      fhir: "$resource.location.location.identifier"
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0024]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "bd"
-#    followedBy:
-#      mappings:
-#        - name: "hardcodingBedSystem"
-#          with:
-#            fhir: "$resource.location.physicalType.coding"
-#          manual:
-#            - name: "physicalType"
-#              fhir:
-#                - path: "system"
-#                  value: "http://terminology.hl7.org/CodeSystem/location-physical-type"
-#                - path: "code"
-#                  value: "bd"
-#
-#  - name: "bedLocation"
-#    unidirectional: "fhir->openehr" #only fhir->openehr, because openehr->fhir we wouldn't be creating a new Location just for the identifier
-#    with:
-#      fhir: "$resource.location.location.identifier" # if resolved within the Location itself
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0024]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "bd"
-#
-#  - name: "station"
-#    with:
-#      fhir: "$resource.location.location.identifier"
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0022]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "wa"
-#    followedBy:
-#      mappings:
-#        - name: "hardcodingWardSystem"
-#          with:
-#            fhir: "$resource.location.physicalType.coding"
-#          manual:
-#            - name: "physicalType"
-#              fhir:
-#                - path: "system"
-#                  value: "http://terminology.hl7.org/CodeSystem/location-physical-type"
-#                - path: "code"
-#                  value: "wa"
-#
-#  - name: "stationLocation"
-#    unidirectional: "fhir->openehr" #only fhir->openehr, because openehr->fhir we wouldn't be creating a new Location just for the identifier
-#    with:
-#      fhir: "$resource.location.location.identifier" # if resolved within the Location itself
-#      openehr: "$archetype/data[at0001]/items[at0018]/items[at0022]"
-#    fhirCondition:
-#      targetRoot: "$resource.location"
-#      targetAttribute: "physicalType.coding.code"
-#      operator: "one of"
-#      criteria: "wa"

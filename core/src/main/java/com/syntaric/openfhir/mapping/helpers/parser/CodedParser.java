@@ -30,11 +30,12 @@ public class CodedParser {
         CodeableConcept codeableConcept = new CodeableConcept();
 
         String fallbackValue = find(joinedValues, "value");
+        String fallbackValueOther = find(joinedValues, "other");
         String fallbackCode = find(joinedValues, "code");
         String fallbackTerminology = find(joinedValues, "terminology");
         String fallbackOrdinal = find(joinedValues, "ordinal");
 
-        String text = fhirValueReaders.get(valueHolder, base, "value", fallbackValue);
+        String text = fhirValueReaders.get(valueHolder, base, "value", StringUtils.isEmpty(fallbackValue) ? fallbackValueOther : fallbackValue);
         String code = fhirValueReaders.get(valueHolder, base, "code", fallbackCode);
         String systemRaw = fhirValueReaders.get(valueHolder, base, "terminology", fallbackTerminology);
         String system = fhirValueReaders.cleanVersionFromSystem(systemRaw);

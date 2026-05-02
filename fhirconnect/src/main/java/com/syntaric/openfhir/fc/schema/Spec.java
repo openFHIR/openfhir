@@ -182,8 +182,13 @@ public class Spec implements Serializable {
     
     public enum Version {
 
-        R4("R4");
+        STU3("STU3", "org.hl7.fhir.dstu3.model."),
+        R4("R4", "org.hl7.fhir.r4.model."),
+        R4B("R4B", "org.hl7.fhir.r4b.model."),
+        R5("R5", "org.hl7.fhir.r5.model.");
+
         private final String value;
+        private final String modelPackage;
         private final static Map<String, Version> CONSTANTS = new HashMap<String, Version>();
 
         static {
@@ -192,8 +197,13 @@ public class Spec implements Serializable {
             }
         }
 
-        Version(String value) {
+        Version(String value, String modelPackage) {
             this.value = value;
+            this.modelPackage = modelPackage;
+        }
+
+        public String modelPackage() {
+            return modelPackage;
         }
 
         @Override

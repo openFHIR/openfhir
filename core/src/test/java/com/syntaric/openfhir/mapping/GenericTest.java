@@ -1,6 +1,7 @@
 package com.syntaric.openfhir.mapping;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import ca.uhn.fhir.fhirpath.IFhirPathEvaluationContext;
 import ca.uhn.fhir.parser.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +19,7 @@ import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrMappingEngine;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrNullFlavour;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrPrePostProcessor;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.terminology.NoOpTerminologyTranslator;
 import com.syntaric.openfhir.util.*;
 import jakarta.annotation.Nonnull;
@@ -46,6 +48,22 @@ public abstract class GenericTest {
     protected final FhirConnectModelMerger fhirConnectModelMerger = new FhirConnectModelMerger();
     protected final FhirPathR4 fhirPath = new FhirPathR4(FhirContext.forR4());
     protected final JsonParser jsonParser = (JsonParser) FhirContext.forR4().newJsonParser();
+
+    /**
+     * Returns the {@link FhirContext} to use for all engine wiring in this test.
+     * Defaults to R4. Override in subclasses to test other FHIR versions.
+     */
+    protected FhirContext getFhirContext() {
+        return FhirContext.forR4();
+    }
+
+    /**
+     * Returns the {@link IFhirPath} to use for all engine wiring in this test.
+     * Defaults to the R4 {@link #fhirPath} field. Override in subclasses to test other FHIR versions.
+     */
+    protected IFhirPath getFhirPath() {
+        return fhirPath;
+    }
 
     protected StandardsAsserter standardsAsserter = new StandardsAsserter();
     protected TestOpenFhirMappingContext repo;
@@ -83,7 +101,7 @@ public abstract class GenericTest {
                 openFhirStringUtils);
         final FhirValueReaders readers = new FhirValueReaders(openFhirMapperUtils);
         final OpenFhirMapperUtils openFhirMapperUtils = new OpenFhirMapperUtils();
-        final FhirContext ctx = FhirContext.forR4();
+        final IFhirPath path = getFhirPath();
         helpersCreator = new HelpersCreator(repo, new AqlToFlatPathConverter(
                 openFhirStringUtils,
                 openFhirMapperUtils), openFhirStringUtils);
@@ -107,7 +125,7 @@ public abstract class GenericTest {
         toFhirMappingEngine = new ToFhirMappingEngine(
                 new OpenEhrConditionEvaluator(openFhirStringUtils),
                 fhirInstanceCreatorUtility,
-                new FhirPathR4(ctx),
+                new FhirContextRegistry(),
                 openEhrFlatPathDataExtractor,
                 openFhirStringUtils,
                 fhirInstancePopulator,
@@ -119,7 +137,7 @@ public abstract class GenericTest {
                 new OpenEhrTemplateUtils(),
                 new Gson(),
                 helpersCreator,
-                new ToFhirPrePostProcessor(FhirContext.forR4Cached()),
+                new ToFhirPrePostProcessor(new FhirContextRegistry()),
                 toFhirMappingEngine,
                 new ContentItemCompositionBuilder(),
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
@@ -128,21 +146,21 @@ public abstract class GenericTest {
                 new NoOpTerminologyTranslator(),
                 new NoOpPrePostOpenEhrPopulator(),
                 openFhirStringUtils);
-        toOpenEhr = new ToOpenEhr(new ToOpenEhrPrePostProcessor(ctx),
+        final FhirContextRegistry fhirContextRegistry = new FhirContextRegistry();
+        toOpenEhr = new ToOpenEhr(new ToOpenEhrPrePostProcessor(fhirContextRegistry),
                 new FlatJsonUnmarshaller(),
                 new OpenEhrTemplateUtils(),
                 helpersCreator,
                 new Gson(),
-                new ToOpenEhrMappingEngine(fhirPath,
+                new ToOpenEhrMappingEngine(fhirContextRegistry,
                         openFhirStringUtils,
                         openEhrPopulator,
                         openFhirMapperUtils,
                         new ToOpenEhrNullFlavour(openFhirStringUtils,
-                                openEhrPopulator,
-                                fhirPath),
+                                openEhrPopulator),
                         new CustomMappingRegistry(),
                         (section, context, elapsedMs) -> { /* no-op metrics in tests */ }),
-                fhirPath,
+                fhirContextRegistry,
                 openFhirStringUtils,
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
 

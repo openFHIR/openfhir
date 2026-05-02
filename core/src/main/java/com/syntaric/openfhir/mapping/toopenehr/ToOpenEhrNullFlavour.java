@@ -1,21 +1,22 @@
 package com.syntaric.openfhir.mapping.toopenehr;
 
-import static com.syntaric.openfhir.util.OpenFhirStringUtils.RESOLVE;
-import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
-
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.instance.model.api.IBase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
-import org.hl7.fhir.r4.model.Base;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RESOLVE;
 
 @Component
 @Slf4j
@@ -23,20 +24,19 @@ public class ToOpenEhrNullFlavour {
 
     private final OpenFhirStringUtils openFhirStringUtils;
     private final OpenEhrPopulator openEhrPopulator;
-    private final FhirPathR4 fhirPathR4;
 
     @Autowired
     public ToOpenEhrNullFlavour(final OpenFhirStringUtils openFhirStringUtils,
-                                final OpenEhrPopulator openEhrPopulator,
-                                final FhirPathR4 fhirPathR4) {
+                                final OpenEhrPopulator openEhrPopulator) {
         this.openFhirStringUtils = openFhirStringUtils;
         this.openEhrPopulator = openEhrPopulator;
-        this.fhirPathR4 = fhirPathR4;
     }
 
     public boolean handleDataAbsentReasonWhenNoResult(final MappingHelper helper,
                                                       final JsonObject flatComposition,
-                                                      final Base toResolveOn) {
+                                                      final IBase toResolveOn,
+                                                      final IFhirPath versionedFhirPath,
+                                                      final Class<? extends IBase> baseClass) {
         if (helper == null || flatComposition == null || toResolveOn == null) {
             return false;
         }
@@ -44,12 +44,12 @@ public class ToOpenEhrNullFlavour {
         if (StringUtils.isBlank(nullFlavourPath)) {
             return false;
         }
-        final List<Base> dataAbsentReasons = resolveDataAbsentReasonValuesForMissingPath(
-                toResolveOn, helper.getFhir());
+        final List<? extends IBase> dataAbsentReasons = resolveDataAbsentReasonValuesForMissingPath(
+                toResolveOn, helper.getFhir(), versionedFhirPath, baseClass);
         if (dataAbsentReasons.isEmpty()) {
             return false;
         }
-        for (Base reason : dataAbsentReasons) {
+        for (IBase reason : dataAbsentReasons) {
             if (openEhrPopulator.setNullFlavourForDataAbsentReason(nullFlavourPath, reason, flatComposition)) {
                 return true;
             }
@@ -57,8 +57,10 @@ public class ToOpenEhrNullFlavour {
         return false;
     }
 
-    private List<Base> resolveDataAbsentReasonValuesForMissingPath(final Base rootElement,
-                                                                   final String originalFhirPath) {
+    private List<? extends IBase> resolveDataAbsentReasonValuesForMissingPath(final IBase rootElement,
+                                                                    final String originalFhirPath,
+                                                                    final IFhirPath versionedFhirPath,
+                                                                    final Class<? extends IBase> baseClass) {
         if (rootElement == null || StringUtils.isBlank(originalFhirPath)) {
             return Collections.emptyList();
         }
@@ -76,9 +78,9 @@ public class ToOpenEhrNullFlavour {
         final int valueIndex = findValueSegmentIndex(parts);
         if (valueIndex >= 0) {
             final String containerPath = valueIndex == 0 ? "" : String.join(".", parts.subList(0, valueIndex));
-            final List<Base> containers = evaluateContainers(rootElement, containerPath);
-            for (Base container : containers) {
-                final List<Base> values = resolveDataAbsentReasonValuesFromElement(container);
+            final List<? extends IBase> containers = evaluateContainers(rootElement, containerPath, versionedFhirPath, baseClass);
+            for (IBase container : containers) {
+                final List<? extends IBase> values = resolveDataAbsentReasonValuesFromElement(container, versionedFhirPath, baseClass);
                 if (values != null && !values.isEmpty()) {
                     return values;
                 }
@@ -86,10 +88,13 @@ public class ToOpenEhrNullFlavour {
         }
 
         // For non-value mappings, only honor DAR extension on the exact missing target element.
-        return resolveDataAbsentReasonExtensionOnExactPath(rootElement, parts);
+        return resolveDataAbsentReasonExtensionOnExactPath(rootElement, parts, versionedFhirPath, baseClass);
     }
 
-    private List<Base> resolveDataAbsentReasonExtensionOnExactPath(final Base rootElement, final List<String> parts) {
+    private List<? extends IBase> resolveDataAbsentReasonExtensionOnExactPath(final IBase rootElement,
+                                                                     final List<String> parts,
+                                                                     final IFhirPath versionedFhirPath,
+                                                                     final Class<? extends IBase> baseClass) {
         if (parts == null || parts.isEmpty()) {
             return Collections.emptyList();
         }
@@ -98,15 +103,15 @@ public class ToOpenEhrNullFlavour {
             return Collections.emptyList();
         }
         final String parentPath = parts.size() == 1 ? "" : String.join(".", parts.subList(0, parts.size() - 1));
-        final List<Base> containers = evaluateContainers(rootElement, parentPath);
+        final List<? extends IBase> containers = evaluateContainers(rootElement, parentPath, versionedFhirPath, baseClass);
         if (containers.isEmpty()) {
             return Collections.emptyList();
         }
-        for (Base container : containers) {
+        for (IBase container : containers) {
             try {
                 final String extensionPath =
                         leaf + ".extension('" + OpenEhrPopulator.DATA_ABSENT_REASON_URL + "').value";
-                final List<Base> extensionValues = fhirPathR4.evaluate(container, extensionPath, Base.class);
+                final List<? extends IBase> extensionValues = versionedFhirPath.evaluate(container, extensionPath, baseClass);
                 if (extensionValues != null && !extensionValues.isEmpty()) {
                     return extensionValues;
                 }
@@ -118,16 +123,18 @@ public class ToOpenEhrNullFlavour {
         return Collections.emptyList();
     }
 
-    private List<Base> resolveDataAbsentReasonValuesFromElement(final Base element) {
+    private List<? extends IBase> resolveDataAbsentReasonValuesFromElement(final IBase element,
+                                                                  final IFhirPath versionedFhirPath,
+                                                                  final Class<? extends IBase> baseClass) {
         if (element == null) {
             return Collections.emptyList();
         }
         try {
-            final List<Base> extensionValues = fhirPathR4.evaluate(element,
-                                                                   "extension('"
-                                                                           + OpenEhrPopulator.DATA_ABSENT_REASON_URL
-                                                                           + "').value",
-                                                                   Base.class);
+            final List<? extends IBase> extensionValues = versionedFhirPath.evaluate(element,
+                                                                            "extension('"
+                                                                                    + OpenEhrPopulator.DATA_ABSENT_REASON_URL
+                                                                                    + "').value",
+                                                                            baseClass);
             if (extensionValues != null && !extensionValues.isEmpty()) {
                 return extensionValues;
             }
@@ -136,7 +143,7 @@ public class ToOpenEhrNullFlavour {
                       element.getClass(), e.getMessage());
         }
         try {
-            final List<Base> propertyValues = fhirPathR4.evaluate(element, "dataAbsentReason", Base.class);
+            final List<? extends IBase> propertyValues = versionedFhirPath.evaluate(element, "dataAbsentReason", baseClass);
             if (propertyValues != null && !propertyValues.isEmpty()) {
                 return propertyValues;
             }
@@ -147,12 +154,14 @@ public class ToOpenEhrNullFlavour {
         return Collections.emptyList();
     }
 
-    private List<Base> evaluateContainers(final Base rootElement, final String containerPath) {
+    private List<? extends IBase> evaluateContainers(final IBase rootElement, final String containerPath,
+                                            final IFhirPath versionedFhirPath,
+                                            final Class<? extends IBase> baseClass) {
         try {
             if (StringUtils.isBlank(containerPath)) {
                 return Collections.singletonList(rootElement);
             }
-            final List<Base> evaluated = fhirPathR4.evaluate(rootElement, containerPath, Base.class);
+            final List<? extends IBase> evaluated = versionedFhirPath.evaluate(rootElement, containerPath, baseClass);
             return evaluated == null ? Collections.emptyList() : evaluated;
         } catch (Exception e) {
             log.debug("Unable to evaluate data absent reason container path '{}' on {}: {}",
@@ -183,7 +192,7 @@ public class ToOpenEhrNullFlavour {
         return segment != null && segment.startsWith("as(") && segment.endsWith(")");
     }
 
-    private String normalizeFhirPathForDataAbsentReason(final Base rootElement, final String originalFhirPath) {
+    private String normalizeFhirPathForDataAbsentReason(final IBase rootElement, final String originalFhirPath) {
         String path = originalFhirPath;
         if (path.startsWith(".")) {
             path = path.substring(1);

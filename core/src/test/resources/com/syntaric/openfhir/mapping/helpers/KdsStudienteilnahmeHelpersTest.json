@@ -31,7 +31,43 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "ACTION.informed_consent.v0",
+  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+  "mappingName" : "healthCareFacility",
+  "generatingResourceType" : "Consent",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.organization",
+  "originalOpenEhrPath" : "$composition/context/health_care_facility",
+  "openEhrHierarchySplitFlatPath" : null,
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "organization",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "Consent.organization",
+  "openEhr" : "$composition/context/health_care_facility",
+  "fullOpenEhrPath" : "$composition/context/health_care_facility",
+  "fullOpenEhrFlatPath" : "studienteilnahme/context/_health_care_facility",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/context(:\\d+)?/_health_care_facility(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_IDENTIFIED" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -44,7 +80,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('draft'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('draft'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
@@ -72,7 +108,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -85,7 +122,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('draft'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('draft'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
@@ -157,7 +194,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -170,7 +208,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('draft'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('draft'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
@@ -202,7 +240,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -215,7 +254,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('proposed'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('proposed'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
@@ -243,7 +282,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -256,7 +296,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('proposed'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('proposed'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
@@ -328,7 +368,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -341,7 +382,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('proposed'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('proposed'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
@@ -373,7 +414,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -386,7 +428,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('active'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('active'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
@@ -414,7 +456,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -427,7 +470,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('active'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('active'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
@@ -499,7 +542,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -512,7 +556,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('active'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('active'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
@@ -544,7 +588,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -557,7 +602,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('rejected'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('rejected'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
@@ -585,7 +630,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -598,7 +644,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('rejected'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('rejected'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
@@ -670,7 +716,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -683,7 +730,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('rejected'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('rejected'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
@@ -715,7 +762,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -728,7 +776,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('inactive'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('inactive'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
@@ -756,7 +804,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -769,7 +818,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('inactive'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('inactive'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
@@ -841,7 +890,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -854,7 +904,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('inactive'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('inactive'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
@@ -886,7 +936,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -899,7 +950,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('entered-in-error'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('entered-in-error'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
@@ -927,7 +978,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -940,7 +992,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('entered-in-error'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('entered-in-error'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
@@ -1012,7 +1064,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1025,7 +1078,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(status.toString().contains('entered-in-error'))",
+  "fhirWithCondition" : "Consent.where(status.toString().contains('entered-in-error'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
@@ -1057,7 +1110,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1217,7 +1271,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1302,7 +1357,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1387,7 +1443,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1472,7 +1529,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1557,7 +1615,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1642,10 +1701,12 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
@@ -1741,7 +1802,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "CLUSTER.study_participation.v1",
       "archetype" : "openEHR-EHR-CLUSTER.study_participation.v1",
@@ -1775,10 +1837,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   }, {
     "modelMetadataName" : "CLUSTER.study_participation.v1",
     "archetype" : "openEHR-EHR-CLUSTER.study_participation.v1",
@@ -1812,8 +1876,10 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : true,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 } ]

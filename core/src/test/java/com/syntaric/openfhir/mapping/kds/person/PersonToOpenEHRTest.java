@@ -61,7 +61,7 @@ public class PersonToOpenEHRTest extends KdsGenericTest {
     @SneakyThrows
     private void assertToOpenEHR(final int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), webTemplate);
         final JSONObject actual = new JSONObject(new CanonicalJson().marshal(composition));
         final JSONObject expected = new JSONObject(getFile(OPENEHR_OUTPUTS[index]));
         removeContextStartTime(actual);
@@ -98,7 +98,7 @@ public class PersonToOpenEHRTest extends KdsGenericTest {
     @Test
     public void assertToOpenEHrLegacyFlatDetails() {
         final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(
-                context, getTestBundle(LEGACY_INPUT_BUNDLE), operationaltemplate);
+                context, getTestBundle(LEGACY_INPUT_BUNDLE), webTemplate);
 
         Assert.assertFalse(jsonObject.entrySet().isEmpty());
 

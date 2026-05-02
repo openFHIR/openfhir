@@ -85,7 +85,7 @@ public class ProcedureToOpenEHRTest extends KdsGenericTest {
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), webTemplate);
         assertCompositionIgnoringVolatileProcedureTime(composition, OPENEHR_OUTPUTS[index]);
     }
 
@@ -123,7 +123,7 @@ public class ProcedureToOpenEHRTest extends KdsGenericTest {
         final JsonObject jsonObject = toOpenEhr
                 .fhirToFlatJsonObject(
                         context, getTestBundle("/kds/procedure/toOpenEHR/input/KDS_Prozedur_bundle.json"),
-                        operationaltemplate);
+                        webTemplate);
 
         Assert.assertEquals("5-470", jsonObject.getAsJsonPrimitive("kds_prozedur/prozedur:0/name_der_prozedur|code")
                 .getAsString());

@@ -74,7 +74,7 @@ public class DiagnoseToOpenEHRTest extends KdsGenericTest {
      */
     @Test
     public void assertToOpenEHRBundle() {
-        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE_SINGLE), operationaltemplate);
+        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE_SINGLE), webTemplate);
         standardsAsserter.assertComposition(composition, COMPOSITION_SINGLE, operationaltemplate);
     }
 
@@ -85,13 +85,13 @@ public class DiagnoseToOpenEHRTest extends KdsGenericTest {
     @Ignore
     @Test
     public void assertToOpenEHRBundleWhole() {
-        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE), operationaltemplate);
+        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE), webTemplate);
         standardsAsserter.assertComposition(composition, COMPOSITION_MULTIPLE, operationaltemplate);
     }
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_CONDITIONS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_CONDITIONS[index]), webTemplate);
         standardsAsserter.assertComposition(composition, OPENEHR_COMPOSITIONS[index], operationaltemplate);
     }
 
@@ -300,7 +300,7 @@ public class DiagnoseToOpenEHRTest extends KdsGenericTest {
     @Test
     public void toOpenEhr_single() {
         final Bundle testBundle = getTestBundle(BUNDLE_SINGLE);
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
         Assert.assertEquals("2022-02-03T01:00:00", jsonObject.get("diagnose/context/start_time").getAsString());
 
@@ -364,7 +364,7 @@ public class DiagnoseToOpenEHRTest extends KdsGenericTest {
     public JsonObject toOpenEhr() {
 
         final Bundle testBundle = getTestBundle(BUNDLE);
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
         Assert.assertEquals("2022-02-03T01:00:00", jsonObject.get("diagnose/context/start_time").getAsString());
         Assert.assertEquals("C34.1", jsonObject.get("diagnose/diagnose:0/kodierte_diagnose|code").getAsString());

@@ -13,7 +13,6 @@ public class FhirConnectConst {
     public static final String FHIR_RESOURCE_FC = "$resource";
     public static final String FHIR_BACKBONE_ELEMENT = "BackboneElement";
     public static final String FHIR_ROOT_FC = "$fhirRoot";
-    public static final String THIS = "$this";
     public static final String OPENEHR_ARCHETYPE_FC = "$archetype";
     public static final String OPENEHR_COMPOSITION_FC = "$composition";
     public static final String OPENEHR_ROOT_FC = "$openehrRoot";

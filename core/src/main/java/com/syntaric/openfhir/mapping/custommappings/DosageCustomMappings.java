@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.r4.model.Base;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Range;
@@ -51,7 +52,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     @Override
     public boolean applyFhirToOpenEhrMapping(final MappingHelper mappingHelper,
-                                             final Base fhirValue,
+                                             final IBase fhirValue,
                                              final List<String> possibleRmTypes,
                                              final JsonObject flat,
                                              final OpenEhrPopulator populator,
@@ -109,7 +110,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrDosageQuantityToRange(final MappingHelper mappingHelper,
                                                    final String openEhrPath,
-                                                   final Base fhirValue,
+                                                   final IBase fhirValue,
                                                    final JsonObject flat,
                                                    final OpenEhrPopulator populator) {
         boolean isMultipleTypes = mappingHelper.getPossibleRmTypes().size() > 1;
@@ -150,7 +151,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrRangeToText(final MappingHelper mappingHelper,
                                          final String openEhrPath,
-                                         final Base fhirValue,
+                                         final IBase fhirValue,
                                          final JsonObject flat,
                                          final OpenEhrPopulator populator) {
         if (!(fhirValue instanceof Range range)) {
@@ -168,7 +169,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrRatioToDvQuantity(final MappingHelper mappingHelper,
                                                final String openEhrPath,
-                                               final Base fhirValue,
+                                               final IBase fhirValue,
                                                final JsonObject flat,
                                                final OpenEhrPopulator populator) {
         if (!(fhirValue instanceof Ratio ratio)) {
@@ -199,7 +200,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrRatioToDosage(final MappingHelper mappingHelper,
                                            final String openEhrPath,
-                                           final Base fhirValue,
+                                           final IBase fhirValue,
                                            final JsonObject flat,
                                            final OpenEhrPopulator populator) {
         return toOpenEhrRatioToDosageInternal(
@@ -215,7 +216,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrRatioToDosageAction(final MappingHelper mappingHelper,
                                                  final String openEhrPath,
-                                                 final Base fhirValue,
+                                                 final IBase fhirValue,
                                                  final JsonObject flat,
                                                  final OpenEhrPopulator populator) {
         return toOpenEhrRatioToDosageInternal(
@@ -231,7 +232,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrRatioToDosageInternal(final MappingHelper mappingHelper,
                                                    final String openEhrPath,
-                                                   final Base fhirValue,
+                                                   final IBase fhirValue,
                                                    final JsonObject flat,
                                                    final OpenEhrPopulator populator,
                                                    final String rateChildPath,
@@ -362,7 +363,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrTimingDaily(final MappingHelper mappingHelper,
                                          final String openEhrPath,
-                                         final Base fhirValue,
+                                         final IBase fhirValue,
                                          final JsonObject flat,
                                          final OpenEhrPopulator populator) {
         TimingApplyContext ctx = buildTimingApplyContext(fhirValue, true);
@@ -389,7 +390,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrTimingNonDaily(final MappingHelper mappingHelper,
                                             final String openEhrPath,
-                                            final Base fhirValue,
+                                            final IBase fhirValue,
                                             final JsonObject flat,
                                             final OpenEhrPopulator populator) {
         TimingApplyContext ctx = buildTimingApplyContext(fhirValue, false);
@@ -417,7 +418,7 @@ public class DosageCustomMappings extends CustomMapping {
         }
     }
 
-    private TimingApplyContext buildTimingApplyContext(final Base fhirValue, final boolean daily) {
+    private TimingApplyContext buildTimingApplyContext(final IBase fhirValue, final boolean daily) {
         if (!(fhirValue instanceof Timing.TimingRepeatComponent repeat)) {
             return null;
         }
@@ -475,7 +476,7 @@ public class DosageCustomMappings extends CustomMapping {
 
     private boolean toOpenEhrDurationToAdministrationDuration(final MappingHelper mappingHelper,
                                                               final String openEhrPath,
-                                                              final Base fhirValue,
+                                                              final IBase fhirValue,
                                                               final JsonObject flat,
                                                               final OpenEhrPopulator populator) {
         if (!(fhirValue instanceof Timing.TimingRepeatComponent repeat)) {

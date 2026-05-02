@@ -46,9 +46,9 @@ public class News2ToOpenEhrTest extends GenericTest {
         final Bundle testBundle = FhirContext.forR4().newJsonParser()
                 .parseResource(Bundle.class, getClass().getResourceAsStream(HELPER_LOCATION + BUNDLE));
         final Composition composition = toOpenEhr.fhirToCompositionRm(context, testBundle,
-                                                                          operationaltemplate); // should create two of them :o what now :o
+                webTemplate); // should create two of them :o what now :o
         final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle,
-                                                                         operationaltemplate); // should create two of them :o what now :o
+                webTemplate); // should create two of them :o what now :o
 
         // assert composition
         final String totalScorePath = "/content[openEHR-EHR-OBSERVATION.news2.v1]/data[at0001]/events[at0002]/data[at0003]/items[at0028]/value"; // path to DvCount

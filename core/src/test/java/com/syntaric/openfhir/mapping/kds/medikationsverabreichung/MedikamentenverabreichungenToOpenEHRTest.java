@@ -82,7 +82,7 @@ public class MedikamentenverabreichungenToOpenEHRTest extends KdsGenericTest {
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), webTemplate);
         standardsAsserter.assertCompositionWihtoutOPTValidataion(composition, OPENEHR_OUTPUTS[index], operationaltemplate);
     }
 
@@ -228,7 +228,7 @@ public class MedikamentenverabreichungenToOpenEHRTest extends KdsGenericTest {
     @Test
     public void kdsMedicationAdministrations_toOpenEhr_bundleFlat() {
         final Bundle testBundle = getTestBundle(BUNDLE);
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
         if (jsonObject.has("kds_medikamentenverabreichungen/context/bericht_id")) {
             Assert.assertEquals("MA123456", jsonObject.getAsJsonPrimitive("kds_medikamentenverabreichungen/context/bericht_id").getAsString());

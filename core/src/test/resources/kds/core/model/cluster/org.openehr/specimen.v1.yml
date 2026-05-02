@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
   name: CLUSTER.specimen.v1
@@ -17,7 +17,6 @@ mappings:
     with:
       fhir: "$resource.identifier"
       openehr: "$archetype/items[at0088]" #external identifier
-      
 
   - name: "collection"
     with:
@@ -50,7 +49,6 @@ mappings:
           with:
             fhir: "collector.as(Reference).identifier" # explicitly cast to Reference to avoid adding a Resource
             openehr: "items[at0070]" #TODO should in the best case pinpoint to a resource via link, dunno where to put this in openEHR currently
-            
 
         - name: "specimenCollectionMethod"
           with:
@@ -71,37 +69,31 @@ mappings:
     with:
       fhir: "$resource.type"
       openehr: "$archetype/items[at0029]" # specimen type
-      
 
   - name: "note"
     with:
       fhir: "$resource.note.text"
       openehr: "$archetype/items[at0045]" # comment
-      
 
   - name: "descriptionOfSpecimen"
     with:
       fhir: "$resource.condition"
       openehr: "$archetype/items[at0097]" #specimen description
-      
 
   - name: "identifierOfSpecimen"
     with:
       fhir: "$resource.accessionIdentifier"
       openehr: "$archetype/items[at0001]" #Laboratory specimen identifier
-      
 
   - name: "dateReceived"
     with:
       fhir: "$resource.receivedTime"
       openehr: "$archetype/items[at0034]" #Date/Time received
-      
 
   - name: "parent"
     with:
       fhir: "$resource.parent.as(Reference).identifier.value"
       openehr: "$archetype/items[at0003]"
-      
 
   - name: "request"
     with:
@@ -133,13 +125,13 @@ mappings:
                 with:
                   fhir: "$fhirRoot.identifier"
                   openehr: "$openehrRoot"
-#              - name: "specimenLink"
-#                with:
-#                  fhir: "$fhirRoot"
-#                  openehr: "$openehrRoot/links"
-#                openehrLink:
-#                  meaning: "the parent of this specimen"
-#                  type: "parent"
+              - name: "specimenLink"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "$openehrRoot/links"
+                link:
+                  meaning: "the parent of this specimen"
+                  type: "parent"
 
   - name: "status"
     with:
@@ -216,4 +208,6 @@ mappings:
           targetAttribute: "status"
           operator: "one of"
           criteria: "unsatisfactory"
+
+
 

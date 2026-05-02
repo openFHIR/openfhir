@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@ConditionalOnProperty(name = "db.type", havingValue = "mongo")
+@ConditionalOnProperty(name = "openfhir.db.type", havingValue = "mongo")
 @EnableMongoRepositories(basePackages = "com.syntaric.openfhir.db.repository.mongodb", basePackageClasses = OptMongoRepository.class)
 @EnableMongock
 public class MongoConfig extends AbstractMongoClientConfiguration {

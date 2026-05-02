@@ -66,14 +66,14 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
 
     /**
      * Input: /kds/laborbericht/toOpenEHR/output/Composition-KDS_Laborbericht_bundle.json
-     * Expected: /kds/laborbericht/toFHIR/output/DiagnosticReport-KDS_Laborbericht_bundle.json
+     * Expected: /kds/laborbericht/toFHIR/output/KDS_Laborbericht_bundle.json
      */
     @SneakyThrows
     @Test
     public void assertToFHIRBundle() {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITION_BUNDLE),
                                                                                 Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_BUNDLE_BUNDLE);
     }
 
@@ -81,7 +81,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
     private void assertToFHIR(int index) {
         final Composition composition = JacksonUtil.getObjectMapper().readValue(getFile(OPENEHR_COMPOSITIONS[index]),
                                                                                 Composition.class);
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(composition), operationaltemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         standardsAsserter.assertBundle(bundle, FHIR_BUNDLES[index]);
     }
 
@@ -180,7 +180,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(getFile(FLAT),
                                                                                      new OPTParser(
                                                                                              operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
         final List<Bundle.BundleEntryComponent> allDiagnosticReports = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof DiagnosticReport).collect(Collectors.toList());
         assertEquals(1, allDiagnosticReports.size());
@@ -277,7 +277,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFile("/kds/laborbericht/toOpenEHR/output/KDS_Laborbericht_multiples.flat.json"),
                 new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
         final List<Bundle.BundleEntryComponent> allDiagnosticReports = bundle.getEntry().stream()
                 .filter(en -> en.getResource() instanceof DiagnosticReport).collect(Collectors.toList());
         assertEquals(1, allDiagnosticReports.size());

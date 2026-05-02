@@ -5,11 +5,13 @@ import static org.junit.Assert.assertEquals;
 import ca.uhn.fhir.context.FhirContext;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.NoOpPrePostOpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,13 +24,12 @@ public class ToOpenEhrMappingEngineTest {
         final OpenFhirStringUtils stringUtils = new OpenFhirStringUtils();
         final OpenFhirMapperUtils mapperUtils = new OpenFhirMapperUtils();
         engine = new ToOpenEhrMappingEngine(
-                new FhirPathR4(FhirContext.forR4()),
+                new FhirContextRegistry(),
                 stringUtils,
                 new OpenEhrPopulator(mapperUtils, null,
                                      new NoOpPrePostOpenEhrPopulator(),
                                      stringUtils),
                 mapperUtils, new ToOpenEhrNullFlavour(stringUtils,
-                                                      null,
                                                       null),
                 new CustomMappingRegistry(),
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });

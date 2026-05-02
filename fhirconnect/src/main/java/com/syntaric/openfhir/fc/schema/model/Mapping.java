@@ -2,23 +2,17 @@
 package com.syntaric.openfhir.fc.schema.model;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.syntaric.openfhir.fc.schema.model.Condition;
-import com.syntaric.openfhir.fc.schema.model.FhirConnectReference;
-import com.syntaric.openfhir.fc.schema.model.FollowedBy;
+import com.fasterxml.jackson.annotation.*;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import lombok.Setter;
 
 
 /**
@@ -31,6 +25,7 @@ import lombok.Setter;
         "extension",
         "appendTo",
         "with",
+        "link",
         "unidirectional",
         "mappingCode",
         "manual",
@@ -58,6 +53,8 @@ public class Mapping implements Serializable {
      */
     @JsonProperty("with")
     private With with;
+    @JsonProperty("link")
+    private Link link;
     @JsonProperty("unidirectional")
     private String unidirectional;
     @JsonProperty("mappingCode")
@@ -92,6 +89,7 @@ public class Mapping implements Serializable {
         mapping.setAppendTo(appendTo);
         mapping.setSlotArchetype(slotArchetype);
         mapping.setWith(with == null ? null : with.copy());
+        mapping.setLink(link == null ? null : link.copy());
         mapping.setManual(manual == null ? null : manual.stream().map(e -> e.copy())
                 .collect(Collectors.toList()));
         mapping.setFhirCondition(fhirCondition == null ? null : fhirCondition.copy());
@@ -125,6 +123,7 @@ public class Mapping implements Serializable {
         this.setSuffixConcat(copyingFrom.getSuffixConcat());
         this.setPrefixConcat(copyingFrom.getPrefixConcat());
         this.setMappingCode(copyingFrom.getMappingCode());
+        this.setLink(copyingFrom.getLink());
 
         return this;
     }
@@ -170,6 +169,21 @@ public class Mapping implements Serializable {
 
     public Mapping withManual(List<Manual> manual) {
         this.manual = manual;
+        return this;
+    }
+
+    @JsonProperty("link")
+    public Link getLink() {
+        return link;
+    }
+
+    @JsonProperty("link")
+    public void setLink(Link link) {
+        this.link = link;
+    }
+
+    public Mapping withLink(Link link) {
+        this.link = link;
         return this;
     }
 

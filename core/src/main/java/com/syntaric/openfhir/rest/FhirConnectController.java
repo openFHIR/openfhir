@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -109,6 +110,20 @@ public class FhirConnectController {
         }
     }
 
+    @DeleteMapping(value = "/fc/model/{id}")
+    @Operation(
+            summary = "Delete an existing FHIR Connect model mapper",
+            description = "Deletes an existing FHIR Connect model mapper by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Deleted")
+            }
+    )
+    ResponseEntity deleteModel(@PathVariable String id,
+                               @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        fhirConnectManager.deleteModel(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(value = "/fc/model", produces = {"application/json", "application/x-yaml"})
     @Operation(
             summary = "Get all existing FHIR Connect model mappers",
@@ -132,9 +147,13 @@ public class FhirConnectController {
                     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = FhirConnectModel.class)))
             }
     )
-    FhirConnectModel readModelMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
-                                     @PathVariable String id) {
-        return fhirConnectManager.readModelMappers(id);
+    ResponseEntity<FhirConnectModel> readModelMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
+                                                      @PathVariable String id) {
+        final FhirConnectModel model = fhirConnectManager.readModelMappers(id);
+        if (model == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(model);
     }
 
     /**
@@ -208,6 +227,20 @@ public class FhirConnectController {
         }
     }
 
+    @DeleteMapping(value = "/fc/context/{id}")
+    @Operation(
+            summary = "Delete an existing FHIR Connect context mapper",
+            description = "Deletes an existing FHIR Connect context mapper by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Deleted")
+            }
+    )
+    ResponseEntity deleteContext(@PathVariable String id,
+                                 @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        fhirConnectManager.deleteContext(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(value = "/fc/context", produces = {"application/json", "application/x-yaml"})
     @Operation(
             summary = "Get all existing FHIR Connect context mappers",
@@ -231,9 +264,13 @@ public class FhirConnectController {
                     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = FhirConnectContext.class)))
             }
     )
-    FhirConnectContext readContextMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
-                                         @PathVariable String id) {
-        return fhirConnectManager.readContextMappers(id);
+    ResponseEntity<FhirConnectContext> readContextMapper(@RequestHeader(value = "x-req-id", required = false) final String reqId,
+                                                          @PathVariable String id) {
+        final FhirConnectContext context = fhirConnectManager.readContextMappers(id);
+        if (context == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(context);
     }
 
 }

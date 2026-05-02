@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name:  KDS_lebensphase
@@ -14,7 +14,6 @@ mappings:
     with:
       fhir: "$fhirRoot.start.extension"
       openehr: "$archetype/items[at0001]"
-      
     fhirCondition:
       targetRoot: "$fhirRoot.start.extension" #parent selector from jsonpath-plus its like ..
       targetAttribute: "url"
@@ -36,7 +35,6 @@ mappings:
     with:
       fhir: "$fhirRoot.end.extension"
       openehr: "$archetype/items[at0002]"
-      
     fhirCondition:
       targetRoot: "$fhirRoot.end.extension" #parent selector from jsonpath-plus
       targetAttribute: "url"

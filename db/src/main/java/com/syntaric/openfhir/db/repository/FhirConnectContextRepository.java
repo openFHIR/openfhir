@@ -14,4 +14,5 @@ public interface FhirConnectContextRepository {
 
     void deleteAll();
     void deleteAllTenant(final String user);
+    void deleteByIdAndOrganisation(final String id, final String user);
 }

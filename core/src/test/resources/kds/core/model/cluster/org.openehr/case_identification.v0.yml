@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: model
 metadata:
   name:  CLUSTER.case_identification.v0
@@ -16,11 +16,21 @@ mappings:
   - name: "identifierCaseParent"
     with:
       fhir: "$fhirRoot"
-      openehr: "$archetype"
-      type: "NONE"
+      openehr: "items[at0001]"
+    fhirCondition:
+      targetRoot: "$fhirRoot"
+      targetAttribute: "type.coding.code"
+      operator: "one of"
+      criteria: "VN"
     followedBy:
       mappings:
-        - name: "identifierCase"
+        - name: "vncodingcode"
           with:
-            fhir: "$fhirRoot"
-            openehr: "items[at0001]"
+            fhir: "type.coding"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "extension"
+              fhir:
+                - path: "code"
+                  value: "VN"
+

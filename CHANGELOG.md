@@ -8,6 +8,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 ## [Unreleased]
 
+### Changed
+### Added
+### Fixed
+
+## [2.2.0] - 2026-05-02
+
+### Changed
+- All openfhir-specific configuration properties now use the `openfhir.` prefix for consistency:
+  - `bootstrap.dir` → `openfhir.bootstrap.dir`
+  - `bootstrap.recursively-open-directories` → `openfhir.bootstrap.recursively-open-directories`
+  - `db.type` → `openfhir.db.type`
+  - behavior when a mappins is only a manual mapping, in which case a NONE is now implied [#54](https://github.com/openFHIR/openfhir/issues/54)
+
+### Added
+- Added mongo indexes to optimize performance
+- memory optimizations
+- `DELETE /opt/{id}` — delete an Operational Template by ID
+- `DELETE /fc/model/{id}` — delete a FHIR Connect model mapper by ID
+- `DELETE /fc/context/{id}` — delete a FHIR Connect context mapper by ID
+- Creating a new release now triggers a workflow publishing Maven packages to GitHub Packages
+- `link` is now a supported keyword in model mapping (although not yet implemented, but mapping creation won't fail if it contains this option)
+- KDS mappings and tests amended to support FhirConnect release1 of the library 
+- Additional openEHR Data Types for AQL mappings
+- Support for different FHIR versions: STU3, R4 (was supported before), R4B, R5
+- mapping of `|other`
+- New `generateNarrative` custom mapping code: when referenced in a model mapping, automatically generates a FHIR narrative (`text`) on the resource being built during openEHR→FHIR mapping using HAPI's built-in Thymeleaf narrative generator
+
+### Fixed
+- `GET /opt/{id}`, `GET /fc/model/{id}`, `GET /fc/context/{id}` now return 404 instead of 200 with empty body when the resource is not found
+- search of opt by templateId now filters properly (before it returned all)
+- `IParser` is now created per-call instead of shared as a singleton, fixing a potential thread-safety issue under concurrent requests
+- when a `manual` mapping has a `fhirCondition`with `$fhirRoot`, this is now correctly evaluated
+- fhircondition `type` is now properly evaluated even when fhirPath has a resolve()
+- fhircondition `type` is now properly evaluated even when Resources are nested in a Bundle
+- when followed-by mapping is referencing a `$resource`, it is now correctly evaluated
+
+
 ## [2.1.0] - 2026-04-07
 ### Added
 - MappingHelper to the `PrePostFhirInstancePopulator` method signature

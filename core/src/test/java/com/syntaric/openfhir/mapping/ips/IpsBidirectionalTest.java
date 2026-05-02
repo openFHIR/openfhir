@@ -42,7 +42,7 @@ public class IpsBidirectionalTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
@@ -55,11 +55,11 @@ public class IpsBidirectionalTest extends GenericTest {
         assertProblemList(composition);
         assertAllergies(composition);
 
-        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
         final Composition roundTwoCompositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
-        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), operationaltemplate);
+        final Bundle roundTwoBundle = (Bundle) toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
 
@@ -73,7 +73,7 @@ public class IpsBidirectionalTest extends GenericTest {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 getFlat(HELPER_LOCATION + REAL_FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
-        final Bundle bundle = toFhir.compositionsToFhir(context, List.of(compositionFromFlat), operationaltemplate);
+        final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
@@ -86,11 +86,11 @@ public class IpsBidirectionalTest extends GenericTest {
         assertProblemList(composition);
         assertAllergies(composition);
 
-        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+        JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
         final Composition roundTwoCompositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
                 new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
-        final Bundle roundTwoBundle = toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), operationaltemplate);
+        final Bundle roundTwoBundle = (Bundle) toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
 
@@ -170,7 +170,7 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("Problem list Reported", coding.getDisplay());
 
         Assert.assertEquals("generated", section.getText().getStatusAsString());
-        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>", section.getText().getDivAsString());
+        Assert.assertTrue(section.getText().getDivAsString().startsWith("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Problem List</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Condition</th><th>Clinical Status</th><th>Verification Status</th><th>Severity</th><th>Onset</th><th>Abatement</th><th>Notes</th></tr></thead><tbody><tr>"));
 
         final Condition condition = (Condition) section.getEntry().stream()
                 .filter(e -> "#1".equals(e.getReference()))

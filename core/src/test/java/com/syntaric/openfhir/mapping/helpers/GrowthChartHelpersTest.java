@@ -79,7 +79,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         // heightSlot
         final MappingHelper heightSlot = iterateHeight.getChildren().get(0);
         Assert.assertEquals("heightSlot", heightSlot.getMappingName());
-        Assert.assertEquals("Observation", heightSlot.getGeneratingResourceType());
+        Assert.assertEquals("Bundle", heightSlot.getGeneratingResourceType());
         Assert.assertEquals("$fhirRoot", heightSlot.getOriginalFhirPath());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.height.v2]", heightSlot.getOriginalOpenEhrPath());
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve()", heightSlot.getFhir());
@@ -202,7 +202,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         // weightSlot
         final MappingHelper weightSlot = iterateWeight.getChildren().get(0);
         Assert.assertEquals("weightSlot", weightSlot.getMappingName());
-        Assert.assertEquals("Observation", weightSlot.getGeneratingResourceType());
+        Assert.assertEquals("Bundle", weightSlot.getGeneratingResourceType());
         Assert.assertEquals("$fhirRoot", weightSlot.getOriginalFhirPath());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]", weightSlot.getOriginalOpenEhrPath());
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve()", weightSlot.getFhir());
@@ -386,7 +386,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         // bmiSlot
         final MappingHelper bmiSlot = iterateBmi.getChildren().get(0);
         Assert.assertEquals("bmiSlot", bmiSlot.getMappingName());
-        Assert.assertEquals("Observation", bmiSlot.getGeneratingResourceType());
+        Assert.assertEquals("Bundle", bmiSlot.getGeneratingResourceType());
         Assert.assertEquals("$fhirRoot", bmiSlot.getOriginalFhirPath());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]", bmiSlot.getOriginalOpenEhrPath());
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve()", bmiSlot.getFhir());
@@ -520,7 +520,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         // headCircumferenceSlot
         final MappingHelper headCircumferenceSlot = iterateHead.getChildren().get(0);
         Assert.assertEquals("headCircumferenceSlot", headCircumferenceSlot.getMappingName());
-        Assert.assertEquals("Observation", headCircumferenceSlot.getGeneratingResourceType());
+        Assert.assertEquals("Bundle", headCircumferenceSlot.getGeneratingResourceType());
         Assert.assertEquals("$fhirRoot", headCircumferenceSlot.getOriginalFhirPath());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]", headCircumferenceSlot.getOriginalOpenEhrPath());
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve()", headCircumferenceSlot.getFhir());

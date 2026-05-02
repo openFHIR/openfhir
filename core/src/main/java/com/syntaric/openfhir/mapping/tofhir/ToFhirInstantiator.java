@@ -1,13 +1,14 @@
 package com.syntaric.openfhir.mapping.tofhir;
 
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.util.FhirInstanceCreator;
 import com.syntaric.openfhir.util.FhirInstanceCreator.InstantiateAndSetReturn;
-import com.syntaric.openfhir.fc.FhirConnectConst;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -22,14 +23,17 @@ public class ToFhirInstantiator {
 
     public Object instantiateElement(final MappingHelper mappingHelper,
                                       final String forcingClass,
-                                      final int index) {
-        return instantiateElement(mappingHelper, forcingClass, mappingHelper.getResolveResourceType(), index);
+                                      final int index,
+                                      final String modelPackage) {
+        return instantiateElement(mappingHelper, forcingClass, mappingHelper.getResolveResourceType(), index,
+                                  modelPackage);
     }
 
     Object instantiateElement(final MappingHelper mappingHelper,
                               final String forcingClass,
                               final String resolveResourceType,
-                              final int index) {
+                              final int index,
+                              final String modelPackage) {
         if (mappingHelper.isUseParentRoot()) {
             return propagateAndReturn(mappingHelper, resolveFhirBase(mappingHelper));
         }
@@ -40,7 +44,8 @@ public class ToFhirInstantiator {
         }
 
         final String remainingPath = resolveRemainingPath(mappingHelper);
-        final Object instantiated = resolveFromBase(fhirBase, remainingPath, forcingClass, resolveResourceType, index);
+        final Object instantiated = resolveFromBase(fhirBase, remainingPath, forcingClass, resolveResourceType, index,
+                                                    modelPackage);
         return propagateAndReturn(mappingHelper, instantiated);
     }
 
@@ -77,11 +82,12 @@ public class ToFhirInstantiator {
                                    final String remainingPath,
                                    final String forcingClass,
                                    final String resolveResourceType,
-                                   final int index) {
+                                   final int index,
+                                   final String modelPackage) {
         if (fhirBase instanceof List<?> fhirBaseList) {
-            return resolveFromList(fhirBaseList, remainingPath, forcingClass, resolveResourceType, index);
+            return resolveFromList(fhirBaseList, remainingPath, forcingClass, resolveResourceType, index, modelPackage);
         }
-        return resolveFromSingle(fhirBase, remainingPath, forcingClass, resolveResourceType);
+        return resolveFromSingle(fhirBase, remainingPath, forcingClass, resolveResourceType, modelPackage);
     }
 
     /**
@@ -91,11 +97,12 @@ public class ToFhirInstantiator {
                                    final String remainingPath,
                                    final String forcingClass,
                                    final String resolveResourceType,
-                                   final int index) {
+                                   final int index,
+                                   final String modelPackage) {
         final Object listEntry = index == -1
                 ? fhirBaseList.get(fhirBaseList.size() - 1)
                 : fhirBaseList.get(index);
-        return resolveFromSingle(listEntry, remainingPath, forcingClass, resolveResourceType);
+        return resolveFromSingle(listEntry, remainingPath, forcingClass, resolveResourceType, modelPackage);
     }
 
     /**
@@ -105,9 +112,10 @@ public class ToFhirInstantiator {
     private Object resolveFromSingle(final Object base,
                                      final String remainingPath,
                                      final String forcingClass,
-                                     final String resolveResourceType) {
+                                     final String resolveResourceType,
+                                     final String modelPackage) {
         final InstantiateAndSetReturn result =
-                findExistingAndInstantiateRemainder(base, remainingPath, forcingClass, resolveResourceType);
+                findExistingAndInstantiateRemainder(base, remainingPath, forcingClass, resolveResourceType, modelPackage);
         if (result == null) {
             log.error("Could not instantiate element based on fhirpath '{}' on {}",
                       remainingPath, base.getClass().getSimpleName());
@@ -141,11 +149,12 @@ public class ToFhirInstantiator {
     private InstantiateAndSetReturn findExistingAndInstantiateRemainder(final Object resource,
                                                                         final String remainingPath,
                                                                         final String forcingClass,
-                                                                        final String resolveResourceType) {
+                                                                        final String resolveResourceType,
+                                                                        final String modelPackage) {
         if (resource.getClass().getSimpleName().equals(remainingPath)) {
             return new InstantiateAndSetReturn(resource, false, null, "");
         }
         return fhirInstanceCreator.instantiateAndSetElement(
-                resource, resource.getClass(), remainingPath, forcingClass, resolveResourceType);
+                resource, resource.getClass(), remainingPath, forcingClass, resolveResourceType, modelPackage);
     }
 }

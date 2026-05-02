@@ -1,10 +1,10 @@
 package com.syntaric.openfhir;
 
-import ca.uhn.fhir.context.FhirContext;
 import com.syntaric.openfhir.mapping.tofhir.ToFhirPrePostProcessor;
 import com.syntaric.openfhir.mapping.tofhir.ToFhirPrePostProcessorInterface;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrPrePostProcessor;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrPrePostProcessorInterface;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.producers.NoOpUserContextProducer;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.terminology.NoOpTerminologyTranslator;
@@ -34,14 +34,14 @@ public class OpenFhirDefaultsConfig {
 
     @Bean
     @ConditionalOnMissingBean(ToFhirPrePostProcessorInterface.class)
-    public ToFhirPrePostProcessorInterface toFhirPrePostProcessor(final FhirContext fhirContext) {
-        return new ToFhirPrePostProcessor(fhirContext);
+    public ToFhirPrePostProcessorInterface toFhirPrePostProcessor(final FhirContextRegistry fhirContextRegistry) {
+        return new ToFhirPrePostProcessor(fhirContextRegistry);
     }
 
     @Bean
     @ConditionalOnMissingBean(ToOpenEhrPrePostProcessorInterface.class)
-    public ToOpenEhrPrePostProcessorInterface toOpenEhrPrePostProcessor(final FhirContext fhirContext) {
-        return new ToOpenEhrPrePostProcessor(fhirContext);
+    public ToOpenEhrPrePostProcessorInterface toOpenEhrPrePostProcessor(final FhirContextRegistry fhirContextRegistry) {
+        return new ToOpenEhrPrePostProcessor(fhirContextRegistry);
     }
 
     @Bean

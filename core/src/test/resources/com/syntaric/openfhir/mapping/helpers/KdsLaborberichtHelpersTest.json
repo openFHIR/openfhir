@@ -1,12 +1,397 @@
 [ {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+  "mappingName" : "healthCareFacility",
+  "generatingResourceType" : "DiagnosticReport",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.performer",
+  "originalOpenEhrPath" : "$composition/context/health_care_facility",
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "performer",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "DiagnosticReport.performer",
+  "openEhr" : "$composition/context/health_care_facility",
+  "fullOpenEhrPath" : "$composition/context/health_care_facility",
+  "fullOpenEhrFlatPath" : "laborbericht/context/_health_care_facility",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/_health_care_facility(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_IDENTIFIED" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+  "mappingName" : "participations",
+  "generatingResourceType" : "DiagnosticReport",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.resultsInterpreter",
+  "originalOpenEhrPath" : "$composition/context/participations",
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "resultsInterpreter",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "DiagnosticReport.resultsInterpreter",
+  "openEhr" : "$composition/context/participations",
+  "fullOpenEhrPath" : "$composition/context/participations",
+  "fullOpenEhrFlatPath" : "laborbericht/context/participations[n]",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/participations(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : "NONE",
+  "possibleRmTypes" : [ "PARTICIPATION" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "participationFunction.function",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : null,
+    "originalOpenEhrPath" : "$openEHRRoot/function",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : null,
+    "fhirWithCondition" : null,
+    "fullFhirPath" : null,
+    "openEhr" : "$openEHRRoot/function",
+    "fullOpenEhrPath" : "$composition/context/participations/$openEHRRoot/function",
+    "fullOpenEhrFlatPath" : "laborbericht/context/participations[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/participations(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "PARTICIPATION" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "result interpreter",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "participationFunction",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$openEHRRoot",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "DiagnosticReport.resultsInterpreter",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "DiagnosticReport.resultsInterpreter",
+    "openEhr" : "$openEHRRoot",
+    "fullOpenEhrPath" : "$composition/context/participations/$openEHRRoot",
+    "fullOpenEhrFlatPath" : "laborbericht/context/participations[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/participations(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : "NONE",
+    "possibleRmTypes" : [ "PARTICIPATION" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "performer",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$openEHRRoot",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "DiagnosticReport.resultsInterpreter",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "DiagnosticReport.resultsInterpreter",
+    "openEhr" : "$openEHRRoot",
+    "fullOpenEhrPath" : "$composition/context/participations/$openEHRRoot",
+    "fullOpenEhrFlatPath" : "laborbericht/context/participations[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/participations(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "PARTICIPATION" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : true
+  } ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+  "mappingName" : "composer",
+  "generatingResourceType" : "DiagnosticReport",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.performer",
+  "originalOpenEhrPath" : "$composition/composer",
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "performer",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "DiagnosticReport.performer",
+  "openEhr" : "$composition/composer",
+  "fullOpenEhrPath" : "$composition/composer",
+  "fullOpenEhrFlatPath" : "laborbericht/composer",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/composer(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_PROXY" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+  "mappingName" : "performer",
+  "generatingResourceType" : "DiagnosticReport",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.performer",
+  "originalOpenEhrPath" : "$composition/perfomer",
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "performer",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "DiagnosticReport.performer",
+  "openEhr" : "$composition/perfomer",
+  "fullOpenEhrPath" : "$composition/perfomer",
+  "fullOpenEhrFlatPath" : "laborbericht",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ null ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : null,
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+  "mappingName" : "otherParticipants",
+  "generatingResourceType" : "DiagnosticReport",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.resultsInterpreter",
+  "originalOpenEhrPath" : "$archetype/other_participations",
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "resultsInterpreter",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "DiagnosticReport.resultsInterpreter",
+  "openEhr" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/other_participations",
+  "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/other_participations",
+  "fullOpenEhrFlatPath" : "laborbericht/laborbefund/other_participations[n]",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/other_participations(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : "NONE",
+  "possibleRmTypes" : [ "PARTICIPATION" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "participationFunction.function",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : null,
+    "originalOpenEhrPath" : "$openEHRRoot/function",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : null,
+    "fhirWithCondition" : null,
+    "fullFhirPath" : null,
+    "openEhr" : "$openEHRRoot/function",
+    "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/other_participations/$openEHRRoot/function",
+    "fullOpenEhrFlatPath" : "laborbericht/laborbefund/other_participations[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/other_participations(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "PARTICIPATION" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "result interpreter",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "participationFunction",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$openEHRRoot",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "DiagnosticReport.resultsInterpreter",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "DiagnosticReport.resultsInterpreter",
+    "openEhr" : "$openEHRRoot",
+    "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/other_participations/$openEHRRoot",
+    "fullOpenEhrFlatPath" : "laborbericht/laborbefund/other_participations[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/other_participations(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : "NONE",
+    "possibleRmTypes" : [ "PARTICIPATION" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "performer",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$openEHRRoot",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "DiagnosticReport.resultsInterpreter",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "DiagnosticReport.resultsInterpreter",
+    "openEhr" : "$openEHRRoot",
+    "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/other_participations/$openEHRRoot",
+    "fullOpenEhrFlatPath" : "laborbericht/laborbefund/other_participations[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/other_participations(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "PARTICIPATION" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : true
+  } ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
   "mappingName" : "effectivePeriod",
   "generatingResourceType" : "DiagnosticReport",
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.effective.as(Period)",
   "originalOpenEhrPath" : "$composition",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "effective.as(Period)",
@@ -37,7 +422,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "end",
     "originalOpenEhrPath" : "context/end_time",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "end",
@@ -62,7 +447,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -71,7 +457,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "start",
     "originalOpenEhrPath" : "context/start_time",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "start",
@@ -96,10 +482,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -108,7 +496,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.effective.as(DateTime)",
   "originalOpenEhrPath" : "$composition/context/start_time",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "effective.as(DateTime)",
@@ -133,7 +521,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -142,7 +531,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.issued",
   "originalOpenEhrPath" : "$composition/context/start_time",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "issued",
@@ -167,7 +556,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -176,7 +566,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource",
   "originalOpenEhrPath" : "$archetype/data[at0001]/events[at0002]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "DiagnosticReport",
@@ -207,7 +597,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "effective",
     "originalOpenEhrPath" : "$openehrRoot",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "effective",
@@ -232,7 +622,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -241,7 +632,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "category",
     "originalOpenEhrPath" : "$openehrRoot",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "category",
@@ -272,7 +663,7 @@
       "resolveResourceType" : null,
       "originalFhirPath" : "coding",
       "originalOpenEhrPath" : "$openehrRoot",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "coding",
@@ -284,7 +675,7 @@
       "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ "EVENT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -303,7 +694,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "system",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "system",
@@ -328,7 +719,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -337,7 +729,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "code",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "code",
@@ -362,7 +754,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -371,7 +764,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "text",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "text",
@@ -396,10 +789,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -408,7 +803,7 @@
       "resolveResourceType" : null,
       "originalFhirPath" : "coding",
       "originalOpenEhrPath" : "$openehrRoot",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "coding",
@@ -420,7 +815,7 @@
       "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ "EVENT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -439,7 +834,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "system",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "system",
@@ -464,7 +859,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -473,7 +869,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "code",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "code",
@@ -498,7 +894,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -507,7 +904,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "text",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "text",
@@ -532,10 +929,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -544,7 +943,7 @@
       "resolveResourceType" : null,
       "originalFhirPath" : "text",
       "originalOpenEhrPath" : "$openehrRoot",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "text",
@@ -556,7 +955,7 @@
       "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ "EVENT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -575,7 +974,7 @@
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "DiagnosticReport.category.text",
@@ -600,13 +999,16 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : true,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -615,7 +1017,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "code",
     "originalOpenEhrPath" : "data[at0003]/items[at0005]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "code",
@@ -640,7 +1042,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -649,7 +1052,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "$resource.status",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[at0005]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "status",
@@ -674,7 +1077,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -683,7 +1087,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "conclusion",
     "originalOpenEhrPath" : "data[at0003]/items[at0057]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "conclusion",
@@ -708,7 +1112,43 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "issued",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "issued",
+    "originalOpenEhrPath" : "time",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "issued",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "DiagnosticReport.issued",
+    "openEhr" : "time",
+    "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/time",
+    "fullOpenEhrFlatPath" : "laborbericht/laborbefund/any_event[n]/time",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?/time(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_DATE_TIME" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -717,7 +1157,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "specimen",
     "originalOpenEhrPath" : "data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "specimen",
@@ -748,7 +1188,7 @@
       "resolveResourceType" : "Specimen",
       "originalFhirPath" : "$fhirRoot",
       "originalOpenEhrPath" : "$reference",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "DiagnosticReport.specimen.as(Reference).resolve()",
@@ -775,11 +1215,11 @@
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "specimenReference",
-        "generatingResourceType" : "Specimen",
+        "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "DiagnosticReport.specimen.as(Reference).resolve()",
@@ -835,7 +1275,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -907,7 +1348,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -948,7 +1390,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -982,7 +1425,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1016,7 +1460,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1050,7 +1495,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1084,10 +1530,12 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1121,7 +1569,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1155,7 +1604,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1189,7 +1639,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1223,7 +1674,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1257,7 +1709,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1291,7 +1744,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1361,7 +1815,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1402,7 +1857,7 @@
               "modelMetadataName" : "CLUSTER.specimen.v1",
               "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
               "mappingName" : "identifierInReference",
-              "generatingResourceType" : "Specimen",
+              "generatingResourceType" : "BackboneElement",
               "resolveResourceType" : null,
               "originalFhirPath" : "$fhirRoot.identifier",
               "originalOpenEhrPath" : "$openehrRoot",
@@ -1431,13 +1886,51 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
+            }, {
+              "modelMetadataName" : "CLUSTER.specimen.v1",
+              "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
+              "mappingName" : "specimenLink",
+              "generatingResourceType" : "BackboneElement",
+              "resolveResourceType" : null,
+              "originalFhirPath" : "$fhirRoot",
+              "originalOpenEhrPath" : "$openehrRoot/links",
+              "openEhrHierarchySplitFlatPath" : null,
+              "preprocessorOpenEhrCondition" : null,
+              "preprocessorFhirConditions" : null,
+              "fhir" : "DiagnosticReport.specimen.as(Reference).resolve().parent.as(Reference).resolve()",
+              "fhirWithCondition" : null,
+              "fullFhirPath" : "DiagnosticReport.specimen.as(Reference).resolve().parent.as(Reference).resolve()",
+              "openEhr" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]/links",
+              "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]/links",
+              "fullOpenEhrFlatPath" : "laborbericht/laborbefund/any_event[n]/probenmaterial[n]/parent_specimen_identifier[n]/links[n]",
+              "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?/probenmaterial(:\\d+)?/parent_specimen_identifier(:\\d+)?/links(:\\d+)?(\\|.*)?",
+              "flatPathPipeSuffix" : "",
+              "detectedType" : null,
+              "hardcodedType" : null,
+              "possibleRmTypes" : [ "LINK" ],
+              "programmedMapping" : null,
+              "manualOpenEhrValue" : null,
+              "manualFhirValue" : null,
+              "unidirectional" : null,
+              "fhirConditions" : null,
+              "openEhrConditions" : null,
+              "enteredFromSlotArchetypeLink" : true,
+              "terminology" : null,
+              "availableCodings" : [ ],
+              "children" : [ ],
+              "useParentRoot" : true,
+              "hasSlot" : false,
+              "followedBy" : false
             } ],
             "useParentRoot" : true,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1478,7 +1971,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1519,7 +2013,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1560,7 +2055,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1601,7 +2097,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1642,7 +2139,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1683,7 +2181,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1724,7 +2223,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1765,7 +2265,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1806,7 +2307,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1827,7 +2329,7 @@
           "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?/probenmaterial(:\\d+)?/adequacy_for_testing(:\\d+)?(\\|.*)?",
           "flatPathPipeSuffix" : "",
           "detectedType" : null,
-          "hardcodedType" : null,
+          "hardcodedType" : "NONE",
           "possibleRmTypes" : [ "DV_CODED_TEXT" ],
           "programmedMapping" : null,
           "manualOpenEhrValue" : null,
@@ -1885,7 +2387,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1926,7 +2429,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1967,19 +2471,24 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         } ],
         "useParentRoot" : true,
-        "hasSlot" : true
+        "hasSlot" : true,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -1988,7 +2497,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "basedOn.as(Reference)",
     "originalOpenEhrPath" : "$archetype",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "basedOn.as(Reference)",
@@ -2019,7 +2528,7 @@
       "resolveResourceType" : null,
       "originalFhirPath" : "identifier",
       "originalOpenEhrPath" : "protocol[at0004]/items[at0094]/items[at0063]",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "identifier",
@@ -2044,10 +2553,47 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
+    }, {
+      "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+      "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+      "mappingName" : "basedOnLink",
+      "generatingResourceType" : "DiagnosticReport",
+      "resolveResourceType" : null,
+      "originalFhirPath" : "$fhirRoot",
+      "originalOpenEhrPath" : "$archetype/protocol[at0004]/items[at0094]/items[at0063]/links",
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+      "preprocessorOpenEhrCondition" : null,
+      "preprocessorFhirConditions" : null,
+      "fhir" : "DiagnosticReport.basedOn.as(Reference)",
+      "fhirWithCondition" : null,
+      "fullFhirPath" : "DiagnosticReport.basedOn.as(Reference)",
+      "openEhr" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/protocol[at0004]/items[at0094]/items[at0063]/links",
+      "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/protocol[at0004]/items[at0094]/items[at0063]/links",
+      "fullOpenEhrFlatPath" : "laborbericht/laborbefund/test_request_details/auftrags-id_des_empfangenden_systems/links[n]",
+      "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/test_request_details(:\\d+)?/auftrags-id_des_empfangenden_systems(:\\d+)?/links(:\\d+)?(\\|.*)?",
+      "flatPathPipeSuffix" : "",
+      "detectedType" : null,
+      "hardcodedType" : null,
+      "possibleRmTypes" : [ "LINK" ],
+      "programmedMapping" : null,
+      "manualOpenEhrValue" : null,
+      "manualFhirValue" : null,
+      "unidirectional" : null,
+      "fhirConditions" : null,
+      "openEhrConditions" : null,
+      "enteredFromSlotArchetypeLink" : false,
+      "terminology" : null,
+      "availableCodings" : [ ],
+      "children" : [ ],
+      "useParentRoot" : true,
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -2056,7 +2602,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "result",
     "originalOpenEhrPath" : "data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "result",
@@ -2087,7 +2633,7 @@
       "resolveResourceType" : "Observation",
       "originalFhirPath" : "$fhirRoot",
       "originalOpenEhrPath" : "$reference",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "DiagnosticReport.result.as(Reference).resolve()",
@@ -2114,11 +2660,11 @@
         "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
         "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
         "mappingName" : "observationRecurring",
-        "generatingResourceType" : "Observation",
+        "generatingResourceType" : "DiagnosticReport",
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot",
         "originalOpenEhrPath" : "$openehrRoot",
-        "openEhrHierarchySplitFlatPath" : null,
+        "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
         "fhir" : "DiagnosticReport.result.as(Reference).resolve()",
@@ -2181,7 +2727,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2222,7 +2769,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2263,7 +2811,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2304,7 +2853,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2345,7 +2895,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2386,7 +2937,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2427,7 +2979,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2468,7 +3021,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2509,7 +3063,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2550,7 +3105,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2591,7 +3147,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2632,7 +3189,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2673,7 +3231,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2714,7 +3273,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2755,7 +3315,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2796,7 +3357,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2837,7 +3399,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2878,7 +3441,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2919,7 +3483,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -2960,7 +3525,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3001,7 +3567,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3042,7 +3609,8 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3083,7 +3651,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3124,7 +3693,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3145,7 +3715,7 @@
           "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?/pro_laboranalyt(:\\d+)?/result_status(:\\d+)?(\\|.*)?",
           "flatPathPipeSuffix" : "",
           "detectedType" : null,
-          "hardcodedType" : null,
+          "hardcodedType" : "NONE",
           "possibleRmTypes" : [ "DV_CODED_TEXT" ],
           "programmedMapping" : null,
           "manualOpenEhrValue" : null,
@@ -3196,7 +3766,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3237,7 +3808,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3278,7 +3850,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3319,7 +3892,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3360,7 +3934,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3401,7 +3976,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3442,7 +4018,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3483,7 +4060,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3524,10 +4102,12 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3561,7 +4141,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3595,7 +4176,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3629,7 +4211,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3663,7 +4246,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3697,7 +4281,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3718,7 +4303,7 @@
           "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?/pro_laboranalyt(:\\d+)?/probe_id(:\\d+)?(\\|.*)?",
           "flatPathPipeSuffix" : "",
           "detectedType" : null,
-          "hardcodedType" : null,
+          "hardcodedType" : "NONE",
           "possibleRmTypes" : [ "DV_IDENTIFIER", "DV_URI" ],
           "programmedMapping" : null,
           "manualOpenEhrValue" : null,
@@ -3767,7 +4352,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
             "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3808,7 +4394,7 @@
               "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
               "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
               "mappingName" : "identifierInReference",
-              "generatingResourceType" : "Specimen",
+              "generatingResourceType" : "BackboneElement",
               "resolveResourceType" : null,
               "originalFhirPath" : "identifier",
               "originalOpenEhrPath" : "$openehrRoot",
@@ -3837,13 +4423,51 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
+            }, {
+              "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
+              "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
+              "mappingName" : "specimenLink",
+              "generatingResourceType" : "BackboneElement",
+              "resolveResourceType" : null,
+              "originalFhirPath" : "$fhirRoot",
+              "originalOpenEhrPath" : "$openehrRoot/links",
+              "openEhrHierarchySplitFlatPath" : null,
+              "preprocessorOpenEhrCondition" : null,
+              "preprocessorFhirConditions" : null,
+              "fhir" : "DiagnosticReport.result.as(Reference).resolve().specimen.as(Reference).resolve()",
+              "fhirWithCondition" : null,
+              "fullFhirPath" : "DiagnosticReport.result.as(Reference).resolve().specimen.as(Reference).resolve()",
+              "openEhr" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]/items[at0026]/links",
+              "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]/items[at0026]/links",
+              "fullOpenEhrFlatPath" : "laborbericht/laborbefund/any_event[n]/pro_laboranalyt[n]/probe_id/links[n]",
+              "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?/pro_laboranalyt(:\\d+)?/probe_id(:\\d+)?/links(:\\d+)?(\\|.*)?",
+              "flatPathPipeSuffix" : "",
+              "detectedType" : null,
+              "hardcodedType" : null,
+              "possibleRmTypes" : [ "LINK" ],
+              "programmedMapping" : null,
+              "manualOpenEhrValue" : null,
+              "manualFhirValue" : null,
+              "unidirectional" : null,
+              "fhirConditions" : null,
+              "openEhrConditions" : null,
+              "enteredFromSlotArchetypeLink" : true,
+              "terminology" : null,
+              "availableCodings" : [ ],
+              "children" : [ ],
+              "useParentRoot" : true,
+              "hasSlot" : false,
+              "followedBy" : false
             } ],
             "useParentRoot" : true,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         }, {
           "modelMetadataName" : "CLUSTER.laboratory_test_analyte.v1",
           "archetype" : "openEHR-EHR-CLUSTER.laboratory_test_analyte.v1",
@@ -3877,19 +4501,59 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : false
         } ],
         "useParentRoot" : true,
-        "hasSlot" : true
+        "hasSlot" : true,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+  "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+  "mappingName" : "eventTime",
+  "generatingResourceType" : "DiagnosticReport",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.effective",
+  "originalOpenEhrPath" : "$archetype/data[at0001]/events[at0002]",
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "effective",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "DiagnosticReport.effective",
+  "openEhr" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]",
+  "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]",
+  "fullOpenEhrFlatPath" : "laborbericht/laborbefund/any_event[n]",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/laborbefund(:\\d+)?/any_event(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "EVENT" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -3898,7 +4562,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.meta",
   "originalOpenEhrPath" : null,
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "meta",
@@ -3910,7 +4574,7 @@
   "fullOpenEhrFlatPathWithMatchingRegex" : null,
   "flatPathPipeSuffix" : "",
   "detectedType" : null,
-  "hardcodedType" : null,
+  "hardcodedType" : "NONE",
   "possibleRmTypes" : null,
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
@@ -3929,7 +4593,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "profile",
     "originalOpenEhrPath" : null,
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "profile",
@@ -3954,10 +4618,12 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -3966,7 +4632,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.encounter.as(Reference).identifier",
   "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "encounter.as(Reference).identifier",
@@ -3996,26 +4662,33 @@
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
-    "originalOpenEhrPath" : "$archetype",
+    "originalOpenEhrPath" : "items[at0001]",
     "openEhrHierarchySplitFlatPath" : null,
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "DiagnosticReport.encounter.as(Reference).identifier",
-    "fhirWithCondition" : null,
+    "fhirWithCondition" : "where(type.coding.code.toString().contains('VN'))",
     "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).identifier",
-    "openEhr" : "openEHR-EHR-CLUSTER.case_identification.v0",
-    "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-    "fullOpenEhrFlatPath" : "laborbericht/context/case_identification",
-    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?(\\|.*)?",
+    "openEhr" : "items[at0001]",
+    "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+    "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/case_identifier",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/case_identifier(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
     "detectedType" : null,
-    "hardcodedType" : "NONE",
-    "possibleRmTypes" : [ ],
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
     "unidirectional" : null,
-    "fhirConditions" : null,
+    "fhirConditions" : [ {
+      "targetRoot" : "DiagnosticReport.encounter.as(Reference).identifier",
+      "targetAttribute" : "type.coding.code",
+      "targetAttributes" : [ "type.coding.code" ],
+      "operator" : "one of",
+      "criteria" : "VN",
+      "criterias" : [ "VN" ]
+    } ],
     "openEhrConditions" : null,
     "enteredFromSlotArchetypeLink" : true,
     "terminology" : null,
@@ -4023,24 +4696,24 @@
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
       "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
-      "mappingName" : "identifierCase",
+      "mappingName" : "vncodingcode",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
-      "originalFhirPath" : "$fhirRoot",
-      "originalOpenEhrPath" : "items[at0001]",
+      "originalFhirPath" : "type.coding",
+      "originalOpenEhrPath" : "$openehrRoot",
       "openEhrHierarchySplitFlatPath" : null,
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
-      "fhir" : "DiagnosticReport.encounter.as(Reference).identifier",
+      "fhir" : "type.coding",
       "fhirWithCondition" : null,
-      "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).identifier",
+      "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).identifier.type.coding",
       "openEhr" : "items[at0001]",
       "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
       "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/case_identifier",
       "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/case_identifier(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -4051,15 +4724,53 @@
       "enteredFromSlotArchetypeLink" : true,
       "terminology" : null,
       "availableCodings" : [ ],
-      "children" : [ ],
-      "useParentRoot" : true,
-      "hasSlot" : false
+      "children" : [ {
+        "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
+        "mappingName" : "vncodingcode.extension",
+        "generatingResourceType" : "Identifier",
+        "resolveResourceType" : null,
+        "originalFhirPath" : "code",
+        "originalOpenEhrPath" : "$openehrRoot",
+        "openEhrHierarchySplitFlatPath" : null,
+        "preprocessorOpenEhrCondition" : null,
+        "preprocessorFhirConditions" : null,
+        "fhir" : "code",
+        "fhirWithCondition" : null,
+        "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).identifier.type.coding.code",
+        "openEhr" : "items[at0001]",
+        "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+        "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/case_identifier",
+        "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/case_identifier(:\\d+)?(\\|.*)?",
+        "flatPathPipeSuffix" : "",
+        "detectedType" : null,
+        "hardcodedType" : null,
+        "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+        "programmedMapping" : null,
+        "manualOpenEhrValue" : null,
+        "manualFhirValue" : "VN",
+        "unidirectional" : "openehr->fhir",
+        "fhirConditions" : null,
+        "openEhrConditions" : null,
+        "enteredFromSlotArchetypeLink" : true,
+        "terminology" : null,
+        "availableCodings" : [ ],
+        "children" : [ ],
+        "useParentRoot" : false,
+        "hasSlot" : false,
+        "followedBy" : true
+      } ],
+      "useParentRoot" : false,
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4068,7 +4779,7 @@
   "resolveResourceType" : "Encounter",
   "originalFhirPath" : "$resource.encounter",
   "originalOpenEhrPath" : "$reference",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "encounter.as(Reference).resolve()",
@@ -4095,11 +4806,11 @@
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
     "mappingName" : "identifierInReference",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "DiagnosticReport",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot.identifier",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "identifier",
@@ -4129,26 +4840,33 @@
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
       "originalFhirPath" : "$fhirRoot",
-      "originalOpenEhrPath" : "$archetype",
+      "originalOpenEhrPath" : "items[at0001]",
       "openEhrHierarchySplitFlatPath" : null,
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "DiagnosticReport.encounter.as(Reference).resolve().identifier",
-      "fhirWithCondition" : null,
+      "fhirWithCondition" : "where(type.coding.code.toString().contains('VN'))",
       "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).resolve().identifier",
-      "openEhr" : "openEHR-EHR-CLUSTER.case_identification.v0",
-      "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-      "fullOpenEhrFlatPath" : "laborbericht/context/case_identification",
-      "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?(\\|.*)?",
+      "openEhr" : "items[at0001]",
+      "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+      "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/case_identifier",
+      "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/case_identifier(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : "NONE",
-      "possibleRmTypes" : [ ],
+      "hardcodedType" : null,
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
       "unidirectional" : null,
-      "fhirConditions" : null,
+      "fhirConditions" : [ {
+        "targetRoot" : "DiagnosticReport.encounter.as(Reference).resolve().identifier",
+        "targetAttribute" : "type.coding.code",
+        "targetAttributes" : [ "type.coding.code" ],
+        "operator" : "one of",
+        "criteria" : "VN",
+        "criterias" : [ "VN" ]
+      } ],
       "openEhrConditions" : null,
       "enteredFromSlotArchetypeLink" : true,
       "terminology" : null,
@@ -4156,24 +4874,24 @@
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
         "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
-        "mappingName" : "identifierCase",
+        "mappingName" : "vncodingcode",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
-        "originalFhirPath" : "$fhirRoot",
-        "originalOpenEhrPath" : "items[at0001]",
+        "originalFhirPath" : "type.coding",
+        "originalOpenEhrPath" : "$openehrRoot",
         "openEhrHierarchySplitFlatPath" : null,
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
-        "fhir" : "DiagnosticReport.encounter.as(Reference).resolve().identifier",
+        "fhir" : "type.coding",
         "fhirWithCondition" : null,
-        "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).resolve().identifier",
+        "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).resolve().identifier.type.coding",
         "openEhr" : "items[at0001]",
         "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
         "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/case_identifier",
         "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/case_identifier(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
         "detectedType" : null,
-        "hardcodedType" : null,
+        "hardcodedType" : "NONE",
         "possibleRmTypes" : [ "DV_CODED_TEXT" ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
@@ -4184,18 +4902,92 @@
         "enteredFromSlotArchetypeLink" : true,
         "terminology" : null,
         "availableCodings" : [ ],
-        "children" : [ ],
-        "useParentRoot" : true,
-        "hasSlot" : false
+        "children" : [ {
+          "modelMetadataName" : "CLUSTER.case_identification.v0",
+          "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
+          "mappingName" : "vncodingcode.extension",
+          "generatingResourceType" : "Identifier",
+          "resolveResourceType" : null,
+          "originalFhirPath" : "code",
+          "originalOpenEhrPath" : "$openehrRoot",
+          "openEhrHierarchySplitFlatPath" : null,
+          "preprocessorOpenEhrCondition" : null,
+          "preprocessorFhirConditions" : null,
+          "fhir" : "code",
+          "fhirWithCondition" : null,
+          "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).resolve().identifier.type.coding.code",
+          "openEhr" : "items[at0001]",
+          "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+          "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/case_identifier",
+          "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/case_identifier(:\\d+)?(\\|.*)?",
+          "flatPathPipeSuffix" : "",
+          "detectedType" : null,
+          "hardcodedType" : null,
+          "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+          "programmedMapping" : null,
+          "manualOpenEhrValue" : null,
+          "manualFhirValue" : "VN",
+          "unidirectional" : "openehr->fhir",
+          "fhirConditions" : null,
+          "openEhrConditions" : null,
+          "enteredFromSlotArchetypeLink" : true,
+          "terminology" : null,
+          "availableCodings" : [ ],
+          "children" : [ ],
+          "useParentRoot" : false,
+          "hasSlot" : false,
+          "followedBy" : true
+        } ],
+        "useParentRoot" : false,
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
+  }, {
+    "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
+    "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
+    "mappingName" : "encounterMapping",
+    "generatingResourceType" : "DiagnosticReport",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "DiagnosticReport.encounter.as(Reference).resolve()",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "DiagnosticReport.encounter.as(Reference).resolve()",
+    "openEhr" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "fullOpenEhrFlatPath" : "laborbericht/context/case_identification/links[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "laborbericht(:\\d+)?/context(:\\d+)?/case_identification(:\\d+)?/links(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "LINK" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
   "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4204,7 +4996,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.identifier",
   "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[at0002]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "identifier",
@@ -4242,7 +5034,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "type.coding",
     "originalOpenEhrPath" : null,
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "type.coding",
@@ -4254,7 +5046,7 @@
     "fullOpenEhrFlatPathWithMatchingRegex" : null,
     "flatPathPipeSuffix" : "",
     "detectedType" : null,
-    "hardcodedType" : null,
+    "hardcodedType" : "NONE",
     "possibleRmTypes" : null,
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
@@ -4273,7 +5065,7 @@
       "resolveResourceType" : null,
       "originalFhirPath" : "system",
       "originalOpenEhrPath" : null,
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "system",
@@ -4298,7 +5090,8 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     }, {
       "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
       "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4307,7 +5100,7 @@
       "resolveResourceType" : null,
       "originalFhirPath" : "code",
       "originalOpenEhrPath" : null,
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "code",
@@ -4332,10 +5125,12 @@
       "availableCodings" : null,
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.laboratory_test_result.v1",
     "archetype" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1",
@@ -4344,7 +5139,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "value",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[at0002]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "laborbericht/laborbefund/any_event[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "value",
@@ -4369,8 +5164,10 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 } ]

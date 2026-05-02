@@ -64,7 +64,7 @@ public class StudienteilnahmeToOpenEHRTest extends KdsGenericTest {
      */
     @Test
     public void assertToOpenEHRBundle() {
-        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE), operationaltemplate);
+        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE), webTemplate);
         assertCompositionIgnoringActionTime(composition, COMPOSITION_BUNDLE);
     }
 
@@ -74,7 +74,7 @@ public class StudienteilnahmeToOpenEHRTest extends KdsGenericTest {
     @Test
     public void assertToOpenEHRFlatFieldsFromBundle() {
         final Bundle testBundle = getTestBundle(BUNDLE);
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
         Assert.assertEquals("245", jsonObject.getAsJsonPrimitive(
                 "studienteilnahme/einwilligungserklärung/ism_transition/current_state|code").getAsString());
@@ -88,7 +88,7 @@ public class StudienteilnahmeToOpenEHRTest extends KdsGenericTest {
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[index]), webTemplate);
         assertCompositionIgnoringActionTime(composition, OPENEHR_OUTPUTS[index]);
     }
 

@@ -1,6 +1,41 @@
 [ {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
+  "mappingName" : "healthCareFacility",
+  "generatingResourceType" : "ServiceRequest",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.requester",
+  "originalOpenEhrPath" : "$archetype/context/health_care_facility",
+  "openEhrHierarchySplitFlatPath" : null,
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "requester",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "ServiceRequest.requester",
+  "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/context/health_care_facility",
+  "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/context/health_care_facility",
+  "fullOpenEhrFlatPath" : "leistungsanforderung/laborleistung",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/laborleistung(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ null ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : null,
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
   "mappingName" : "authoredOn",
   "generatingResourceType" : "ServiceRequest",
   "resolveResourceType" : null,
@@ -31,7 +66,78 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
+  "mappingName" : "composer",
+  "generatingResourceType" : "ServiceRequest",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.requester",
+  "originalOpenEhrPath" : "$composition/composer",
+  "openEhrHierarchySplitFlatPath" : null,
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "requester",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "ServiceRequest.requester",
+  "openEhr" : "$composition/composer",
+  "fullOpenEhrPath" : "$composition/composer",
+  "fullOpenEhrFlatPath" : "leistungsanforderung/composer",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/composer(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_PROXY" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "INSTRUCTION.service_request.v1",
+  "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
+  "mappingName" : "provider",
+  "generatingResourceType" : "ServiceRequest",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.requester",
+  "originalOpenEhrPath" : "$composition/provider",
+  "openEhrHierarchySplitFlatPath" : null,
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "requester",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "ServiceRequest.requester",
+  "openEhr" : "$composition/provider",
+  "fullOpenEhrPath" : "$composition/provider",
+  "fullOpenEhrFlatPath" : "leistungsanforderung/provider",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/provider(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_PROXY" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -96,7 +202,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -137,7 +244,8 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -182,7 +290,8 @@
     } ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -223,7 +332,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -244,7 +354,7 @@
     "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/laborleistung(:\\d+)?/status_der_anfrage(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
     "detectedType" : null,
-    "hardcodedType" : null,
+    "hardcodedType" : "NONE",
     "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
@@ -295,10 +405,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -334,7 +446,7 @@
       "modelMetadataName" : "INSTRUCTION.service_request.v1",
       "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
       "mappingName" : "organization",
-      "generatingResourceType" : "Organization",
+      "generatingResourceType" : "ServiceRequest",
       "resolveResourceType" : null,
       "originalFhirPath" : "$fhirRoot",
       "originalOpenEhrPath" : "items[openEHR-EHR-CLUSTER.organisation.v1]",
@@ -365,7 +477,7 @@
         "modelMetadataName" : "CLUSTER.organisation.v1",
         "archetype" : "openEHR-EHR-CLUSTER.organisation.v1",
         "mappingName" : "orgName",
-        "generatingResourceType" : "BackboneElement",
+        "generatingResourceType" : "Organization",
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot.name",
         "originalOpenEhrPath" : "$archetype/items[at0001]",
@@ -394,12 +506,13 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.organisation.v1",
         "archetype" : "openEHR-EHR-CLUSTER.organisation.v1",
         "mappingName" : "orgId",
-        "generatingResourceType" : "BackboneElement",
+        "generatingResourceType" : "Organization",
         "resolveResourceType" : null,
         "originalFhirPath" : "$fhirRoot.identifier",
         "originalOpenEhrPath" : "$archetype/items[at0003]",
@@ -428,16 +541,20 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : true
+      "hasSlot" : true,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -471,7 +588,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -484,7 +602,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(category.coding.code.toString().contains('laboratory'))",
+  "fhirWithCondition" : "ServiceRequest.where(category.coding.code.toString().contains('laboratory'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0148]/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0148]/defining_code/terminology_id",
@@ -512,7 +630,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -525,7 +644,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(category.coding.code.toString().contains('laboratory'))",
+  "fhirWithCondition" : "ServiceRequest.where(category.coding.code.toString().contains('laboratory'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string",
@@ -557,7 +676,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -570,7 +690,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(category.coding.code.toString().contains('laboratory'))",
+  "fhirWithCondition" : "ServiceRequest.where(category.coding.code.toString().contains('laboratory'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0148]",
   "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0148]",
@@ -598,7 +718,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -670,7 +791,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -711,7 +833,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -752,10 +875,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -768,7 +893,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(category.coding.code.toString().contains('laboratory'))",
+  "fhirWithCondition" : "ServiceRequest.where(category.coding.code.toString().contains('laboratory'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0065]/defining_code/terminology_id",
   "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0065]/defining_code/terminology_id",
@@ -796,7 +921,8 @@
   "availableCodings" : null,
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -809,7 +935,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(category.coding.code.toString().contains('laboratory'))",
+  "fhirWithCondition" : "ServiceRequest.where(category.coding.code.toString().contains('laboratory'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0065]/defining_code/code_string",
   "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0065]/defining_code/code_string",
@@ -841,7 +967,8 @@
   } ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -854,7 +981,7 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : null,
-  "fhirWithCondition" : "where(category.coding.code.toString().contains('laboratory'))",
+  "fhirWithCondition" : "ServiceRequest.where(category.coding.code.toString().contains('laboratory'))",
   "fullFhirPath" : null,
   "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0065]",
   "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[at0065]",
@@ -882,7 +1009,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -903,7 +1031,7 @@
   "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/laborleistung(:\\d+)?/aktuelle_aktivität(:\\d+)?/intention(:\\d+)?(\\|.*)?",
   "flatPathPipeSuffix" : "",
   "detectedType" : null,
-  "hardcodedType" : null,
+  "hardcodedType" : "NONE",
   "possibleRmTypes" : [ "DV_CODED_TEXT" ],
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
@@ -954,10 +1082,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -991,7 +1121,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -1030,26 +1161,33 @@
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
-    "originalOpenEhrPath" : "$archetype",
+    "originalOpenEhrPath" : "items[at0001]",
     "openEhrHierarchySplitFlatPath" : null,
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "ServiceRequest.encounter.as(Reference).identifier",
-    "fhirWithCondition" : null,
+    "fhirWithCondition" : "where(type.coding.code.toString().contains('VN'))",
     "fullFhirPath" : "ServiceRequest.encounter.as(Reference).identifier",
-    "openEhr" : "openEHR-EHR-CLUSTER.case_identification.v0",
-    "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-    "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation",
-    "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
+    "openEhr" : "items[at0001]",
+    "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+    "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/fall-kennung",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
     "detectedType" : null,
-    "hardcodedType" : "NONE",
-    "possibleRmTypes" : [ ],
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
     "unidirectional" : null,
-    "fhirConditions" : null,
+    "fhirConditions" : [ {
+      "targetRoot" : "ServiceRequest.encounter.as(Reference).identifier",
+      "targetAttribute" : "type.coding.code",
+      "targetAttributes" : [ "type.coding.code" ],
+      "operator" : "one of",
+      "criteria" : "VN",
+      "criterias" : [ "VN" ]
+    } ],
     "openEhrConditions" : null,
     "enteredFromSlotArchetypeLink" : true,
     "terminology" : null,
@@ -1057,24 +1195,24 @@
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
       "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
-      "mappingName" : "identifierCase",
+      "mappingName" : "vncodingcode",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
-      "originalFhirPath" : "$fhirRoot",
-      "originalOpenEhrPath" : "items[at0001]",
+      "originalFhirPath" : "type.coding",
+      "originalOpenEhrPath" : "$openehrRoot",
       "openEhrHierarchySplitFlatPath" : null,
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
-      "fhir" : "ServiceRequest.encounter.as(Reference).identifier",
+      "fhir" : "type.coding",
       "fhirWithCondition" : null,
-      "fullFhirPath" : "ServiceRequest.encounter.as(Reference).identifier",
+      "fullFhirPath" : "ServiceRequest.encounter.as(Reference).identifier.type.coding",
       "openEhr" : "items[at0001]",
       "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
       "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/fall-kennung",
       "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -1085,15 +1223,53 @@
       "enteredFromSlotArchetypeLink" : true,
       "terminology" : null,
       "availableCodings" : [ ],
-      "children" : [ ],
-      "useParentRoot" : true,
-      "hasSlot" : false
+      "children" : [ {
+        "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
+        "mappingName" : "vncodingcode.extension",
+        "generatingResourceType" : "Identifier",
+        "resolveResourceType" : null,
+        "originalFhirPath" : "code",
+        "originalOpenEhrPath" : "$openehrRoot",
+        "openEhrHierarchySplitFlatPath" : null,
+        "preprocessorOpenEhrCondition" : null,
+        "preprocessorFhirConditions" : null,
+        "fhir" : "code",
+        "fhirWithCondition" : null,
+        "fullFhirPath" : "ServiceRequest.encounter.as(Reference).identifier.type.coding.code",
+        "openEhr" : "items[at0001]",
+        "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+        "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/fall-kennung",
+        "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
+        "flatPathPipeSuffix" : "",
+        "detectedType" : null,
+        "hardcodedType" : null,
+        "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+        "programmedMapping" : null,
+        "manualOpenEhrValue" : null,
+        "manualFhirValue" : "VN",
+        "unidirectional" : "openehr->fhir",
+        "fhirConditions" : null,
+        "openEhrConditions" : null,
+        "enteredFromSlotArchetypeLink" : true,
+        "terminology" : null,
+        "availableCodings" : [ ],
+        "children" : [ ],
+        "useParentRoot" : false,
+        "hasSlot" : false,
+        "followedBy" : true
+      } ],
+      "useParentRoot" : false,
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -1129,7 +1305,7 @@
     "modelMetadataName" : "INSTRUCTION.service_request.v1",
     "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
     "mappingName" : "identifierInReference",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "ServiceRequest",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot.identifier",
     "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
@@ -1163,26 +1339,33 @@
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
       "originalFhirPath" : "$fhirRoot",
-      "originalOpenEhrPath" : "$archetype",
+      "originalOpenEhrPath" : "items[at0001]",
       "openEhrHierarchySplitFlatPath" : null,
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "ServiceRequest.encounter.as(Reference).resolve().identifier",
-      "fhirWithCondition" : null,
+      "fhirWithCondition" : "where(type.coding.code.toString().contains('VN'))",
       "fullFhirPath" : "ServiceRequest.encounter.as(Reference).resolve().identifier",
-      "openEhr" : "openEHR-EHR-CLUSTER.case_identification.v0",
-      "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-      "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation",
-      "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
+      "openEhr" : "items[at0001]",
+      "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+      "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/fall-kennung",
+      "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : "NONE",
-      "possibleRmTypes" : [ ],
+      "hardcodedType" : null,
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
       "unidirectional" : null,
-      "fhirConditions" : null,
+      "fhirConditions" : [ {
+        "targetRoot" : "ServiceRequest.encounter.as(Reference).resolve().identifier",
+        "targetAttribute" : "type.coding.code",
+        "targetAttributes" : [ "type.coding.code" ],
+        "operator" : "one of",
+        "criteria" : "VN",
+        "criterias" : [ "VN" ]
+      } ],
       "openEhrConditions" : null,
       "enteredFromSlotArchetypeLink" : true,
       "terminology" : null,
@@ -1190,24 +1373,24 @@
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
         "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
-        "mappingName" : "identifierCase",
+        "mappingName" : "vncodingcode",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
-        "originalFhirPath" : "$fhirRoot",
-        "originalOpenEhrPath" : "items[at0001]",
+        "originalFhirPath" : "type.coding",
+        "originalOpenEhrPath" : "$openehrRoot",
         "openEhrHierarchySplitFlatPath" : null,
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
-        "fhir" : "ServiceRequest.encounter.as(Reference).resolve().identifier",
+        "fhir" : "type.coding",
         "fhirWithCondition" : null,
-        "fullFhirPath" : "ServiceRequest.encounter.as(Reference).resolve().identifier",
+        "fullFhirPath" : "ServiceRequest.encounter.as(Reference).resolve().identifier.type.coding",
         "openEhr" : "items[at0001]",
         "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
         "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/fall-kennung",
         "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
         "detectedType" : null,
-        "hardcodedType" : null,
+        "hardcodedType" : "NONE",
         "possibleRmTypes" : [ "DV_CODED_TEXT" ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
@@ -1218,18 +1401,92 @@
         "enteredFromSlotArchetypeLink" : true,
         "terminology" : null,
         "availableCodings" : [ ],
-        "children" : [ ],
-        "useParentRoot" : true,
-        "hasSlot" : false
+        "children" : [ {
+          "modelMetadataName" : "CLUSTER.case_identification.v0",
+          "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
+          "mappingName" : "vncodingcode.extension",
+          "generatingResourceType" : "Identifier",
+          "resolveResourceType" : null,
+          "originalFhirPath" : "code",
+          "originalOpenEhrPath" : "$openehrRoot",
+          "openEhrHierarchySplitFlatPath" : null,
+          "preprocessorOpenEhrCondition" : null,
+          "preprocessorFhirConditions" : null,
+          "fhir" : "code",
+          "fhirWithCondition" : null,
+          "fullFhirPath" : "ServiceRequest.encounter.as(Reference).resolve().identifier.type.coding.code",
+          "openEhr" : "items[at0001]",
+          "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+          "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/fall-kennung",
+          "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
+          "flatPathPipeSuffix" : "",
+          "detectedType" : null,
+          "hardcodedType" : null,
+          "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+          "programmedMapping" : null,
+          "manualOpenEhrValue" : null,
+          "manualFhirValue" : "VN",
+          "unidirectional" : "openehr->fhir",
+          "fhirConditions" : null,
+          "openEhrConditions" : null,
+          "enteredFromSlotArchetypeLink" : true,
+          "terminology" : null,
+          "availableCodings" : [ ],
+          "children" : [ ],
+          "useParentRoot" : false,
+          "hasSlot" : false,
+          "followedBy" : true
+        } ],
+        "useParentRoot" : false,
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
+  }, {
+    "modelMetadataName" : "INSTRUCTION.service_request.v1",
+    "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
+    "mappingName" : "encounterMapping",
+    "generatingResourceType" : "ServiceRequest",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "ServiceRequest.encounter.as(Reference).resolve()",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "ServiceRequest.encounter.as(Reference).resolve()",
+    "openEhr" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "fullOpenEhrPath" : "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "fullOpenEhrFlatPath" : "leistungsanforderung/context/fallidentifikation/links[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/links(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "LINK" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "INSTRUCTION.service_request.v1",
   "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
@@ -1296,7 +1553,7 @@
       "modelMetadataName" : "INSTRUCTION.service_request.v1",
       "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
       "mappingName" : "specimenRecurring",
-      "generatingResourceType" : "Specimen",
+      "generatingResourceType" : "ServiceRequest",
       "resolveResourceType" : null,
       "originalFhirPath" : "$fhirRoot",
       "originalOpenEhrPath" : "$openehrRoot",
@@ -1327,7 +1584,7 @@
         "modelMetadataName" : "INSTRUCTION.service_request.v1",
         "archetype" : "openEHR-EHR-INSTRUCTION.service_request.v1",
         "mappingName" : "specimenIdentifier",
-        "generatingResourceType" : "Specimen",
+        "generatingResourceType" : "ServiceRequest",
         "resolveResourceType" : null,
         "originalFhirPath" : "identifier",
         "originalOpenEhrPath" : "items[at0001]",
@@ -1356,7 +1613,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1390,7 +1648,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1462,7 +1721,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1503,7 +1763,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1537,7 +1798,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1571,7 +1833,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1605,7 +1868,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1639,10 +1903,12 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1676,7 +1942,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1710,7 +1977,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1744,7 +2012,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1778,7 +2047,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1812,7 +2082,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1846,7 +2117,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1916,7 +2188,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -1957,7 +2230,7 @@
             "modelMetadataName" : "CLUSTER.specimen.v1",
             "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
             "mappingName" : "identifierInReference",
-            "generatingResourceType" : "Specimen",
+            "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
             "originalFhirPath" : "$fhirRoot.identifier",
             "originalOpenEhrPath" : "$openehrRoot",
@@ -1986,13 +2259,51 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : false
+          }, {
+            "modelMetadataName" : "CLUSTER.specimen.v1",
+            "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
+            "mappingName" : "specimenLink",
+            "generatingResourceType" : "BackboneElement",
+            "resolveResourceType" : null,
+            "originalFhirPath" : "$fhirRoot",
+            "originalOpenEhrPath" : "$openehrRoot/links",
+            "openEhrHierarchySplitFlatPath" : null,
+            "preprocessorOpenEhrCondition" : null,
+            "preprocessorFhirConditions" : null,
+            "fhir" : "ServiceRequest.specimen.as(Reference).resolve().parent.as(Reference).resolve()",
+            "fhirWithCondition" : null,
+            "fullFhirPath" : "ServiceRequest.specimen.as(Reference).resolve().parent.as(Reference).resolve()",
+            "openEhr" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]/links",
+            "fullOpenEhrPath" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]/links",
+            "fullOpenEhrFlatPath" : "leistungsanforderung/laborleistung/aktuelle_aktivität/probe[n]/identifier/links[n]",
+            "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/laborleistung(:\\d+)?/aktuelle_aktivität(:\\d+)?/probe(:\\d+)?/identifier(:\\d+)?/links(:\\d+)?(\\|.*)?",
+            "flatPathPipeSuffix" : "",
+            "detectedType" : null,
+            "hardcodedType" : null,
+            "possibleRmTypes" : [ "LINK" ],
+            "programmedMapping" : null,
+            "manualOpenEhrValue" : null,
+            "manualFhirValue" : null,
+            "unidirectional" : null,
+            "fhirConditions" : null,
+            "openEhrConditions" : null,
+            "enteredFromSlotArchetypeLink" : true,
+            "terminology" : null,
+            "availableCodings" : [ ],
+            "children" : [ ],
+            "useParentRoot" : true,
+            "hasSlot" : false,
+            "followedBy" : false
           } ],
           "useParentRoot" : true,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2033,7 +2344,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2074,7 +2386,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2115,7 +2428,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2156,7 +2470,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2197,7 +2512,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2238,7 +2554,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2279,7 +2596,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2320,7 +2638,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2361,7 +2680,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.specimen.v1",
         "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2382,7 +2702,7 @@
         "fullOpenEhrFlatPathWithMatchingRegex" : "leistungsanforderung(:\\d+)?/laborleistung(:\\d+)?/aktuelle_aktivität(:\\d+)?/probe(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
         "detectedType" : null,
-        "hardcodedType" : null,
+        "hardcodedType" : "NONE",
         "possibleRmTypes" : [ "CLUSTER" ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
@@ -2440,7 +2760,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2481,7 +2802,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.specimen.v1",
           "archetype" : "openEHR-EHR-CLUSTER.specimen.v1",
@@ -2522,17 +2844,22 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : true
+      "hasSlot" : true,
+      "followedBy" : false
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 } ]

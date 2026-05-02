@@ -8,6 +8,17 @@ openEHR and HL7 FHIR**, based on the **[FHIR Connect specification](https://gith
 openFHIR translates openEHR Compositions and FHIR Resources without storing clinical data itself — making it a flexible
 component for modern health IT architectures.
 
+## FHIR Version Support
+
+openFHIR supports all major HL7 FHIR versions:
+
+| Version | Status |
+|---------|:------:|
+| FHIR STU3 (3.0) | ✅ |
+| FHIR R4 (4.0) | ✅ |
+| FHIR R4B (4.3) | ✅ |
+| FHIR R5 (5.0) | ✅ |
+
 > **Note:** This open-source version is **not intended for production use**. It lacks critical production capabilities
 > including **authentication and role-based access control**, **terminology server integration**, and **performance
 optimizations**. For production-ready deployments with full security, scalability, and enterprise support, please refer

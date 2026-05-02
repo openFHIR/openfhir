@@ -1,0 +1,18 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: "STU3 Blood Pressure"
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: STU3
+
+context:
+  profile:
+    url: "Bundle"
+  template:
+    id: "Blood Pressure"
+  archetypes:
+    - "openEHR-EHR-COMPOSITION.blood_pressure.v0"
+    - "OBSERVATION.blood_pressure.v2"
+  start: "openEHR-EHR-COMPOSITION.blood_pressure.v0"

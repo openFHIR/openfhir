@@ -24,10 +24,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class BootstrapRunner implements ApplicationRunner {
 
-    @Value("${bootstrap.dir:/app/bootstrap/}")
+    @Value("${openfhir.bootstrap.dir:/app/bootstrap/}")
     private String bootstrapDir;
 
-    @Value("${bootstrap.recursively-open-directories:true}")
+    @Value("${openfhir.bootstrap.recursively-open-directories:true}")
     private boolean recursivelyOpenDirectories;
 
     final String MODEL_SUFFIX = ".yaml";
@@ -79,7 +79,7 @@ public class BootstrapRunner implements ApplicationRunner {
             if (file.isDirectory()) {
                 if (!recursivelyOpenDirectories) {
                     log.warn(
-                            "Found a folder {} in a bootstrap.dir location, set 'bootstrap.recursively-open-directories' to true if you want openFHIR to look into sub-folders",
+                            "Found a folder {} in a bootstrap.dir location, set 'openfhir.bootstrap.recursively-open-directories' to true if you want openFHIR to look into sub-folders",
                             file.getName());
                     continue;
                 } else {

@@ -11,6 +11,13 @@
             "id": "1",
             "identifier": [
               {
+                "type": {
+                  "coding": [
+                    {
+                      "code": "VN"
+                    }
+                  ]
+                },
                 "system": "https://www.charite.de/fhir/NamingSystem/Aufnahmenummern",
                 "value": "MII_0000010"
               }

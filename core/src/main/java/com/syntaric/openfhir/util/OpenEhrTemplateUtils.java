@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class OpenEhrTemplateUtils {
 
-    public WebTemplate parseWebTemplate(final OPERATIONALTEMPLATE operationaltemplate) {
-        return createParser(operationaltemplate);
+    public WebTemplate parseWebTemplate(final OptEntity optEntity) {
+        return createParser(getOperationalTemplate(optEntity));
     }
 
     private WebTemplate createParser(final OPERATIONALTEMPLATE operationaltemplate) {
         return new OPTParser(operationaltemplate).parse();
     }
 
-    public OPERATIONALTEMPLATE getOperationalTemplate(final OptEntity optEntity) {
+    private OPERATIONALTEMPLATE getOperationalTemplate(final OptEntity optEntity) {
         if(optEntity == null) {
             return null;
         }

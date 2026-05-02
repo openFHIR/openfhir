@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name:  KDS_medikamentenverabreichung
@@ -25,16 +25,14 @@ mappings:
     with:
       fhir: "$resource.identifier"
       openehr: "$composition/context/other_context[at0001]/items[at0002]"
-      
+
 
   - name: "status"
     extension: "add"
     with:
       fhir: "$resource.status"
       openehr: "$composition/context/other_context[at0001]/items[at0005]" # this status is mandatory, because it's 1...1 in the template
-      
 
-  # Dokumentationsdatum
   - name: "fallIdentifikationIdentifier"
     extension: "add"
     with:
@@ -55,21 +53,19 @@ mappings:
             fhir: "$fhirRoot.identifier"
             openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
           slotArchetype: "CLUSTER.case_identification.v0"
-  #        - name: "encounterMapping"
-  #          with:
-  #            fhir: "$fhirRoot"
-  #            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-  #            openehrLink:
-  #              meaning: "the case this composition relates to"
-  #              type: "case"
-
+        - name: "encounterMapping"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
+          link:
+            meaning: "the case this composition relates to"
+            type: "case"
 
   - name: "medicationCode"
     extension: "overwrite"
     with:
-      fhir: "$resource.medication.as(CodeableConcept).coding.display"
+      fhir: "$resource.medication.as(CodeableConcept).coding"
       openehr: "$archetype/description[at0017]/items[openEHR-EHR-CLUSTER.medication.v2]/items[at0132]"
-      
     openehrCondition:
       targetRoot: "$archetype/description[at0017]/items[openEHR-EHR-CLUSTER.medication.v2]"
       targetAttributes:
@@ -97,4 +93,4 @@ mappings:
     with:
       fhir: "$resource.reasonCode.coding.display"
       openehr: "$archetype/description[at0017]/items[at0156]"
-      
+

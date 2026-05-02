@@ -3,6 +3,7 @@ package com.syntaric.openfhir.mapping.tofhir;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
+import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.BidirectionalMappingEngine;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
@@ -12,10 +13,12 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
+import org.hl7.fhir.instance.model.api.IAnyResource;
+import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.StringType;
@@ -47,7 +50,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     @Autowired
     public ToFhirMappingEngine(final OpenEhrConditionEvaluator openEhrConditionEvaluator,
                                final FhirInstanceCreatorUtility fhirInstanceCreatorUtility,
-                               final FhirPathR4 fhirPath,
+                               final FhirContextRegistry fhirContextRegistry,
                                final OpenEhrFlatPathDataExtractor openEhrFlatPathDataExtractor,
                                final OpenFhirStringUtils openFhirStringUtils,
                                final FhirInstancePopulator fhirInstancePopulator,
@@ -55,7 +58,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                final CustomMappingRegistry customMappingRegistry,
                                final OpenFhirMapperUtils openFhirMapperUtils,
                                final MappingMetricsLogger metricsLogger) {
-        super(fhirPath);
+        super(fhirContextRegistry);
         this.openEhrConditionEvaluator = openEhrConditionEvaluator;
         this.fhirInstanceCreatorUtility = fhirInstanceCreatorUtility;
         this.openEhrFlatPathDataExtractor = openEhrFlatPathDataExtractor;
@@ -67,9 +70,11 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         this.metricsLogger = metricsLogger;
     }
 
-    public Bundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
-                            final JsonObject flatJsonObject) {
-        final Bundle returningBundle = new Bundle();
+    public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
+                                 final JsonObject flatJsonObject,
+                                 final Spec.Version fhirVersion) {
+        final String modelPackage = fhirVersion.modelPackage();
+        final IBaseBundle returningBundle = getBundle(fhirVersion);
         mappingHelpersByArchetype.forEach((archetype, mappingHelpers) -> {
             final MappingTimer archetypeTimer = MappingTimer.start();
 
@@ -82,12 +87,12 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 final List<MappingHelper> copiesToIterateOver = mappingHelpers.stream().map(MappingHelper::clone)
                         .toList();
                 final MappingHelper firstMapping = copiesToIterateOver.get(0);
-                final Resource generatedResource = fhirInstanceCreatorUtility.create(
-                        firstMapping.getGeneratingResourceType()); // generating resource is always same for all mappings
+                final IAnyResource generatedResource = fhirInstanceCreatorUtility.create(
+                        firstMapping.getGeneratingResourceType(), modelPackage); // generating resource is always same for all mappings
                 copiesToIterateOver.forEach(helper -> helper.setGeneratingFhirResource(generatedResource));
-                returningBundle.addEntry(new Bundle.BundleEntryComponent().setResource(generatedResource));
+                addBundleEntry(returningBundle, generatedResource, fhirVersion);
 
-                handleMappingIterations(copiesToIterateOver, jsonObject);
+                handleMappingIterations(copiesToIterateOver, jsonObject, fhirVersion);
             }
 
             metricsLogger.record("mapToFhir.archetype", "archetype=" + archetype, archetypeTimer.elapsedMs());
@@ -96,8 +101,64 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         return returningBundle;
     }
 
+    private void addBundleEntry(final IBaseBundle bundle, final IAnyResource resource,
+                                final Spec.Version fhirVersion) {
+        switch (fhirVersion) {
+            case R4 -> ((Bundle) bundle).addEntry(new Bundle.BundleEntryComponent().setResource((Resource) resource));
+            case STU3 ->
+                    ((org.hl7.fhir.dstu3.model.Bundle) bundle).addEntry(new org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent().setResource((org.hl7.fhir.dstu3.model.Resource) resource));
+            case R4B ->
+                    ((org.hl7.fhir.r4b.model.Bundle) bundle).addEntry(new org.hl7.fhir.r4b.model.Bundle.BundleEntryComponent().setResource((org.hl7.fhir.r4b.model.Resource) resource));
+            case R5 ->
+                    ((org.hl7.fhir.r5.model.Bundle) bundle).addEntry(new org.hl7.fhir.r5.model.Bundle.BundleEntryComponent().setResource((org.hl7.fhir.r5.model.Resource) resource));
+        }
+    }
+
+    public IBaseBundle prepareBundle(final Spec.Version fhirVersion) {
+        switch (fhirVersion) {
+            case STU3 -> {
+                final org.hl7.fhir.dstu3.model.Bundle b = new org.hl7.fhir.dstu3.model.Bundle();
+                b.setType(org.hl7.fhir.dstu3.model.Bundle.BundleType.COLLECTION);
+                return b;
+            }
+            case R4B -> {
+                final org.hl7.fhir.r4b.model.Bundle b = new org.hl7.fhir.r4b.model.Bundle();
+                b.setType(org.hl7.fhir.r4b.model.Bundle.BundleType.COLLECTION);
+                return b;
+            }
+            case R5 -> {
+                final org.hl7.fhir.r5.model.Bundle b = new org.hl7.fhir.r5.model.Bundle();
+                b.setType(org.hl7.fhir.r5.model.Bundle.BundleType.COLLECTION);
+                return b;
+            }
+            default -> {
+                final Bundle b = new Bundle();
+                b.setType(Bundle.BundleType.COLLECTION);
+                return b;
+            }
+        }
+    }
+
+    private IBaseBundle getBundle(final Spec.Version fhirVersion) {
+        return prepareBundle(fhirVersion);
+    }
+
+    public void mergeEntries(final IBaseBundle target, final IBaseBundle source, final Spec.Version fhirVersion) {
+        switch (fhirVersion) {
+            case STU3 ->
+                    ((org.hl7.fhir.dstu3.model.Bundle) target).getEntry().addAll(((org.hl7.fhir.dstu3.model.Bundle) source).getEntry());
+            case R4B ->
+                    ((org.hl7.fhir.r4b.model.Bundle) target).getEntry().addAll(((org.hl7.fhir.r4b.model.Bundle) source).getEntry());
+            case R5 ->
+                    ((org.hl7.fhir.r5.model.Bundle) target).getEntry().addAll(((org.hl7.fhir.r5.model.Bundle) source).getEntry());
+            default ->
+                    ((Bundle) target).getEntry().addAll(((Bundle) source).getEntry());
+        }
+    }
+
     public void handleMappingIterations(final List<MappingHelper> helpers,
-                                        final JsonObject jsonObject) {
+                                        final JsonObject jsonObject,
+                                        final Spec.Version fhirVersion) {
         for (final MappingHelper mappingHelper : helpers) {
             final MappingTimer mappingTimer = MappingTimer.start();
 
@@ -118,16 +179,16 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                         relevantJsonObject);
             }
 
-            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR)) {
+            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR, fhirVersion)) {
                 continue;
             }
 
             if (isChildrenOnlyIteration(mappingHelper, extractedData)) {
-                handleChildrenOnlyIteration(mappingHelper, relevantJsonObject);
+                handleChildrenOnlyIteration(mappingHelper, relevantJsonObject, fhirVersion);
             } else if (mappingHelper.getManualFhirValue() != null) {
-                handleHardcodedIteration(mappingHelper);
+                handleHardcodedIteration(mappingHelper, fhirVersion.modelPackage());
             } else {
-                handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject);
+                handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject, fhirVersion);
             }
 
             metricsLogger.record("mapping.iteration",
@@ -196,18 +257,20 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      * Splits the JSON by the openEHR flat path hierarchy and recurses into children for each slice.
      */
     private void handleChildrenOnlyIteration(final MappingHelper mappingHelper,
-                                             final JsonObject relevantJsonObject) {
+                                             final JsonObject relevantJsonObject,
+                                             final Spec.Version fhirVersion) {
         final String fullOpenEhrFlatPath = mappingHelper.getFullOpenEhrFlatPath();
         final List<JsonObject> jsonObjects = splitByHierarchy(relevantJsonObject, fullOpenEhrFlatPath);
         for (final JsonObject object : jsonObjects) {
-            final Object newRoot = resolveNewRootForChildrenIteration(mappingHelper, object, fullOpenEhrFlatPath);
+            final Object newRoot = resolveNewRootForChildrenIteration(mappingHelper, object, fullOpenEhrFlatPath,
+                    fhirVersion.modelPackage());
             if (newRoot == null && fullOpenEhrFlatPath != null) {
                 continue;
             }
             if (mappingHelper.getManualFhirValue() != null) {
                 handleHardcodedMapping(mappingHelper, newRoot);
             }
-            propagateToChildrenAndRecurse(mappingHelper, newRoot, object);
+            propagateToChildrenAndRecurse(mappingHelper, newRoot, object, fhirVersion);
         }
     }
 
@@ -217,9 +280,10 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      */
     private Object resolveNewRootForChildrenIteration(final MappingHelper mappingHelper,
                                                       final JsonObject object,
-                                                      final String fullOpenEhrFlatPath) {
+                                                      final String fullOpenEhrFlatPath,
+                                                      final String modelPackage) {
         if (fullOpenEhrFlatPath == null) {
-            return toFhirInstantiator.instantiateElement(mappingHelper, null, -1);
+            return toFhirInstantiator.instantiateElement(mappingHelper, null, -1, modelPackage);
         }
 
         final String simplifiedPath = openFhirStringUtils
@@ -232,7 +296,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         }
 
         final Integer index = openFhirStringUtils.getLastIndex(allEntriesThatMatch.get(0));
-        final Object instantiated = toFhirInstantiator.instantiateElement(mappingHelper, null, -1);
+        final Object instantiated = toFhirInstantiator.instantiateElement(mappingHelper, null, -1, modelPackage);
 
         if (instantiated instanceof List<?> listObject && index != -1) {
             return listObject.get(listObject.size() - 1);
@@ -244,8 +308,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      * Handles the case where a manual FHIR value is set and no extracted data exists.
      * Instantiates the element and populates it with the hardcoded value.
      */
-    private void handleHardcodedIteration(final MappingHelper mappingHelper) {
-        final Object instantiated = toFhirInstantiator.instantiateElement(mappingHelper, null, -1);
+    private void handleHardcodedIteration(final MappingHelper mappingHelper, final String modelPackage) {
+        final Object instantiated = toFhirInstantiator.instantiateElement(mappingHelper, null, -1, modelPackage);
         handleHardcodedMapping(mappingHelper, instantiated);
     }
 
@@ -257,7 +321,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      */
     private void handleExtractedDataIteration(final MappingHelper mappingHelper,
                                               final List<DataWithIndex> extractedData,
-                                              final JsonObject relevantJsonObject) {
+                                              final JsonObject relevantJsonObject,
+                                              final Spec.Version fhirVersion) {
         final List<DataWithIndex> modifiableList = new ArrayList<>(extractedData);
         sortByLastIndex(modifiableList);
 
@@ -265,14 +330,16 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             final Object instantiated = toFhirInstantiator.instantiateElement(
                     mappingHelper,
                     extractedDataPoint.getData().getClass().getSimpleName(),
-                    extractedDataPoint.getIndex());
+                    extractedDataPoint.getIndex(),
+                    fhirVersion.modelPackage());
 
             populateExtractedDataPoint(mappingHelper, instantiated, extractedDataPoint);
-            propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject);
+            propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, fhirVersion);
         }
 
         if (modifiableList.isEmpty() && !mappingHelper.getChildren().isEmpty()) {
-            propagateToChildrenAndRecurse(mappingHelper, mappingHelper.getGeneratingFhirRoot(), relevantJsonObject);
+            propagateToChildrenAndRecurse(mappingHelper, mappingHelper.getGeneratingFhirRoot(), relevantJsonObject,
+                    fhirVersion);
         }
     }
 
@@ -303,7 +370,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      */
     private void propagateToChildrenAndRecurse(final MappingHelper mappingHelper,
                                                final Object newRoot,
-                                               final JsonObject jsonObject) {
+                                               final JsonObject jsonObject,
+                                               final Spec.Version fhirVersion) {
         if (mappingHelper.getChildren().isEmpty()) {
             return;
         }
@@ -311,7 +379,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             child.setGeneratingFhirRoot(newRoot);
             child.setGeneratingFhirResource(mappingHelper.getGeneratingFhirResource());
         });
-        handleMappingIterations(mappingHelper.getChildren(), jsonObject);
+        handleMappingIterations(mappingHelper.getChildren(), jsonObject, fhirVersion);
     }
 
     /**
@@ -338,7 +406,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      * <p>Algorithm:
      * <ol>
      *   <li>Strip the {@code [n]} recurring marker from {@code splitKey} and build a regex via
-     *       {@link com.syntaric.openfhir.util.OpenFhirStringUtils#addRegexPatternToSimplifiedFlatFormat}.</li>
+     *       {@link OpenFhirStringUtils#addRegexPatternToSimplifiedFlatFormat}.</li>
      *   <li>Collect the distinct occurrence prefixes that match (e.g. {@code diagnose/diagnose:0},
      *       {@code diagnose/diagnose:1}).</li>
      *   <li>For each prefix build a slice that contains:
@@ -351,12 +419,12 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      * </ol>
      */
     List<JsonObject> splitByHierarchy(final JsonObject flatJsonObject, final String splitKey) {
-        if (splitKey == null || !splitKey.endsWith(com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX)) {
+        if (splitKey == null || !splitKey.endsWith(OpenFhirStringUtils.RECURRING_SYNTAX)) {
             return List.of(flatJsonObject);
         }
 
         // build regex from splitKey (strip [n] first so it matches real :0/:1 indices)
-        final String strippedKey = splitKey.replace(com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX,
+        final String strippedKey = splitKey.replace(OpenFhirStringUtils.RECURRING_SYNTAX,
                 "");
         final String withRegex = openFhirStringUtils.addRegexPatternToSimplifiedFlatFormat(strippedKey);
 

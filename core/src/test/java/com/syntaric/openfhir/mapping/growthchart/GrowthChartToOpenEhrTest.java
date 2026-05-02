@@ -64,7 +64,7 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
         });
 
 
-        final JsonObject flat = toOpenEhr.fhirToFlatJsonObject(context, bundle, operationaltemplate);
+        final JsonObject flat = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
 
         Assert.assertEquals("54.0", flat.get("growth_chart/head_circumference/any_event:0/head_circumference|magnitude")
@@ -136,7 +136,7 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
 
 
         final Composition composition = toOpenEhr.fhirToCompositionRm(context, bundle,
-                                                                      operationaltemplate);
+                webTemplate);
         final String weightPath = "/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value";
         final String weightCommentPath = "/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0024]/value";
 

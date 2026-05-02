@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name:  KDS_medikamentenstatement
@@ -33,7 +33,7 @@ mappings:
     with:
       fhir: "$resource.context"
       openehr: "$reference"
-    reference: #type None
+    reference:
       resourceType: "Encounter"
       mappings:
         - name: "identifierInReference"
@@ -41,20 +41,18 @@ mappings:
             fhir: "$fhirRoot.identifier"
             openehr: "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
           slotArchetype: "CLUSTER.case_identification.v0"
-  #        - name: "encounterMapping" # link mappings not suppoorted
-  #          with:
-  #            fhir: "$fhirRoot"
-  #            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-  #            openehrLink:
-  #              meaning: "the case this composition relates to"
-  #              type: "case"
-
+        - name: "encounterMapping"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
+          link:
+            meaning: "the case this composition relates to"
+            type: "case"
   - name: "status"
     extension: "add"
     with:
       fhir: "$resource.status"
       openehr: "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]"
-
   - name: "protocol0004Parent"
     extension: "add"
     with:

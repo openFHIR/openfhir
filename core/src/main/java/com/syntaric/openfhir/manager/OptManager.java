@@ -36,6 +36,10 @@ public class OptManager {
         return optService.allOfUser(reqId);
     }
 
+    public void delete(final String id) {
+        optService.delete(id);
+    }
+
     public void deleteAllTenant() {
         optService.deleteAllTenant();
     }

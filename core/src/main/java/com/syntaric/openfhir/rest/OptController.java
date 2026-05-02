@@ -8,12 +8,16 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.Collections;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +42,7 @@ public class OptController {
     /**
      * creates an operational template as part of the state configuration of the engine
      *
-     * @param opt payload that is the operational template
+     * @param opt   payload that is the operational template
      * @param reqId request id that will be logged
      * @return OptEntity without the actual context of the template, just the metadata and the assigned database ID
      */
@@ -102,6 +106,20 @@ public class OptController {
         }
     }
 
+    @DeleteMapping(value = "/opt/{id}")
+    @Operation(
+            summary = "Delete an existing Operational Template",
+            description = "Deletes an existing Operational Template by its ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Deleted")
+            }
+    )
+    ResponseEntity deleteOpt(@PathVariable String id,
+                             @RequestHeader(value = "x-req-id", required = false) final String reqId) {
+        optManager.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     /**
      * returns all existing operational templates in the database, but without the actual content of it (to avoid
      * huge payloads being returned). If you want to get a specific template and it's content, trigger a GET on a
@@ -121,7 +139,12 @@ public class OptController {
                     )))
             }
     )
-    List<OptEntity> usersOpts(@RequestHeader(value = "x-req-id", required = false) final String reqId) {
+    List<OptEntity> usersOpts(@RequestHeader(value = "x-req-id", required = false) final String reqId,
+                              @RequestParam(required = false) String templateId) {
+        if (StringUtils.isNotBlank(templateId)) {
+            OptEntity optEntity = optManager.byTemplateIdAndOrganization(templateId);
+            return optEntity == null ? Collections.emptyList() : List.of(optEntity);
+        }
         return optManager.allOfUser(reqId);
     }
 
@@ -141,25 +164,9 @@ public class OptController {
     )
     ResponseEntity<String> read(@PathVariable String id) {
         final String content = optManager.getContent(id);
-        return ResponseEntity.ok().contentType(MediaType.TEXT_XML).body(content);
-    }
-
-    /**
-     * reads a specific operational template with content
-     *
-     * @param templateId id of the template as it was assigned to the OptEntity at the time of the creation
-     * @return a specific operational template with content
-     */
-    @GetMapping(value = "/opt")
-    @Operation(
-            summary = "Returns a specific Operational Template (actual template)",
-            description = "Returns a specific Operational Template (actual template)",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "OK")
-            }
-    )
-    ResponseEntity<String> find(@RequestParam(required = false) String templateId) {
-        final String content = optManager.getContentByTemplateId(templateId);
+        if (content == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok().contentType(MediaType.TEXT_XML).body(content);
     }
 

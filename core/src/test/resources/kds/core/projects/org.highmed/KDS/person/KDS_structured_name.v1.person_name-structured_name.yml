@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name: KDS_structured_name.v1.person_name-structured_name
@@ -44,7 +44,7 @@ mappings:
             openehr: "items[at0005 and name/value='Familienname']"
 #          fhirCondition:
 #            targetRoot: "$fhirRoot"
-#            targetAttribute: "extension" #todo: else person/personendaten/person/name:0/familienname is not populated fhir->openehr in PersonToOpenEHRTest
+#            targetAttribute: "extension"
 #            operator: "empty"
 
         - name: "familiennameZusatz"
@@ -107,3 +107,5 @@ mappings:
                     fhir:
                       - path: "url"
                         value: "http://hl7.org/fhir/StructureDefinition/humanname-own-prefix"
+
+

@@ -51,7 +51,6 @@ public class OptService {
             final OPERATIONALTEMPLATE operationaltemplate = parseOptFromString(opt);
             final String normalizedTemplateId = OpenFhirMappingContext.normalizeTemplateId(
                     operationaltemplate.getTemplateId().getValue());
-            openEhrApplicationScopedUtils.parseWebTemplate(operationaltemplate);
 
             checkTemplateIdNotTaken(operationaltemplate, normalizedTemplateId, id);
 
@@ -128,6 +127,10 @@ public class OptService {
 
     public List<OptEntity> allOfUser(final String reqId) {
         return optRepository.findByOrganisation(openFhirUser.getAuthContext().getTenant());
+    }
+
+    public void delete(final String id) {
+        optRepository.deleteByIdAndOrganisation(id, openFhirUser.getAuthContext().getTenant());
     }
 
     public void deleteAllTenant() {

@@ -61,21 +61,21 @@ public class LaborauftragToOpenEHRTest extends KdsGenericTest {
     @Test
     public void assertToOpenEHRBundle() {
         final Composition composition =
-                toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE), operationaltemplate);
+                toOpenEhr.fhirToCompositionRm(context, getTestBundle(BUNDLE), webTemplate);
         standardsAsserter.assertComposition(composition, COMPOSITION_BUNDLE, operationaltemplate);
     }
 
     private void assertToOpenEHR(int index) {
         final Composition composition =
                 toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_SERVICE_REQUESTS[index]),
-                                              operationaltemplate);
+                        webTemplate);
         standardsAsserter.assertComposition(composition, OPENEHR_COMPOSITIONS[index], operationaltemplate);
     }
 
     private void assertToOpenEHRWihtoutOPTVal(int index) {
         final Composition composition =
                 toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_SERVICE_REQUESTS[index]),
-                                              operationaltemplate);
+                        webTemplate);
         standardsAsserter.assertCompositionWihtoutOPTValidataion(composition, OPENEHR_COMPOSITIONS[index],
                                                                  operationaltemplate);
     }
@@ -173,7 +173,7 @@ public class LaborauftragToOpenEHRTest extends KdsGenericTest {
     @SneakyThrows
     public JsonObject toOpenEhr() {
         final Bundle testBundle = getTestBundle(BUNDLE);
-        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, operationaltemplate);
+        final JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, testBundle, webTemplate);
 
 
         Assert.assertEquals("123456-0_KH", jsonObject.getAsJsonPrimitive(

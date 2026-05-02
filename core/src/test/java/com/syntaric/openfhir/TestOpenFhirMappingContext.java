@@ -44,15 +44,7 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
             return;
         }
         final OpenFhirContextRepository fhirContextRepo = new OpenFhirContextRepository();
-        final boolean initialized = initRepository(fhirContextRepo, context, null, dir);
-
-        try {
-            fhirContextRepo.setOperationaltemplate(
-                    TemplateDocument.Factory.parse(FileUtils.openInputStream(new File(dir + templateId + ".opt")))
-                            .getTemplate());
-        } catch (final Exception e) {
-            log.error("", e);
-        }
+        final boolean initialized = initRepository(fhirContextRepo, context, dir);
 
         if (initialized) {
             repository.put(normalizedRepoId, fhirContextRepo);
@@ -71,7 +63,7 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
             return;
         }
         final OpenFhirContextRepository fhirContextRepo = new OpenFhirContextRepository();
-        final boolean initialized = initRepository(fhirContextRepo, context, operationaltemplate, modelsDir);
+        final boolean initialized = initRepository(fhirContextRepo, context, modelsDir);
 
 
         if (initialized) {
@@ -83,15 +75,12 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
 
     public boolean initRepository(final OpenFhirContextRepository fhirContextRepo,
                                   final FhirConnectContext context,
-                                  final OPERATIONALTEMPLATE operationaltemplate,
                                   final String modelsDir) {
         if (fhirContextRepo.getMappers() != null) {
             log.debug("Repo already initialized.");
             return false;
         }
         try {
-            fhirContextRepo.setOperationaltemplate(operationaltemplate);
-            fhirContextRepo.setWebTemplate(new OPTParser(fhirContextRepo.getOperationaltemplate()).parse());
             fhirContextRepo.setMappers(loadMappings(modelsDir, context));
             return true;
         } catch (final Exception e) {

@@ -1,12 +1,47 @@
 [ {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+  "mappingName" : "healthcareFacility",
+  "generatingResourceType" : "MedicationStatement",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.informationSource",
+  "originalOpenEhrPath" : "$composition/context/health_care_facility",
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "informationSource",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "MedicationStatement.informationSource",
+  "openEhr" : "$composition/context/health_care_facility",
+  "fullOpenEhrPath" : "$composition/context/health_care_facility",
+  "fullOpenEhrFlatPath" : "medikamentenliste/context/_health_care_facility",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/_health_care_facility(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_IDENTIFIED" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
   "mappingName" : "dateAsserted",
   "generatingResourceType" : "MedicationStatement",
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.dateAsserted",
   "originalOpenEhrPath" : "$composition/context/start_time",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "dateAsserted",
@@ -31,7 +66,78 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+  "mappingName" : "provider",
+  "generatingResourceType" : "MedicationStatement",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.informationSource",
+  "originalOpenEhrPath" : "$archetype/provider",
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "informationSource",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "MedicationStatement.informationSource",
+  "openEhr" : "openEHR-EHR-OBSERVATION.medication_statement.v0/provider",
+  "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.medication_statement.v0/provider",
+  "fullOpenEhrFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]/provider",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/aussage_zur_medikamenteneinnahme(:\\d+)?/provider(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_PROXY" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+  "mappingName" : "composer",
+  "generatingResourceType" : "MedicationStatement",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.informationSource",
+  "originalOpenEhrPath" : "$composition/composer",
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "informationSource",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "MedicationStatement.informationSource",
+  "openEhr" : "$composition/composer",
+  "fullOpenEhrPath" : "$composition/composer",
+  "fullOpenEhrFlatPath" : "medikamentenliste/composer",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/composer(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "PARTY_PROXY" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -40,7 +146,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "effective.as(Period)",
   "originalOpenEhrPath" : "$composition",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "effective.as(Period)",
@@ -71,7 +177,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "end",
     "originalOpenEhrPath" : "context/end_time",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "end",
@@ -96,7 +202,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -105,7 +212,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "start",
     "originalOpenEhrPath" : "context/start_time",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "start",
@@ -130,10 +237,12 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -142,7 +251,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "effective.as(DateTime)",
   "originalOpenEhrPath" : "$composition/context/start_time",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "effective.as(DateTime)",
@@ -167,7 +276,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -176,7 +286,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource",
   "originalOpenEhrPath" : "$archetype/data[at0001]/events[at0002]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "MedicationStatement",
@@ -207,7 +317,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "effective",
     "originalOpenEhrPath" : "$openehrRoot",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "effective",
@@ -232,7 +342,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -241,7 +352,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "reasonCode",
     "originalOpenEhrPath" : "data[at0003]/items[at0023]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "reasonCode",
@@ -266,7 +377,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -275,7 +387,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "note.text",
     "originalOpenEhrPath" : "data[at0003]/items[at0029]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "note.text",
@@ -300,16 +412,17 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
-    "mappingName" : "dosageX",
+    "mappingName" : "dosageRoute",
     "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
     "originalFhirPath" : "dosage.route",
     "originalOpenEhrPath" : "data[at0003]/items[at0030]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "dosage.route",
@@ -334,7 +447,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -343,7 +457,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "dosage",
     "originalOpenEhrPath" : "data[at0003]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "dosage",
@@ -399,7 +513,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
       "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -433,7 +548,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
       "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -505,7 +621,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
         "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -546,7 +663,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
         "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -585,7 +703,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
         "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -624,7 +743,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.dosage.v2",
         "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -658,10 +778,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
       "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -764,7 +886,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.timing_daily.v1",
           "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
@@ -798,10 +921,12 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.timing_daily.v1",
         "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
@@ -835,7 +960,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.timing_daily.v1",
         "archetype" : "openEHR-EHR-CLUSTER.timing_daily.v1",
@@ -869,10 +995,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : true
+      "hasSlot" : true,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
       "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -975,7 +1103,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.timing_nondaily.v1",
           "archetype" : "openEHR-EHR-CLUSTER.timing_nondaily.v1",
@@ -1009,13 +1138,16 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : true
+      "hasSlot" : true,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.dosage.v2",
       "archetype" : "openEHR-EHR-CLUSTER.dosage.v2",
@@ -1049,10 +1181,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -1061,7 +1195,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "dosage.text",
     "originalOpenEhrPath" : "data[at0003]/items[at0033]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "dosage.text",
@@ -1086,7 +1220,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -1095,7 +1230,7 @@
     "resolveResourceType" : "Medication",
     "originalFhirPath" : "medication",
     "originalOpenEhrPath" : "$reference",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "medication.as(Reference).resolve()",
@@ -1122,11 +1257,11 @@
       "modelMetadataName" : "OBSERVATION.medication_statement.v0",
       "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
       "mappingName" : "medicationReference",
-      "generatingResourceType" : "Medication",
+      "generatingResourceType" : "MedicationStatement",
       "resolveResourceType" : null,
       "originalFhirPath" : "$fhirRoot",
       "originalOpenEhrPath" : "data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-      "openEhrHierarchySplitFlatPath" : null,
+      "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "MedicationStatement.medication.as(Reference).resolve()",
@@ -1189,7 +1324,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1223,7 +1359,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1257,7 +1394,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1278,7 +1416,7 @@
         "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/aussage_zur_medikamenteneinnahme(:\\d+)?/arzneimittel(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
         "detectedType" : null,
-        "hardcodedType" : null,
+        "hardcodedType" : "NONE",
         "possibleRmTypes" : [ ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
@@ -1322,7 +1460,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
           "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1356,10 +1495,12 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1455,7 +1596,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.medication.v2",
             "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1489,10 +1631,12 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : true,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
           "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1528,7 +1672,7 @@
             "modelMetadataName" : "CLUSTER.medication.v2",
             "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
             "mappingName" : "useMinimalMedicationMapper",
-            "generatingResourceType" : "Medication",
+            "generatingResourceType" : "BackboneElement",
             "resolveResourceType" : null,
             "originalFhirPath" : "$fhirRoot",
             "originalOpenEhrPath" : "$archetype/items[openEHR-EHR-CLUSTER.medication.v2]",
@@ -1588,7 +1732,8 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             }, {
               "modelMetadataName" : "RESOURCE.medication.min",
               "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1622,7 +1767,8 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             }, {
               "modelMetadataName" : "RESOURCE.medication.min",
               "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1656,7 +1802,8 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             }, {
               "modelMetadataName" : "RESOURCE.medication.min",
               "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1690,13 +1837,16 @@
               "availableCodings" : [ ],
               "children" : [ ],
               "useParentRoot" : false,
-              "hasSlot" : false
+              "hasSlot" : false,
+              "followedBy" : false
             } ],
             "useParentRoot" : true,
-            "hasSlot" : true
+            "hasSlot" : true,
+            "followedBy" : false
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
           "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1761,7 +1911,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           }, {
             "modelMetadataName" : "CLUSTER.medication.v2",
             "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1795,13 +1946,16 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : true
           } ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1822,7 +1976,7 @@
         "fullOpenEhrFlatPathWithMatchingRegex" : null,
         "flatPathPipeSuffix" : "",
         "detectedType" : null,
-        "hardcodedType" : null,
+        "hardcodedType" : "NONE",
         "possibleRmTypes" : null,
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
@@ -1866,10 +2020,12 @@
           "availableCodings" : null,
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -1910,13 +2066,16 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : false
       } ],
       "useParentRoot" : true,
-      "hasSlot" : true
+      "hasSlot" : true,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -1925,7 +2084,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "medication.as(CodeableConcept)",
     "originalOpenEhrPath" : "data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]/items[at0132]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "medication.as(CodeableConcept)",
@@ -1954,7 +2113,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -1963,7 +2123,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "medication.as(CodeableConcept)",
     "originalOpenEhrPath" : "data[at0003]/items[at0006]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "medication.as(CodeableConcept)",
@@ -1993,7 +2153,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2002,7 +2163,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "reasonReference.resolve().as(Condition).code",
     "originalOpenEhrPath" : "data[at0003]/items[at0023]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "reasonReference.resolve().as(Condition).code",
@@ -2027,7 +2188,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2036,7 +2198,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "reasonReference.resolve().as(DiagnosticReport).code",
     "originalOpenEhrPath" : "data[at0003]/items[at0023]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "reasonReference.resolve().as(DiagnosticReport).code",
@@ -2061,7 +2223,8 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2070,7 +2233,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "reasonReference.resolve().as(Observation).code",
     "originalOpenEhrPath" : "data[at0003]/items[at0023]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "reasonReference.resolve().as(Observation).code",
@@ -2095,10 +2258,117 @@
     "availableCodings" : [ ],
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+  "mappingName" : "partOf",
+  "generatingResourceType" : "MedicationStatement",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.partOf",
+  "originalOpenEhrPath" : "$archetype/links",
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "partOf",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "MedicationStatement.partOf",
+  "openEhr" : "openEHR-EHR-OBSERVATION.medication_statement.v0/links",
+  "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.medication_statement.v0/links",
+  "fullOpenEhrFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]/links[n]",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/aussage_zur_medikamenteneinnahme(:\\d+)?/links(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "LINK" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+  "mappingName" : "basedOn",
+  "generatingResourceType" : "MedicationStatement",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.basedOn",
+  "originalOpenEhrPath" : "$archetype/links",
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "basedOn",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "MedicationStatement.basedOn",
+  "openEhr" : "openEHR-EHR-OBSERVATION.medication_statement.v0/links",
+  "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.medication_statement.v0/links",
+  "fullOpenEhrFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]/links[n]",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/aussage_zur_medikamenteneinnahme(:\\d+)?/links(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "LINK" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
+}, {
+  "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+  "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+  "mappingName" : "derivedFrom",
+  "generatingResourceType" : "MedicationStatement",
+  "resolveResourceType" : null,
+  "originalFhirPath" : "$resource.basedOn",
+  "originalOpenEhrPath" : "$archetype/links",
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+  "preprocessorOpenEhrCondition" : null,
+  "preprocessorFhirConditions" : null,
+  "fhir" : "basedOn",
+  "fhirWithCondition" : null,
+  "fullFhirPath" : "MedicationStatement.basedOn",
+  "openEhr" : "openEHR-EHR-OBSERVATION.medication_statement.v0/links",
+  "fullOpenEhrPath" : "openEHR-EHR-OBSERVATION.medication_statement.v0/links",
+  "fullOpenEhrFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]/links[n]",
+  "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/aussage_zur_medikamenteneinnahme(:\\d+)?/links(:\\d+)?(\\|.*)?",
+  "flatPathPipeSuffix" : "",
+  "detectedType" : null,
+  "hardcodedType" : null,
+  "possibleRmTypes" : [ "LINK" ],
+  "programmedMapping" : null,
+  "manualOpenEhrValue" : null,
+  "manualFhirValue" : null,
+  "unidirectional" : null,
+  "fhirConditions" : null,
+  "openEhrConditions" : null,
+  "enteredFromSlotArchetypeLink" : false,
+  "terminology" : null,
+  "availableCodings" : [ ],
+  "children" : [ ],
+  "useParentRoot" : false,
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2107,7 +2377,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.meta",
   "originalOpenEhrPath" : null,
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "meta",
@@ -2119,7 +2389,7 @@
   "fullOpenEhrFlatPathWithMatchingRegex" : null,
   "flatPathPipeSuffix" : "",
   "detectedType" : null,
-  "hardcodedType" : null,
+  "hardcodedType" : "NONE",
   "possibleRmTypes" : null,
   "programmedMapping" : null,
   "manualOpenEhrValue" : null,
@@ -2138,7 +2408,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "profile",
     "originalOpenEhrPath" : null,
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "profile",
@@ -2163,10 +2433,12 @@
     "availableCodings" : null,
     "children" : [ ],
     "useParentRoot" : false,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2175,7 +2447,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.context.as(Reference).identifier",
   "originalOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "context.as(Reference).identifier",
@@ -2205,26 +2477,33 @@
     "generatingResourceType" : "Identifier",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
-    "originalOpenEhrPath" : "$archetype",
+    "originalOpenEhrPath" : "items[at0001]",
     "openEhrHierarchySplitFlatPath" : null,
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "MedicationStatement.context.as(Reference).identifier",
-    "fhirWithCondition" : null,
+    "fhirWithCondition" : "where(type.coding.code.toString().contains('VN'))",
     "fullFhirPath" : "MedicationStatement.context.as(Reference).identifier",
-    "openEhr" : "openEHR-EHR-CLUSTER.case_identification.v0",
-    "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-    "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation",
-    "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
+    "openEhr" : "items[at0001]",
+    "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+    "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/fall-kennung",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
     "flatPathPipeSuffix" : "",
     "detectedType" : null,
-    "hardcodedType" : "NONE",
-    "possibleRmTypes" : [ ],
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
     "programmedMapping" : null,
     "manualOpenEhrValue" : null,
     "manualFhirValue" : null,
     "unidirectional" : null,
-    "fhirConditions" : null,
+    "fhirConditions" : [ {
+      "targetRoot" : "MedicationStatement.context.as(Reference).identifier",
+      "targetAttribute" : "type.coding.code",
+      "targetAttributes" : [ "type.coding.code" ],
+      "operator" : "one of",
+      "criteria" : "VN",
+      "criterias" : [ "VN" ]
+    } ],
     "openEhrConditions" : null,
     "enteredFromSlotArchetypeLink" : true,
     "terminology" : null,
@@ -2232,24 +2511,24 @@
     "children" : [ {
       "modelMetadataName" : "CLUSTER.case_identification.v0",
       "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
-      "mappingName" : "identifierCase",
+      "mappingName" : "vncodingcode",
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
-      "originalFhirPath" : "$fhirRoot",
-      "originalOpenEhrPath" : "items[at0001]",
+      "originalFhirPath" : "type.coding",
+      "originalOpenEhrPath" : "$openehrRoot",
       "openEhrHierarchySplitFlatPath" : null,
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
-      "fhir" : "MedicationStatement.context.as(Reference).identifier",
+      "fhir" : "type.coding",
       "fhirWithCondition" : null,
-      "fullFhirPath" : "MedicationStatement.context.as(Reference).identifier",
+      "fullFhirPath" : "MedicationStatement.context.as(Reference).identifier.type.coding",
       "openEhr" : "items[at0001]",
       "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
       "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/fall-kennung",
       "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -2260,15 +2539,53 @@
       "enteredFromSlotArchetypeLink" : true,
       "terminology" : null,
       "availableCodings" : [ ],
-      "children" : [ ],
-      "useParentRoot" : true,
-      "hasSlot" : false
+      "children" : [ {
+        "modelMetadataName" : "CLUSTER.case_identification.v0",
+        "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
+        "mappingName" : "vncodingcode.extension",
+        "generatingResourceType" : "Identifier",
+        "resolveResourceType" : null,
+        "originalFhirPath" : "code",
+        "originalOpenEhrPath" : "$openehrRoot",
+        "openEhrHierarchySplitFlatPath" : null,
+        "preprocessorOpenEhrCondition" : null,
+        "preprocessorFhirConditions" : null,
+        "fhir" : "code",
+        "fhirWithCondition" : null,
+        "fullFhirPath" : "MedicationStatement.context.as(Reference).identifier.type.coding.code",
+        "openEhr" : "items[at0001]",
+        "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+        "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/fall-kennung",
+        "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
+        "flatPathPipeSuffix" : "",
+        "detectedType" : null,
+        "hardcodedType" : null,
+        "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+        "programmedMapping" : null,
+        "manualOpenEhrValue" : null,
+        "manualFhirValue" : "VN",
+        "unidirectional" : "openehr->fhir",
+        "fhirConditions" : null,
+        "openEhrConditions" : null,
+        "enteredFromSlotArchetypeLink" : true,
+        "terminology" : null,
+        "availableCodings" : [ ],
+        "children" : [ ],
+        "useParentRoot" : false,
+        "hasSlot" : false,
+        "followedBy" : true
+      } ],
+      "useParentRoot" : false,
+      "hasSlot" : false,
+      "followedBy" : true
     } ],
     "useParentRoot" : true,
-    "hasSlot" : false
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : true
+  "hasSlot" : true,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2277,7 +2594,7 @@
   "resolveResourceType" : "Encounter",
   "originalFhirPath" : "$resource.context",
   "originalOpenEhrPath" : "$reference",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "context.as(Reference).resolve()",
@@ -2304,11 +2621,11 @@
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "identifierInReference",
-    "generatingResourceType" : "Encounter",
+    "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot.identifier",
     "originalOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "identifier",
@@ -2338,26 +2655,33 @@
       "generatingResourceType" : "Identifier",
       "resolveResourceType" : null,
       "originalFhirPath" : "$fhirRoot",
-      "originalOpenEhrPath" : "$archetype",
+      "originalOpenEhrPath" : "items[at0001]",
       "openEhrHierarchySplitFlatPath" : null,
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : null,
       "fhir" : "MedicationStatement.context.as(Reference).resolve().identifier",
-      "fhirWithCondition" : null,
+      "fhirWithCondition" : "where(type.coding.code.toString().contains('VN'))",
       "fullFhirPath" : "MedicationStatement.context.as(Reference).resolve().identifier",
-      "openEhr" : "openEHR-EHR-CLUSTER.case_identification.v0",
-      "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]",
-      "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation",
-      "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?(\\|.*)?",
+      "openEhr" : "items[at0001]",
+      "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+      "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/fall-kennung",
+      "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : "NONE",
-      "possibleRmTypes" : [ ],
+      "hardcodedType" : null,
+      "possibleRmTypes" : [ "DV_CODED_TEXT" ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
       "manualFhirValue" : null,
       "unidirectional" : null,
-      "fhirConditions" : null,
+      "fhirConditions" : [ {
+        "targetRoot" : "MedicationStatement.context.as(Reference).resolve().identifier",
+        "targetAttribute" : "type.coding.code",
+        "targetAttributes" : [ "type.coding.code" ],
+        "operator" : "one of",
+        "criteria" : "VN",
+        "criterias" : [ "VN" ]
+      } ],
       "openEhrConditions" : null,
       "enteredFromSlotArchetypeLink" : true,
       "terminology" : null,
@@ -2365,24 +2689,24 @@
       "children" : [ {
         "modelMetadataName" : "CLUSTER.case_identification.v0",
         "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
-        "mappingName" : "identifierCase",
+        "mappingName" : "vncodingcode",
         "generatingResourceType" : "Identifier",
         "resolveResourceType" : null,
-        "originalFhirPath" : "$fhirRoot",
-        "originalOpenEhrPath" : "items[at0001]",
+        "originalFhirPath" : "type.coding",
+        "originalOpenEhrPath" : "$openehrRoot",
         "openEhrHierarchySplitFlatPath" : null,
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : null,
-        "fhir" : "MedicationStatement.context.as(Reference).resolve().identifier",
+        "fhir" : "type.coding",
         "fhirWithCondition" : null,
-        "fullFhirPath" : "MedicationStatement.context.as(Reference).resolve().identifier",
+        "fullFhirPath" : "MedicationStatement.context.as(Reference).resolve().identifier.type.coding",
         "openEhr" : "items[at0001]",
         "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
         "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/fall-kennung",
         "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
         "flatPathPipeSuffix" : "",
         "detectedType" : null,
-        "hardcodedType" : null,
+        "hardcodedType" : "NONE",
         "possibleRmTypes" : [ "DV_CODED_TEXT" ],
         "programmedMapping" : null,
         "manualOpenEhrValue" : null,
@@ -2393,18 +2717,92 @@
         "enteredFromSlotArchetypeLink" : true,
         "terminology" : null,
         "availableCodings" : [ ],
-        "children" : [ ],
-        "useParentRoot" : true,
-        "hasSlot" : false
+        "children" : [ {
+          "modelMetadataName" : "CLUSTER.case_identification.v0",
+          "archetype" : "openEHR-EHR-CLUSTER.case_identification.v0",
+          "mappingName" : "vncodingcode.extension",
+          "generatingResourceType" : "Identifier",
+          "resolveResourceType" : null,
+          "originalFhirPath" : "code",
+          "originalOpenEhrPath" : "$openehrRoot",
+          "openEhrHierarchySplitFlatPath" : null,
+          "preprocessorOpenEhrCondition" : null,
+          "preprocessorFhirConditions" : null,
+          "fhir" : "code",
+          "fhirWithCondition" : null,
+          "fullFhirPath" : "MedicationStatement.context.as(Reference).resolve().identifier.type.coding.code",
+          "openEhr" : "items[at0001]",
+          "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0001]",
+          "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/fall-kennung",
+          "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/fall-kennung(:\\d+)?(\\|.*)?",
+          "flatPathPipeSuffix" : "",
+          "detectedType" : null,
+          "hardcodedType" : null,
+          "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+          "programmedMapping" : null,
+          "manualOpenEhrValue" : null,
+          "manualFhirValue" : "VN",
+          "unidirectional" : "openehr->fhir",
+          "fhirConditions" : null,
+          "openEhrConditions" : null,
+          "enteredFromSlotArchetypeLink" : true,
+          "terminology" : null,
+          "availableCodings" : [ ],
+          "children" : [ ],
+          "useParentRoot" : false,
+          "hasSlot" : false,
+          "followedBy" : true
+        } ],
+        "useParentRoot" : false,
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
+  }, {
+    "modelMetadataName" : "OBSERVATION.medication_statement.v0",
+    "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
+    "mappingName" : "encounterMapping",
+    "generatingResourceType" : "MedicationStatement",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$fhirRoot",
+    "originalOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "MedicationStatement.context.as(Reference).resolve()",
+    "fhirWithCondition" : null,
+    "fullFhirPath" : "MedicationStatement.context.as(Reference).resolve()",
+    "openEhr" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "fullOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links",
+    "fullOpenEhrFlatPath" : "medikamentenliste/context/fallidentifikation/links[n]",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/context(:\\d+)?/fallidentifikation(:\\d+)?/links(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "LINK" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : null,
+    "manualFhirValue" : null,
+    "unidirectional" : null,
+    "fhirConditions" : null,
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ ],
+    "children" : [ ],
+    "useParentRoot" : true,
+    "hasSlot" : false,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2413,7 +2811,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource.status",
   "originalOpenEhrPath" : "$composition/context/other_context[at0005]/items[openEHR-EHR-CLUSTER.case_identification.v0]/items[at0003]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "status",
@@ -2438,7 +2836,8 @@
   "availableCodings" : [ ],
   "children" : [ ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2447,7 +2846,7 @@
   "resolveResourceType" : null,
   "originalFhirPath" : "$resource",
   "originalOpenEhrPath" : "$archetype/protocol[at0004]",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "MedicationStatement",
@@ -2478,7 +2877,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "identifier",
     "originalOpenEhrPath" : "items[openEHR-EHR-CLUSTER.identifier_fhir.v0]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "identifier",
@@ -2534,10 +2933,12 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : true
   }, {
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2546,7 +2947,7 @@
     "resolveResourceType" : null,
     "originalFhirPath" : "category",
     "originalOpenEhrPath" : "items[openEHR-EHR-CLUSTER.entry_category.v0]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "category",
@@ -2633,7 +3034,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.entry_category.v0",
         "archetype" : "openEHR-EHR-CLUSTER.entry_category.v0",
@@ -2667,16 +3069,20 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : true,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : false,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : true
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 }, {
   "modelMetadataName" : "OBSERVATION.medication_statement.v0",
   "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
@@ -2685,7 +3091,7 @@
   "resolveResourceType" : "Medication",
   "originalFhirPath" : "$resource.medication.as(Reference)",
   "originalOpenEhrPath" : "$reference",
-  "openEhrHierarchySplitFlatPath" : null,
+  "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : null,
   "fhir" : "medication.as(Reference).as(Reference).resolve()",
@@ -2712,11 +3118,11 @@
     "modelMetadataName" : "OBSERVATION.medication_statement.v0",
     "archetype" : "openEHR-EHR-OBSERVATION.medication_statement.v0",
     "mappingName" : "medicationReferenceKds",
-    "generatingResourceType" : "Medication",
+    "generatingResourceType" : "MedicationStatement",
     "resolveResourceType" : null,
     "originalFhirPath" : "$fhirRoot",
     "originalOpenEhrPath" : "data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-    "openEhrHierarchySplitFlatPath" : null,
+    "openEhrHierarchySplitFlatPath" : "medikamentenliste/aussage_zur_medikamenteneinnahme[n]",
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : null,
     "fhir" : "MedicationStatement.medication.as(Reference).as(Reference).resolve()",
@@ -2779,7 +3185,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
       "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -2813,7 +3220,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
       "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -2847,7 +3255,8 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
       "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -2868,7 +3277,7 @@
       "fullOpenEhrFlatPathWithMatchingRegex" : "medikamentenliste(:\\d+)?/aussage_zur_medikamenteneinnahme(:\\d+)?/arzneimittel(:\\d+)?(\\|.*)?",
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : [ ],
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -2912,7 +3321,8 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -2946,10 +3356,12 @@
         "availableCodings" : [ ],
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
       "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3045,7 +3457,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
           "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3079,10 +3492,12 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : true,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3118,7 +3533,7 @@
           "modelMetadataName" : "CLUSTER.medication.v2",
           "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
           "mappingName" : "useMinimalMedicationMapper",
-          "generatingResourceType" : "Medication",
+          "generatingResourceType" : "BackboneElement",
           "resolveResourceType" : null,
           "originalFhirPath" : "$fhirRoot",
           "originalOpenEhrPath" : "$archetype/items[openEHR-EHR-CLUSTER.medication.v2]",
@@ -3178,7 +3593,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : false
           }, {
             "modelMetadataName" : "RESOURCE.medication.min",
             "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3212,7 +3628,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : false
           }, {
             "modelMetadataName" : "RESOURCE.medication.min",
             "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3246,7 +3663,8 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : false
           }, {
             "modelMetadataName" : "RESOURCE.medication.min",
             "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3280,13 +3698,16 @@
             "availableCodings" : [ ],
             "children" : [ ],
             "useParentRoot" : false,
-            "hasSlot" : false
+            "hasSlot" : false,
+            "followedBy" : false
           } ],
           "useParentRoot" : true,
-          "hasSlot" : true
+          "hasSlot" : true,
+          "followedBy" : false
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       }, {
         "modelMetadataName" : "CLUSTER.medication.v2",
         "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3351,7 +3772,8 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         }, {
           "modelMetadataName" : "CLUSTER.medication.v2",
           "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3385,13 +3807,16 @@
           "availableCodings" : [ ],
           "children" : [ ],
           "useParentRoot" : false,
-          "hasSlot" : false
+          "hasSlot" : false,
+          "followedBy" : true
         } ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
       "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3412,7 +3837,7 @@
       "fullOpenEhrFlatPathWithMatchingRegex" : null,
       "flatPathPipeSuffix" : "",
       "detectedType" : null,
-      "hardcodedType" : null,
+      "hardcodedType" : "NONE",
       "possibleRmTypes" : null,
       "programmedMapping" : null,
       "manualOpenEhrValue" : null,
@@ -3456,10 +3881,12 @@
         "availableCodings" : null,
         "children" : [ ],
         "useParentRoot" : false,
-        "hasSlot" : false
+        "hasSlot" : false,
+        "followedBy" : true
       } ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     }, {
       "modelMetadataName" : "CLUSTER.medication.v2",
       "archetype" : "openEHR-EHR-CLUSTER.medication.v2",
@@ -3500,11 +3927,14 @@
       "availableCodings" : [ ],
       "children" : [ ],
       "useParentRoot" : false,
-      "hasSlot" : false
+      "hasSlot" : false,
+      "followedBy" : false
     } ],
     "useParentRoot" : true,
-    "hasSlot" : true
+    "hasSlot" : true,
+    "followedBy" : false
   } ],
   "useParentRoot" : false,
-  "hasSlot" : false
+  "hasSlot" : false,
+  "followedBy" : false
 } ]

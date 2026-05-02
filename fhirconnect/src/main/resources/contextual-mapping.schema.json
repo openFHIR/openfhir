@@ -40,7 +40,10 @@
         "version": {
           "type": "string",
           "enum": [
-            "R4"
+            "R4",
+            "R4B",
+            "R5",
+            "STU3"
           ]
         }
       },

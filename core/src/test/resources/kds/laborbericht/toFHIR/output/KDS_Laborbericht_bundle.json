@@ -16,6 +16,13 @@
             "id": "1",
             "identifier": [
               {
+                "type": {
+                  "coding": [
+                    {
+                      "code": "VN"
+                    }
+                  ]
+                },
                 "system": "http://hospital.smarthealthit.org",
                 "value": "encounter-id-1245"
               }
@@ -183,7 +190,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2024-08-22T10:30:00+02:00",
-        "issued": "2022-02-03T05:05:06.000+01:00",
+        "issued": "2024-08-22T10:30:00.000+02:00",
         "specimen": [
           {
             "reference": "#2"

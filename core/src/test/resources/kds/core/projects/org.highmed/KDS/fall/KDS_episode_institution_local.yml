@@ -1,4 +1,4 @@
-grammar: FHIRConnect/v0.9.0
+grammar: FHIRConnect/v1.0.0
 type: extension
 metadata:
   name: KDS_episode_institution_local
@@ -66,6 +66,7 @@ mappings:
     with:
       fhir: "$resource.extension"
       openehr: "$archetype"
+      type: "NONE"
     fhirCondition:
       targetRoot: "$resource.extension"
       targetAttribute: "url"
@@ -160,6 +161,7 @@ mappings:
     with:
       fhir: "$resource.hospitalization"
       openehr: "$archetype"
+      type: "NONE"
     openehrCondition:
       targetRoot: "$archetype"
       targetAttribute: "data[at0001]/items[at0009]"
