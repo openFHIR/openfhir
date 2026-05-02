@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Changed
+### Added
+### Fixed
+
+## [2.2.0] - 2026-05-02
+
+### Changed
 - All openfhir-specific configuration properties now use the `openfhir.` prefix for consistency:
   - `bootstrap.dir` → `openfhir.bootstrap.dir`
   - `bootstrap.recursively-open-directories` → `openfhir.bootstrap.recursively-open-directories`
