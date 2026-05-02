@@ -1,0 +1,70 @@
+<!--/* Conditions (Problem List) */-->
+<div xmlns:th="http://www.thymeleaf.org">
+    <h5>Problem List</h5>
+    <table class="hapiPropertyTable">
+        <thead>
+        <tr>
+            <th>Condition</th>
+            <th>Clinical Status</th>
+            <th>Verification Status</th>
+            <th>Severity</th>
+            <th>Onset</th>
+            <th>Abatement</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="entry : ${resource.entry}" th:object="${entry.getResource()}">
+            <tr>
+                <!-- Condition code: prefer text, fall back to first coding display -->
+                <td>
+                    <span th:if="*{getCode() != null and getCode().getText() != null}" th:text="*{getCode().getText()}"></span>
+                    <th:block th:if="*{getCode() != null and getCode().getText() == null}">
+                        <th:block th:each="coding : *{getCode().getCoding()}">
+                            <span th:text="${coding.getDisplay()}"></span><br/>
+                        </th:block>
+                    </th:block>
+                </td>
+                <!-- Clinical status: first coding code -->
+                <td>
+                    <th:block th:if="*{getClinicalStatus() != null}">
+                        <th:block th:each="coding : *{getClinicalStatus().getCoding()}">
+                            <span th:text="${coding.getCode()}"></span><br/>
+                        </th:block>
+                    </th:block>
+                </td>
+                <!-- Verification status: first coding code -->
+                <td>
+                    <th:block th:if="*{getVerificationStatus() != null}">
+                        <th:block th:each="coding : *{getVerificationStatus().getCoding()}">
+                            <span th:text="${coding.getCode()}"></span><br/>
+                        </th:block>
+                    </th:block>
+                </td>
+                <!-- Severity: first coding display -->
+                <td>
+                    <th:block th:if="*{getSeverity() != null}">
+                        <th:block th:each="coding : *{getSeverity().getCoding()}">
+                            <span th:text="${coding.getDisplay()}"></span><br/>
+                        </th:block>
+                    </th:block>
+                </td>
+                <!-- Onset -->
+                <td>
+                    <span th:if="*{getOnset() != null}" th:text="*{getOnset().primitiveValue()}"></span>
+                </td>
+                <!-- Abatement -->
+                <td>
+                    <span th:if="*{getAbatement() != null}" th:text="*{getAbatement().primitiveValue()}"></span>
+                </td>
+                <!-- Notes -->
+                <td>
+                    <th:block th:each="note : *{getNote()}">
+                        <span th:text="${note.getText()}"></span><br/>
+                    </th:block>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>

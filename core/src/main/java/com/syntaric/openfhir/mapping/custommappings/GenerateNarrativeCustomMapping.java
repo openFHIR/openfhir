@@ -16,6 +16,7 @@ import com.syntaric.openfhir.util.FhirInstanceCreatorUtility;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -172,7 +173,7 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
         try {
             final FhirContext ctx = fhirContextRegistry.getContext(version);
             final CustomThymeleafNarrativeGenerator generator;
-            if (narrativePropertiesFile != null) {
+            if (StringUtils.isNotBlank(narrativePropertiesFile)) {
                 generator = new CustomThymeleafNarrativeGenerator(HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES, narrativePropertiesFile);
             } else {
                 generator = new CustomThymeleafNarrativeGenerator(HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES);
