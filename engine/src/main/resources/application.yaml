@@ -11,6 +11,11 @@ spring:
 openfhir:
   db:
     type: mongo
+  narrative:
+    # Optional: classpath or file path to a custom HAPI narrative properties file.
+    # The file maps FHIR resource types to Thymeleaf HTML templates for the generateNarrative mapping code.
+    # Example: classpath:my-narratives.properties
+    # properties-file:
 
 server:
   error:

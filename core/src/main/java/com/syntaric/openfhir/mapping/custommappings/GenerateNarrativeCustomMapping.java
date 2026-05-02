@@ -3,7 +3,6 @@ package com.syntaric.openfhir.mapping.custommappings;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.fhirpath.IFhirPath;
 import ca.uhn.fhir.narrative.CustomThymeleafNarrativeGenerator;
-import ca.uhn.fhir.narrative.DefaultThymeleafNarrativeGenerator;
 import ca.uhn.fhir.util.BundleBuilder;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
@@ -19,6 +18,7 @@ import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.instance.model.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -35,8 +35,14 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
 
     private static final Set<String> CODES = Set.of("generateNarrative");
 
+    private static final String HAPI_DEFAULT_NARRATIVES = "classpath:ca/uhn/fhir/narrative/narratives.properties";
+    private static final String OPENFHIR_DEFAULT_NARRATIVES = "classpath:openfhir-narratives.properties";
+
     private final FhirContextRegistry fhirContextRegistry;
     private final ToFhirInstantiator toFhirInstantiator;
+
+    @Value("${openfhir.narrative.properties-file:}")
+    private String narrativePropertiesFile;
 
     @Autowired
     public GenerateNarrativeCustomMapping(final FhirContextRegistry fhirContextRegistry,
@@ -165,8 +171,13 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
                                      final Spec.Version version) {
         try {
             final FhirContext ctx = fhirContextRegistry.getContext(version);
-            return new CustomThymeleafNarrativeGenerator("classpath:ca/uhn/fhir/narrative/narratives.properties",
-                    "classpath:openfhir-narratives.properties").generateResourceNarrative(ctx, resource);
+            final CustomThymeleafNarrativeGenerator generator;
+            if (narrativePropertiesFile != null) {
+                generator = new CustomThymeleafNarrativeGenerator(HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES, narrativePropertiesFile);
+            } else {
+                generator = new CustomThymeleafNarrativeGenerator(HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES);
+            }
+            return generator.generateResourceNarrative(ctx, resource);
         } catch (Exception e) {
             log.warn("generateNarrative: narrative generation failed: {}", e.getMessage());
         }
