@@ -174,7 +174,7 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
             final FhirContext ctx = fhirContextRegistry.getContext(version);
             final CustomThymeleafNarrativeGenerator generator;
             if (StringUtils.isNotBlank(narrativePropertiesFile)) {
-                generator = new CustomThymeleafNarrativeGenerator(HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES, narrativePropertiesFile);
+                generator = new CustomThymeleafNarrativeGenerator(narrativePropertiesFile, HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES);
             } else {
                 generator = new CustomThymeleafNarrativeGenerator(HAPI_DEFAULT_NARRATIVES, OPENFHIR_DEFAULT_NARRATIVES);
             }
