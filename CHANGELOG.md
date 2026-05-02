@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 ### Added
 ### Fixed
-- templates for narrative generation are not properly overridable by providing own template
+- templates for narrative generation are now properly overridable by providing own template
 
 ## [2.2.0] - 2026-05-02
 
