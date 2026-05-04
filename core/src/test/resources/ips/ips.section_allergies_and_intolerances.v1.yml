@@ -141,12 +141,5 @@ mappings:
     with:
       fhir: "text"
       openehr: "$composition"
-    manual:
-      - name: "status"
-        fhir:
-          - path: "status"
-            value: "generated"
-      - name: "div"
-        fhir:
-          - path: "div"
-            value: "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>"
+    mappingCode: "generateNarrative(entry, allergies)"
+    unidirectional: "openehr->fhir"

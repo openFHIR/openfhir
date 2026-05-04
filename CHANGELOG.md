@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
-## [Unreleased]
+## Unreleased
+
+## [2.2.1] - 2026-05-04
 
 ### Changed
 ### Added
+- `generateNarrative` programmed mapping now accepts an optional second argument specifying a profile URL, e.g. `generateNarrative(entry, http://hl7.org/fhir/StructureDefinition/Condition)`
 ### Fixed
+- templates for narrative generation are now properly overridable by providing own template
+- condition and allergy narrative templates now correctly filter bundle entries by resource type
+- narrative generation no longer fails with `NoSuchMethodException` when iterating bundle entries
 
 ## [2.2.0] - 2026-05-02
 

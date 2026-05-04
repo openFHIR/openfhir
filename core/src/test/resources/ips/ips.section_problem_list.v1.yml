@@ -141,5 +141,5 @@ mappings:
     with:
       fhir: "text"
       openehr: "$composition"
-    mappingCode: "generateNarrative(entry)"
+    mappingCode: "generateNarrative(entry, conditions)"
     unidirectional: "openehr->fhir"

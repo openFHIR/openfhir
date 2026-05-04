@@ -107,7 +107,7 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("Active Allergies and Intolerances", section.getTitle());
 
         Assert.assertEquals("generated", section.getText().getStatusAsString());
-        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>", section.getText().getDivAsString());
+        Assert.assertTrue(section.getText().getDivAsString().startsWith("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Allergies and Intolerances</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Substance</th><th>Clinical Status</th><th>Verification Status</th><th>Type</th><th>Category</th><th>Criticality</th><th>Reactions</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Substance (code): prefer text, fall back to first coding display --><td><span>No example for termínology"));
 
         Assert.assertEquals("No known allergies", section.getEmptyReason().getText());
         Assert.assertEquals("http://terminology.hl7.org/CodeSystem/list-empty-reason", section.getEmptyReason().getCodingFirstRep().getSystem());
