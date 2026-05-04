@@ -76,15 +76,13 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
 
         try {
             final String fhirPathForNarrativeGeneration = extractArgument(mappingHelper.getProgrammedMapping());
-            if (fhirPathForNarrativeGeneration != null) {
-                log.debug("generateNarrative: argument '{}' provided but not yet used", fhirPathForNarrativeGeneration);
-            }
+            final String profile = extractArgumentAt(mappingHelper.getProgrammedMapping(), 1);
 
             final Spec.Version version = detectVersion(mappingHelper.getGeneratingFhirResource());
 
             // get resource to generate narrative of
             final IBaseResource resourceToGenerateNarrativeOf = getResourceToGenerateNarrativeOf(mappingHelper,
-                    fhirPathForNarrativeGeneration, version);
+                    fhirPathForNarrativeGeneration, version, profile);
 
             final String generatedNarrative = generateNarrative(resourceToGenerateNarrativeOf, version);
 
@@ -108,7 +106,8 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
 
     IBaseResource getResourceToGenerateNarrativeOf(final MappingHelper mappingHelper,
                                                    final String fhirPathForNarrativeGeneration,
-                                                   final Spec.Version version) {
+                                                   final Spec.Version version,
+                                                   final String profile) {
         if (fhirPathForNarrativeGeneration.equals(FhirConnectConst.FHIR_RESOURCE_FC)) {
             return (IBaseResource) mappingHelper.getGeneratingFhirResource();
         }
@@ -142,7 +141,9 @@ public class GenerateNarrativeCustomMapping extends CustomMapping {
                 iBases.forEach(builder::addCollectionEntry);
             });
         }
-        return builder.getBundle();
+        final IBaseBundle bundle = builder.getBundle();
+        bundle.getMeta().addProfile(profile);
+        return bundle;
     }
 
     private List<? extends IBaseResource> resolveReference(final IBase toResolveOn,

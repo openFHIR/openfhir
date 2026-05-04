@@ -36,10 +36,20 @@ public abstract class CustomMapping {
     }
 
     /**
-     * Extracts the argument from a raw mapping code, or {@code null} if none is present,
+     * Extracts the first argument from a raw mapping code, or {@code null} if none is present,
      * e.g. {@code "generateNarrative(text)"} → {@code "text"}.
      */
     public static String extractArgument(final String rawCode) {
+        return extractArgumentAt(rawCode, 0);
+    }
+
+    /**
+     * Extracts the argument at the given zero-based index from a raw mapping code,
+     * or {@code null} if the argument at that index is absent.
+     * e.g. {@code "generateNarrative(entry, http://hl7.org/fhir/StructureDefinition/Condition)"} with index 1
+     * → {@code "http://hl7.org/fhir/StructureDefinition/Condition"}.
+     */
+    public static String extractArgumentAt(final String rawCode, final int index) {
         if (rawCode == null) {
             return null;
         }
@@ -48,7 +58,12 @@ public abstract class CustomMapping {
         if (open < 0 || close <= open + 1) {
             return null;
         }
-        return rawCode.substring(open + 1, close);
+        final String[] parts = rawCode.substring(open + 1, close).split(",", -1);
+        if (index >= parts.length) {
+            return null;
+        }
+        final String value = parts[index].trim();
+        return value.isEmpty() ? null : value;
     }
 
     /**

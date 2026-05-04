@@ -1,0 +1,94 @@
+<!--/* Allergies and Intolerances */-->
+<div xmlns:th="http://www.thymeleaf.org">
+    <h5>Allergies and Intolerances</h5>
+    <table class="hapiPropertyTable">
+        <thead>
+        <tr>
+            <th>Substance</th>
+            <th>Clinical Status</th>
+            <th>Verification Status</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Criticality</th>
+            <th>Reactions</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="entry : ${resource.entry}" th:object="${entry.getResource()}">
+            <th:block th:if="${entry.getResource().getResourceType().name().equals('AllergyIntolerance')}">
+                <tr>
+                    <!-- Substance (code): prefer text, fall back to first coding display -->
+                    <td>
+                        <span th:if="*{getCode() != null and getCode().getText() != null}"
+                              th:text="*{getCode().getText()}"></span>
+                        <th:block th:if="*{getCode() != null and getCode().getText() == null}">
+                            <th:block th:each="coding : *{getCode().getCoding()}">
+                                <span th:text="${coding.getDisplay()}"></span><br/>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Clinical status -->
+                    <td>
+                        <th:block th:if="*{getClinicalStatus() != null}">
+                            <th:block th:each="coding : *{getClinicalStatus().getCoding()}">
+                                <span th:text="${coding.getCode()}"></span><br/>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Verification status -->
+                    <td>
+                        <th:block th:if="*{getVerificationStatus() != null}">
+                            <th:block th:each="coding : *{getVerificationStatus().getCoding()}">
+                                <span th:text="${coding.getCode()}"></span><br/>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Type (allergy | intolerance) -->
+                    <td>
+                        <span th:if="*{getType() != null}" th:text="*{getType().toCode()}"></span>
+                    </td>
+                    <!-- Category (food | medication | environment | biologic) -->
+                    <td>
+                        <th:block th:each="cat : *{getCategory()}">
+                            <span th:text="${cat.getValueAsString()}"></span><br/>
+                        </th:block>
+                    </td>
+                    <!-- Criticality -->
+                    <td>
+                        <span th:if="*{getCriticality() != null}" th:text="*{getCriticality().toCode()}"></span>
+                    </td>
+                    <!-- Reactions: substance + manifestations + severity -->
+                    <td>
+                        <th:block th:each="reaction : *{getReaction()}">
+                            <th:block
+                                    th:if="${reaction.getSubstance() != null and reaction.getSubstance().getText() != null}">
+                                <span th:text="${reaction.getSubstance().getText()}"></span>:
+                            </th:block>
+                            <th:block th:each="manifestation : ${reaction.getManifestation()}">
+                                <span th:if="${manifestation.getText() != null}"
+                                      th:text="${manifestation.getText()}"></span>
+                                <th:block th:if="${manifestation.getText() == null}">
+                                    <th:block th:each="coding : ${manifestation.getCoding()}">
+                                        <span th:text="${coding.getDisplay()}"></span>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                            <th:block th:if="${reaction.getSeverity() != null}">
+                                (<span th:text="${reaction.getSeverity().toCode()}"></span>)
+                            </th:block>
+                            <br/>
+                        </th:block>
+                    </td>
+                    <!-- Notes -->
+                    <td>
+                        <th:block th:each="note : *{getNote()}">
+                            <span th:text="${note.getText()}"></span><br/>
+                        </th:block>
+                    </td>
+                </tr>
+            </th:block>
+        </th:block>
+        </tbody>
+    </table>
+</div>
