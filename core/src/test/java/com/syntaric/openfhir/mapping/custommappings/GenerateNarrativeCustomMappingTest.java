@@ -52,7 +52,7 @@ public class GenerateNarrativeCustomMappingTest {
         final MappingHelper helper = Mockito.mock(MappingHelper.class);
         Mockito.when(helper.getGeneratingFhirResource()).thenReturn(patient);
 
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "$resource", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "$resource", Spec.Version.R4, null);
         Assert.assertSame(patient, result);
     }
 
@@ -64,7 +64,7 @@ public class GenerateNarrativeCustomMappingTest {
         final MappingHelper helper = Mockito.mock(MappingHelper.class);
         Mockito.when(helper.getGeneratingFhirRoot()).thenReturn(bundle);
 
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "$fhirRoot", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "$fhirRoot", Spec.Version.R4, null);
 
         Assert.assertSame(bundle, result);
     }
@@ -90,7 +90,7 @@ public class GenerateNarrativeCustomMappingTest {
         contained.setId("contained-1");
         patient.addContained(contained);
 
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "$resource.contained", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "$resource.contained", Spec.Version.R4, null);
 
         Assert.assertSame(contained, result);
     }
@@ -108,7 +108,7 @@ public class GenerateNarrativeCustomMappingTest {
         Mockito.when(helper.getGeneratingFhirRoot()).thenReturn(bundle);
         Mockito.when(helper.getOriginalOpenEhrPath()).thenReturn("someOpenEhrPath");
 
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Bundle.entry.resource", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Bundle.entry.resource", Spec.Version.R4, null);
 
         Assert.assertSame(patient, result);
     }
@@ -132,7 +132,7 @@ public class GenerateNarrativeCustomMappingTest {
         Mockito.when(helper.getGeneratingFhirRoot()).thenReturn(List.of(patient1, patient2));
         Mockito.when(helper.getOriginalOpenEhrPath()).thenReturn("someOpenEhrPath");
 
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Patient.contained", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Patient.contained", Spec.Version.R4, null);
 
         Assert.assertTrue(result instanceof Bundle);
         Assert.assertEquals(2, ((Bundle) result).getEntry().size());
@@ -152,7 +152,7 @@ public class GenerateNarrativeCustomMappingTest {
         Mockito.when(helper.getOriginalOpenEhrPath()).thenReturn("someOpenEhrPath");
 
         // Bundle.entry yields BundleEntryComponent — resolveReference should extract .getResource()
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Bundle.entry", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Bundle.entry", Spec.Version.R4, null);
 
         Assert.assertSame(patient, result);
     }
@@ -177,7 +177,7 @@ public class GenerateNarrativeCustomMappingTest {
         Mockito.when(helper.getOriginalOpenEhrPath()).thenReturn("$reference");
 
         // Patient.generalPractitioner yields a Reference; with $reference openEHR path, resolve() is called
-        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Patient.generalPractitioner", Spec.Version.R4);
+        final IBaseResource result = mapping.getResourceToGenerateNarrativeOf(helper, "Patient.generalPractitioner", Spec.Version.R4, null);
 
         Assert.assertSame(patient, result);
     }
