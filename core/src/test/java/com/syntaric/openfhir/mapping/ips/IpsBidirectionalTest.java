@@ -11,6 +11,8 @@ import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Device;
+import org.hl7.fhir.r4.model.DeviceUseStatement;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,6 +56,7 @@ public class IpsBidirectionalTest extends GenericTest {
 
         assertProblemList(composition);
         assertAllergies(composition);
+        assertMedicalDevices(composition);
 
         JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
@@ -65,6 +68,7 @@ public class IpsBidirectionalTest extends GenericTest {
 
         assertProblemList(roundTwoComposition);
         assertAllergies(roundTwoComposition);
+        assertMedicalDevices(roundTwoComposition);
     }
 
     @Test
@@ -284,6 +288,49 @@ public class IpsBidirectionalTest extends GenericTest {
                 .filter(n -> "Managed with physiotherapy".equals(n.getText()))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("note not found for condition2"));
+    }
+
+    private void assertMedicalDevices(org.hl7.fhir.r4.model.Composition composition) {
+        final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
+                .filter(s -> s.getCode().getCoding().stream()
+                        .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "46264-8".equals(c.getCode())))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Medical Devices section not found"));
+
+        Assert.assertEquals("Medical Devices and Implants", section.getTitle());
+
+        final org.hl7.fhir.r4.model.Coding coding = section.getCode().getCoding().stream()
+                .filter(c -> "http://loinc.org".equals(c.getSystem()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("LOINC coding not found in Medical Devices section"));
+        Assert.assertEquals("46264-8", coding.getCode());
+        Assert.assertEquals("History of medical device use", coding.getDisplay());
+
+        Assert.assertFalse("Medical Devices section should have at least one entry", section.getEntry().isEmpty());
+
+        final DeviceUseStatement deviceUseStatement = (DeviceUseStatement) section.getEntry().stream()
+                .map(e -> e.getResource())
+                .filter(r -> r instanceof DeviceUseStatement)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("DeviceUseStatement not found in Medical Devices section"));
+
+        Assert.assertTrue("DeviceUseStatement should have a device reference", deviceUseStatement.hasDevice());
+        final Device device = (Device) deviceUseStatement.getDevice().getResource();
+        Assert.assertNotNull("Device resource should be present", device);
+
+        Assert.assertFalse("Device should have a deviceName", device.getDeviceName().isEmpty());
+        Assert.assertEquals("Lorem ipsum", device.getDeviceNameFirstRep().getName());
+
+        Assert.assertEquals("Lorem ipsum", device.getManufacturer());
+        Assert.assertEquals("Lorem ipsum", device.getSerialNumber());
+        Assert.assertEquals("Lorem ipsum", device.getModelNumber());
+        Assert.assertEquals("Lorem ipsum", device.getLotNumber());
+        Assert.assertEquals("Lorem ipsum", device.getVersionFirstRep().getValue());
+
+        Assert.assertEquals("dev/null", device.getUdiCarrierFirstRep().getDeviceIdentifier());
+
+        Assert.assertFalse("Device note should be present", device.getNote().isEmpty());
+        Assert.assertEquals("Lorem ipsum", device.getNoteFirstRep().getText());
     }
 
 }

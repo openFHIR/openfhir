@@ -96,3 +96,14 @@ mappings:
       targetAttribute: "code.coding.code"
       operator: "one of"
       criteria: "10160-0"
+
+  - name: "sectionMedicalDevices"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Medical Devices']"
+    slotArchetype: "SECTION.adhoc.v1_medical_devices"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "46264-8"
