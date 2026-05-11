@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## Unreleased
+### Added
+- tests for IPS Medical Devices section (unverified mappings)
 
 ## [2.2.1] - 2026-05-04
 
