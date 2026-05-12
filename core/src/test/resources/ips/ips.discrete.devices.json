@@ -1,0 +1,171 @@
+[
+  {
+    "_type": "EVALUATION",
+    "archetype_node_id": "openEHR-EHR-EVALUATION.device_summary.v0",
+    "name": {
+      "_type": "DV_TEXT",
+      "value": "Device use statement"
+    },
+    "archetype_details": {
+      "archetype_id": {
+        "value": "openEHR-EHR-EVALUATION.device_summary.v0"
+      },
+      "rm_version": "1.0.4"
+    },
+    "encoding": {
+      "_type": "CODE_PHRASE",
+      "code_string": "UTF-8",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "IANA_character-sets"
+      }
+    },
+    "language": {
+      "_type": "CODE_PHRASE",
+      "code_string": "en",
+      "terminology_id": {
+        "_type": "TERMINOLOGY_ID",
+        "value": "ISO_639-1"
+      }
+    },
+    "subject": {
+      "_type": "PARTY_SELF"
+    },
+    "data": {
+      "_type": "ITEM_TREE",
+      "archetype_node_id": "at0001",
+      "name": {
+        "_type": "DV_TEXT",
+        "value": "Tree"
+      },
+      "items": [
+        {
+          "_type": "CLUSTER",
+          "archetype_node_id": "at0022",
+          "name": {
+            "_type": "DV_TEXT",
+            "value": "Device details"
+          },
+          "items": [
+            {
+              "_type": "ELEMENT",
+              "archetype_node_id": "at0012",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Body site"
+              },
+              "value": {
+                "_type": "DV_CODED_TEXT",
+                "value": "Heart structure",
+                "defining_code": {
+                  "_type": "CODE_PHRASE",
+                  "code_string": "80891009",
+                  "terminology_id": {
+                    "_type": "TERMINOLOGY_ID",
+                    "value": "http://snomed.info/sct"
+                  }
+                }
+              }
+            },
+            {
+              "_type": "CLUSTER",
+              "archetype_node_id": "openEHR-EHR-CLUSTER.device.v1",
+              "name": {
+                "_type": "DV_TEXT",
+                "value": "Medical device"
+              },
+              "archetype_details": {
+                "archetype_id": {
+                  "value": "openEHR-EHR-CLUSTER.device.v1"
+                },
+                "rm_version": "1.0.4"
+              },
+              "items": [
+                {
+                  "_type": "ELEMENT",
+                  "archetype_node_id": "at0001",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Device name"
+                  },
+                  "value": {
+                    "_type": "DV_TEXT",
+                    "value": "Cardiac Pacemaker"
+                  }
+                },
+                {
+                  "_type": "ELEMENT",
+                  "archetype_node_id": "at0003",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Type"
+                  },
+                  "value": {
+                    "_type": "DV_CODED_TEXT",
+                    "value": "Cardiac pacemaker",
+                    "defining_code": {
+                      "_type": "CODE_PHRASE",
+                      "code_string": "14106009",
+                      "terminology_id": {
+                        "_type": "TERMINOLOGY_ID",
+                        "value": "http://snomed.info/sct"
+                      }
+                    }
+                  }
+                },
+                {
+                  "_type": "ELEMENT",
+                  "archetype_node_id": "at0021",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Unique device identifier (UDI)"
+                  },
+                  "value": {
+                    "_type": "DV_IDENTIFIER",
+                    "id": "00643169007222"
+                  }
+                },
+                {
+                  "_type": "ELEMENT",
+                  "archetype_node_id": "at0004",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Manufacturer"
+                  },
+                  "value": {
+                    "_type": "DV_TEXT",
+                    "value": "Medtronic"
+                  }
+                },
+                {
+                  "_type": "ELEMENT",
+                  "archetype_node_id": "at0020",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Serial number"
+                  },
+                  "value": {
+                    "_type": "DV_TEXT",
+                    "value": "SN-20240501-PMK"
+                  }
+                },
+                {
+                  "_type": "ELEMENT",
+                  "archetype_node_id": "at0023",
+                  "name": {
+                    "_type": "DV_TEXT",
+                    "value": "Model number"
+                  },
+                  "value": {
+                    "_type": "DV_TEXT",
+                    "value": "Micra AV2"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

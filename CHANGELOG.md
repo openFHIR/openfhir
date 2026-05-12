@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## Unreleased
+### Fixed
+- ad-hoc Composition generation when a section was given a name and ended up with AQL path name/value=''
+
 ### Added
 - tests for IPS Medical Devices section (unverified mappings)
 

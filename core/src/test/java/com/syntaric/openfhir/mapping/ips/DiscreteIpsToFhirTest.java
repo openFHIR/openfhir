@@ -12,6 +12,8 @@ import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
 import org.hl7.fhir.r4.model.AllergyIntolerance;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Device;
+import org.hl7.fhir.r4.model.DeviceUseStatement;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,6 +37,57 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         operationaltemplate = getOperationalTemplate();
         repo.initRepository(context, operationaltemplate, getClass().getResource(MODEL_MAPPINGS).getFile());
         webTemplate = new OPTParser(operationaltemplate).parse();
+    }
+
+    @Test
+    public void discreteToFhirDevices() {
+        final String discreteContentItems = getFile(HELPER_LOCATION + "ips.discrete.devices.json");
+        final JsonArray arrayOfContentItems = new Gson().fromJson(discreteContentItems, JsonArray.class);
+        final List<ContentItem> contentItemList = new ArrayList<>();
+        for (final JsonElement composition : arrayOfContentItems) {
+            final String serializedComposition = composition.toString();
+            contentItemList.add(new CanonicalJson().unmarshal(serializedComposition, ContentItem.class));
+        }
+        final Bundle bundle = (Bundle) toFhir.contentItemsToFhir(context, contentItemList, webTemplate);
+
+        final org.hl7.fhir.r4.model.Composition composition =
+                (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
+
+        final org.hl7.fhir.r4.model.Composition.SectionComponent devicesSection = composition.getSection().stream()
+                .filter(s -> s.getCode().getCoding().stream()
+                        .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "46264-8".equals(c.getCode())))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Medical Devices section not found"));
+
+        Assert.assertEquals("Medical Devices and Implants", devicesSection.getTitle());
+        Assert.assertEquals(1, devicesSection.getEntry().size());
+
+        final DeviceUseStatement deviceUseStatement = (DeviceUseStatement) devicesSection.getEntry().stream()
+                .map(e -> e.getResource())
+                .filter(r -> r instanceof DeviceUseStatement)
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("DeviceUseStatement not found in Medical Devices section"));
+
+        Assert.assertTrue(deviceUseStatement.hasDevice());
+        Assert.assertEquals("http://snomed.info/sct", deviceUseStatement.getBodySite().getCodingFirstRep().getSystem());
+        Assert.assertEquals("80891009", deviceUseStatement.getBodySite().getCodingFirstRep().getCode());
+        Assert.assertEquals("Heart structure", deviceUseStatement.getBodySite().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("Heart structure", deviceUseStatement.getBodySite().getText());
+
+        final Device device = (Device) deviceUseStatement.getDevice().getResource();
+        Assert.assertNotNull(device);
+
+        Assert.assertEquals("Cardiac Pacemaker", device.getDeviceNameFirstRep().getName());
+
+        Assert.assertEquals("http://snomed.info/sct", device.getType().getCodingFirstRep().getSystem());
+        Assert.assertEquals("14106009", device.getType().getCodingFirstRep().getCode());
+        Assert.assertEquals("Cardiac pacemaker", device.getType().getCodingFirstRep().getDisplay());
+        Assert.assertEquals("Cardiac pacemaker", device.getType().getText());
+
+        Assert.assertEquals("00643169007222", device.getUdiCarrierFirstRep().getDeviceIdentifier());
+        Assert.assertEquals("Medtronic", device.getManufacturer());
+        Assert.assertEquals("SN-20240501-PMK", device.getSerialNumber());
+        Assert.assertEquals("Micra AV2", device.getModelNumber());
     }
 
     @Test

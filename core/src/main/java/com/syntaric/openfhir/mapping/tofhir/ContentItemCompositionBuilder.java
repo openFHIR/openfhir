@@ -77,7 +77,7 @@ public class ContentItemCompositionBuilder {
 
     private boolean nodeMatchesArchetype(final WebTemplateNode node, final String archetypeNodeId) {
         final String aqlPath = node.getAqlPath(true);
-        return aqlPath.contains("[" + archetypeNodeId + "]");
+        return aqlPath.contains("[" + archetypeNodeId + "]") || aqlPath.contains("[" + archetypeNodeId + " and name");
     }
 
     /**
