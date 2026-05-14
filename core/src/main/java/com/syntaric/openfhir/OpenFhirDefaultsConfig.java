@@ -35,7 +35,7 @@ public class OpenFhirDefaultsConfig {
     @Bean
     @ConditionalOnMissingBean(ToFhirPrePostProcessorInterface.class)
     public ToFhirPrePostProcessorInterface toFhirPrePostProcessor(final FhirContextRegistry fhirContextRegistry) {
-        return new ToFhirPrePostProcessor(fhirContextRegistry);
+        return new ToFhirPrePostProcessor(fhirContextRegistry, true);
     }
 
     @Bean

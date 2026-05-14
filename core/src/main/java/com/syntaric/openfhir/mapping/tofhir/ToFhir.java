@@ -29,7 +29,6 @@ import java.util.Map;
 public class ToFhir {
 
     final private FlatJsonMarshaller flatJsonMarshaller;
-    final private OpenEhrTemplateUtils openEhrApplicationScopedUtils;
     final private Gson gson;
     final private HelpersCreator helpersCreator;
     final private ToFhirPrePostProcessorInterface toFhirPrePostProcessor;
@@ -39,7 +38,6 @@ public class ToFhir {
 
     @Autowired
     public ToFhir(final FlatJsonMarshaller flatJsonMarshaller,
-                  final OpenEhrTemplateUtils openEhrApplicationScopedUtils,
                   final Gson gson,
                   final HelpersCreator helpersCreator,
                   final ToFhirPrePostProcessorInterface toFhirPrePostProcessor,
@@ -47,7 +45,6 @@ public class ToFhir {
                   final ContentItemCompositionBuilder contentItemCompositionBuilder,
                   final MappingMetricsLogger metricsLogger) {
         this.flatJsonMarshaller = flatJsonMarshaller;
-        this.openEhrApplicationScopedUtils = openEhrApplicationScopedUtils;
         this.gson = gson;
         this.helpersCreator = helpersCreator;
         this.toFhirPrePostProcessor = toFhirPrePostProcessor;

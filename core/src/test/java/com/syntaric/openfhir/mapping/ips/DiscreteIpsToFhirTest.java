@@ -63,7 +63,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals(1, devicesSection.getEntry().size());
 
         final DeviceUseStatement deviceUseStatement = (DeviceUseStatement) devicesSection.getEntry().stream()
-                .map(e -> e.getResource())
+                .map(e -> getBundleEntry(bundle, e.getReference()))
                 .filter(r -> r instanceof DeviceUseStatement)
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("DeviceUseStatement not found in Medical Devices section"));
@@ -74,7 +74,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("Heart structure", deviceUseStatement.getBodySite().getCodingFirstRep().getDisplay());
         Assert.assertEquals("Heart structure", deviceUseStatement.getBodySite().getText());
 
-        final Device device = (Device) deviceUseStatement.getDevice().getResource();
+        final Device device = (Device) getBundleEntry(bundle, deviceUseStatement.getDevice().getReference());
         Assert.assertNotNull(device);
 
         Assert.assertEquals("Cardiac Pacemaker", device.getDeviceNameFirstRep().getName());
@@ -112,7 +112,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals(3, problemSection.getEntry().size());
 
         final List<Condition> conditions = problemSection.getEntry().stream()
-                .map(e -> (Condition) e.getResource())
+                .map(e -> (Condition) getBundleEntry(bundle, e.getReference()))
                 .toList();
         Assert.assertEquals(3, conditions.size());
 
@@ -124,7 +124,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals(3, allergySection.getEntry().size());
 
         final List<AllergyIntolerance> allergies = allergySection.getEntry().stream()
-                .map(e -> (AllergyIntolerance) e.getResource())
+                .map(e -> (AllergyIntolerance) getBundleEntry(bundle, e.getReference()))
                 .toList();
         Assert.assertEquals(3, allergies.size());
 

@@ -40,7 +40,7 @@ public class MedicationOrderToFhirTest extends GenericTest {
                                                                              new OPTParser(
                                                                                      operationaltemplate).parse());
         final Bundle createdResources = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
-        Assert.assertEquals(2, createdResources.getEntry().size());
+        Assert.assertEquals(4, createdResources.getEntry().size());
         final MedicationRequest medicationRequestOne = createdResources.getEntry().stream()
                 .map(res -> (MedicationRequest) res.getResource())
                 .filter(res -> res.getNote().stream()
@@ -48,7 +48,7 @@ public class MedicationOrderToFhirTest extends GenericTest {
                 .findFirst()
                 .orElse(null);
         Assert.assertEquals("Lorem ipsum0",
-                            ((Medication) medicationRequestOne.getMedicationReference().getResource()).getCode()
+                            ((Medication) getBundleEntry(createdResources, medicationRequestOne.getMedicationReference().getReference())).getCode()
                                     .getText());
         Assert.assertEquals("21.0",
                             ((Quantity) medicationRequestOne.getDosageInstructionFirstRep().getDoseAndRateFirstRep()
@@ -71,13 +71,14 @@ public class MedicationOrderToFhirTest extends GenericTest {
                                     .getCodingFirstRep().getSystem());
 
         final MedicationRequest medicationRequestTwo = createdResources.getEntry().stream()
+                .filter(res -> res.getResource() instanceof MedicationRequest)
                 .map(res -> (MedicationRequest) res.getResource())
                 .filter(res -> res.getNote().stream()
                         .anyMatch(note -> note.getText().startsWith("Additional instruction on two")))
                 .findFirst()
                 .orElse(null);
         Assert.assertEquals("Lorem ipsum1",
-                            ((Medication) medicationRequestTwo.getMedicationReference().getResource()).getCode()
+                            ((Medication) getBundleEntry(createdResources, medicationRequestTwo.getMedicationReference().getReference())).getCode()
                                     .getText());
         Assert.assertTrue(medicationRequestTwo.getDosageInstruction().isEmpty() || medicationRequestTwo.getDosageInstruction().get(0).isEmpty());
         Assert.assertEquals(3, medicationRequestTwo.getNote().size());

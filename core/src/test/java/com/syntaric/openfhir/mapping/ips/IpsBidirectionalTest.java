@@ -8,11 +8,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
-import org.hl7.fhir.r4.model.AllergyIntolerance;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.Device;
-import org.hl7.fhir.r4.model.DeviceUseStatement;
+import org.hl7.fhir.r4.model.*;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -46,6 +42,8 @@ public class IpsBidirectionalTest extends GenericTest {
                 getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
         final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
+        Assert.assertEquals(org.hl7.fhir.r4.model.Bundle.BundleType.DOCUMENT, bundle.getType());
+
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
         Assert.assertEquals("http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips", composition.getMeta().getProfile().get(0).getValueAsString());
         Assert.assertEquals("60591-5", composition.getType().getCodingFirstRep().getCode());
@@ -54,9 +52,9 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("Patient Summary", composition.getTitle());
         Assert.assertEquals("final", composition.getStatusElement().getValueAsString());
 
-        assertProblemList(composition);
-        assertAllergies(composition);
-        assertMedicalDevices(composition);
+        assertProblemList(composition, bundle);
+        assertAllergies(composition, bundle);
+        assertMedicalDevices(composition, bundle);
 
         JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
@@ -64,11 +62,13 @@ public class IpsBidirectionalTest extends GenericTest {
                 new Gson().toJson(jsonObject), new OPTParser(operationaltemplate).parse());
         final Bundle roundTwoBundle = (Bundle) toFhir.compositionsToFhir(context, List.of(roundTwoCompositionFromFlat), webTemplate);
 
+        Assert.assertEquals(org.hl7.fhir.r4.model.Bundle.BundleType.DOCUMENT, roundTwoBundle.getType());
+
         final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
 
-        assertProblemList(roundTwoComposition);
-        assertAllergies(roundTwoComposition);
-        assertMedicalDevices(roundTwoComposition);
+        assertProblemList(roundTwoComposition, roundTwoBundle);
+        assertAllergies(roundTwoComposition, roundTwoBundle);
+        assertMedicalDevices(roundTwoComposition, roundTwoBundle);
     }
 
     @Test
@@ -87,8 +87,8 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("Patient Summary", composition.getTitle());
         Assert.assertEquals("final", composition.getStatusElement().getValueAsString());
 
-        assertProblemList(composition);
-        assertAllergies(composition);
+        assertProblemList(composition, bundle);
+        assertAllergies(composition, bundle);
 
         JsonObject jsonObject = toOpenEhr.fhirToFlatJsonObject(context, bundle, webTemplate);
 
@@ -98,11 +98,12 @@ public class IpsBidirectionalTest extends GenericTest {
 
         final org.hl7.fhir.r4.model.Composition roundTwoComposition = (org.hl7.fhir.r4.model.Composition) roundTwoBundle.getEntryFirstRep().getResource();
 
-        assertProblemList(roundTwoComposition);
-        assertAllergies(roundTwoComposition);
+        assertProblemList(roundTwoComposition, bundle);
+        assertAllergies(roundTwoComposition, bundle);
     }
 
-    private void assertAllergies(org.hl7.fhir.r4.model.Composition composition) {
+    private void assertAllergies(org.hl7.fhir.r4.model.Composition composition,
+                                 final Bundle bundle) {
         final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
                 .filter(s -> s.getCode().getCoding().stream()
                         .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "48765-2".equals(c.getCode())))
@@ -124,11 +125,8 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("48765-2", coding.getCode());
         Assert.assertEquals("Allergies and Intolerances", coding.getDisplay());
 
-        final AllergyIntolerance allergy = (AllergyIntolerance) section.getEntry().stream()
-                .filter(e -> "#3".equals(e.getReference()))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Entry reference '#3' not found"))
-                .getResource();
+        final AllergyIntolerance allergy = (AllergyIntolerance) getBundleEntry(bundle, section.getEntryFirstRep().getReference());
+
         Assert.assertEquals("inactive", allergy.getClinicalStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("Inactive", allergy.getClinicalStatus().getCodingFirstRep().getDisplay());
         Assert.assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical", allergy.getClinicalStatus().getCodingFirstRep().getSystem());
@@ -154,7 +152,8 @@ public class IpsBidirectionalTest extends GenericTest {
         jsonParser.encodeResourceToString(allergy);
     }
 
-    private void assertProblemList(org.hl7.fhir.r4.model.Composition composition) {
+    private void assertProblemList(org.hl7.fhir.r4.model.Composition composition,
+                                   final Bundle bundle) {
         final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
                 .filter(s -> s.getCode().getCoding().stream()
                         .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "11450-4".equals(c.getCode())))
@@ -176,19 +175,9 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("generated", section.getText().getStatusAsString());
         Assert.assertTrue(section.getText().getDivAsString().startsWith("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Problem List</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Condition</th><th>Clinical Status</th><th>Verification Status</th><th>Severity</th><th>Onset</th><th>Abatement</th><th>Notes</th></tr></thead><tbody><tr>"));
 
-        final Condition condition = (Condition) section.getEntry().stream()
-                .filter(e -> "#1".equals(e.getReference()))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Entry reference '#1' not found"))
-                .getResource();
+        final Condition condition = (Condition) getBundleEntry(bundle, section.getEntry().get(0).getReference());
 
-        final Condition condition2 = (Condition) section.getEntry().stream()
-                .filter(e -> "#2".equals(e.getReference()))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Entry reference '#2' not found"))
-                .getResource();
-
-        Assert.assertEquals("#1", condition.getId());
+        final Condition condition2 = (Condition) getBundleEntry(bundle, section.getEntry().get(1).getReference());
 
         final org.hl7.fhir.r4.model.Coding verificationCoding = condition.getVerificationStatus().getCoding().stream()
                 .filter(c -> "http://terminology.hl7.org/CodeSystem/condition-ver-status".equals(c.getSystem()))
@@ -245,8 +234,6 @@ public class IpsBidirectionalTest extends GenericTest {
                 .orElseThrow(() -> new AssertionError("note not found"));
 
 
-        Assert.assertEquals("#2", condition2.getId());
-
         Assert.assertTrue(condition2.getVerificationStatus().isEmpty());
 
         final org.hl7.fhir.r4.model.Coding severityCoding2 = condition2.getSeverity().getCoding().stream()
@@ -290,7 +277,8 @@ public class IpsBidirectionalTest extends GenericTest {
                 .orElseThrow(() -> new AssertionError("note not found for condition2"));
     }
 
-    private void assertMedicalDevices(org.hl7.fhir.r4.model.Composition composition) {
+    private void assertMedicalDevices(org.hl7.fhir.r4.model.Composition composition,
+                                      final Bundle bundle) {
         final org.hl7.fhir.r4.model.Composition.SectionComponent section = composition.getSection().stream()
                 .filter(s -> s.getCode().getCoding().stream()
                         .anyMatch(c -> "http://loinc.org".equals(c.getSystem()) && "46264-8".equals(c.getCode())))
@@ -308,14 +296,10 @@ public class IpsBidirectionalTest extends GenericTest {
 
         Assert.assertFalse("Medical Devices section should have at least one entry", section.getEntry().isEmpty());
 
-        final DeviceUseStatement deviceUseStatement = (DeviceUseStatement) section.getEntry().stream()
-                .map(e -> e.getResource())
-                .filter(r -> r instanceof DeviceUseStatement)
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("DeviceUseStatement not found in Medical Devices section"));
+        final DeviceUseStatement deviceUseStatement = (DeviceUseStatement) getBundleEntry(bundle, section.getEntryFirstRep().getReference());
 
         Assert.assertTrue("DeviceUseStatement should have a device reference", deviceUseStatement.hasDevice());
-        final Device device = (Device) deviceUseStatement.getDevice().getResource();
+        final Device device = (Device) getBundleEntry(bundle, deviceUseStatement.getDevice().getReference());
         Assert.assertNotNull("Device resource should be present", device);
 
         Assert.assertFalse("Device should have a deviceName", device.getDeviceName().isEmpty());
