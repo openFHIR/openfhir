@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 - tests for IPS Medical Devices section (unverified mappings)
+- added a docker hub build action that builds arm64 compliant docker image
 
 ## [2.2.1] - 2026-05-04
 
