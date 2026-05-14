@@ -43,8 +43,8 @@ public class ProblemListToFhirTest extends GenericTest {
         final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
-        final Condition condition = (Condition) composition.getSectionFirstRep().getEntryFirstRep().getResource();
-        final Observation observation = (Observation) condition.getEvidenceFirstRep().getDetailFirstRep().getResource();
+        final Condition condition = (Condition) getBundleEntry(bundle, composition.getSectionFirstRep().getEntryFirstRep().getReference());
+        final Observation observation = (Observation) getBundleEntry(bundle, condition.getEvidenceFirstRep().getDetailFirstRep().getReference());
 
         Assert.assertEquals("Fine", observation.getValueStringType().getValue());
     }
@@ -57,8 +57,8 @@ public class ProblemListToFhirTest extends GenericTest {
         final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         final org.hl7.fhir.r4.model.Composition composition = (org.hl7.fhir.r4.model.Composition) bundle.getEntryFirstRep().getResource();
-        final Condition condition = (Condition) composition.getSectionFirstRep().getEntryFirstRep().getResource();
-        final Observation observation = (Observation) condition.getEvidenceFirstRep().getDetailFirstRep().getResource();
+        final Condition condition = (Condition) getBundleEntry(bundle, composition.getSectionFirstRep().getEntryFirstRep().getReference());
+        final Observation observation = (Observation) getBundleEntry(bundle, condition.getEvidenceFirstRep().getDetailFirstRep().getReference());
 
         final CodeableConcept valueCodeableConcept = observation.getValueCodeableConcept();
         Assert.assertEquals("code", valueCodeableConcept.getCodingFirstRep().getCode());

@@ -33,6 +33,7 @@ import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.Resource;
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
@@ -134,10 +135,9 @@ public abstract class GenericTest {
                 openFhirMapperUtils,
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
         toFhir = new ToFhir(new FlatJsonMarshaller(),
-                new OpenEhrTemplateUtils(),
                 new Gson(),
                 helpersCreator,
-                new ToFhirPrePostProcessor(new FhirContextRegistry()),
+                new ToFhirPrePostProcessor(new FhirContextRegistry(), containedToSeparateEntites()),
                 toFhirMappingEngine,
                 new ContentItemCompositionBuilder(),
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
@@ -170,10 +170,16 @@ public abstract class GenericTest {
 
     protected abstract void prepareState();
 
+    protected boolean containedToSeparateEntites() {
+        return true;
+    }
+
     protected void customMocks() {
 
     }
-
+    protected Resource getBundleEntry(final Bundle bundle, final String id) {
+        return bundle.getEntry().stream().filter(en -> en.getFullUrl() != null && en.getFullUrl().contains(id)).map(Bundle.BundleEntryComponent::getResource).findFirst().orElse(null);
+    }
 
     protected Bundle getTestBundle(String path) {
         InputStream is = getClass().getResourceAsStream(path);
