@@ -10,13 +10,8 @@ import com.syntaric.openfhir.mapping.GenericTest;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
-import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Reference;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -128,7 +123,13 @@ public class BloodPressureToOpenEhrTest extends GenericTest {
 
         resource.setBodySite(
                 new CodeableConcept(new Coding("remotey", "at00256", null)).setText("THIS IS LOCATION OF MEASUREMENT"));
-        return new Bundle().addEntry(new BundleEntryComponent().setResource(resource));
+
+        final Condition condition = new Condition();
+        condition.setCode(new CodeableConcept(new Coding("1", "2", "3")).setText("text"));
+
+        return new Bundle()
+                .addEntry(new BundleEntryComponent().setResource(condition))
+                .addEntry(new BundleEntryComponent().setResource(resource));
     }
 
 }
