@@ -24,14 +24,17 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
 
     final String IPS_PROFILE = "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips";
 
-    final private boolean containedToSeparateEntites;
+    @Value("${openfhir.contained-to-separate-entities:true}")
+    private boolean containedToSeparateEntries;
 
     final protected FhirContextRegistry fhirContextRegistry;
 
-    public ToFhirPrePostProcessor(final FhirContextRegistry fhirContextRegistry,
-                                  @Value("${openfhir.contained-to-separate-entities:true}") boolean containedToSeparateEntites) {
+    public ToFhirPrePostProcessor(final FhirContextRegistry fhirContextRegistry) {
         this.fhirContextRegistry = fhirContextRegistry;
-        this.containedToSeparateEntites = containedToSeparateEntites;
+    }
+
+    public boolean containedToSeparateEntries() {
+        return containedToSeparateEntries; // to be able to override it
     }
 
     @Override
@@ -61,7 +64,7 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
     }
 
     public IBaseBundle moveContainedToSeparateEntries(final IBaseBundle bundle, final Spec.Version fhirVersion) {
-        if(!containedToSeparateEntites) {
+        if(!containedToSeparateEntries()) {
             return bundle;
         }
         final FhirContext ctx = fhirContextRegistry.getContext(fhirVersion);

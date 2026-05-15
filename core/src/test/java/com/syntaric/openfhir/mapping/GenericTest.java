@@ -102,7 +102,7 @@ public abstract class GenericTest {
                 openFhirStringUtils);
         final FhirValueReaders readers = new FhirValueReaders(openFhirMapperUtils);
         final OpenFhirMapperUtils openFhirMapperUtils = new OpenFhirMapperUtils();
-        final IFhirPath path = getFhirPath();
+
         helpersCreator = new HelpersCreator(repo, new AqlToFlatPathConverter(
                 openFhirStringUtils,
                 openFhirMapperUtils), openFhirStringUtils);
@@ -137,7 +137,7 @@ public abstract class GenericTest {
         toFhir = new ToFhir(new FlatJsonMarshaller(),
                 new Gson(),
                 helpersCreator,
-                new ToFhirPrePostProcessor(new FhirContextRegistry(), containedToSeparateEntites()),
+                new TestToFhirPrePostProcessor(),
                 toFhirMappingEngine,
                 new ContentItemCompositionBuilder(),
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
@@ -166,6 +166,17 @@ public abstract class GenericTest {
 
 
         prepareState();
+    }
+
+    public class TestToFhirPrePostProcessor extends ToFhirPrePostProcessor {
+        public TestToFhirPrePostProcessor() {
+            super(new FhirContextRegistry());
+        }
+
+        @Override
+        public boolean containedToSeparateEntries() {
+            return containedToSeparateEntites();
+        }
     }
 
     protected abstract void prepareState();
