@@ -17,6 +17,11 @@ mappings:
     with:
       fhir: "$resource.entry"
       openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]"
+    fhirCondition:
+      targetRoot: "$resource.entry"
+      targetAttribute: "resource"
+      operator: "type"
+      criteria: "Observation"
     followedBy:
       mappings:
         - name: "iterateBpObservations"

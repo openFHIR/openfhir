@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## Unreleased
 ### Fixed
 - ad-hoc Composition generation when a section was given a name and ended up with AQL path name/value=''
+- fhirCondition 'one of' and 'not of' now properly evaluated even if subpath matches
 
 ### Added
 - tests for IPS Medical Devices section (unverified mappings)
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 - engine now by default moves contained Resources to separate Bundle entries (can be changed by setting `openfhir.contained-to-separate-entities` to `false`)
+- fhirCondition operator 'type' can now be used also as filtering rather than just conditioning the whole mapping
 
 ## [2.2.1] - 2026-05-04
 

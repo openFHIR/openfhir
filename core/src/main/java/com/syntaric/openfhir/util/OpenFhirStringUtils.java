@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Coding;
 import org.springframework.stereotype.Component;
@@ -84,9 +86,9 @@ public class OpenFhirStringUtils {
 
     private String adjustCastingToClassName(final String castingTo) {
         final Map<String, String> map = Map.of("Boolean", "BooleanType",
-                                               "DateTime", "DateTimeType",
-                                               "Time", "TimeType",
-                                               "String", "StringType");
+                "DateTime", "DateTimeType",
+                "Time", "TimeType",
+                "String", "StringType");
         return map.getOrDefault(castingTo, castingTo);
     }
 
@@ -156,12 +158,12 @@ public class OpenFhirStringUtils {
      * FHIR path amended in a way that condition becomes a part of it
      *
      * @param originalFhirPath original fhir path without conditions as it exists within a model mapper
-     * @param conditions conditions defined within a model mapper
-     * @param resource fhir resource being used as a base
+     * @param conditions       conditions defined within a model mapper
+     * @param resource         fhir resource being used as a base
      * @return fhir path with condition elemenets included in the fhir path itself
-     *         deprecated: use getFhirPathWithConditions instead! this method should be removed as soon as possible to
-     *         clear up
-     *         the code base and remove redundant ones
+     * deprecated: use getFhirPathWithConditions instead! this method should be removed as soon as possible to
+     * clear up
+     * the code base and remove redundant ones
      */
     @Deprecated
     public String amendFhirPath(final String originalFhirPath, final List<Condition> conditions,
@@ -197,11 +199,10 @@ public class OpenFhirStringUtils {
             for (final String criteria : condition.getCriterias()) {
                 final String criteriaString = getStringFromCriteria(criteria).getCode();
                 orJoiner.add(base
-                                     .replace(condition.getTargetRoot(),
-                                              condition.getTargetRoot() + ".where(" + targetAttribute
-                                                      + ".toString().contains('" + criteriaString + "')" + (negate
-                                                      ? "=false" : "") + ")")
-                                     .replace(FhirConnectConst.FHIR_RESOURCE_FC, resource));
+                        .replace(condition.getTargetRoot(),
+                                condition.getTargetRoot() + ".where(('" + criteriaString + "' in " + targetAttribute
+                                        + (negate ? ")=false" : ")") + ")")
+                        .replace(FhirConnectConst.FHIR_RESOURCE_FC, resource));
             }
 
             stringJoiner.add(orJoiner.toString());
@@ -210,54 +211,10 @@ public class OpenFhirStringUtils {
         return stringJoiner.toString();
     }
 
-
-    private boolean targetRootSameAsMainMapping(final Condition condition,
-                                                final String mainElementRoot,
-                                                final String originalMainElementRoot) {
-        return condition.getTargetRoot().equals(mainElementRoot) || condition.getTargetRoot().equals(
-                originalMainElementRoot);
-    }
-
-    public String amendFhirPathWithConditions(final MappingHelper mappingHelper,
-                                              final List<Condition> fhirConditions) {
-        final String originalFhirPath = mappingHelper.getOriginalFhirPath();
-        final String relativeFhirPath = mappingHelper.getFhir();
-
-        final StringJoiner andJoiner = new StringJoiner(" and ");
-        for (Condition condition : fhirConditions) {
-            if (condition.getCriterias() == null) {
-                continue;
-            }
-            final StringJoiner orJoiner = new StringJoiner(" and ");
-            final String targetAttribute = condition.getTargetAttribute();
-
-            boolean negate = FhirConnectConst.CONDITION_OPERATOR_NOT_OF.equals(condition.getOperator());
-
-            for (final String criteria : condition.getCriterias()) {
-                final String criteriaString = getStringFromCriteria(criteria).getCode();
-                if (targetRootSameAsMainMapping(condition, relativeFhirPath,
-                                                originalFhirPath)) {
-                    orJoiner.add(String.format("where((%s).toString().contains('%s'))",
-                                               targetAttribute,
-                                               criteriaString) + (negate ? "=false" : ""));
-                } else {
-                    orJoiner.add(String.format("%s.where((%s).toString().contains('%s'))",
-                                               condition.getTargetRoot(),
-                                               targetAttribute,
-                                               criteriaString) + (negate ? "=false" : ""));
-                }
-            }
-
-            andJoiner.add(orJoiner.toString());
-
-        }
-        return andJoiner.toString();
-    }
-
     /**
      * Gets all entries from the flat path that match simplified openehr path with regex pattern
      *
-     * @param withRegex simplified openehr path with regex pattern
+     * @param withRegex           simplified openehr path with regex pattern
      * @param compositionFlatPath composition in a flat path format
      * @return a list of Strings that match the given flat path with regex pattern
      */
@@ -390,30 +347,36 @@ public class OpenFhirStringUtils {
             remainingItems = originalFhirPath.replace(FHIR_ROOT_FC, "").replace("BackboneElement", "")
                     .replace(actualConditionTargetRoot, "");
         } else {
-            withParentsWhereInPlace = StringUtils.isEmpty(originalFhirPath) ?  actualConditionTargetRoot:setParentsWherePathToTheCorrectPlace(originalFhirPath, parentPath);
+            withParentsWhereInPlace = StringUtils.isEmpty(originalFhirPath) ? actualConditionTargetRoot : setParentsWherePathToTheCorrectPlace(originalFhirPath, parentPath);
             remainingItems = "";
         }
 
         boolean negate = FhirConnectConst.CONDITION_OPERATOR_NOT_OF.equals(condition.getOperator());
+        boolean typeOperator = FhirConnectConst.CONDITION_OPERATOR_TYPE.equals(condition.getOperator());
 
         if (actualConditionTargetRoot.startsWith(resource) && withParentsWhereInPlace.equals(originalFhirPath)) {
             // find the right place first
             final String commonPath = setParentsWherePathToTheCorrectPlace(originalFhirPath,
-                                                                           actualConditionTargetRoot); // path right before the condition should start
+                    actualConditionTargetRoot); // path right before the condition should start
             final String remainingToEndUpInWhere = StringUtils.isEmpty(commonPath) ? actualConditionTargetRoot : actualConditionTargetRoot
-                    .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT + ".", "")
-                    .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "")
-                    .replace(commonPath + ".", "")
-                    .replace(commonPath, "");
+                                                                                                                 .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT + ".", "")
+                                                                                                                 .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "")
+                                                                                                                 .replace(commonPath + ".", "")
+                                                                                                                 .replace(commonPath, "");
             String remainingToAdd =
                     StringUtils.isBlank(remainingToEndUpInWhere) ? "" : (remainingToEndUpInWhere + ".");
-            if(remainingToAdd.startsWith(".")){
+            if (remainingToAdd.startsWith(".")) {
                 remainingToAdd = remainingToAdd.substring(1);
             }
             final StringJoiner criteriaJoiner1 = new StringJoiner(negate ? " and " : " or ");
             for (final String criteria : condition.getCriterias()) {
-                criteriaJoiner1.add(remainingToAdd + condition.getTargetAttribute() + ".toString().contains('"
-                        + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
+                if (typeOperator) {
+                    criteriaJoiner1.add(remainingToAdd + condition.getTargetAttribute() + ".toString().contains('"
+                            + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
+                } else {
+                    criteriaJoiner1.add("('" + getStringFromCriteria(criteria).getCode() + "' in " + remainingToAdd + condition.getTargetAttribute()
+                            + (negate ? ")=false" : ")"));
+                }
             }
             final String whereClause = ".where(" + criteriaJoiner1 + ")";
             final String remainingItemsFromParent = originalFhirPath.replace(commonPath, "");
@@ -422,8 +385,13 @@ public class OpenFhirStringUtils {
             // then do your own where path
             final StringJoiner criteriaJoiner2 = new StringJoiner(negate ? " and " : " or ");
             for (final String criteria : condition.getCriterias()) {
-                criteriaJoiner2.add(condition.getTargetAttribute() + ".toString().contains('"
-                        + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
+                if (typeOperator) {
+                    criteriaJoiner2.add(condition.getTargetAttribute() + ".toString().contains('"
+                            + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
+                } else {
+                    criteriaJoiner2.add("('" + getStringFromCriteria(criteria).getCode() + "' in " +  condition.getTargetAttribute()
+                            + (negate ? ")=false" : ")"));
+                }
             }
             final String whereClause = ".where(" + criteriaJoiner2 + ")";
             // then suffix with whatever is left from the children's path
@@ -438,9 +406,9 @@ public class OpenFhirStringUtils {
      * path from Condition and add that to the original fhir path
      *
      * @param originalFhirPath original fhir path that will be amended with conditions
-     * @param condition condition we'll use when constructing a .where clause
-     * @param resource resource type
-     * @param parentPath parent fhir path, if one exists
+     * @param condition        condition we'll use when constructing a .where clause
+     * @param resource         resource type
+     * @param parentPath       parent fhir path, if one exists
      * @return fhir path amended with the .where clause as constructed from the given Condition
      */
     public String getFhirPathWithConditions(String originalFhirPath,
@@ -496,9 +464,9 @@ public class OpenFhirStringUtils {
                 if (string.startsWith(WHERE)) {
                     // a where follows
                     final String substringForRelevantWhere = parent.substring(Arrays.stream(parents)
-                                                                                      .limit(parentIndex)
-                                                                                      .mapToInt(String::length)
-                                                                                      .sum());
+                            .limit(parentIndex)
+                            .mapToInt(String::length)
+                            .sum());
                     final String firstWhereCondition = extractWhereCondition(substringForRelevantWhere);
                     childPathJoiner.add(firstWhereCondition);
                     childPathJoiner.add(childPath);
@@ -587,7 +555,7 @@ public class OpenFhirStringUtils {
         if (criteria.contains("[")) {
             // legacy behavior
             final String[] criterias = criteria.replace("[",
-                                                        "") // todo: crazy stuff in the FHIR Connect spec...... criteria is a string array, $loinc, ...
+                            "") // todo: crazy stuff in the FHIR Connect spec...... criteria is a string array, $loinc, ...
                     .replace("]", "").split(",");
             // todo: should be an OR inbetween these separate criterias.. right now it just takes the first
             final String codingCode = criterias[0]
@@ -600,7 +568,7 @@ public class OpenFhirStringUtils {
                 system = "http://snomed.info/sct";
             } else {
                 system = criteria.replace("[",
-                                          "") // // todo: crazy stuff in the FHIR Connect spec...... criteria is a string array, $loinc, ...
+                                "") // // todo: crazy stuff in the FHIR Connect spec...... criteria is a string array, $loinc, ...
                         .replace("]", "").split("\\.")[0];
             }
             return new Coding(system, codingCode, null);
@@ -616,7 +584,7 @@ public class OpenFhirStringUtils {
         return switch (val) {
             case "QUANTITY" -> new HashSet<>(
                     Arrays.asList(FhirConnectConst.DV_QUANTITY, FhirConnectConst.DV_COUNT, FhirConnectConst.DV_ORDINAL,
-                                  FhirConnectConst.DV_PROPORTION));
+                            FhirConnectConst.DV_PROPORTION));
             case "DATETIME" -> Collections.singleton(FhirConnectConst.DV_DATE_TIME);
             case "TIME" -> Collections.singleton(FhirConnectConst.DV_TIME);
             case "DATE" -> Collections.singleton(FhirConnectConst.DV_DATE);
@@ -644,7 +612,7 @@ public class OpenFhirStringUtils {
      * original part, in which case the original part is kept.
      * - The method returns the new string with appropriate replacements and maintains the "/" as the separator.
      *
-     * @param original the original string to be processed (parts separated by "/")
+     * @param original    the original string to be processed (parts separated by "/")
      * @param replacement the replacement string to be used (parts separated by "/")
      * @return a new string where parts from the original are replaced with parts from the replacement
      */
@@ -666,11 +634,11 @@ public class OpenFhirStringUtils {
             } else if (i < replacementParts.length) {
                 // Use the original part
                 final String orig = originalParts[i].contains(RECURRING_SYNTAX) ? replaceLastIndexOf(originalParts[i],
-                                                                                                     RECURRING_SYNTAX,
-                                                                                                     "")
+                        RECURRING_SYNTAX,
+                        "")
                         : originalParts[i];
                 final String repl = replacementParts[i].contains(":") ? replacementParts[i].replace(":", "")
-                        .replace(String.valueOf(getLastIndex(replacementParts[i])), "") : replacementParts[i];
+                                                                        .replace(String.valueOf(getLastIndex(replacementParts[i])), "") : replacementParts[i];
                 if (!orig.startsWith(repl)) { // means it's a completely different one, need to take original
                     result.append(originalParts[i]);
                 } else {

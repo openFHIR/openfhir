@@ -3,43 +3,14 @@ package com.syntaric.openfhir.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.syntaric.openfhir.fc.schema.model.Condition;
-import com.syntaric.openfhir.mapping.helpers.MappingHelper;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 public class OpenFhirStringUtilsTest {
-
-    @Test
-    public void amendFhirPathWithConditions_targetRootSameAsMapping() {
-        final MappingHelper mappingHelper = new MappingHelper();
-        mappingHelper.setOriginalFhirPath("$resource.component");
-        mappingHelper.setFhir("");
-
-        final Condition condition = new Condition();
-        condition.setTargetRoot("$resource.component");
-        condition.setTargetAttribute("code.coding.code");
-        condition.setCriteria("123");
-        Assert.assertEquals("where((code.coding.code).toString().contains('123'))",
-                            new OpenFhirStringUtils().amendFhirPathWithConditions(mappingHelper, List.of(condition)));
-    }
-
-    @Test
-    public void amendFhirPathWithConditions_targetRootDifferentThanMapping() {
-        final MappingHelper mappingHelper = new MappingHelper();
-        mappingHelper.setOriginalFhirPath("$resource.component");
-        mappingHelper.setFhir("");
-        mappingHelper.setGeneratingResourceType("Observation");
-
-        final Condition condition = new Condition();
-        condition.setTargetRoot("$resource.category");
-        condition.setTargetAttribute("code.coding.code");
-        condition.setCriteria("123");
-        Assert.assertEquals("$resource.category.where((code.coding.code).toString().contains('123'))",
-                            new OpenFhirStringUtils().amendFhirPathWithConditions(mappingHelper, List.of(condition)));
-    }
 
     @Test
     public void joinValuesThatAreOne() {
@@ -226,7 +197,7 @@ public class OpenFhirStringUtilsTest {
                                                                           "MedicationStatement",
                                                                           null));
 
-        Assert.assertEquals("coding.where(code.toString().contains('active'))",
+        Assert.assertEquals("coding.where(('active' in code))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           new Condition()
                                                                                   .withTargetRoot("coding")
@@ -236,7 +207,7 @@ public class OpenFhirStringUtilsTest {
                                                                           "BackboneElement",
                                                                           null));
 
-        Assert.assertEquals("coding.where(code.toString().contains('active') or code.toString().contains('inactive'))",
+        Assert.assertEquals("coding.where(('active' in code) or ('inactive' in code))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           new Condition()
                                                                                   .withTargetRoot("coding")
@@ -247,7 +218,7 @@ public class OpenFhirStringUtilsTest {
                                                                           "BackboneElement",
                                                                           null));
 
-        Assert.assertEquals("coding.where(code.toString().contains('active')=false and code.toString().contains('inactive')=false)",
+        Assert.assertEquals("coding.where(('active' in code)=false and ('inactive' in code)=false)",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           new Condition()
                                                                                   .withTargetRoot("coding")
@@ -258,7 +229,7 @@ public class OpenFhirStringUtilsTest {
                                                                           "BackboneElement",
                                                                           null));
 
-        Assert.assertEquals("coding.where(code.toString().contains('active'))",
+        Assert.assertEquals("coding.where(('active' in code))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           new Condition()
                                                                                   .withTargetRoot("coding")
@@ -280,7 +251,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("code");
         condition.setCriteria("[bd]");
         condition.setOperator("one of");
-        Assert.assertEquals("Encounter.location.where(physicalType.coding.code.toString().contains('bd'))",
+        Assert.assertEquals("Encounter.location.where(('bd' in physicalType.coding.code))",
                             openFhirStringUtils.getFhirPathWithConditions("Encounter.location",
                                                                           condition,
                                                                           "Encounter",
@@ -291,7 +262,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("code");
         condition.setCriteria("refuted");
         condition.setOperator("one of");
-        Assert.assertEquals("Encounter.verificationStatus.coding.where(code.toString().contains('refuted'))",
+        Assert.assertEquals("Encounter.verificationStatus.coding.where(('refuted' in code))",
                             openFhirStringUtils.getFhirPathWithConditions("BackboneElement.verificationStatus.coding",
                                                                           condition,
                                                                           "Encounter",
@@ -302,7 +273,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("code");
         condition.setCriteria("refuted");
         condition.setOperator("one of");
-        Assert.assertEquals(".verificationStatus.coding.where(code.toString().contains('refuted'))",
+        Assert.assertEquals(".verificationStatus.coding.where(('refuted' in code))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           condition,
                                                                           "",
@@ -313,7 +284,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("code");
         condition.setCriteria("refuted");
         condition.setOperator("one of");
-        Assert.assertEquals(".verificationStatus.coding.where(code.toString().contains('refuted'))",
+        Assert.assertEquals(".verificationStatus.coding.where(('refuted' in code))",
                             openFhirStringUtils.getFhirPathWithConditions("",
                                                                           condition,
                                                                           "BackboneElement",
@@ -324,7 +295,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("system");
         condition.setCriteria("[external identifier]");
         condition.setOperator("one of");
-        Assert.assertEquals("MedicationStatement.identifier.where(system.toString().contains('external identifier'))",
+        Assert.assertEquals("MedicationStatement.identifier.where(('external identifier' in system))",
                             openFhirStringUtils.getFhirPathWithConditions("MedicationStatement.identifier",
                                                                           condition,
                                                                           "MedicationStatement",
@@ -341,7 +312,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("system");
         condition.setCriteria("[id]");
         condition.setOperator("one of");
-        Assert.assertEquals("Patient.identifier.where(system.toString().contains('id'))",
+        Assert.assertEquals("Patient.identifier.where(('id' in system))",
                             openFhirStringUtils.getFhirPathWithConditions("Patient.identifier",
                                                                           condition,
                                                                           "Patient",
@@ -353,69 +324,69 @@ public class OpenFhirStringUtilsTest {
         condition.setCriteria("[http://fhir.de/StructureDefinition/seitenlokalisation]");
         condition.setOperator("one of");
         Assert.assertEquals(
-                "Procedure.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/ops')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/seitenlokalisation')).value",
+                "Procedure.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/ops').extension.where(('http://fhir.de/StructureDefinition/seitenlokalisation' in url)).value",
                 openFhirStringUtils.getFhirPathWithConditions("Procedure.code.coding.extension.value",
                                                               condition,
                                                               "Procedure",
-                                                              "Procedure.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/ops'))"));
+                                                              "Procedure.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/ops'))"));
 
         condition = new Condition();
         condition.setTargetRoot(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code.coding");
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code.coding");
         condition.setTargetAttribute("system");
         condition.setCriteria("[http://fhir.de/CodeSystem/bfarm/icd-10-gm]");
         condition.setOperator("one of");
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).code",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code.coding.where(('http://fhir.de/CodeSystem/bfarm/icd-10-gm' in system)).code",
                 openFhirStringUtils.getFhirPathWithConditions(
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code.coding.code",
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code.coding.code",
                         condition,
                         "Condition",
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code"));
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().code"));
 
 
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
                 openFhirStringUtils.getFhirPathWithConditions(
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
                         null,
                         "Condition",
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve()"));
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve()"));
 
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related').value",
                 openFhirStringUtils.getFhirPathWithConditions("Condition.extension.value",
                                                               null,
                                                               "Condition",
-                                                              "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related'))"));
+                                                              "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related'))"));
 
         condition = new Condition();
         condition.setTargetRoot(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().extension");
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().extension");
         condition.setTargetAttribute("url");
         condition.setCriteria("[http://hl7.org/fhir/StructureDefinition/condition-assertedDate]");
         condition.setOperator("one of");
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-assertedDate')).value.as(DateTimeType)",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().extension.where(('http://hl7.org/fhir/StructureDefinition/condition-assertedDate' in url)).value.as(DateTimeType)",
                 openFhirStringUtils.getFhirPathWithConditions(
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().extension.value.as(DateTimeType)",
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().extension.value.as(DateTimeType)",
                         condition,
                         "Condition",
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve()"));
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve()"));
 
         condition = new Condition();
         condition.setTargetRoot(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.extension");
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.extension");
         condition.setTargetAttribute("url");
         condition.setCriteria("[http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen]");
         condition.setOperator("one of");
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen'))",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm').extension.where(('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen' in url))",
                 openFhirStringUtils.getFhirPathWithConditions(
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.extension",
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.extension",
                         condition,
                         "Condition",
-                        "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm'))"));
+                        "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm'))"));
 
 
         condition = new Condition();
@@ -423,7 +394,7 @@ public class OpenFhirStringUtilsTest {
         condition.setTargetAttribute("physicalType.coding.code");
         condition.setCriteria("[ro]");
         condition.setOperator("one of");
-        Assert.assertEquals("Condition.location.where(physicalType.coding.code.toString().contains('ro')).id",
+        Assert.assertEquals("Condition.location.where(('ro' in physicalType.coding.code)).id",
                             openFhirStringUtils.getFhirPathWithConditions("Condition.location.id",
                                                                           condition,
                                                                           "Condition",
@@ -435,7 +406,7 @@ public class OpenFhirStringUtilsTest {
         condition.setCriteria("[http://fhir.de/StructureDefinition/Aufnahmegrund]");
         condition.setOperator("one of");
         Assert.assertEquals(
-                "Encounter.extension.where(url.toString().contains('http://fhir.de/StructureDefinition/Aufnahmegrund'))",
+                "Encounter.extension.where(('http://fhir.de/StructureDefinition/Aufnahmegrund' in url))",
                 openFhirStringUtils.getFhirPathWithConditions("$resource.extension",
                                                               condition,
                                                               "Encounter",
@@ -447,11 +418,11 @@ public class OpenFhirStringUtilsTest {
         condition.setCriteria("[http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName]");
         condition.setOperator("one of");
         Assert.assertEquals(
-                "Patient.address.where(type.toString().contains('both')).line.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName')).value",
+                "Patient.address.where(type.toString() = 'both').line.extension.where(('http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-streetName' in url)).value",
                 openFhirStringUtils.getFhirPathWithConditions("Patient.address.line.extension.value",
                                                               condition,
                                                               "Patient",
-                                                              "Patient.address.where(type.toString().contains('both')).line"));
+                                                              "Patient.address.where(type.toString() = 'both')).line"));
 
         condition = new Condition();
         condition.setTargetRoot("$fhirRoot");
@@ -459,7 +430,7 @@ public class OpenFhirStringUtilsTest {
         condition.setCriteria("8462-4");
         condition.setOperator("one of");
         Assert.assertEquals(
-                ".where(code.coding.code.toString().contains('8462-4')).value",
+                ".where(('8462-4' in code.coding.code)).value",
                 openFhirStringUtils.getFhirPathWithConditions("value",
                                                               condition,
                                                               "Observation",
@@ -467,11 +438,11 @@ public class OpenFhirStringUtilsTest {
 
         // parent path has multiple where conditions
         Assert.assertEquals(
-                "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit')).value",
+                "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm').extension.where(url.toString() = 'http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit').value",
                 openFhirStringUtils.getFhirPathWithConditions("Condition.code.coding.extension.value",
                                                               null,
                                                               "Observation",
-                                                              "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit'))"));
+                                                              "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString() = 'http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit'))"));
 
     }
 
@@ -479,22 +450,22 @@ public class OpenFhirStringUtilsTest {
     public void testSettingParentsPath() {
         final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
         String s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace("Procedure.code.coding.extension.value",
-                                                                            "Procedure.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/ops'))");
+                                                                            "Procedure.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/ops')");
         Assert.assertEquals(
-                "Procedure.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/ops')).extension.value",
+                "Procedure.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/ops').extension.value",
                 s);
 
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace("Condition.extension.value",
-                                                                     "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related'))");
+                                                                     "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')");
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related').value",
                 s);
 
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace(
                 "Encounter.location.location.as(Reference).identifier.value",
-                "Encounter.location.where(physicalType.coding.code.toString().contains('ro'))");
+                "Encounter.location.where(physicalType.coding.code.toString() = 'ro'))");
         Assert.assertEquals(
-                "Encounter.location.where(physicalType.coding.code.toString().contains('ro')).location.as(Reference).identifier.value",
+                "Encounter.location.where(physicalType.coding.code.toString() = 'ro').location.as(Reference).identifier.value",
                 s);
 
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace("MedicationStatement.effective.as(Period)",
@@ -511,40 +482,40 @@ public class OpenFhirStringUtilsTest {
         Assert.assertEquals("MedicationStatement.dosage.text", s);
 
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve()");
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve()");
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.resolve().onset.as(Period)",
                 s);
 
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.extension",
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm'))");
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.extension",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm'))");
         Assert.assertEquals(
-                "Condition.extension.where(url.toString().contains('http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension",
+                "Condition.extension.where(url.toString() = 'http://hl7.org/fhir/StructureDefinition/condition-related')).value.as(Reference).resolve().code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm').extension",
                 s);
 
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace(
                 "Encounter.location.physicalType.coding.system",
-                "Encounter.location.where(physicalType.coding.code.toString().contains('ro')).location.as(Reference).identifier.value");
+                "Encounter.location.where(physicalType.coding.code.toString() = 'ro')).location.as(Reference).identifier.value");
         Assert.assertEquals(
-                "Encounter.location.where(physicalType.coding.code.toString().contains('ro')).physicalType.coding.system",
+                "Encounter.location.where(physicalType.coding.code.toString() = 'ro').physicalType.coding.system",
                 s);
 
         // multiple where's in parent path
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace(
                 "Condition.code.coding.extension.value",
-                "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit'))");
+                "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString() = 'http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit'))");
         Assert.assertEquals(
-                "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit')).value",
+                "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm').extension.where(url.toString() = 'http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit').value",
                 s);
 
         // multiple where's in parent path
         s = openFhirStringUtils.setParentsWherePathToTheCorrectPlace(
-                "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension",
-                "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen'))");
+                "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension",
+                "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen'))");
         Assert.assertEquals(
-                "Condition.code.coding.where(system.toString().contains('http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen'))",
+                "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen'))",
                 s);
     }
 }
