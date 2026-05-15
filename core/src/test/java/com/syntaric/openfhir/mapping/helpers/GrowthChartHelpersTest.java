@@ -289,7 +289,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertEquals("$archetype/data[at0002]/events[at0003]/state[at0008]/items[at0009]", stateOfDress.getOriginalOpenEhrPath());
         Assert.assertEquals("growth_chart/body_weight/any_event[n]", stateOfDress.getOpenEhrHierarchySplitFlatPath());
         Assert.assertEquals("component.value", stateOfDress.getFhir());
-        Assert.assertEquals("Observation.component.where(code.coding.code.toString().contains('9999-9')).value", stateOfDress.getFhirWithCondition());
+        Assert.assertEquals("Observation.component.where(('9999-9' in code.coding.code)).value", stateOfDress.getFhirWithCondition());
         Assert.assertEquals("Bundle.entry.resource.as(Reference).resolve().component.value", stateOfDress.getFullFhirPath());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/state[at0008]/items[at0009]", stateOfDress.getOpenEhr());
         Assert.assertEquals("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/state[at0008]/items[at0009]", stateOfDress.getFullOpenEhrPath());
