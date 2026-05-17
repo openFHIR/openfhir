@@ -59,6 +59,8 @@ public class BloodPressureToOpenEhrTest extends GenericTest {
                             flat.get("blood_pressure/blood_pressure/any_event:0/clinical_interpretation")
                                     .getAsString());
 
+        Assert.assertEquals("description", flat.get("blood_pressure/blood_pressure/any_event:0/comment").getAsString());
+
         // assert hardcoded paths
         Assert.assertEquals("at1000",
                             flat.get("blood_pressure/blood_pressure/a24_hour_average/position|code").getAsString());
@@ -125,9 +127,13 @@ public class BloodPressureToOpenEhrTest extends GenericTest {
                 new CodeableConcept(new Coding("remotey", "at00256", null)).setText("THIS IS LOCATION OF MEASUREMENT"));
 
         final Condition condition = new Condition();
-        condition.setCode(new CodeableConcept(new Coding("1", "2", "3")).setText("text"));
+        condition.setCode(new CodeableConcept(new Coding("1", "2", "3")).setText("text-of-condition"));
+
+        final AllergyIntolerance allergy = new AllergyIntolerance();
+        allergy.setCode(new CodeableConcept().setText("text of allergy"));
 
         return new Bundle()
+                .addEntry(new BundleEntryComponent().setResource(allergy))
                 .addEntry(new BundleEntryComponent().setResource(condition))
                 .addEntry(new BundleEntryComponent().setResource(resource));
     }
