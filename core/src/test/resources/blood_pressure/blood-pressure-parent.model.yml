@@ -21,7 +21,9 @@ mappings:
       targetRoot: "$resource.entry"
       targetAttribute: "resource"
       operator: "type"
-      criteria: "Observation"
+      criterias:
+        - "Observation"
+        - "AllergyIntolerance"
     followedBy:
       mappings:
         - name: "iterateBpObservations"

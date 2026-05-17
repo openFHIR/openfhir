@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 - ad-hoc Composition generation when a section was given a name and ended up with AQL path name/value=''
 - fhirCondition 'one of' and 'not of' now properly evaluated even if subpath matches
+- `spec.fhirConfig.structureDefinition` in model mappings now implicitly asserts that incoming IBase is of same type (going FHIR->openEHR) and skips a mapping if it's not
 
 ### Added
 - tests for IPS Medical Devices section (unverified mappings)

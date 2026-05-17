@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.syntaric.openfhir.fc.FhirConnectConst.*;
 import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
@@ -291,7 +292,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     private IBase getToResolveOn(final IBase iteratingBase,
                                  final MappingHelper helper) {
-        if(helper.getOriginalFhirPath() == null) {
+        if (helper.getOriginalFhirPath() == null) {
             return iteratingBase;
         }
         return helper.getOriginalFhirPath().startsWith(FHIR_RESOURCE_FC) ? helper.getGeneratingFhirResource() : iteratingBase;
@@ -302,9 +303,9 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
      * Returns {@code null} when a path evaluation error occurs (already logged).
      */
     private List<? extends IBase> resolveFhirResults(final MappingHelper helper, final String fhirPath,
-                                           final IBase toResolveOn,
-                                           final IFhirPath versionedFhirPath,
-                                           final Class<? extends IBase> baseClass) {
+                                                     final IBase toResolveOn,
+                                                     final IFhirPath versionedFhirPath,
+                                                     final Class<? extends IBase> baseClass) {
         final boolean isReference = helper.getOriginalOpenEhrPath() != null && helper.getOriginalOpenEhrPath().startsWith(FhirConnectConst.REFERENCE);
 
         if (isReference) {
@@ -337,9 +338,9 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     }
 
     private List<? extends IBase> evaluateFhirPath(final String fhirPath,
-                                         final IBase toResolveOn,
-                                         final IFhirPath versionedFhirPath,
-                                         final Class<? extends IBase> baseClass) {
+                                                   final IBase toResolveOn,
+                                                   final IFhirPath versionedFhirPath,
+                                                   final Class<? extends IBase> baseClass) {
         try {
             return versionedFhirPath.evaluate(toResolveOn,
                     fhirPath.replace(".as(Enumeration)", ""),
@@ -521,6 +522,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                 c.setGeneratingFhirResource(parentHelper.getGeneratingFhirResource());
             }
         });
+        final String generatingResourceType = clonedHelper.getChildren().get(clonedHelper.getChildren().size() - 1).getGeneratingResourceType();
+        final boolean isBackboneElement = "BackboneElement".equals(generatingResourceType);
+        if (!isBackboneElement && clonedHelper.isHasSlot() && !result.fhirType().equalsIgnoreCase(generatingResourceType)) {
+            return;
+        }
         mapToOpenEhr(clonedHelper.getChildren(), flatComposition, result,
                 clonedHelper.isHasSlot(), indexByHierarchyPath, baseClass, fhirVersion);
     }
@@ -636,23 +642,30 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     }
 
     private List<? extends IBase> resolveReference(final IBase toResolveOn,
-                                          final MappingHelper mappingHelper,
-                                          final IFhirPath versionedFhirPath,
-                                          final Class<? extends IBase> baseClass) {
+                                                   final MappingHelper mappingHelper,
+                                                   final IFhirPath versionedFhirPath,
+                                                   final Class<? extends IBase> baseClass) {
+        final String needsToBeResourceType = mappingHelper.getResolveResourceType();
         if ("BundleEntryComponent".equals(toResolveOn.getClass().getSimpleName())) {
             try {
                 final Object resource = toResolveOn.getClass().getMethod("getResource").invoke(toResolveOn);
-                return resource instanceof IBase ? List.of((IBase) resource) : Collections.emptyList();
+                List<IBase> iBases = resource instanceof IBase ? List.of((IBase) resource) : Collections.emptyList();
+                return iBases.stream().filter(e -> e.fhirType().equals(needsToBeResourceType))
+                        .collect(Collectors.toList());
             } catch (final Exception e) {
                 log.error("Could not get resource from BundleEntryComponent", e);
                 return Collections.emptyList();
             }
         }
         if (!(toResolveOn instanceof IBaseReference)) {
-            return versionedFhirPath.evaluate(toResolveOn, mappingHelper.getFhir(), baseClass);
+            List<? extends IBase> evaluated = versionedFhirPath.evaluate(toResolveOn, mappingHelper.getFhir(), baseClass);
+            return evaluated.stream().filter(e -> e.fhirType().equals(needsToBeResourceType))
+                    .collect(Collectors.toList());
         }
         if (FhirConnectConst.REFERENCE.equals(mappingHelper.getOriginalOpenEhrPath())) {
-            return versionedFhirPath.evaluate(toResolveOn, "resolve()", baseClass);
+            List<? extends IBase> evaluated = versionedFhirPath.evaluate(toResolveOn, "resolve()", baseClass);
+            return evaluated.stream().filter(e -> e.fhirType().equals(needsToBeResourceType))
+                    .collect(Collectors.toList());
         } else {
             return null;
         }

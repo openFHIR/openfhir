@@ -17,6 +17,7 @@ context:
     - "INSTRUCTION.service_request.v1"
     - "CLUSTER.specimen.v1"
     - "CLUSTER.organisation.v1"
+    - "CLUSTER.organisation.v1-practitioner"
     - "CLUSTER.case_identification.v0"
   extensions:
     - "KDS_laborauftrag"

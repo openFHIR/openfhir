@@ -49,7 +49,7 @@ public class BidirectionalMappingEngine {
             return false;
         }
         final IBase generatingFhirResource = mappingHelper.getGeneratingFhirResource();
-//        if (!fhirTypePasses(mappingHelper, mappingHelper.getFhirConditions(), fhirVersion)) {
+//        if (!fhirTypePasses(mappingHelper)) {
 //            log.info("[{}] FHIR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
 //                    executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
 //                    mappingHelper.getMappingName());

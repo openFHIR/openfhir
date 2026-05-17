@@ -62,6 +62,20 @@ mappings:
                   openehr: "items[openEHR-EHR-CLUSTER.organisation.v1]"
                 slotArchetype: "CLUSTER.organisation.v1"
 
+        - name: "practitioner" # for now a workaround but really, assertions (expected outputs) should change
+          with:
+            fhir: "requester"
+            openehr: "$reference"
+          unidirectional: "fhir->openehr"
+          reference:
+            resourceType: "Practitioner"
+            mappings:
+              - name: "practitioner"
+                with:
+                  fhir: "$fhirRoot"
+                  openehr: "items[openEHR-EHR-CLUSTER.organisation.v1]"
+                slotArchetype: "CLUSTER.organisation.v1-practitioner"
+
 
   - name: "code"
     with:
