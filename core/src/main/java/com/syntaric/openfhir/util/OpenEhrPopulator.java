@@ -618,9 +618,9 @@ public class OpenEhrPopulator {
 
     private boolean handleDvCodedText(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
                                       final Terminology terminology) {
-        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
-            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
-        }
+//        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
+//            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
+//        }
         if (isCodeableConcept(value)) {
             List<IBaseCoding> codings = getCodeableConceptCodings(value).stream()
                     .filter(coding -> StringUtils.isNotBlank(coding.getCode()))

@@ -62,8 +62,6 @@ public class AqlToFlatPathConverter {
 
             final List<String> possibleRmTypes = mappingHelper.getPossibleRmTypes();
             if (shouldAddManualCodedText(possibleRmTypes, isManualCodedText)) {
-                mappingHelper.setPossibleRmTypes(List.of(FhirConnectConst.CODE_PHRASE));
-                mappingHelper.setPossibleRmTypes(List.of(FhirConnectConst.DV_TEXT));
                 mappingHelper.setPossibleRmTypes(List.of(FhirConnectConst.DV_CODED_TEXT));
             }
         }

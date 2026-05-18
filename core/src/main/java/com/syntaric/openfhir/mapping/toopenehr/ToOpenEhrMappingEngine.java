@@ -519,9 +519,10 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     }
 
     private boolean isOnlyText(final List<String> possibleRmTypes) {
-        return possibleRmTypes.size() == 2
-                && possibleRmTypes.contains(DV_TEXT)
-                && possibleRmTypes.contains(DV_CODED_TEXT);
+//        return possibleRmTypes.size() == 2
+//                && possibleRmTypes.contains(DV_TEXT)
+//                && possibleRmTypes.contains(DV_CODED_TEXT);
+        return false;
     }
 
     private void recurseIntoChildren(final MappingHelper clonedHelper, final IBase result,
