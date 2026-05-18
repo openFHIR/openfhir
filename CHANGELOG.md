@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - ad-hoc Composition generation when a section was given a name and ended up with AQL path name/value=''
 - fhirCondition 'one of' and 'not of' now properly evaluated even if subpath matches
 - `spec.fhirConfig.structureDefinition` in model mappings now implicitly asserts that incoming IBase is of same type (going FHIR->openEHR) and skips a mapping if it's not
+- `coded_text_value` leaf type now added when multiple options are possible on a field
+- if a mapping only has manualMappings as children, possible-rm-types should be propagated to the children mappings
 
 ### Added
 - tests for IPS Medical Devices section (unverified mappings)
@@ -20,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 - engine now by default moves contained Resources to separate Bundle entries (can be changed by setting `openfhir.contained-to-separate-entities` to `false`)
 - fhirCondition operator 'type' can now be used also as filtering rather than just conditioning the whole mapping (unless a mapping has no children, then it's only excluding)
+- when adding coded text manual mappings and a field type is `TEXT`, it will be populated properly as coded text 
 
 ## [2.2.1] - 2026-05-04
 

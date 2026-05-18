@@ -72,6 +72,9 @@ public class Mapping implements Serializable {
     @Getter
     @Setter
     private String suffixConcat; // just a helper, not actually de/serialized
+    @Getter
+    @Setter
+    private Boolean manualCodedText; // just a helper, not actually de/serialized
 
     @JsonProperty("openehrCondition")
     private Condition openehrCondition;
@@ -103,6 +106,7 @@ public class Mapping implements Serializable {
         mapping.setPrefixConcat(prefixConcat);
         mapping.setMappingCode(mappingCode);
         mapping.setSuffixConcat(suffixConcat);
+        mapping.setManualCodedText(manualCodedText);
         return mapping;
     }
 
@@ -124,6 +128,7 @@ public class Mapping implements Serializable {
         this.setPrefixConcat(copyingFrom.getPrefixConcat());
         this.setMappingCode(copyingFrom.getMappingCode());
         this.setLink(copyingFrom.getLink());
+        this.setManualCodedText(copyingFrom.getManualCodedText());
 
         return this;
     }

@@ -71,1050 +71,6 @@
 }, {
   "modelMetadataName" : "ACTION.informed_consent.v0",
   "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.draft",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/terminology_id",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('draft' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|terminology",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "openehr",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "draft",
-    "criterias" : [ "draft" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : null,
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.draft",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('draft' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "Initial",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "draft",
-    "criterias" : [ "draft" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "527",
-    "display" : "postponed"
-  }, {
-    "system" : "openehr",
-    "code" : "528",
-    "display" : "cancelled"
-  }, {
-    "system" : "openehr",
-    "code" : "529",
-    "display" : "scheduled"
-  }, {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "532",
-    "display" : "completed"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.draft",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/code_string",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('draft' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|code",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "524",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "draft",
-    "criterias" : [ "draft" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.proposed",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/terminology_id",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('proposed' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|terminology",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "openehr",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "proposed",
-    "criterias" : [ "proposed" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : null,
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.proposed",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('proposed' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "Planned",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "proposed",
-    "criterias" : [ "proposed" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "527",
-    "display" : "postponed"
-  }, {
-    "system" : "openehr",
-    "code" : "528",
-    "display" : "cancelled"
-  }, {
-    "system" : "openehr",
-    "code" : "529",
-    "display" : "scheduled"
-  }, {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "532",
-    "display" : "completed"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.proposed",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/code_string",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('proposed' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|code",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "526",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "proposed",
-    "criterias" : [ "proposed" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.active",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/terminology_id",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('active' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|terminology",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "openehr",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "active",
-    "criterias" : [ "active" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : null,
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.active",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('active' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "Active",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "active",
-    "criterias" : [ "active" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "527",
-    "display" : "postponed"
-  }, {
-    "system" : "openehr",
-    "code" : "528",
-    "display" : "cancelled"
-  }, {
-    "system" : "openehr",
-    "code" : "529",
-    "display" : "scheduled"
-  }, {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "532",
-    "display" : "completed"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.active",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/code_string",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('active' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|code",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "245",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "active",
-    "criterias" : [ "active" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.rejected",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/terminology_id",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('rejected' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|terminology",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "openehr",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "rejected",
-    "criterias" : [ "rejected" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : null,
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.rejected",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('rejected' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "Cancelled",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "rejected",
-    "criterias" : [ "rejected" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "527",
-    "display" : "postponed"
-  }, {
-    "system" : "openehr",
-    "code" : "528",
-    "display" : "cancelled"
-  }, {
-    "system" : "openehr",
-    "code" : "529",
-    "display" : "scheduled"
-  }, {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "532",
-    "display" : "completed"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.rejected",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/code_string",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('rejected' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|code",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "528",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "rejected",
-    "criterias" : [ "rejected" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.inactive",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/terminology_id",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('inactive' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|terminology",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "openehr",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "inactive",
-    "criterias" : [ "inactive" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : null,
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.inactive",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('inactive' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "Completed",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "inactive",
-    "criterias" : [ "inactive" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "527",
-    "display" : "postponed"
-  }, {
-    "system" : "openehr",
-    "code" : "528",
-    "display" : "cancelled"
-  }, {
-    "system" : "openehr",
-    "code" : "529",
-    "display" : "scheduled"
-  }, {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "532",
-    "display" : "completed"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.inactive",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/code_string",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('inactive' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|code",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "532",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "inactive",
-    "criterias" : [ "inactive" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.entered-in-error",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/terminology_id",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('entered-in-error' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|terminology",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "openehr",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "entered-in-error",
-    "criterias" : [ "entered-in-error" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : null,
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.entered-in-error",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('entered-in-error' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "DV_CODED_TEXT" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "Cancelled",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "entered-in-error",
-    "criterias" : [ "entered-in-error" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "527",
-    "display" : "postponed"
-  }, {
-    "system" : "openehr",
-    "code" : "528",
-    "display" : "cancelled"
-  }, {
-    "system" : "openehr",
-    "code" : "529",
-    "display" : "scheduled"
-  }, {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "245",
-    "display" : "active"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "531",
-    "display" : "aborted"
-  }, {
-    "system" : "openehr",
-    "code" : "532",
-    "display" : "completed"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
-  "mappingName" : "ISMTransition.entered-in-error",
-  "generatingResourceType" : "Consent",
-  "resolveResourceType" : null,
-  "originalFhirPath" : null,
-  "originalOpenEhrPath" : "$archetype/ism_transition/current_state/defining_code/code_string",
-  "openEhrHierarchySplitFlatPath" : null,
-  "preprocessorOpenEhrCondition" : null,
-  "preprocessorFhirConditions" : null,
-  "fhir" : null,
-  "fhirWithCondition" : "Consent.where(('entered-in-error' in status))",
-  "fullFhirPath" : null,
-  "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
-  "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
-  "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
-  "flatPathPipeSuffix" : "|code",
-  "detectedType" : null,
-  "hardcodedType" : null,
-  "possibleRmTypes" : [ "CODE_PHRASE" ],
-  "programmedMapping" : null,
-  "manualOpenEhrValue" : "528",
-  "manualFhirValue" : null,
-  "unidirectional" : "fhir->openehr",
-  "fhirConditions" : [ {
-    "targetRoot" : "Consent",
-    "targetAttribute" : "status",
-    "targetAttributes" : [ "status" ],
-    "operator" : "one of",
-    "criteria" : "entered-in-error",
-    "criterias" : [ "entered-in-error" ]
-  } ],
-  "openEhrConditions" : null,
-  "enteredFromSlotArchetypeLink" : false,
-  "terminology" : null,
-  "availableCodings" : [ {
-    "system" : "openehr",
-    "code" : "526",
-    "display" : "planned"
-  } ],
-  "children" : [ ],
-  "useParentRoot" : false,
-  "hasSlot" : false,
-  "followedBy" : false
-}, {
-  "modelMetadataName" : "ACTION.informed_consent.v0",
-  "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
   "mappingName" : "ISMTransition",
   "generatingResourceType" : "Consent",
   "resolveResourceType" : null,
@@ -1188,6 +144,180 @@
     "display" : "completed"
   } ],
   "children" : [ {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.draft",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/terminology_id",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('draft' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|terminology",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "openehr",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "draft",
+      "criterias" : [ "draft" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : null,
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.draft",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('draft' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "Initial",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "draft",
+      "criterias" : [ "draft" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "527",
+      "display" : "postponed"
+    }, {
+      "system" : "openehr",
+      "code" : "528",
+      "display" : "cancelled"
+    }, {
+      "system" : "openehr",
+      "code" : "529",
+      "display" : "scheduled"
+    }, {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "532",
+      "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.draft",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/code_string",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('draft' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|code",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "524",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "draft",
+      "criterias" : [ "draft" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
     "modelMetadataName" : "ACTION.informed_consent.v0",
     "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
     "mappingName" : "ISMTransition.draft",
@@ -1268,6 +398,180 @@
       "system" : "openehr",
       "code" : "532",
       "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.proposed",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/terminology_id",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('proposed' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|terminology",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "openehr",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "proposed",
+      "criterias" : [ "proposed" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : null,
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.proposed",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('proposed' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "Planned",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "proposed",
+      "criterias" : [ "proposed" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "527",
+      "display" : "postponed"
+    }, {
+      "system" : "openehr",
+      "code" : "528",
+      "display" : "cancelled"
+    }, {
+      "system" : "openehr",
+      "code" : "529",
+      "display" : "scheduled"
+    }, {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "532",
+      "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.proposed",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/code_string",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('proposed' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|code",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "526",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "proposed",
+      "criterias" : [ "proposed" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
     } ],
     "children" : [ ],
     "useParentRoot" : false,
@@ -1365,6 +669,180 @@
     "mappingName" : "ISMTransition.active",
     "generatingResourceType" : "Consent",
     "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/terminology_id",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('active' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|terminology",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "openehr",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "active",
+      "criterias" : [ "active" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : null,
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.active",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('active' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "Active",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "active",
+      "criterias" : [ "active" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "527",
+      "display" : "postponed"
+    }, {
+      "system" : "openehr",
+      "code" : "528",
+      "display" : "cancelled"
+    }, {
+      "system" : "openehr",
+      "code" : "529",
+      "display" : "scheduled"
+    }, {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "532",
+      "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.active",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/code_string",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('active' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|code",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "245",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "active",
+      "criterias" : [ "active" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.active",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
     "originalFhirPath" : "status",
     "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
     "openEhrHierarchySplitFlatPath" : null,
@@ -1440,6 +918,180 @@
       "system" : "openehr",
       "code" : "532",
       "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.rejected",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/terminology_id",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('rejected' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|terminology",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "openehr",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "rejected",
+      "criterias" : [ "rejected" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : null,
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.rejected",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('rejected' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "Cancelled",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "rejected",
+      "criterias" : [ "rejected" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "527",
+      "display" : "postponed"
+    }, {
+      "system" : "openehr",
+      "code" : "528",
+      "display" : "cancelled"
+    }, {
+      "system" : "openehr",
+      "code" : "529",
+      "display" : "scheduled"
+    }, {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "532",
+      "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.rejected",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/code_string",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('rejected' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|code",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "528",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "rejected",
+      "criterias" : [ "rejected" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
     } ],
     "children" : [ ],
     "useParentRoot" : false,
@@ -1537,6 +1189,180 @@
     "mappingName" : "ISMTransition.inactive",
     "generatingResourceType" : "Consent",
     "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/terminology_id",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('inactive' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|terminology",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "openehr",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "inactive",
+      "criterias" : [ "inactive" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : null,
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.inactive",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('inactive' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "Completed",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "inactive",
+      "criterias" : [ "inactive" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "527",
+      "display" : "postponed"
+    }, {
+      "system" : "openehr",
+      "code" : "528",
+      "display" : "cancelled"
+    }, {
+      "system" : "openehr",
+      "code" : "529",
+      "display" : "scheduled"
+    }, {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "532",
+      "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.inactive",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/code_string",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('inactive' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|code",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "532",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "inactive",
+      "criterias" : [ "inactive" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.inactive",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
     "originalFhirPath" : "status",
     "originalOpenEhrPath" : "$archetype/ism_transition/current_state",
     "openEhrHierarchySplitFlatPath" : null,
@@ -1612,6 +1438,180 @@
       "system" : "openehr",
       "code" : "532",
       "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.entered-in-error",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/terminology_id",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('entered-in-error' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code/terminology_id",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?/terminology_id(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|terminology",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "openehr",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "entered-in-error",
+      "criterias" : [ "entered-in-error" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : null,
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.entered-in-error",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('entered-in-error' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "DV_CODED_TEXT" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "Cancelled",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "entered-in-error",
+      "criterias" : [ "entered-in-error" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "527",
+      "display" : "postponed"
+    }, {
+      "system" : "openehr",
+      "code" : "528",
+      "display" : "cancelled"
+    }, {
+      "system" : "openehr",
+      "code" : "529",
+      "display" : "scheduled"
+    }, {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "245",
+      "display" : "active"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "531",
+      "display" : "aborted"
+    }, {
+      "system" : "openehr",
+      "code" : "532",
+      "display" : "completed"
+    } ],
+    "children" : [ ],
+    "useParentRoot" : false,
+    "hasSlot" : false,
+    "followedBy" : true
+  }, {
+    "modelMetadataName" : "ACTION.informed_consent.v0",
+    "archetype" : "openEHR-EHR-ACTION.informed_consent.v0",
+    "mappingName" : "ISMTransition.entered-in-error",
+    "generatingResourceType" : "Consent",
+    "resolveResourceType" : null,
+    "originalFhirPath" : "$resource",
+    "originalOpenEhrPath" : "$openehrRoot/defining_code/code_string",
+    "openEhrHierarchySplitFlatPath" : null,
+    "preprocessorOpenEhrCondition" : null,
+    "preprocessorFhirConditions" : null,
+    "fhir" : "Consent",
+    "fhirWithCondition" : "Consent.where(('entered-in-error' in status))",
+    "fullFhirPath" : "Consent",
+    "openEhr" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrPath" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state/defining_code/code_string",
+    "fullOpenEhrFlatPath" : "studienteilnahme/einwilligungserklärung/ism_transition/current_state/defining_code",
+    "fullOpenEhrFlatPathWithMatchingRegex" : "studienteilnahme(:\\d+)?/einwilligungserklärung(:\\d+)?/ism_transition(:\\d+)?/current_state(:\\d+)?/defining_code(:\\d+)?(\\|.*)?",
+    "flatPathPipeSuffix" : "|code",
+    "detectedType" : null,
+    "hardcodedType" : null,
+    "possibleRmTypes" : [ "CODE_PHRASE" ],
+    "programmedMapping" : null,
+    "manualOpenEhrValue" : "528",
+    "manualFhirValue" : null,
+    "unidirectional" : "fhir->openehr",
+    "fhirConditions" : [ {
+      "targetRoot" : "Consent",
+      "targetAttribute" : "status",
+      "targetAttributes" : [ "status" ],
+      "operator" : "one of",
+      "criteria" : "entered-in-error",
+      "criterias" : [ "entered-in-error" ]
+    } ],
+    "openEhrConditions" : null,
+    "enteredFromSlotArchetypeLink" : false,
+    "terminology" : null,
+    "availableCodings" : [ {
+      "system" : "openehr",
+      "code" : "526",
+      "display" : "planned"
     } ],
     "children" : [ ],
     "useParentRoot" : false,

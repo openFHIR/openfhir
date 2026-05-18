@@ -416,7 +416,8 @@ public class OpenFhirStringUtils {
                                             String resource,
                                             final String parentPath) {
         originalFhirPath = originalFhirPath.replace(FhirConnectConst.FHIR_RESOURCE_FC, resource)
-                .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, resource);
+                .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, resource)
+                .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "");
         resource = resource.replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "");
         if (condition != null
                 && condition.getTargetAttribute() == null

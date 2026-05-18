@@ -1,22 +1,21 @@
 package com.syntaric.openfhir.mapping.helpers;
 
-import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_INVALID_PATH_RM_TYPES;
-import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_UNDERSCORABLES;
-import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
-
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.terminology.OfCoding;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplateNode;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_INVALID_PATH_RM_TYPES;
+import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_UNDERSCORABLES;
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
 
 /**
  * Converts an AQL-style openEHR path (as stored on a MappingHelper) into the simplified flat path
@@ -50,20 +49,56 @@ public class AqlToFlatPathConverter {
      * also setting {@link MappingHelper#setFullOpenEhrFlatPath} and
      * {@link MappingHelper#setDetectedType} as a side effect.
      */
-    public Result convert(final MappingHelper mappingHelper, final WebTemplate webTemplate) {
+    public Result convert(final MappingHelper mappingHelper, final WebTemplate webTemplate, final Boolean isManualCodedText) {
         final Result result = convert(mappingHelper.getFullOpenEhrPath(), mappingHelper.getHardcodedType(),
                 webTemplate);
         final String flatPath = result.flatPath();
         mappingHelper.setFullOpenEhrFlatPath(flatPath);
 //        mappingHelper.setDetectedType(result.rmType());
         mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
-        mappingHelper.setPossibleRmTypes(result.possibleTypes());
+
+        if(mappingHelper.getPossibleRmTypes() == null) {
+            mappingHelper.setPossibleRmTypes(result.possibleTypes());
+
+            final List<String> possibleRmTypes = mappingHelper.getPossibleRmTypes();
+            if (shouldAddManualCodedText(possibleRmTypes, isManualCodedText)) {
+                mappingHelper.setPossibleRmTypes(List.of(FhirConnectConst.CODE_PHRASE));
+                mappingHelper.setPossibleRmTypes(List.of(FhirConnectConst.DV_TEXT));
+                mappingHelper.setPossibleRmTypes(List.of(FhirConnectConst.DV_CODED_TEXT));
+            }
+        }
+
+
         mappingHelper.setAvailableCodings(result.availableCodings());
 
         final String flatPathPipeSuffix = openFhirMapperUtils.replaceAqlSuffixWithFlatSuffix(flatPath,
                 result.rmType());
         mappingHelper.setFlatPathPipeSuffix(flatPathPipeSuffix);
+
+        // if multiple rm types are here and children are really only manual mappings,
+        // then rm types need to be propagated on
+        if (mappingHelper.getChildren() != null) {
+            boolean childrenAreManuals = mappingHelper.getChildren().stream().allMatch(ch -> ch.getManualOpenEhrValue() != null);
+            if(childrenAreManuals) {
+                mappingHelper.getChildren().forEach(ch -> ch.setPossibleRmTypes(mappingHelper.getPossibleRmTypes()));
+            }
+        }
+
         return result;
+    }
+
+    private boolean shouldAddManualCodedText(final List<String> possibleRmTypes,
+                                             final Boolean isManualCodedText) {
+        if (isManualCodedText == null || !isManualCodedText) {
+            return false;
+        }
+        if (possibleRmTypes == null || possibleRmTypes.isEmpty()) {
+            return true;
+        }
+        return !possibleRmTypes.contains(FhirConnectConst.DV_CODED_TEXT)
+                && !possibleRmTypes.contains(FhirConnectConst.CODE_PHRASE)
+                && !possibleRmTypes.contains(FhirConnectConst.ELEMENT)
+                && !possibleRmTypes.contains(FhirConnectConst.OPENEHR_TYPE_CLUSTER);
     }
 
     /**
@@ -249,13 +284,13 @@ public class AqlToFlatPathConverter {
                 if ("terminology_id".equals(segment)) { // but what if it doesn't exist?!
                     flat.add(segment);
                     return new WalkSegmentsResult("CODE_PHRASE",
-                                                  Collections.singletonList("CODE_PHRASE"),
-                                                  null);
+                            Collections.singletonList("CODE_PHRASE"),
+                            null);
                 }
                 if ("coded_text_value".equals(segment)) { // but what if it doesn't exist?!
                     return new WalkSegmentsResult("DV_CODED_TEXT",
-                                                  Collections.singletonList("DV_CODED_TEXT"),
-                                                  null);
+                            Collections.singletonList("DV_CODED_TEXT"),
+                            null);
                 }
                 return new WalkSegmentsResult(rmType,
                         Collections.singletonList(rmType),

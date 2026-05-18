@@ -326,12 +326,16 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                             final IFhirPath versionedFhirPath,
                                             final Class<? extends IBase> baseClass) {
         log.debug("Taking Base itself as fhirPath is {}", fhirPath);
-        if (helper.getFhirConditions() == null) {
+        if (helper.getFhirConditions() == null || StringUtils.isEmpty(fhirPath)) {
             return Collections.singletonList(toResolveOn);
         }
         // condition present — verify it still passes before accepting the parent root
-        final Optional<? extends IBase> conditionPasses = versionedFhirPath.evaluateFirst(toResolveOn, fhirPath,
-                baseClass);
+        final Optional<? extends IBase> conditionPasses;
+        if (toResolveOn.fhirType().equalsIgnoreCase(fhirPath.split("\\.")[0])) {
+            conditionPasses = versionedFhirPath.evaluateFirst(toResolveOn, fhirPath.substring(fhirPath.indexOf(".") + 1), baseClass);
+        } else {
+            conditionPasses = versionedFhirPath.evaluateFirst(toResolveOn, fhirPath, baseClass);
+        }
         return conditionPasses.isPresent()
                 ? Collections.singletonList(toResolveOn)
                 : Collections.emptyList();
@@ -342,8 +346,17 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                                    final IFhirPath versionedFhirPath,
                                                    final Class<? extends IBase> baseClass) {
         try {
+
+            final String fhirPathToUse;
+            if (!toResolveOn.fhirType().equalsIgnoreCase("Extension")
+                    && toResolveOn.fhirType().equalsIgnoreCase(fhirPath.split("\\.")[0])) {
+                fhirPathToUse = fhirPath.substring(fhirPath.indexOf(".") + 1);
+            } else {
+                fhirPathToUse = fhirPath;
+            }
+
             return versionedFhirPath.evaluate(toResolveOn,
-                    fhirPath.replace(".as(Enumeration)", ""),
+                    fhirPathToUse.replace(".as(Enumeration)", ""),
                     // casting to enumeration only works when doing toFhir, else it complains it's not a valid fhir type
                     baseClass);
         } catch (final Exception e) {
@@ -485,12 +498,13 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                final JsonObject flatComposition, final String rmType) {
 
         long possibleRmTypes = helper.getPossibleRmTypes().size();
+        boolean isMultipleTypes = possibleRmTypes > 1 && !isOnlyText(helper.getPossibleRmTypes());
         if (StringUtils.isNotEmpty(clonedHelper.getManualOpenEhrValue())) {
             log.debug("Hardcoding value {} to path: {}", clonedHelper.getManualOpenEhrValue(), openEhrPathToPopulateTo);
             // is it ok we use string type here? could it be something else? probably it could be..
             openEhrPopulator.setOpenEhrValue(helper, openEhrPathToPopulateTo,
                     new StringType(clonedHelper.getManualOpenEhrValue()),
-                    rmType, possibleRmTypes > 1, flatComposition, helper.getTerminology(),
+                    rmType, isMultipleTypes, flatComposition, helper.getTerminology(),
                     helper.getAvailableCodings());
         } else if (StringUtils.isNotEmpty(helper.getProgrammedMapping())) {
             invokeProgrammedMapping(helper, flatComposition, result);
@@ -498,10 +512,16 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             final boolean handledEventTime = applyEventTypeMappingIfNeeded(helper, result, thePath, flatComposition);
             if (!handledEventTime) {
                 openEhrPopulator.setOpenEhrValue(helper, openEhrPathToPopulateTo, result, rmType,
-                        possibleRmTypes > 1,
+                        isMultipleTypes,
                         flatComposition, helper.getTerminology(), helper.getAvailableCodings());
             }
         }
+    }
+
+    private boolean isOnlyText(final List<String> possibleRmTypes) {
+        return possibleRmTypes.size() == 2
+                && possibleRmTypes.contains(DV_TEXT)
+                && possibleRmTypes.contains(DV_CODED_TEXT);
     }
 
     private void recurseIntoChildren(final MappingHelper clonedHelper, final IBase result,

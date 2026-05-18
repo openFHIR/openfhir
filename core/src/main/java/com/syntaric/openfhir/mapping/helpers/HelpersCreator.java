@@ -159,7 +159,7 @@ public class HelpersCreator {
 
             // Find flat paths
             if (webTemplate != null) {
-                aqlToFlatPathConverter.convert(mappingHelper, webTemplate);
+                aqlToFlatPathConverter.convert(mappingHelper, webTemplate, mapping.getManualCodedText());
                 mappingHelper.setPreprocessorOpenEhrCondition(
                         handlePreprocessorOpenEhrCondition(fhirConnectModel,
                                 webTemplate,
