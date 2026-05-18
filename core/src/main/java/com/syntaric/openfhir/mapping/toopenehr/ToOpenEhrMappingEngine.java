@@ -96,7 +96,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
         boolean somethingWasAdded = false;
         for (final MappingHelper helper : mappingHelpers) {
-            if (!shouldProcessMapping(helper, UNIDIRECTIONAL_TOOPENEHR)) {
+            if (!shouldProcessMapping(helper, UNIDIRECTIONAL_TOOPENEHR, fhirVersion)) {
                 continue;
             }
             if (helper.getFullOpenEhrFlatPath() == null) {

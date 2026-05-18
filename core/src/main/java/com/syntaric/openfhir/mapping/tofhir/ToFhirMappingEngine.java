@@ -179,7 +179,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                         relevantJsonObject);
             }
 
-            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR)) {
+            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR, fhirVersion)) {
                 continue;
             }
 

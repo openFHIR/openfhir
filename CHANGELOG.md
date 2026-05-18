@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 - engine now by default moves contained Resources to separate Bundle entries (can be changed by setting `openfhir.contained-to-separate-entities` to `false`)
-- fhirCondition operator 'type' can now be used also as filtering rather than just conditioning the whole mapping
+- fhirCondition operator 'type' can now be used also as filtering rather than just conditioning the whole mapping (unless a mapping has no children, then it's only excluding)
 
 ## [2.2.1] - 2026-05-04
 

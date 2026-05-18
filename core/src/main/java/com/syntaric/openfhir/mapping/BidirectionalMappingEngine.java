@@ -36,7 +36,8 @@ public class BidirectionalMappingEngine {
      *                         {@link FhirConnectConst#UNIDIRECTIONAL_TOOPENEHR}
      */
     protected boolean shouldProcessMapping(final MappingHelper mappingHelper,
-                                           final String mappingDirection) {
+                                           final String mappingDirection,
+                                           final Spec.Version fhirVersion) {
         final boolean toFhir = FhirConnectConst.UNIDIRECTIONAL_TOFHIR.equals(mappingDirection);
         final String executionLog = toFhir ? "ToFhirExecution" : "ToOpenEhrExecution";
         final String blockedUnidirectional = toFhir
@@ -49,12 +50,14 @@ public class BidirectionalMappingEngine {
             return false;
         }
         final IBase generatingFhirResource = mappingHelper.getGeneratingFhirResource();
-//        if (!fhirTypePasses(mappingHelper)) {
-//            log.info("[{}] FHIR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
-//                    executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
-//                    mappingHelper.getMappingName());
-//            return false;
-//        }
+        // only really exclude a mapping if there are no children, else it needs to be limiting
+        if (hasNoNonManualChildren(mappingHelper)
+                && !fhirTypePasses(mappingHelper, mappingHelper.getFhirConditions(), fhirVersion)) {
+            log.info("[{}] FHIR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
+                    executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
+                    mappingHelper.getMappingName());
+            return false;
+        }
         if (!openEhrTypePasses(mappingHelper, mappingHelper.getOpenEhrConditions())) {
             log.info("[{}] OpenEHR type '{}' does not pass conditions for mapping name {}; skipping mapping.",
                     executionLog, generatingFhirResource == null ? "NULL" : generatingFhirResource.fhirType(),
@@ -62,6 +65,13 @@ public class BidirectionalMappingEngine {
             return false;
         }
         return true;
+    }
+
+    private boolean hasNoNonManualChildren(final MappingHelper mappingHelper) {
+        if(mappingHelper.getChildren().isEmpty()) {
+            return true;
+        }
+        return mappingHelper.getChildren().stream().allMatch(c -> c.getManualOpenEhrValue() != null);
     }
 
     private boolean fhirTypePasses(final MappingHelper mappingHelper,
