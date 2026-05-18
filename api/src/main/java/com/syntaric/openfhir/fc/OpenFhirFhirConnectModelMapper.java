@@ -1,28 +1,18 @@
 
 package com.syntaric.openfhir.fc;
 
-import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_ROOT_FC;
-import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOFHIR;
-import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR;
-
-import com.syntaric.openfhir.fc.schema.model.Condition;
-import com.syntaric.openfhir.fc.schema.model.FhirConnectModel;
-import com.syntaric.openfhir.fc.schema.model.FollowedBy;
-import com.syntaric.openfhir.fc.schema.model.Manual;
-import com.syntaric.openfhir.fc.schema.model.ManualEntry;
-import com.syntaric.openfhir.fc.schema.model.Mapping;
-import com.syntaric.openfhir.fc.schema.model.OpenEhrConfig;
-import com.syntaric.openfhir.fc.schema.model.With;
+import com.syntaric.openfhir.fc.schema.model.*;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.syntaric.openfhir.fc.FhirConnectConst.*;
 
 @Data
 @Builder
@@ -116,39 +106,13 @@ public class OpenFhirFhirConnectModelMapper {
     private void expandManualMappings(final Mapping mapping, final List<Mapping> toReturn) {
         for (final Manual manual : mapping.getManual()) {
             if (manual.getOpenehr() != null) {
-                toReturn.addAll(buildOpenEhrManualMappings(mapping, manual));
+                appendOpenEhrManualMappings(mapping, manual);
             }
             if (manual.getFhir() != null) {
                 appendFhirManualMappings(mapping, manual);
             }
         }
         toReturn.add(mapping);
-    }
-
-    private List<Mapping> buildOpenEhrManualMappings(final Mapping mapping, final Manual manual) {
-        final List<Mapping> result = new ArrayList<>();
-        for (final ManualEntry openEhrManualEntry : manual.getOpenehr()) {
-            final String manualOpenehrPath = openEhrManualEntry.getPath().replace(OPENEHR_ROOT_FC, "");
-            final String openEhrSuffix = "value".equals(manualOpenehrPath) ? "" : manualOpenehrPath;
-            final String manualSuffix = StringUtils.isEmpty(openEhrSuffix) ? "" : "/" + openEhrSuffix;
-
-            final Mapping fromManual = new Mapping();
-            fromManual.setUnidirectional(UNIDIRECTIONAL_TOOPENEHR);
-            fromManual.setName(mapping.getName() + "." + manual.getName());
-            fromManual.setWith(new With()
-                    .withValue(openEhrManualEntry.getValue())
-                    .withOpenehr(mapping.getWith().getOpenehr() + manualSuffix));
-            final Condition manualCondition = manual.getFhirCondition();
-            if (manualCondition != null && manualCondition.getTargetRoot().startsWith(FhirConnectConst.FHIR_ROOT_FC)) {
-                manualCondition.setTargetRoot(manualCondition.getTargetRoot().replace(FhirConnectConst.FHIR_ROOT_FC,
-                        mapping.getWith().getFhir()));
-            }
-            fromManual.setFhirCondition(manualCondition == null
-                    ? mapping.getFhirCondition()
-                    : manualCondition.copy());
-            result.add(fromManual);
-        }
-        return result;
     }
 
     private void appendFhirManualMappings(final Mapping mapping, final Manual manual) {
@@ -165,6 +129,38 @@ public class OpenFhirFhirConnectModelMapper {
                     .withOpenehr(mapping.getWith().getOpenehr())
                     .withFhir(fhirManualEntry.getPath()));
             fromManual.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
+            followedBy.getMappings().add(fromManual);
+        }
+        mapping.setFollowedBy(followedBy);
+    }
+
+    private void appendOpenEhrManualMappings(final Mapping mapping, final Manual manual) {
+        final FollowedBy followedBy = mapping.getFollowedBy() == null ? new FollowedBy() : mapping.getFollowedBy();
+        if (followedBy.getMappings() == null) {
+            followedBy.setMappings(new ArrayList<>());
+        }
+        boolean isCodedText = manual.getOpenehr().stream().anyMatch(oe -> oe.getPath().contains("defining_code"));
+        for (final ManualEntry openEhrManualEntry : manual.getOpenehr()) {
+            final String manualOpenehrPath = openEhrManualEntry.getPath().replace(OPENEHR_ROOT_FC, "");
+            final String openEhrSuffix = "value".equals(manualOpenehrPath) ? "" : manualOpenehrPath;
+            final String manualSuffix = StringUtils.isEmpty(openEhrSuffix) ? "" : "/" + openEhrSuffix;
+
+            final Mapping fromManual = new Mapping();
+            fromManual.setManualCodedText(isCodedText);
+            fromManual.setUnidirectional(UNIDIRECTIONAL_TOOPENEHR);
+            fromManual.setName(mapping.getName() + "." + manual.getName());
+            fromManual.setWith(new With()
+                    .withValue(openEhrManualEntry.getValue())
+                    .withFhir(mapping.getWith().getFhir())
+                    .withOpenehr(OPENEHR_ROOT_FC + manualSuffix));
+            final Condition manualCondition = manual.getFhirCondition();
+            if (manualCondition != null && manualCondition.getTargetRoot().startsWith(FhirConnectConst.FHIR_ROOT_FC)) {
+                manualCondition.setTargetRoot(manualCondition.getTargetRoot().replace(FhirConnectConst.FHIR_ROOT_FC,
+                        mapping.getWith().getFhir()));
+            }
+            fromManual.setFhirCondition(manualCondition == null
+                    ? mapping.getFhirCondition()
+                    : manualCondition.copy());
             followedBy.getMappings().add(fromManual);
         }
         mapping.setFollowedBy(followedBy);
