@@ -273,6 +273,11 @@ public class OpenEhrPopulator {
                 if (addedPartyProxy) {
                     return;
                 }
+            case FhirConnectConst.DV_PARSABLE:
+                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
+                        terminology, availableCodings);
+                addToConstructingFlat(String.format("%s|formalism", openEhrPath), "text/html", constructingFlat); // todo: should detect proper type
+                return;
             case FhirConnectConst.DV_EVENT:
                 final boolean addedDvEvent = handleDateTimeEvent(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 if (addedDvEvent) {

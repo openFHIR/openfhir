@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - tests for IPS Medical Devices section (unverified mappings)
 - added a docker hub build action that builds arm64 compliant docker image
 - IPS post-processing logic, which makes sure Bundle produced is of type `document` and also adds Bundle profile and required Bundle identifier
+- support for `DV_PARSABLE` (at the moment, it always assumes |formalism of text/html)
 
 ### Changed
 - engine now by default moves contained Resources to separate Bundle entries (can be changed by setting `openfhir.contained-to-separate-entities` to `false`)

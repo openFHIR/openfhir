@@ -376,6 +376,9 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             return;
         }
         mappingHelper.getChildren().forEach(child -> {
+            if (mappingHelper.isHasSlot() && child.isFollowedBy()) {
+                child.setEnteredFromSlotArchetypeLink(false);
+            }
             child.setGeneratingFhirRoot(newRoot);
             child.setGeneratingFhirResource(mappingHelper.getGeneratingFhirResource());
         });

@@ -41,6 +41,7 @@ public class FhirConnectConst {
     public static final String ELEMENT = "ELEMENT";
     public static final String CODE_PHRASE = "CODE_PHRASE";
     public static final String DV_TEXT = "DV_TEXT";
+    public static final String DV_PARSABLE = "DV_PARSABLE";
     public static final String OPENEHR_CODE = "code";
     public static final String OPENEHR_TERMINOLOGY = "terminology";
     public static final String OPENEHR_VALUE = "value";
