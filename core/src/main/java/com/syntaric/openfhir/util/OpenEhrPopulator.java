@@ -273,6 +273,7 @@ public class OpenEhrPopulator {
                 if (addedPartyProxy) {
                     return;
                 }
+                return;
             case FhirConnectConst.DV_PARSABLE:
                 addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
                         terminology, availableCodings);
