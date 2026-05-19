@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 ## Unreleased
+
+## [2.2.2] - 2026-05-19
 ### Fixed
 - ad-hoc Composition generation when a section was given a name and ended up with AQL path name/value=''
 - fhirCondition 'one of' and 'not of' now properly evaluated even if subpath matches
