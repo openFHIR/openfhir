@@ -1,0 +1,69 @@
+<!--/* Medical Devices */-->
+<div xmlns:th="http://www.thymeleaf.org">
+    <h5>Medical Devices</h5>
+    <table class="hapiPropertyTable">
+        <thead>
+        <tr>
+            <th>Device</th>
+            <th>Status</th>
+            <th>Body Site</th>
+            <th>Timing</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="entry : ${resource.entry}" th:object="${entry.getResource()}">
+            <th:block th:if="${entry.getResource().getResourceType().name().equals('DeviceUseStatement')}">
+                <tr>
+                    <!-- Device: resolve reference and prefer deviceName, fall back to type codings -->
+                    <td>
+                        <th:block th:with="device=${entry.getResource().getDevice().getResource()}">
+                            <th:block th:if="${device != null and !device.getDeviceName().isEmpty()}">
+                                <span th:text="${device.getDeviceNameFirstRep().getName()}"></span>
+                            </th:block>
+                            <th:block th:if="${device != null and device.getDeviceName().isEmpty() and device.getType() != null}">
+                                <th:block th:if="${device.getType().getText() != null}">
+                                    <span th:text="${device.getType().getText()}"></span>
+                                </th:block>
+                                <th:block th:if="${device.getType().getText() == null}">
+                                    <th:block th:each="coding : ${device.getType().getCoding()}">
+                                        <span th:text="${coding.getDisplay()}"></span><br/>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                            <th:block th:if="${device == null and entry.getResource().getDevice() != null}">
+                                <span th:text="${entry.getResource().getDevice().getDisplay()}"></span>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Status -->
+                    <td>
+                        <span th:if="*{getStatus() != null}" th:text="*{getStatus().toCode()}"></span>
+                    </td>
+                    <!-- Body site -->
+                    <td>
+                        <th:block th:if="*{getBodySite() != null}">
+                            <span th:if="*{getBodySite().getText() != null}" th:text="*{getBodySite().getText()}"></span>
+                            <th:block th:if="*{getBodySite().getText() == null}">
+                                <th:block th:each="coding : *{getBodySite().getCoding()}">
+                                    <span th:text="${coding.getDisplay()}"></span><br/>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Timing -->
+                    <td>
+                        <span th:if="*{getTiming() != null}" th:text="*{getTiming().primitiveValue()}"></span>
+                    </td>
+                    <!-- Notes -->
+                    <td>
+                        <th:block th:each="note : *{getNote()}">
+                            <span th:text="${note.getText()}"></span><br/>
+                        </th:block>
+                    </td>
+                </tr>
+            </th:block>
+        </th:block>
+        </tbody>
+    </table>
+</div>

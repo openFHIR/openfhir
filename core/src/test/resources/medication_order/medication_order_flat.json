@@ -24,7 +24,7 @@
   "medication_order/medication_order/order:0/therapeutic_direction/dosage/dose_amount/quantity_value|unit": "mm",
   "medication_order/medication_order/order:0/therapeutic_direction/dosage/dose_unit": "Lorem ipsum",
   "medication_order/medication_order/order:0/therapeutic_direction/dosage/dose_formula/text_value": "Lorem ipsum",
-  "medication_order/medication_order/order:0/therapeutic_direction/dosage/dose_description": "Lorem ipsum",
+  "medication_order/medication_order/order:0/therapeutic_direction/dosage/dose_description": "dose description",
   "medication_order/medication_order/order:0/therapeutic_direction/dosage/administration_rate/quantity_value|unit": "l/h",
   "medication_order/medication_order/order:0/therapeutic_direction/dosage/administration_rate/quantity_value|magnitude": 21.0,
   "medication_order/medication_order/order:0/therapeutic_direction/dosage/administration_duration": "PT0S",

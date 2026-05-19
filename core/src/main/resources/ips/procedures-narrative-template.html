@@ -1,0 +1,70 @@
+<!--/* Procedures */-->
+<div xmlns:th="http://www.thymeleaf.org">
+    <h5>Procedures</h5>
+    <table class="hapiPropertyTable">
+        <thead>
+        <tr>
+            <th>Procedure</th>
+            <th>Status</th>
+            <th>Body Site</th>
+            <th>Performed</th>
+            <th>Outcome</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="entry : ${resource.entry}" th:object="${entry.getResource()}">
+            <th:block th:if="${entry.getResource().getResourceType().name().equals('Procedure')}">
+                <tr>
+                    <!-- Procedure code: prefer text, fall back to first coding display -->
+                    <td>
+                        <span th:if="*{getCode() != null and getCode().getText() != null}"
+                              th:text="*{getCode().getText()}"></span>
+                        <th:block th:if="*{getCode() != null and getCode().getText() == null}">
+                            <th:block th:each="coding : *{getCode().getCoding()}">
+                                <span th:text="${coding.getDisplay()}"></span><br/>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Status -->
+                    <td>
+                        <span th:if="*{getStatus() != null}" th:text="*{getStatus().toCode()}"></span>
+                    </td>
+                    <!-- Body site -->
+                    <td>
+                        <th:block th:each="site : *{getBodySite()}">
+                            <span th:if="${site.getText() != null}" th:text="${site.getText()}"></span>
+                            <th:block th:if="${site.getText() == null}">
+                                <th:block th:each="coding : ${site.getCoding()}">
+                                    <span th:text="${coding.getDisplay()}"></span><br/>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Performed -->
+                    <td>
+                        <span th:if="*{getPerformed() != null}" th:text="*{getPerformed().primitiveValue()}"></span>
+                    </td>
+                    <!-- Outcome: prefer text, fall back to codings -->
+                    <td>
+                        <th:block th:if="*{getOutcome() != null}">
+                            <span th:if="*{getOutcome().getText() != null}" th:text="*{getOutcome().getText()}"></span>
+                            <th:block th:if="*{getOutcome().getText() == null}">
+                                <th:block th:each="coding : *{getOutcome().getCoding()}">
+                                    <span th:text="${coding.getDisplay()}"></span><br/>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <!-- Notes -->
+                    <td>
+                        <th:block th:each="note : *{getNote()}">
+                            <span th:text="${note.getText()}"></span><br/>
+                        </th:block>
+                    </td>
+                </tr>
+            </th:block>
+        </th:block>
+        </tbody>
+    </table>
+</div>

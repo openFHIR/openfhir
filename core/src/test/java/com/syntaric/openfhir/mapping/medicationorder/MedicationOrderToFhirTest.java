@@ -91,6 +91,9 @@ public class MedicationOrderToFhirTest extends GenericTest {
 
         Assert.assertEquals("2022-02-03T04:05:06",
                             openFhirMapperUtils.dateTimeToString(medicationRequestTwo.getAuthoredOn()));
+
+        Assert.assertEquals("dose description",
+                            medicationRequestOne.getCategoryFirstRep().getCodingFirstRep().getCode());
     }
 
 }
