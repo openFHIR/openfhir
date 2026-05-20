@@ -165,3 +165,10 @@ mappings:
               fhir:
                 - path: "text"
                   value: "THIS IS LOCATION OF MEASUREMENT"
+
+
+  - name: "feederAudit"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/feeder_audit"
+    mappingCode: "feederAudit(system-of-mine)"
