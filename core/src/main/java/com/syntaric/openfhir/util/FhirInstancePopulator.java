@@ -196,6 +196,8 @@ public class FhirInstancePopulator {
             ((DateTimeType) toPopulate).setValue(data.getValue());
         } else if (toPopulate instanceof InstantType) {
             ((InstantType) toPopulate).setValue(data.getValue());
+        } else if (toPopulate instanceof DateType) {
+            ((DateType) toPopulate).setValue(data.getValue());
         } else {
             populateDateTimeCrossVersion(toPopulate, data.getValue(), data.getValueAsString());
         }
@@ -416,13 +418,23 @@ public class FhirInstancePopulator {
             if (value != null) dt.setValue(value); else dt.setValueAsString(valueAsString);
         } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.InstantType it) {
             if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
-        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateTimeType dt) {
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateType it) {
+            if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
+        }
+
+        else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateTimeType dt) {
             if (value != null) dt.setValue(value); else dt.setValueAsString(valueAsString);
         } else if (toPopulate instanceof org.hl7.fhir.r4b.model.InstantType it) {
             if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
-        } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateTimeType dt) {
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateType it) {
+            if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
+        }
+
+        else if (toPopulate instanceof org.hl7.fhir.r5.model.DateTimeType dt) {
             if (value != null) dt.setValue(value); else dt.setValueAsString(valueAsString);
         } else if (toPopulate instanceof org.hl7.fhir.r5.model.InstantType it) {
+            if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
+        }else if (toPopulate instanceof org.hl7.fhir.r5.model.DateType it) {
             if (value != null) it.setValue(value); else it.setValueAsString(valueAsString);
         }
     }

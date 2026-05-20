@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `spec.fhirConfig.structureDefinition` in model mappings now implicitly asserts that incoming IBase is of same type (going FHIR->openEHR) and skips a mapping if it's not
 - `coded_text_value` leaf type now added when multiple options are possible on a field
 - if a mapping only has manualMappings as children, possible-rm-types should be propagated to the children mappings
+- `DateType` mapping now added (when FHIR field type is https://hl7.org/fhir/R4/datatypes.html#date)
 
 ### Added
 - tests for IPS Medical Devices section (unverified mappings)
