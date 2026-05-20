@@ -10,6 +10,11 @@ spec: # schema specific to the FHIRConnect v0.0.1 engine
 context:
   profile:
     url: "MedicationRequest"
+    _bundleMetadata:
+      type: "document"
+      profile: "myprofile"
+      identifier_system: "1.2.3.4"
+      identifier_value: "123"
   template:
     id: "medication order"
   archetypes:
