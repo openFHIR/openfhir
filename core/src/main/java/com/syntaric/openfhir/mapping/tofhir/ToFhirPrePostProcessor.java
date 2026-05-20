@@ -57,34 +57,22 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
         if (bundleMetadata != null && ResourceType.Bundle.name().equals(mappedResource.fhirType())) {
             log.info("Applying _bundleMetadata");
             if ("document".equals(bundleMetadata.getType())) {
-                applyBundleMetadataDocument(mappedResource, bundleMetadata);
-            } else {
-                applyBundleMetadataType(mappedResource, bundleMetadata.getType());
+                applyBundleMetadataDocument(mappedResource);
             }
+            applyBundleMetadataType(mappedResource, bundleMetadata.getType());
+            applyBundleMetadataIdentifier(mappedResource, bundleMetadata);
             mappedResource.getMeta().addProfile(bundleMetadata.getProfile());
         }
 
         return moveContainedToSeparateEntries(mappedResource, getVersion(context));
     }
 
-    private void applyBundleMetadataDocument(final IBaseBundle mappedResource,
-                                             final BundleMetadata bundleMetadata) {
-        final String identifierSystem = bundleMetadata.getIdentifierSystem();
-        final String identifierValue = StringUtils.isEmpty(bundleMetadata.getIdentifierValue()) && StringUtils.isNotEmpty(identifierSystem) ? UUID.randomUUID().toString() : bundleMetadata.getIdentifierValue();
+    private void applyBundleMetadataDocument(final IBaseBundle mappedResource) {
         if (mappedResource instanceof Bundle r4Bundle) {
-            r4Bundle.setIdentifier(new Identifier().setSystem(identifierSystem).setValue(identifierValue));
-            r4Bundle.setType(Bundle.BundleType.DOCUMENT);
             r4Bundle.setTimestamp(new Date());
-        } else if (mappedResource instanceof org.hl7.fhir.dstu3.model.Bundle stu3Bundle) {
-            stu3Bundle.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
-            stu3Bundle.setType(org.hl7.fhir.dstu3.model.Bundle.BundleType.DOCUMENT);
         } else if (mappedResource instanceof org.hl7.fhir.r5.model.Bundle r5Bundle) {
-            r5Bundle.setIdentifier(new org.hl7.fhir.r5.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
-            r5Bundle.setType(org.hl7.fhir.r5.model.Bundle.BundleType.DOCUMENT);
             r5Bundle.setTimestamp(new Date());
         } else if (mappedResource instanceof org.hl7.fhir.r4b.model.Bundle r4bBundle) {
-            r4bBundle.setIdentifier(new org.hl7.fhir.r4b.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
-            r4bBundle.setType(org.hl7.fhir.r4b.model.Bundle.BundleType.DOCUMENT);
             r4bBundle.setTimestamp(new Date());
         }
     }
@@ -95,13 +83,28 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
             return;
         }
         if (mappedResource instanceof Bundle r4Bundle) {
-            r4Bundle.setTimestamp(new Date());
+            r4Bundle.setType(org.hl7.fhir.r4.model.Bundle.BundleType.fromCode(bundleType));
         } else if (mappedResource instanceof org.hl7.fhir.dstu3.model.Bundle stu3Bundle) {
             stu3Bundle.setType(org.hl7.fhir.dstu3.model.Bundle.BundleType.fromCode(bundleType));
         } else if (mappedResource instanceof org.hl7.fhir.r5.model.Bundle r5Bundle) {
             r5Bundle.setType(org.hl7.fhir.r5.model.Bundle.BundleType.fromCode(bundleType));
         } else if (mappedResource instanceof org.hl7.fhir.r4b.model.Bundle r4bBundle) {
             r4bBundle.setType(org.hl7.fhir.r4b.model.Bundle.BundleType.fromCode(bundleType));
+        }
+    }
+
+    private void applyBundleMetadataIdentifier(final IBaseBundle mappedResource,
+                                               final BundleMetadata bundleMetadata) {
+        final String identifierSystem = bundleMetadata.getIdentifierSystem();
+        final String identifierValue = StringUtils.isEmpty(bundleMetadata.getIdentifierValue()) && StringUtils.isNotEmpty(identifierSystem) ? UUID.randomUUID().toString() : bundleMetadata.getIdentifierValue();
+        if (mappedResource instanceof Bundle r4Bundle) {
+            r4Bundle.setIdentifier(new Identifier().setSystem(identifierSystem).setValue(identifierValue));
+        } else if (mappedResource instanceof org.hl7.fhir.dstu3.model.Bundle stu3Bundle) {
+            stu3Bundle.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
+        } else if (mappedResource instanceof org.hl7.fhir.r5.model.Bundle r5Bundle) {
+            r5Bundle.setIdentifier(new org.hl7.fhir.r5.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
+        } else if (mappedResource instanceof org.hl7.fhir.r4b.model.Bundle r4bBundle) {
+            r4bBundle.setIdentifier(new org.hl7.fhir.r4b.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
         }
     }
 
