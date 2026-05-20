@@ -107,6 +107,10 @@ public class OpenFhirEngine {
             final List<Condition> conditions = getContextConditions(
                     context.getFhirConnectContext().getContext().getProfile().getUrl(),
                     resourceType);
+            if(conditions == null) {
+                fallbackContext = context;
+                continue;
+            }
             for (Condition condition : conditions) {
                 final String fhirPathWithCondition = openFhirStringUtils.amendFhirPath(FhirConnectConst.FHIR_RESOURCE_FC,
                         Arrays.asList(condition),
