@@ -117,7 +117,7 @@ public abstract class GenericTest {
                         new MediaParser(readers),
                         new TextParser(readers),
                         new IdentifierParser(
-                                readers)
+                                readers), new ReferenceParser(readers)
                 ));
         fhirInstanceCreator = new FhirInstanceCreator(openFhirStringUtils,
                 fhirInstanceCreatorUtility);

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - IPS post-processing logic, which makes sure Bundle produced is of type `document` and also adds Bundle profile and required Bundle identifier
 - support for `DV_PARSABLE` (at the moment, it always assumes |formalism of text/html)
 - narrative generation templates for medical devices and procedures
+- `other_participations` mapping (`perfomer` from/to Reference, `function` from/to DV_TEXT) 
 
 ### Changed
 - engine now by default moves contained Resources to separate Bundle entries (can be changed by setting `openfhir.contained-to-separate-entities` to `false`)

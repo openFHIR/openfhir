@@ -18,25 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
 import org.hl7.fhir.instance.model.api.IBaseEnumeration;
-import org.hl7.fhir.r4.model.Attachment;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DateType;
-import org.hl7.fhir.r4.model.Enumeration;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.InstantType;
-import org.hl7.fhir.r4.model.IntegerType;
-import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.PrimitiveType;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Ratio;
-import org.hl7.fhir.r4.model.StringType;
-import org.hl7.fhir.r4.model.TimeType;
-import org.hl7.fhir.r4.model.Timing;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Timing.TimingRepeatComponent;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,6 +145,8 @@ public class FhirInstancePopulator {
             populateBooleanType(toPopulate, (BooleanType) data);
         } else if (data instanceof Period) {
             populatePeriodType(toPopulate, (Period) data);
+        }else if (data instanceof Reference reference) {
+            populateReference(toPopulate, reference);
         }
     }
 
@@ -360,6 +344,12 @@ public class FhirInstancePopulator {
             data.copyValues(period);
         } else {
             populatePeriodTypeCrossVersion(toPopulate, data.getStart(), data.getEnd());
+        }
+    }
+
+    private void populateReference(Object toPopulate, Reference data) {
+        if (toPopulate instanceof Reference ref) {
+            data.copyValues(ref);
         }
     }
 

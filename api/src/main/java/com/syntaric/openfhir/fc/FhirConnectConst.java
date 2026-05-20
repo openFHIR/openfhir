@@ -25,6 +25,7 @@ public class FhirConnectConst {
     public static final String EVENT_CONTEXT = "EVENT_CONTEXT";
     public static final String DV_PARTY_IDENTIFIED = "PARTY_IDENTIFIED";
     public static final String DV_PARTY_PROXY = "PARTY_PROXY";
+    public static final String DV_PARTICIPATION = "PARTICIPATION";
     public static final String DV_EVENT = "EVENT";
     public static final String POINT_EVENT = "POINT_EVENT";
     public static final String INTERVAL_EVENT = "INTERVAL_EVENT";

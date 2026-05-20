@@ -43,6 +43,9 @@ public class OpenFhirMapperUtils {
             case "|terminology_id":
             case "terminology_id/value":
                 return "|" + FhirConnectConst.OPENEHR_TERMINOLOGY;
+            case "function":
+            case "|function":
+                return "|function";
             case "value":
                 return "|" + FhirConnectConst.OPENEHR_VALUE;
         }
@@ -55,6 +58,7 @@ public class OpenFhirMapperUtils {
             return false;
         }
         final Set<String> relevantRmTypes = Set.of(FhirConnectConst.DV_CODED_TEXT,
+                                                   FhirConnectConst.DV_PARTICIPATION,
                                                    FhirConnectConst.CODE_PHRASE);
         if (detectedType == null || !relevantRmTypes.contains(detectedType)) {
             return false;
@@ -67,6 +71,7 @@ public class OpenFhirMapperUtils {
                 || path.endsWith("code_string")
                 || path.endsWith("value")
                 || path.endsWith("terminology_id")
+                || path.endsWith("function")
                 || path.endsWith("terminology_id/value")
                 || path.endsWith("defining_code/code_string");
     }
