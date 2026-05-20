@@ -103,30 +103,33 @@ public class OpenFhirEngine {
 
         final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getDefaultContext());
         for (final FhirConnectContextEntity context : allUserContexts) {
-            final Condition condition = getContextCondition(
-                    context.getFhirConnectContext().getContext().getProfile().getUrl(),
-                    resource.getResourceType().name());
             final String resourceType = resource.getResourceType().name();
-            final String fhirPathWithCondition = openFhirStringUtils.amendFhirPath(FhirConnectConst.FHIR_RESOURCE_FC,
-                    Arrays.asList(condition),
+            final List<Condition> conditions = getContextConditions(
+                    context.getFhirConnectContext().getContext().getProfile().getUrl(),
                     resourceType);
-            if (StringUtils.isEmpty(fhirPathWithCondition) || fhirPathWithCondition.equals(resourceType)) {
-                log.warn("No fhirpath defined for resource type, context relevant for all?");
-                fallbackContext = context; // assign it to the variable in case there really is no other suitable one.. in which case, this will be returned (or the last occurrence of such a context mapper 'for all'
-            } else {
-                final IFhirPath fhirPath = fhirContextRegistry.getDefaultFhirPath();
-                final Optional<Base> evaluated = fhirPath.evaluateFirst(resource, fhirPathWithCondition, Base.class);
-                // if is present and is of type boolean, it also needs to be true
-                // if is present and is not of type boolean, then the mere presence means the mapper is for this resource
-                if (evaluated.isPresent() && ((!(evaluated.get() instanceof BooleanType)
-                        || ((BooleanType) evaluated.get()).getValue()))) {
-                    // mapper matches this Resource, it can handle it
-                    log.info(
-                            "Found a relevant context ({}) for this input fhir Resource. If there are more relevant other than this one, others will be ignored as this was the first one found.",
-                            context.getId());
-                    return context;
+            for (Condition condition : conditions) {
+                final String fhirPathWithCondition = openFhirStringUtils.amendFhirPath(FhirConnectConst.FHIR_RESOURCE_FC,
+                        Arrays.asList(condition),
+                        resourceType);
+                if (StringUtils.isEmpty(fhirPathWithCondition) || fhirPathWithCondition.equals(resourceType)) {
+                    log.warn("No fhirpath defined for resource type, context relevant for all?");
+                    fallbackContext = context; // assign it to the variable in case there really is no other suitable one.. in which case, this will be returned (or the last occurrence of such a context mapper 'for all'
+                } else {
+                    final IFhirPath fhirPath = fhirContextRegistry.getDefaultFhirPath();
+                    final Optional<Base> evaluated = fhirPath.evaluateFirst(resource, fhirPathWithCondition, Base.class);
+                    // if is present and is of type boolean, it also needs to be true
+                    // if is present and is not of type boolean, then the mere presence means the mapper is for this resource
+                    if (evaluated.isPresent() && ((!(evaluated.get() instanceof BooleanType)
+                            || ((BooleanType) evaluated.get()).getValue()))) {
+                        // mapper matches this Resource, it can handle it
+                        log.info(
+                                "Found a relevant context ({}) for this input fhir Resource. If there are more relevant other than this one, others will be ignored as this was the first one found.",
+                                context.getId());
+                        return context;
+                    }
                 }
             }
+
         }
         if (fallbackContext != null) {
             log.warn("Returning a fallback context for this input fhir Resource {}", fallbackContext.getId());
@@ -134,12 +137,13 @@ public class OpenFhirEngine {
         return fallbackContext;
     }
 
-    private Condition getContextCondition(final String profileUrl, final String resourceType) {
+    private List<Condition> getContextConditions(final String profileUrl, final String resourceType) {
         if (profileUrl == null || StringUtils.isEmpty(profileUrl)) {
             return null;
         }
+        final List<Condition> toTry = new ArrayList<>();
         final Condition condition = new Condition();
-        if (resourceType.equals("Bundle")) {
+        if ("Bundle".equals(resourceType)) {
             condition.setTargetRoot("Bundle");
             condition.setTargetAttribute("entry.resource.meta.profile");
         } else {
@@ -148,7 +152,19 @@ public class OpenFhirEngine {
         }
         condition.setOperator("one of");
         condition.setCriteria(profileUrl);
-        return condition;
+        toTry.add(condition);
+
+        if ("Bundle".equals(resourceType)) {
+            // add another condition to evaluate that checks Bundle.meta.profile
+            final Condition condition2 = new Condition();
+            condition2.setTargetRoot("Bundle");
+            condition2.setTargetAttribute("meta.profile");
+            condition2.setOperator("one of");
+            condition2.setCriteria(profileUrl);
+            toTry.add(condition2);
+        }
+
+        return toTry;
     }
 
     /**
@@ -204,7 +220,7 @@ public class OpenFhirEngine {
                 incomingFhirResource);
         if (fhirConnectContext == null) {
             final String logMsg =
-                    "Couldn't find any Context mapper for the given Resource. Make sure at least one Context mapper exists where fhir.resourceType is of this type and condition within the context mapper allows for it to be applied on this specific resource.";
+                    "Couldn't find any Context mapper for the given Resource. Make sure at least one Context mapper exists where incoming Resource.meta.profile matched any one of your context mappers (context.profile.url).";
             log.error(logMsg);
             throw new IllegalArgumentException(logMsg);
         }

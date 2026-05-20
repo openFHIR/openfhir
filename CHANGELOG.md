@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Fixed
 
 - `DateType` mapping now added (when FHIR field type is https://hl7.org/fhir/R4/datatypes.html#date)
+- context mapper is now properly found also by incoming Bundle.meta.profile, if incoming Resource if of type Bundle (previously one of Bundle.entries had to have a matching profile)
 
 ### Added
 
