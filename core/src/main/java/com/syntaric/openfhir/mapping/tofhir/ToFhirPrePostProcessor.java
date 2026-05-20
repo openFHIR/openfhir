@@ -6,13 +6,16 @@ import ca.uhn.fhir.util.FhirTerser;
 import com.nedap.archie.rm.composition.Composition;
 import com.nedap.archie.rm.composition.ContentItem;
 import com.syntaric.openfhir.fc.schema.Spec;
+import com.syntaric.openfhir.fc.schema.context.BundleMetadata;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.instance.model.api.IBaseReference;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
@@ -44,12 +47,62 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
                                    final WebTemplate webTemplate) {
         stripEmptyContained(mappedResource, getVersion(context));
 
+        // deprecated, should instead be done via _bundleMetadata
         if (IPS_PROFILE.equals(context.getContext().getProfile().getUrl())) {
             // IPS
-            postProcessIps((org.hl7.fhir.r4.model.Bundle) mappedResource);
+            postProcessIps((Bundle) mappedResource);
+        }
+
+        final BundleMetadata bundleMetadata = context.getContext().getProfile().getBundleMetadata();
+        if (bundleMetadata != null && ResourceType.Bundle.name().equals(mappedResource.fhirType())) {
+            log.info("Applying _bundleMetadata");
+            if ("document".equals(bundleMetadata.getType())) {
+                applyBundleMetadataDocument(mappedResource, bundleMetadata);
+            } else {
+                applyBundleMetadataType(mappedResource, bundleMetadata.getType());
+            }
+            mappedResource.getMeta().addProfile(bundleMetadata.getProfile());
         }
 
         return moveContainedToSeparateEntries(mappedResource, getVersion(context));
+    }
+
+    private void applyBundleMetadataDocument(final IBaseBundle mappedResource,
+                                             final BundleMetadata bundleMetadata) {
+        final String identifierSystem = bundleMetadata.getIdentifierSystem();
+        final String identifierValue = StringUtils.isEmpty(bundleMetadata.getIdentifierValue()) && StringUtils.isNotEmpty(identifierSystem) ? UUID.randomUUID().toString() : bundleMetadata.getIdentifierValue();
+        if (mappedResource instanceof Bundle r4Bundle) {
+            r4Bundle.setIdentifier(new Identifier().setSystem(identifierSystem).setValue(identifierValue));
+            r4Bundle.setType(Bundle.BundleType.DOCUMENT);
+            r4Bundle.setTimestamp(new Date());
+        } else if (mappedResource instanceof org.hl7.fhir.dstu3.model.Bundle stu3Bundle) {
+            stu3Bundle.setIdentifier(new org.hl7.fhir.dstu3.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
+            stu3Bundle.setType(org.hl7.fhir.dstu3.model.Bundle.BundleType.DOCUMENT);
+        } else if (mappedResource instanceof org.hl7.fhir.r5.model.Bundle r5Bundle) {
+            r5Bundle.setIdentifier(new org.hl7.fhir.r5.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
+            r5Bundle.setType(org.hl7.fhir.r5.model.Bundle.BundleType.DOCUMENT);
+            r5Bundle.setTimestamp(new Date());
+        } else if (mappedResource instanceof org.hl7.fhir.r4b.model.Bundle r4bBundle) {
+            r4bBundle.setIdentifier(new org.hl7.fhir.r4b.model.Identifier().setSystem(identifierSystem).setValue(identifierValue));
+            r4bBundle.setType(org.hl7.fhir.r4b.model.Bundle.BundleType.DOCUMENT);
+            r4bBundle.setTimestamp(new Date());
+        }
+    }
+
+    private void applyBundleMetadataType(final IBaseBundle mappedResource,
+                                         final String bundleType) {
+        if (StringUtils.isEmpty(bundleType)) {
+            return;
+        }
+        if (mappedResource instanceof Bundle r4Bundle) {
+            r4Bundle.setTimestamp(new Date());
+        } else if (mappedResource instanceof org.hl7.fhir.dstu3.model.Bundle stu3Bundle) {
+            stu3Bundle.setType(org.hl7.fhir.dstu3.model.Bundle.BundleType.fromCode(bundleType));
+        } else if (mappedResource instanceof org.hl7.fhir.r5.model.Bundle r5Bundle) {
+            r5Bundle.setType(org.hl7.fhir.r5.model.Bundle.BundleType.fromCode(bundleType));
+        } else if (mappedResource instanceof org.hl7.fhir.r4b.model.Bundle r4bBundle) {
+            r4bBundle.setType(org.hl7.fhir.r4b.model.Bundle.BundleType.fromCode(bundleType));
+        }
     }
 
     @Override
@@ -131,8 +184,8 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
                 tgt.setIdentifier(src.getIdentifier());
             }
             default -> {
-                final org.hl7.fhir.r4.model.Bundle src = (org.hl7.fhir.r4.model.Bundle) source;
-                final org.hl7.fhir.r4.model.Bundle tgt = (org.hl7.fhir.r4.model.Bundle) target;
+                final Bundle src = (Bundle) source;
+                final Bundle tgt = (Bundle) target;
                 tgt.setMeta(src.getMeta());
                 if (src.getType() != null) {
                     tgt.setType(src.getType());
@@ -144,17 +197,17 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
         return target;
     }
 
-    private void postProcessIps(final org.hl7.fhir.r4.model.Bundle mappedResource) {
-        mappedResource.setIdentifier(new org.hl7.fhir.r4.model.Identifier().setSystem("urn:oid:2.16.840.1.113883.3.72").setValue(UUID.randomUUID().toString()));
-        mappedResource.setType(org.hl7.fhir.r4.model.Bundle.BundleType.DOCUMENT);
-        mappedResource.getMeta().setProfile(List.of(new org.hl7.fhir.r4.model.CanonicalType("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips")));
+    private void postProcessIps(final Bundle mappedResource) {
+        mappedResource.setIdentifier(new Identifier().setSystem("urn:oid:2.16.840.1.113883.3.72").setValue(UUID.randomUUID().toString()));
+        mappedResource.setType(Bundle.BundleType.DOCUMENT);
+        mappedResource.getMeta().setProfile(List.of(new CanonicalType("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips")));
         mappedResource.setTimestamp(new Date());
         org.hl7.fhir.r4.model.Composition compositionResource = (org.hl7.fhir.r4.model.Composition) mappedResource.getEntryFirstRep().getResource();
         if (compositionResource.getDate() == null) {
             compositionResource.setDate(new Date());
         }
         if (compositionResource.getAuthor().isEmpty()) {
-            compositionResource.addAuthor(new org.hl7.fhir.r4.model.Reference().setDisplay("openFHIR"));
+            compositionResource.addAuthor(new Reference().setDisplay("openFHIR"));
         }
     }
 
@@ -210,8 +263,8 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
                     .filter(r -> r != null)
                     .map(r -> (IBaseResource) r)
                     .toList();
-            default -> ((org.hl7.fhir.r4.model.Bundle) bundle).getEntry().stream()
-                    .map(org.hl7.fhir.r4.model.Bundle.BundleEntryComponent::getResource)
+            default -> ((Bundle) bundle).getEntry().stream()
+                    .map(Bundle.BundleEntryComponent::getResource)
                     .filter(r -> r != null)
                     .map(r -> (IBaseResource) r)
                     .toList();
@@ -224,8 +277,8 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
             if (resource instanceof org.hl7.fhir.dstu3.model.Base stu3Base) {
                 return stu3Base.isEmpty();
             }
-            if (resource instanceof org.hl7.fhir.r4.model.Base r4Base) {
-                final org.hl7.fhir.r4.model.Base copy = r4Base.copy();
+            if (resource instanceof Base r4Base) {
+                final Base copy = r4Base.copy();
                 copy.setIdBase(null);
                 return copy.isEmpty();
             }

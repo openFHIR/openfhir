@@ -10,7 +10,8 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "url",
-        "version"
+        "version",
+        "_bundleMetadata"
 })
 @Data
 public class ContextProfile implements Serializable {
@@ -19,4 +20,6 @@ public class ContextProfile implements Serializable {
     private String url;
     @JsonProperty("version")
     private String version;
+    @JsonProperty("_bundleMetadata")
+    private BundleMetadata bundleMetadata;
 }
