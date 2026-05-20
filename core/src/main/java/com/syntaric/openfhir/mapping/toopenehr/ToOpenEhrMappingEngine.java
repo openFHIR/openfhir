@@ -276,7 +276,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         }
 
         final boolean result;
-        if (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results)) {
+        if (helper.getProgrammedMapping() == null && (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results))) {
             result = handleMissingResults(helper, flatComposition, toResolveOn, fhirPath, versionedFhirPath, baseClass);
         } else {
             populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath, indexByHierarchyPath,
@@ -412,6 +412,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
             recurseIntoChildren(clonedHelper, result, helper, flatComposition, indexByHierarchyPath,
                     baseClass, fhirVersion);
+        }
+
+        if(results.isEmpty() && helper.getProgrammedMapping() != null) {
+            // we still want programmed mapping to happen and within there you can decide what to do
+            invokeProgrammedMapping(helper, flatComposition, null);
         }
     }
 

@@ -1,9 +1,13 @@
 package com.syntaric.openfhir.mapping.bloodpressure;
 
+import com.nedap.archie.rm.archetyped.FeederAudit;
+import com.nedap.archie.rm.archetyped.FeederAuditDetails;
 import com.nedap.archie.rm.composition.Composition;
 import com.nedap.archie.rm.composition.ContentItem;
 import com.nedap.archie.rm.datastructures.Element;
+import com.nedap.archie.rm.datavalues.DvIdentifier;
 import com.nedap.archie.rm.datavalues.DvText;
+import com.nedap.archie.rm.datavalues.encapsulated.DvParsable;
 import com.nedap.archie.rm.datavalues.quantity.DvQuantity;
 import com.nedap.archie.rm.generic.Participation;
 import com.nedap.archie.rm.generic.PartyIdentified;
@@ -45,6 +49,7 @@ public class BloodPressureBidirectionalTest extends GenericTest {
         final Composition composition = new FlatJsonUnmarshaller().unmarshal(getFlat(HELPER_LOCATION + FLAT),
                                                                              webTemplate);
 
+
         // transform it to FHIR
         final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
         BloodPressureToFhirTest.assertBloodPressureFhir(
@@ -67,6 +72,18 @@ public class BloodPressureBidirectionalTest extends GenericTest {
         Assert.assertEquals("name1", ((PartyIdentified) otherParticipations.get(1).getPerformer()).getName());
         Assert.assertEquals("assigner1", ((PartyIdentified) otherParticipations.get(1).getPerformer()).getIdentifiers().get(0).getAssigner());
         Assert.assertEquals("value1", otherParticipations.get(1).getPerformer().getExternalRef().getId().getValue());
+
+        // assert feederAudit
+        final FeederAudit compositionFeederAudit = rmComposition.getFeederAudit();
+        final FeederAudit observationFeederAudit = rmComposition.getContent().get(0).getFeederAudit();
+        Assert.assertEquals("openFHIR", compositionFeederAudit.getOriginatingSystemAudit().getSystemId());
+        Assert.assertEquals("system-of-mine", observationFeederAudit.getOriginatingSystemAudit().getSystemId());
+        final Bundle feederAuditBundle = jsonParser.parseResource(Bundle.class, ((DvParsable) compositionFeederAudit.getOriginalContent()).getValue());
+        final Observation feederAuditObservation = jsonParser.parseResource(Observation.class, ((DvParsable) observationFeederAudit.getOriginalContent()).getValue());
+        Assert.assertEquals(3, feederAuditBundle.getEntry().size());
+        Assert.assertEquals("THIS IS LOCATION OF MEASUREMENT", feederAuditObservation.getBodySite().getText());
+        Assert.assertEquals("application/fhir+json", ((DvParsable) compositionFeederAudit.getOriginalContent()).getFormalism());
+        Assert.assertEquals("application/fhir+json", ((DvParsable) observationFeederAudit.getOriginalContent()).getFormalism());
 
         final String systolicPath = "/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0004]/value";
         final String diastolicPath = "/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]/data[at0001]/events[at0006]/data[at0003]/items[at0005]/value";
