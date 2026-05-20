@@ -66,7 +66,7 @@ public class OpenEhrFlatPathDataExtractor {
         return grouped.entrySet().stream()
                 .map(entry -> {
                     DataWithIndex dataWithIndex = toDataWithIndex(entry.getKey(), entry.getValue(), flatJsonObject, possibleRmTypes,
-                            hardcodedType, mappingHelper.getFhir());
+                            hardcodedType, mappingHelper.getFhir(), mappingHelper.getOriginalOpenEhrPath());
                     if(dataWithIndex != null) {
                         mappingHelper.setDetectedType(dataWithIndex.getDetectedType());
                     }
@@ -85,10 +85,11 @@ public class OpenEhrFlatPathDataExtractor {
                                           final JsonObject flatJson,
                                           final List<String> possibleRmTypes,
                                           final String hardcodedType,
-                                          final String fhirPath) {
+                                          final String fhirPath,
+                                          final String originalOpenEhrPath) {
         final int index = openFhirStringUtils.getLastIndex(root);
         final List<String> types = StringUtils.isEmpty(hardcodedType) ? possibleRmTypes : List.of(hardcodedType);
 
-        return valueToFHIRParser.parse(keys, types, flatJson, root, index, fhirPath);
+        return valueToFHIRParser.parse(keys, types, flatJson, root, index, fhirPath, originalOpenEhrPath);
     }
 }

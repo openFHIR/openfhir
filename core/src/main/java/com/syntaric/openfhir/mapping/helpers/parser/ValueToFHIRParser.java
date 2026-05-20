@@ -1,31 +1,16 @@
 package com.syntaric.openfhir.mapping.helpers.parser;
 
 
-import static com.syntaric.openfhir.fc.FhirConnectConst.CODE_PHRASE;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_BOOL;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_CODED_TEXT;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_COUNT;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_DATE;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_DATE_TIME;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_IDENTIFIER;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_INTERVAL;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_MULTIMEDIA;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_ORDINAL;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_PROPORTION;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_QUANTITY;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_TEXT;
-import static com.syntaric.openfhir.fc.FhirConnectConst.DV_TIME;
-
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import io.jsonwebtoken.lang.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import static com.syntaric.openfhir.fc.FhirConnectConst.*;
 
 @Component
 public class ValueToFHIRParser {
@@ -36,6 +21,7 @@ public class ValueToFHIRParser {
     private final MediaParser mediaParser;
     private final TextParser textParser;
     private final IdentifierParser identifierParser;
+    private final ReferenceParser referenceParser;
 
     @Autowired
     public ValueToFHIRParser(final TemporalParser temporalParser,
@@ -43,13 +29,15 @@ public class ValueToFHIRParser {
                              final CodedParser codedParser,
                              final MediaParser mediaParser,
                              final TextParser textParser,
-                             final IdentifierParser identifierParser) {
+                             final IdentifierParser identifierParser,
+                             final ReferenceParser referenceParser) {
         this.temporalParser = temporalParser;
         this.quantityParser = quantityParser;
         this.codedParser = codedParser;
         this.mediaParser = mediaParser;
         this.textParser = textParser;
         this.identifierParser = identifierParser;
+        this.referenceParser = referenceParser;
     }
 
     public DataWithIndex parse(final List<String> joinedValues,
@@ -57,7 +45,8 @@ public class ValueToFHIRParser {
                                final JsonObject valueHolder,
                                final String path,
                                final int lastIndex,
-                               final String fhirPath) {
+                               final String fhirPath,
+                               final String originalOpenEhrPath) {
 
         if (types == null || types.isEmpty()) {
             return textParser.string(valueHolder, lastIndex, path);
@@ -96,6 +85,9 @@ public class ValueToFHIRParser {
 
                 case DV_IDENTIFIER, "IDENTIFIER" ->
                         identifierParser.identifier(joinedValues, valueHolder, lastIndex, path);
+
+                case DV_PARTICIPATION ->
+                        referenceParser.participant(joinedValues, valueHolder, lastIndex, path, originalOpenEhrPath);
 
                 default -> textParser.string(valueHolder, lastIndex, path);
             };

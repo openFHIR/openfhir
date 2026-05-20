@@ -54,7 +54,7 @@ public class AqlToFlatPathConverter {
                 webTemplate);
         final String flatPath = result.flatPath();
         mappingHelper.setFullOpenEhrFlatPath(flatPath);
-//        mappingHelper.setDetectedType(result.rmType());
+
         mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
 
         if(mappingHelper.getPossibleRmTypes() == null) {
@@ -149,7 +149,8 @@ public class AqlToFlatPathConverter {
 
         if (archetypeRoot == null) {
             // Archetype not found in this template — return as-is (invalid)
-            return new Result(firstSlash < 0 ? aqlPath : tree.getId() + "/" + String.join("/", segments), null, false,
+            final String flatPath = firstSlash < 0 ? aqlPath : tree.getId() + "/" + String.join("/", segments);
+            return new Result(fixFlatPath(flatPath), null, false,
                     null, null);
         }
 
@@ -162,12 +163,19 @@ public class AqlToFlatPathConverter {
         final WalkSegmentsResult result = walkSegments(descendants, segments, flat, forcedTypes);
 
         final String flatPath = removeStructuralSegments(tree.getId() + "/" + flat);
-
+        final String amendedFlatPath = fixFlatPath(flatPath);
         // Valid when an rmType was resolved
         final boolean valid = !result.possibleRmTypes().isEmpty();
 
-        return new Result(flatPath, valid ? result.rmType() : null, valid, result.possibleRmTypes(),
+        return new Result(amendedFlatPath, valid ? result.rmType() : null, valid, result.possibleRmTypes(),
                 result.availableCodings());
+    }
+
+    private String fixFlatPath(final String flatPath) {
+        if (flatPath != null && flatPath.contains("other_participations")) {
+            return flatPath.replace("other_participations", "_other_participation");
+        }
+        return flatPath;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -201,8 +209,9 @@ public class AqlToFlatPathConverter {
         final WalkSegmentsResult walkResult = walkSegments(descendants, segments, flat, forcedTypes);
 
         final String flatPath = removeStructuralSegments(tree.getId() + (flat.length() > 0 ? "/" + flat : ""));
+        final String amendedFlatPath = fixFlatPath(flatPath);
         final boolean valid = walkResult.possibleRmTypes() != null && !walkResult.possibleRmTypes().isEmpty();
-        return new Result(flatPath, valid ? walkResult.rmType() : null, valid, walkResult.possibleRmTypes(),
+        return new Result(amendedFlatPath, valid ? walkResult.rmType() : null, valid, walkResult.possibleRmTypes(),
                 walkResult.availableCodings());
     }
 
@@ -281,13 +290,18 @@ public class AqlToFlatPathConverter {
             if (found == null) {
                 if ("terminology_id".equals(segment)) { // but what if it doesn't exist?!
                     flat.add(segment);
-                    return new WalkSegmentsResult("CODE_PHRASE",
-                            Collections.singletonList("CODE_PHRASE"),
+                    return new WalkSegmentsResult(FhirConnectConst.CODE_PHRASE,
+                            Collections.singletonList(FhirConnectConst.CODE_PHRASE),
                             null);
                 }
                 if ("coded_text_value".equals(segment)) { // but what if it doesn't exist?!
-                    return new WalkSegmentsResult("DV_CODED_TEXT",
-                            Collections.singletonList("DV_CODED_TEXT"),
+                    return new WalkSegmentsResult(FhirConnectConst.DV_CODED_TEXT,
+                            Collections.singletonList(FhirConnectConst.DV_CODED_TEXT),
+                            null);
+                }
+                if ("function".equals(segment)) {
+                    return new WalkSegmentsResult(FhirConnectConst.DV_PARTICIPATION,
+                            Collections.singletonList(FhirConnectConst.DV_PARTICIPATION),
                             null);
                 }
                 return new WalkSegmentsResult(rmType,
