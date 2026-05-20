@@ -39,9 +39,9 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
 
     @Override
     public IBaseBundle postProcess(final IBaseBundle mappedResource,
-                              final FhirConnectContext context,
-                              final List<Composition> compositions,
-                              final WebTemplate webTemplate) {
+                                   final FhirConnectContext context,
+                                   final List<Composition> compositions,
+                                   final WebTemplate webTemplate) {
         stripEmptyContained(mappedResource, getVersion(context));
 
         if (IPS_PROFILE.equals(context.getContext().getProfile().getUrl())) {
@@ -64,7 +64,7 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
     }
 
     public IBaseBundle moveContainedToSeparateEntries(final IBaseBundle bundle, final Spec.Version fhirVersion) {
-        if(!containedToSeparateEntries()) {
+        if (!containedToSeparateEntries()) {
             return bundle;
         }
         final FhirContext ctx = fhirContextRegistry.getContext(fhirVersion);
@@ -150,10 +150,10 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
         mappedResource.getMeta().setProfile(List.of(new org.hl7.fhir.r4.model.CanonicalType("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips")));
         mappedResource.setTimestamp(new Date());
         org.hl7.fhir.r4.model.Composition compositionResource = (org.hl7.fhir.r4.model.Composition) mappedResource.getEntryFirstRep().getResource();
-        if(compositionResource.getDate() == null) {
+        if (compositionResource.getDate() == null) {
             compositionResource.setDate(new Date());
         }
-        if(compositionResource.getAuthor().isEmpty()) {
+        if (compositionResource.getAuthor().isEmpty()) {
             compositionResource.addAuthor(new org.hl7.fhir.r4.model.Reference().setDisplay("openFHIR"));
         }
     }
@@ -173,7 +173,14 @@ public class ToFhirPrePostProcessor implements ToFhirPrePostProcessorInterface {
             final List<IBaseReference> allReferences =
                     terser.getAllPopulatedChildElementsOfType(resource, IBaseReference.class);
             for (final IBaseReference reference : allReferences) {
-                final IBaseResource contained = (IBaseResource) reference.getResource();
+                final IBaseResource contained = reference.getResource();
+                final String refValue = reference.getReferenceElement().getValue();
+                if (refValue != null && (refValue.startsWith("http://") || refValue.startsWith("https://"))) {
+                    // means it doesn't necessarily have to be present in our bundle because it can/is referenced
+                    // from anther server
+                    reference.setResource(null);
+                    continue;
+                }
                 if (resourceIsEmpty(contained)) {
                     reference.setResource(null);
                     reference.setReference(null);

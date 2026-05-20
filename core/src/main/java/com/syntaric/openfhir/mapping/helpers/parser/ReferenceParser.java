@@ -48,7 +48,7 @@ public class ReferenceParser {
         }
 
         if (StringUtils.isNotEmpty(idValue)) {
-            if (idValue.startsWith("http://")) {
+            if (idValue.startsWith("http://") || idValue.startsWith("https://")) {
                 reference.setReference(idValue);
             } else {
                 reference.setIdentifier(new Identifier().setValue(idValue).setSystem(assignerValue == null ? namespaceValue : assignerValue));

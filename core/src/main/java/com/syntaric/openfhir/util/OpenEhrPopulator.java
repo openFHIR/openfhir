@@ -964,25 +964,31 @@ public class OpenEhrPopulator {
         final String participationPath = path.replace("other_participations", "_other_participation");
         if (value instanceof IBaseReference reference) {
             addToConstructingFlat(participationPath + "|name", reference.getDisplayElement().getValueAsString(), flat);
-
-            if (value instanceof Reference r4Reference) {
-                addToConstructingFlat(participationPath + "|id", r4Reference.getIdentifier().getValue(), flat);
-                addToConstructingFlat(participationPath + "|id_namespace", translate(r4Reference.getIdentifier().getSystem(), null, terminology), flat);
-                addToConstructingFlat(participationPath + "|identifiers_assigner:0", translate(r4Reference.getIdentifier().getSystem(), null, terminology), flat);
-            } else if (value instanceof org.hl7.fhir.r5.model.Reference r5Reference) {
-                addToConstructingFlat(participationPath + "|id", r5Reference.getIdentifier().getValue(), flat);
-                addToConstructingFlat(participationPath + "|id_namespace", translate(r5Reference.getIdentifier().getSystem(), null, terminology), flat);
-                addToConstructingFlat(participationPath + "|identifiers_assigner:0", translate(r5Reference.getIdentifier().getSystem(), null, terminology), flat);
-            } else if (value instanceof org.hl7.fhir.dstu3.model.Reference r3Reference) {
-                addToConstructingFlat(participationPath + "|id", r3Reference.getIdentifier().getValue(), flat);
-                addToConstructingFlat(participationPath + "|id_namespace", translate(r3Reference.getIdentifier().getSystem(), null, terminology), flat);
-                addToConstructingFlat(participationPath + "|identifiers_assigner:0", translate(r3Reference.getIdentifier().getSystem(), null, terminology), flat);
-            } else if (value instanceof org.hl7.fhir.r4b.model.Reference r4bReference) {
-                addToConstructingFlat(participationPath + "|id", r4bReference.getIdentifier().getValue(), flat);
-                addToConstructingFlat(participationPath + "|id_namespace", translate(r4bReference.getIdentifier().getSystem(), null, terminology), flat);
-                addToConstructingFlat(participationPath + "|identifiers_assigner:0", translate(r4bReference.getIdentifier().getSystem(), null, terminology), flat);
+            IIdType referenceElement = reference.getReferenceElement();
+            if(referenceElement != null && !referenceElement.isEmpty()) {
+                addToConstructingFlat(participationPath + "|id", referenceElement.getValue(), flat);
+                final String baseUrl = referenceElement.getBaseUrl() == null ? "http://hl7.org/fhir" : referenceElement.getBaseUrl();
+                addToConstructingFlat(participationPath + "|id_namespace", translate(baseUrl, null, terminology), flat);
+                addToConstructingFlat(participationPath + "|id_scheme", referenceElement.getResourceType(), flat);
+            } else {
+                if (value instanceof Reference r4Reference) {
+                    addToConstructingFlat(participationPath + "|id", r4Reference.getIdentifier().getValue(), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace", translate(r4Reference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
+                } else if (value instanceof org.hl7.fhir.r5.model.Reference r5Reference) {
+                    addToConstructingFlat(participationPath + "|id", r5Reference.getIdentifier().getValue(), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace", translate(r5Reference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
+                } else if (value instanceof org.hl7.fhir.dstu3.model.Reference r3Reference) {
+                    addToConstructingFlat(participationPath + "|id", r3Reference.getIdentifier().getValue(), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace", translate(r3Reference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
+                } else if (value instanceof org.hl7.fhir.r4b.model.Reference r4bReference) {
+                    addToConstructingFlat(participationPath + "|id", r4bReference.getIdentifier().getValue(), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace", translate(r4bReference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
+                }
             }
-
             return true;
         } else if (isCodeableConcept(value)) {
             // first text, else the rest

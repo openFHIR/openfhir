@@ -70,7 +70,6 @@ public class BloodPressureBidirectionalTest extends GenericTest {
 
         Assert.assertEquals("val1", otherParticipations.get(1).getFunction().getValue());
         Assert.assertEquals("name1", ((PartyIdentified) otherParticipations.get(1).getPerformer()).getName());
-        Assert.assertEquals("assigner1", ((PartyIdentified) otherParticipations.get(1).getPerformer()).getIdentifiers().get(0).getAssigner());
         Assert.assertEquals("value1", otherParticipations.get(1).getPerformer().getExternalRef().getId().getValue());
 
         // assert feederAudit
