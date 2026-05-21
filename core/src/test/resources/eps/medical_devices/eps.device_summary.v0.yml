@@ -1,0 +1,73 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: EVALUATION.device_summary.v0
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.device_summary.v0
+    revision: 0.0.3
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/DeviceUseStatement
+
+mappings:
+
+  - name: "status"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[at0002]"
+    manual:
+      - name: "activeStatusFhir"
+        fhir:
+          - path: "status"
+            value: "active"
+
+      - name: "activeStatusOpenEhr"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0004"
+          - path: "value"
+            value: "Current"
+
+  - name: "text"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0015]"
+
+  - name: "timingPeriod"
+    with:
+      fhir: "$resource.timing.as(Period)"
+      openehr: "$archetype/data[at0001]/items[at0022]"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "start"
+          with:
+            fhir: "start"
+            openehr: "items[at0008]"
+        - name: "end"
+          with:
+            fhir: "end"
+            openehr: "items[at0009]"
+
+  - name: "device"
+    with:
+      fhir: "$resource.device"
+      openehr: "$archetype/data[at0001]/items[at0022]/items[openEHR-EHR-CLUSTER.device.v1]"
+    reference:
+      resourceType: "Device"
+      mappings:
+        - name: "deviceDetails"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/data[at0001]/items[at0022]/items[openEHR-EHR-CLUSTER.device.v1]"
+          slotArchetype: "CLUSTER.device.v1"
+
+  - name: "bodySite"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/data[at0001]/items[at0022]/items[at0012]"

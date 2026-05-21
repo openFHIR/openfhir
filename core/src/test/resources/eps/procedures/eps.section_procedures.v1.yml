@@ -1,0 +1,112 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: SECTION.adhoc.v1_procedures
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-SECTION.adhoc.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+  - name: "entry"
+    with:
+      fhir: "entry"
+      openehr: "$reference/items[openEHR-EHR-ACTION.procedure.v1]"
+    reference:
+      resourceType: "Procedure"
+      mappings:
+        - name: "procedure"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/items[openEHR-EHR-ACTION.procedure.v1]"
+          slotArchetype: "ACTION.procedure.v1"
+
+  - name: "title"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$composition"
+    manual:
+      - name: "manualTitle"
+        fhir:
+          - path: "title"
+            value: "Procedures"
+
+  - name: "code"
+    with:
+      fhir: "code.coding"
+      openehr: "$composition"
+    manual:
+      - name: "manualSystem"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "manualCode"
+        fhir:
+          - path: "code"
+            value: "47519-4"
+      - name: "manualDisplay"
+        fhir:
+          - path: "display"
+            value: "History of Procedures Document"
+
+  # emptyReason: absence of information
+  - name: "emptyReasonAbsence"
+    with:
+      fhir: "emptyReason"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.absence.v2]"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "emptyReason.coding.code"
+      operator: "not of"
+      criteria: "nilknown"
+    slotArchetype: "EVALUATION.absence.v2"
+
+  # emptyReason: global exclusion (no known procedures)
+  - name: "emptyReasonExclusion"
+    with:
+      fhir: "emptyReason"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.exclusion_global.v1]"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "items[openEHR-EHR-EVALUATION.exclusion_global.v1]/data[at0001]/items[at0002]"
+      operator: "not empty"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "emptyReason.coding.code"
+      operator: "one of"
+      criteria: "nilknown"
+    slotArchetype: "EVALUATION.exclusion_global.v1"
+
+
+
+  - name: "narrativeToOpenEhr"
+    unidirectional: "fhir->openehr"
+    with:
+      fhir: "text"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.container.v0]/data[at0001]/items[openEHR-EHR-CLUSTER.fhir_narrative.v0]"
+    followedBy:
+      mappings:
+        - name: "div"
+          with:
+            fhir: "div"
+            openehr: "items[at0002]"
+        - name: "status"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "items[at0001]"
+          manual:
+            - name: "manualNarrativeStatus"
+              openehr:
+                - path: "$openehrRoot"
+                  value: "generated"
+
+  - name: "narrativeText"
+    with:
+      fhir: "text"
+      openehr: "$composition"
+    mappingCode: "generateNarrative(entry, procedures)"
+    unidirectional: "openehr->fhir"

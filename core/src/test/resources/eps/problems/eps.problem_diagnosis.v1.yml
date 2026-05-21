@@ -1,0 +1,231 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: EVALUATION.problem_diagnosis.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.problem_diagnosis.v1
+    revision: 1.4.1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Condition
+
+preprocessor:
+  fhirCondition:
+    targetRoot: "$resource"
+    targetAttribute: "verificationStatus.coding.code"
+    operator: "not of"
+    criteria: "entered-in-error"
+
+mappings:
+
+  - name: "problem"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/data[at0001]/items[at0002]"
+
+  - name: "bodySite"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/data[at0001]/items[at0012]"
+
+  - name: "onsetDate"
+    with:
+      fhir: "$resource.onset.as(DateTime)"
+      openehr: "$archetype/data[at0001]/items[at0077]"
+
+  - name: "endDate"
+    with:
+      fhir: "$resource.abatement.as(DateTime)"
+      openehr: "$archetype/data[at0001]/items[at0030]"
+
+  - name: "severity"
+    with:
+      fhir: "$resource.severity.coding"
+      openehr: "$archetype/data[at0001]/items[at0005]"
+    manual:
+      - name: "mild"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0047"
+          - path: "value"
+            value: "Mild"
+        fhirCondition:
+          targetRoot: "$fhirRoot"
+          targetAttribute: "code"
+          operator: "one of"
+          criteria: "mild"
+        fhir:
+          - path: "code"
+            value: "mild"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-severity"
+          - path: "display"
+            value: "Mild"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0005]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0047"
+
+      - name: "moderate"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0048"
+          - path: "value"
+            value: "Moderate"
+        fhirCondition:
+          targetRoot: "$fhirRoot"
+          targetAttribute: "code"
+          operator: "one of"
+          criteria: "moderate"
+        fhir:
+          - path: "code"
+            value: "moderate"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-severity"
+          - path: "display"
+            value: "Moderate"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0005]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0048"
+
+      - name: "severe"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0049"
+          - path: "value"
+            value: "Severe"
+        fhirCondition:
+          targetRoot: "$fhirRoot"
+          targetAttribute: "code"
+          operator: "one of"
+          criteria: "severe"
+        fhir:
+          - path: "code"
+            value: "severe"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-severity"
+          - path: "display"
+            value: "Severe"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0005]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0049"
+
+  - name: "diagnosisAssertionStatus"
+    with:
+      fhir: "$resource.verificationStatus.coding"
+      openehr: "$archetype/data[at0001]/items[at0073]"
+    manual:
+      - name: "confirmed"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0076"
+          - path: "value"
+            value: "Confirmed"
+        fhirCondition:
+          targetRoot: "$fhirRoot"
+          targetAttribute: "code"
+          operator: "one of"
+          criteria: "confirmed"
+        fhir:
+          - path: "code"
+            value: "confirmed"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+          - path: "display"
+            value: "Confirmed"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0073]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0076"
+
+      - name: "suspected"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0074"
+          - path: "value"
+            value: "Suspected"
+        fhirCondition:
+          targetRoot: "$fhirRoot"
+          targetAttribute: "code"
+          operator: "one of"
+          criteria: "unconfirmed"
+        fhir:
+          - path: "code"
+            value: "unconfirmed"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+          - path: "display"
+            value: "Unconfirmed"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0073]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0074"
+
+      - name: "probable"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0075"
+          - path: "value"
+            value: "Probable"
+        fhirCondition:
+          targetRoot: "$fhirRoot"
+          targetAttribute: "code"
+          operator: "one of"
+          criteria: "provisional"
+        fhir:
+          - path: "code"
+            value: "provisional"
+          - path: "system"
+            value: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+          - path: "display"
+            value: "Provisional"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0073]"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0075"
+
+  - name: "stage"
+    with:
+      fhir: "$resource.stage"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1, 'Stage']"
+    slotArchetype: "CLUSTER.clinical_evidence.v1-stage"
+
+  - name: "evidence"
+    with:
+      fhir: "$resource.evidence"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.clinical_evidence.v1, 'Clinical evidence']"
+    slotArchetype: "CLUSTER.clinical_evidence.v1-evidence"
+
+  - name: "problemQualifier"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]"
+    slotArchetype: "CLUSTER.problem_qualifier.v2"
+
+  - name: "note"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0069]"
