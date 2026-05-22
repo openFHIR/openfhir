@@ -1,0 +1,35 @@
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name: eps-patient-summary
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+    version: "2.0.0"
+  template:
+    id: "EPS Patient Summary"
+  archetypes:
+    - "COMPOSITION.health_summary.v1"
+    - "SECTION.adhoc.v1_allergies_and_intolerances"
+    - "SECTION.adhoc.v1_problems"
+    - "SECTION.adhoc.v1_procedures"
+    - "SECTION.adhoc.v1_medical_devices"
+    - "SECTION.adhoc.v1_medication_summary"
+    - "EVALUATION.adverse_reaction_risk.v2"
+    - "CLUSTER.adverse_reaction_event.v1"
+    - "EVALUATION.problem_diagnosis.v1"
+    - "CLUSTER.clinical_evidence.v1-evidence"
+    - "CLUSTER.clinical_evidence.v1-stage"
+    - "CLUSTER.anatomical_location.v1"
+    - "CLUSTER.problem_qualifier.v2"
+    - "ACTION.procedure.v1"
+    - "EVALUATION.device_summary.v0"
+    - "CLUSTER.device.v1"
+    - "EVALUATION.absence.v2"
+    - "EVALUATION.exclusion_global.v1"
+  start: "COMPOSITION.health_summary.v1"

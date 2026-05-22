@@ -1,0 +1,19 @@
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name: ZIB-allergyintolerance-2017
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: STU3
+
+context:
+  profile:
+    url: "http://nictiz.nl/fhir/StructureDefinition/zib-AllergyIntolerance"
+    version: "2.0.0"
+  template:
+    id: "DataHub-AllergyIntolerance-2017"
+  archetypes:
+    - "EVALUATION.adverse_reaction_risk.v2"
+    - "CLUSTER.adverse_reaction_event.v1"
+  start: "EVALUATION.adverse_reaction_risk.v2"

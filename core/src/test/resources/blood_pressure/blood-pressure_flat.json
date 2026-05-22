@@ -32,6 +32,20 @@
   "blood_pressure/blood_pressure/a24_hour_average/tilt|magnitude": 0.0,
   "blood_pressure/blood_pressure/a24_hour_average/tilt|unit": "deg",
   "blood_pressure/blood_pressure/a24_hour_average/time": "2022-02-03T04:05:06",
+
+
+  "blood_pressure/blood_pressure/_other_participation:0|function" : "val0",
+  "blood_pressure/blood_pressure/_other_participation:0|name" : "name0",
+  "blood_pressure/blood_pressure/_other_participation:0|identifiers_assigner:0" : "assigner0",
+  "blood_pressure/blood_pressure/_other_participation:0|id" : "value0",
+  "blood_pressure/blood_pressure/_other_participation:0|id_namespace" : "namespace0",
+
+  "blood_pressure/blood_pressure/_other_participation:1|function" : "val1",
+  "blood_pressure/blood_pressure/_other_participation:1|name" : "name1",
+  "blood_pressure/blood_pressure/_other_participation:1|identifiers_assigner:0" : "assigner1",
+  "blood_pressure/blood_pressure/_other_participation:1|id" : "value1",
+  "blood_pressure/blood_pressure/_other_participation:1|id_namespace" : "namespace1",
+
   "blood_pressure/blood_pressure/any_event:0/systolic|unit": "mm[Hg]",
   "blood_pressure/blood_pressure/any_event:0/systolic|magnitude": 500.0,
   "blood_pressure/blood_pressure/any_event:0/diastolic|magnitude": 501.0,

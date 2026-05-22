@@ -129,7 +129,17 @@ mappings:
         fhir:
           - path: "$fhirRoot"
             value: "John Doe"
-      
+
+
+  - name: "otherParticipationsPerformer"
+    with:
+      fhir: "$resource.focus.as(Reference)"
+      openehr: "$archetype/other_participations/performer"
+
+  - name: "otherParticipationsDataAbsentReason"
+    with:
+      fhir: "$resource.dataAbsentReason"
+      openehr: "$archetype/other_participations/function"
 
   - name: "location"
     with:
@@ -155,3 +165,10 @@ mappings:
               fhir:
                 - path: "text"
                   value: "THIS IS LOCATION OF MEASUREMENT"
+
+
+  - name: "feederAudit"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/feeder_audit"
+    mappingCode: "feederAudit(system-of-mine)"

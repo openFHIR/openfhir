@@ -6,14 +6,7 @@ import com.google.gson.JsonParser;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
-import com.syntaric.openfhir.mapping.helpers.parser.CodedParser;
-import com.syntaric.openfhir.mapping.helpers.parser.FhirValueReaders;
-import com.syntaric.openfhir.mapping.helpers.parser.IdentifierParser;
-import com.syntaric.openfhir.mapping.helpers.parser.MediaParser;
-import com.syntaric.openfhir.mapping.helpers.parser.QuantityParser;
-import com.syntaric.openfhir.mapping.helpers.parser.TemporalParser;
-import com.syntaric.openfhir.mapping.helpers.parser.TextParser;
-import com.syntaric.openfhir.mapping.helpers.parser.ValueToFHIRParser;
+import com.syntaric.openfhir.mapping.helpers.parser.*;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.terminology.NoOpTerminologyTranslator;
 import com.syntaric.openfhir.util.FhirInstanceCreator;
@@ -70,7 +63,7 @@ public class ToFhirMappingEngineTest {
                                                          new MediaParser(readers),
                                                          new TextParser(readers),
                                                          new IdentifierParser(
-                                                                 readers)
+                                                                 readers), new ReferenceParser(readers)
                                                  )),
                 openFhirStringUtils,
                 new FhirInstancePopulator(new NoOpPrePostFhirInstancePopulator(), new NoOpTerminologyTranslator()),

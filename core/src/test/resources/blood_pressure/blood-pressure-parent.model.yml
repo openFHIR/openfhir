@@ -38,3 +38,9 @@ mappings:
                   fhir: "$fhirRoot"
                   openehr: "$composition/content[openEHR-EHR-OBSERVATION.blood_pressure.v2]"
                 slotArchetype: "OBSERVATION.blood_pressure.v2"
+
+  - name: "feederAudit"
+    with:
+      fhir: "$resource.entry"
+      openehr: "$composition/feeder_audit"
+    mappingCode: "feederAudit"

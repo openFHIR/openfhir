@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.nedap.archie.rm.composition.Composition;
 import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.syntaric.openfhir.fc.FhirConnectConst;
+import com.syntaric.openfhir.fc.schema.Spec.Version;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
@@ -19,7 +20,9 @@ import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import ca.uhn.fhir.fhirpath.IFhirPath;
+import org.hl7.fhir.dstu3.hapi.fluentpath.FhirPathDstu3;
 import org.hl7.fhir.instance.model.api.IAnyResource;
+import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
@@ -201,16 +204,25 @@ public class ToOpenEhr {
                 if (aMapperFromStartingArchetype.getGeneratingResourceType().equals("Bundle")) {
                     return Collections.singletonList(toEvaluateOn);
                 }
-                return fhirPath.evaluate(toEvaluateOn,
-                                         String.format("entry.resource.ofType(%s)",
-                                                       aMapperFromStartingArchetype.getGeneratingResourceType()),
-                        IAnyResource.class);
+                if(fhirPath instanceof FhirPathDstu3) {
+                    // no ofType function
+                    return fhirPath.evaluate(toEvaluateOn,
+                                      String.format("entry.resource.where($this is %s)",
+                                                    aMapperFromStartingArchetype.getGeneratingResourceType()),
+                                             IAnyResource.class);
+                } else {
+                    return fhirPath.evaluate(toEvaluateOn,
+                                             String.format("entry.resource.ofType(%s)",
+                                                           aMapperFromStartingArchetype.getGeneratingResourceType()),
+                                             IAnyResource.class);
+                }
             } else {
                 return Collections.singletonList(toEvaluateOn);
             }
         }
         final String limitingCriteriaBasedOnCoverCondition = getLimitingCriteria(preprocessorFhirConditions,
-                                                                                 aMapperFromStartingArchetype.getGeneratingResourceType());
+                                                                                 aMapperFromStartingArchetype.getGeneratingResourceType(),
+                                                                                 fhirVersion);
 
         // apply limiting factor
         final List<IAnyResource> relevantDataPoints = fhirPath.evaluate(toEvaluateOn,
@@ -234,15 +246,17 @@ public class ToOpenEhr {
      * Creates limiting criteria based on the FhirConnect FhirConfig Condition element.
      */
     private String getLimitingCriteria(final List<Condition> preConditions,
-                                       final String mainResource) {
+                                       final String mainResource,
+                                       final Spec.Version fhirVersion) {
+        final String fhirPath = fhirVersion == Version.STU3 ? "Bundle.entry.resource.where($this is %s).where(%s)" : "Bundle.entry.resource.ofType(%s)";
         if (preConditions == null || preConditions.isEmpty()) {
-            return String.format("Bundle.entry.resource.ofType(%s)", mainResource);
+            return String.format(fhirPath, mainResource);
         }
         final String existingFhirPath = openFhirStringUtils.amendFhirPath(FhirConnectConst.FHIR_RESOURCE_FC,
                                                                           preConditions,
                                                                           mainResource);
         final String withoutResourceType = existingFhirPath.replace(mainResource + ".", "");
-        return String.format("Bundle.entry.resource.ofType(%s).where(%s)", mainResource,
+        return String.format(fhirPath, mainResource,
                              withoutResourceType);
     }
 

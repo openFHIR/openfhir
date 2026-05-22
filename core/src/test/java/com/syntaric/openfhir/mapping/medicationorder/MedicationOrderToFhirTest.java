@@ -2,7 +2,9 @@ package com.syntaric.openfhir.mapping.medicationorder;
 
 import com.nedap.archie.rm.composition.Composition;
 import com.syntaric.openfhir.mapping.GenericTest;
+
 import java.util.List;
+
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
@@ -37,9 +39,17 @@ public class MedicationOrderToFhirTest extends GenericTest {
     public void medicationOrderToFhir_containedResources() {
 
         final Composition composition = new FlatJsonUnmarshaller().unmarshal(getFlat(HELPER_LOCATION + FLAT),
-                                                                             new OPTParser(
-                                                                                     operationaltemplate).parse());
+                new OPTParser(
+                        operationaltemplate).parse());
         final Bundle createdResources = (Bundle) toFhir.compositionsToFhir(context, List.of(composition), webTemplate);
+
+        // assert _bundleMetadata
+        Assert.assertEquals("myprofile", createdResources.getMeta().getProfile().get(0).getValue());
+        Assert.assertEquals("document", createdResources.getTypeElement().getCode());
+        Assert.assertEquals("1.2.3.4", createdResources.getIdentifier().getSystem());
+        Assert.assertEquals("123", createdResources.getIdentifier().getValue());
+        Assert.assertNotNull(createdResources.getTimestamp());
+
         Assert.assertEquals(4, createdResources.getEntry().size());
         final MedicationRequest medicationRequestOne = createdResources.getEntry().stream()
                 .map(res -> (MedicationRequest) res.getResource())
@@ -48,27 +58,27 @@ public class MedicationOrderToFhirTest extends GenericTest {
                 .findFirst()
                 .orElse(null);
         Assert.assertEquals("Lorem ipsum0",
-                            ((Medication) getBundleEntry(createdResources, medicationRequestOne.getMedicationReference().getReference())).getCode()
-                                    .getText());
+                ((Medication) getBundleEntry(createdResources, medicationRequestOne.getMedicationReference().getReference())).getCode()
+                        .getText());
         Assert.assertEquals("21.0",
-                            ((Quantity) medicationRequestOne.getDosageInstructionFirstRep().getDoseAndRateFirstRep()
-                                    .getDose()).getValue().toPlainString());
+                ((Quantity) medicationRequestOne.getDosageInstructionFirstRep().getDoseAndRateFirstRep()
+                        .getDose()).getValue().toPlainString());
         Assert.assertEquals("mm",
-                            ((Quantity) medicationRequestOne.getDosageInstructionFirstRep().getDoseAndRateFirstRep()
-                                    .getDose()).getUnit());
+                ((Quantity) medicationRequestOne.getDosageInstructionFirstRep().getDoseAndRateFirstRep()
+                        .getDose()).getUnit());
         Assert.assertEquals(2, medicationRequestOne.getNote().size());
         Assert.assertTrue(medicationRequestOne.getNote().stream()
-                                  .anyMatch(note -> note.getText().equals("Additional instruction on one first")));
+                .anyMatch(note -> note.getText().equals("Additional instruction on one first")));
         Assert.assertTrue(medicationRequestOne.getNote().stream()
-                                  .anyMatch(note -> note.getText().equals("Additional instruction on one second")));
+                .anyMatch(note -> note.getText().equals("Additional instruction on one second")));
         Assert.assertNull(medicationRequestOne.getAuthoredOn());
 
         Assert.assertEquals("at0067",
-                            medicationRequestOne.getDosageInstruction().get(0).getAdditionalInstructionFirstRep()
-                                    .getCodingFirstRep().getCode());
+                medicationRequestOne.getDosageInstruction().get(0).getAdditionalInstructionFirstRep()
+                        .getCodingFirstRep().getCode());
         Assert.assertEquals("local",
-                            medicationRequestOne.getDosageInstruction().get(0).getAdditionalInstructionFirstRep()
-                                    .getCodingFirstRep().getSystem());
+                medicationRequestOne.getDosageInstruction().get(0).getAdditionalInstructionFirstRep()
+                        .getCodingFirstRep().getSystem());
 
         final MedicationRequest medicationRequestTwo = createdResources.getEntry().stream()
                 .filter(res -> res.getResource() instanceof MedicationRequest)
@@ -78,22 +88,22 @@ public class MedicationOrderToFhirTest extends GenericTest {
                 .findFirst()
                 .orElse(null);
         Assert.assertEquals("Lorem ipsum1",
-                            ((Medication) getBundleEntry(createdResources, medicationRequestTwo.getMedicationReference().getReference())).getCode()
-                                    .getText());
+                ((Medication) getBundleEntry(createdResources, medicationRequestTwo.getMedicationReference().getReference())).getCode()
+                        .getText());
         Assert.assertTrue(medicationRequestTwo.getDosageInstruction().isEmpty() || medicationRequestTwo.getDosageInstruction().get(0).isEmpty());
         Assert.assertEquals(3, medicationRequestTwo.getNote().size());
         Assert.assertTrue(medicationRequestTwo.getNote().stream()
-                                  .anyMatch(note -> note.getText().equals("Additional instruction on two first")));
+                .anyMatch(note -> note.getText().equals("Additional instruction on two first")));
         Assert.assertTrue(medicationRequestTwo.getNote().stream()
-                                  .anyMatch(note -> note.getText().equals("Additional instruction on two second")));
+                .anyMatch(note -> note.getText().equals("Additional instruction on two second")));
         Assert.assertTrue(medicationRequestTwo.getNote().stream()
-                                  .anyMatch(note -> note.getText().equals("Additional instruction on two third")));
+                .anyMatch(note -> note.getText().equals("Additional instruction on two third")));
 
         Assert.assertEquals("2022-02-03T04:05:06",
-                            openFhirMapperUtils.dateTimeToString(medicationRequestTwo.getAuthoredOn()));
+                openFhirMapperUtils.dateTimeToString(medicationRequestTwo.getAuthoredOn()));
 
         Assert.assertEquals("dose description",
-                            medicationRequestOne.getCategoryFirstRep().getCodingFirstRep().getCode());
+                medicationRequestOne.getCategoryFirstRep().getCodingFirstRep().getCode());
     }
 
 }
