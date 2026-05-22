@@ -1,0 +1,44 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: EVALUATION.exclusion_global.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.exclusion_global.v1
+    revision: 1.1.0
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/CodeableConcept
+
+mappings:
+
+  - name: "text"
+    with:
+      fhir: "text"
+      openehr: "data[at0001]/items[at0002]"
+
+  - name: "coding"
+    with:
+      fhir: "coding"
+      openehr: "$archetype"
+    followedBy:
+      mappings:
+        - name: "display"
+          with:
+            fhir: "display"
+            openehr: "$archetype/data[at0001]/items[at0002]"
+        - name: "manualCoding"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype"
+          manual:
+            - name: "system"
+              fhir:
+                - path: "system"
+                  value: "http://terminology.hl7.org/CodeSystem/list-empty-reason"
+            - name: "code"
+              fhir:
+                - path: "code"
+                  value: "nilknown"

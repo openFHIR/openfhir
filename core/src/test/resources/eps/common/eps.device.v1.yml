@@ -1,0 +1,80 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: CLUSTER.device.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-CLUSTER.device.v1
+    revision: 1.1.0
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Device
+
+mappings:
+
+  - name: "name"
+    with:
+      fhir: "$resource.deviceName.name"
+      openehr: "$archetype/items[at0001]"
+
+  - name: "type"
+    with:
+      fhir: "$resource.type"
+      openehr: "$archetype/items[at0003]"
+
+  - name: "manufacturer"
+    with:
+      fhir: "$resource.manufacturer"
+      openehr: "$archetype/items[at0004]"
+
+  - name: "manufactureDate"
+    with:
+      fhir: "$resource.manufactureDate"
+      openehr: "$archetype/items[at0005]"
+
+  - name: "expiryDate"
+    with:
+      fhir: "$resource.expirationDate"
+      openehr: "$archetype/items[at0007]"
+
+  - name: "lotNumber"
+    with:
+      fhir: "$resource.lotNumber"
+      openehr: "$archetype/items[at0006]"
+
+  - name: "serialNumber"
+    with:
+      fhir: "$resource.serialNumber"
+      openehr: "$archetype/items[at0020]"
+
+  - name: "modelNumber"
+    with:
+      fhir: "$resource.modelNumber"
+      openehr: "$archetype/items[at0023]"
+
+  - name: "version"
+    with:
+      fhir: "$resource.version.value"
+      openehr: "$archetype/items[at0025]"
+
+  - name: "note"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/items[at0008]"
+
+  - name: "identifier"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$archetype/items[at0024, 'Other identifier']"
+
+  - name: "distinctIdentifier"
+    with:
+      fhir: "$resource.distinctIdentifier"
+      openehr: "$archetype/items[at0024, 'Distinct identifier']"
+
+  - name: "udiCarrier"
+    with:
+      fhir: "$resource.udiCarrier.deviceIdentifier"
+      openehr: "$archetype/items[at0021]"

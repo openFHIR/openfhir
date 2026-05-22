@@ -1,0 +1,252 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: ACTION.procedure.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-ACTION.procedure.v1
+    revision: 1.4.7
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Procedure
+
+mappings:
+
+  - name: "ISMTransitionFhirToOpenEhr"
+    unidirectional: "fhir->openehr"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/ism_transition/careflow_step"
+      type: NONE
+    manual:
+      - name: "preparation"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0004"
+          - path: "value"
+            value: "Procedure planned"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "status"
+          operator: "one of"
+          criteria: "preparation"
+
+      - name: "on-hold"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0038"
+          - path: "value"
+            value: "Procedure postponed"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "status"
+          operator: "one of"
+          criteria: "on-hold"
+
+      - name: "not-done"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0039"
+          - path: "value"
+            value: "Procedure cancelled"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "status"
+          operator: "one of"
+          criteria: "not-done"
+
+      - name: "in-progress"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0068"
+          - path: "value"
+            value: "Procedure commenced"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "status"
+          operator: "one of"
+          criteria: "in-progress"
+
+      - name: "stopped"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0041"
+          - path: "value"
+            value: "Procedure aborted"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "status"
+          operator: "one of"
+          criteria: "stopped"
+
+      - name: "completed"
+        openehr:
+          - path: "defining_code/terminology_id"
+            value: "local"
+          - path: "defining_code/code_string"
+            value: "at0043"
+          - path: "value"
+            value: "Procedure completed"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "status"
+          operator: "one of"
+          criteria: "completed"
+
+  - name: "ISMTransitionOpenEhrToFhir"
+    unidirectional: "openEHR->fhir"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/ism_transition/careflow_step"
+      type: NONE
+    manual:
+      - name: "plannedToPreparation"
+        fhir:
+          - path: "status"
+            value: "preparation"
+        openehrCondition:
+          targetRoot: "$openehrRoot"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0004"
+
+      - name: "postponedToOnHold"
+        fhir:
+          - path: "status"
+            value: "on-hold"
+        openehrCondition:
+          targetRoot: "$openehrRoot"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0038"
+
+      - name: "cancelledToNotDone"
+        fhir:
+          - path: "status"
+            value: "not-done"
+        openehrCondition:
+          targetRoot: "$openehrRoot"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0039"
+
+      - name: "commencedToInProgress"
+        fhir:
+          - path: "status"
+            value: "in-progress"
+        openehrCondition:
+          targetRoot: "$openehrRoot"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0068"
+
+      - name: "abortedToStopped"
+        fhir:
+          - path: "status"
+            value: "stopped"
+        openehrCondition:
+          targetRoot: "$openehrRoot"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0041"
+
+      - name: "completedToCompleted"
+        fhir:
+          - path: "status"
+            value: "completed"
+        openehrCondition:
+          targetRoot: "$openehrRoot"
+          targetAttribute: "defining_code/code_string"
+          operator: "one of"
+          criteria: "at0043"
+
+
+  - name: "performedDateTime"
+    with:
+      fhir: "$resource.performed.as(DateTime)"
+      openehr: "$archetype/description[at0001]/items[at0060]"
+
+  - name: "code"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/description[at0001]/items[at0002]"
+
+  - name: "reason"
+    with:
+      fhir: "$resource.reasonCode"
+      openehr: "$archetype/description[at0001]/items[at0070]"
+
+  - name: "category"
+    with:
+      fhir: "$resource.category"
+      openehr: "$archetype/description[at0001]/items[at0067]"
+
+  - name: "statusReason"
+    with:
+      fhir: "$resource.statusReason"
+      openehr: "$archetype/description[at0001]/items[at0014]"
+
+  - name: "bodySite"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/description[at0001]/items[at0063]"
+
+  - name: "usedDevice"
+    with:
+      fhir: "$resource.usedReference"
+      openehr: "$reference"
+    reference:
+      resourceType: "Device"
+      mappings:
+        - name: "usedDevice"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/description[at0001]/items[openEHR-EHR-CLUSTER.device.v1, 'Used device']"
+          slotArchetype: "CLUSTER.device.v1"
+
+  - name: "usedCode"
+    with:
+      fhir: "$resource.usedCode"
+      openehr: "$archetype/description[at0001]/items[openEHR-EHR-CLUSTER.device.v1, 'Used device']/items[at0003]"
+
+  - name: "focalDevice"
+    with:
+      fhir: "$resource.focalDevice.manipulated"
+      openehr: "$reference"
+    reference:
+      resourceType: "Device"
+      mappings:
+        - name: "focalDevice"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/description[at0001]/items[openEHR-EHR-CLUSTER.device.v1, 'Focal device']"
+          slotArchetype: "CLUSTER.device.v1"
+
+
+  - name: "outcome"
+    with:
+      fhir: "$resource.outcome"
+      openehr: "$archetype/description[at0001]/items[at0048]"
+
+  - name: "complication"
+    with:
+      fhir: "$resource.complication"
+      openehr: "$archetype/description[at0001]/items[at0006]"
+
+
+  - name: "note"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/description[at0001]/items[at0005]"

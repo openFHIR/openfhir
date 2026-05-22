@@ -1,6 +1,7 @@
 services:
   openfhir:
-    build: .
+    image: openfhir/openfhir:latest
+#    build: .
     container_name: openfhir
     ports:
       - "8080:8080"

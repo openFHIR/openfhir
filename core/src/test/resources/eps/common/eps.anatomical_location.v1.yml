@@ -1,0 +1,130 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: CLUSTER.anatomical_location.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-CLUSTER.anatomical_location.v1
+    revision: 1.3.1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/CodeableConcept
+
+mappings:
+
+  - name: "location"
+    with:
+      fhir: "coding"
+      openehr: "$archetype/items[at0001]"
+
+  - name: "locationQualifier"
+    with:
+      fhir: "text"
+      openehr: "$archetype/items[at0065]"
+
+  - name: "laterality"
+    with:
+      fhir: "extension"
+      openehr: "$archetype/items[at0002]"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "lateralityUrl"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/items[at0002]"
+          manual:
+            - name: "url"
+              fhir:
+                - path: "url"
+                  value: "http://hl7.org/fhir/StructureDefinition/bodySite-laterality"
+        - name: "lateralityValue"
+          with:
+            fhir: "valueCodeableConcept.coding"
+            openehr: "$archetype/items[at0002]"
+            type: "NONE"
+          manual:
+            - name: "left"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0003"
+                - path: "value"
+                  value: "Left"
+              fhirCondition:
+                targetRoot: "valueCodeableConcept.coding"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "7771000"
+              fhir:
+                - path: "code"
+                  value: "7771000"
+                - path: "system"
+                  value: "http://snomed.info/sct"
+                - path: "display"
+                  value: "Left"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0002]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0003"
+
+            - name: "right"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0004"
+                - path: "value"
+                  value: "Right"
+              fhirCondition:
+                targetRoot: "valueCodeableConcept.coding"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "24028007"
+              fhir:
+                - path: "code"
+                  value: "24028007"
+                - path: "system"
+                  value: "http://snomed.info/sct"
+                - path: "display"
+                  value: "Right"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0002]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0004"
+
+            - name: "leftAndRight"
+              openehr:
+                - path: "defining_code/terminology_id"
+                  value: "local"
+                - path: "defining_code/code_string"
+                  value: "at0083"
+                - path: "value"
+                  value: "Left and right"
+              fhirCondition:
+                targetRoot: "valueCodeableConcept.coding"
+                targetAttribute: "code"
+                operator: "one of"
+                criteria: "51440002"
+              fhir:
+                - path: "code"
+                  value: "51440002"
+                - path: "system"
+                  value: "http://snomed.info/sct"
+                - path: "display"
+                  value: "Left and right"
+              openehrCondition:
+                targetRoot: "$archetype/items[at0002]"
+                targetAttribute: "defining_code/code_string"
+                operator: "one of"
+                criteria: "at0083"
+
+  - name: "description"
+    with:
+      fhir: "text"
+      openehr: "$archetype/items[at0023]"

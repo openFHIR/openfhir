@@ -203,6 +203,12 @@ public class FhirInstanceCreatorUtility {
                 if (IBaseEnumeration.class.isAssignableFrom(field.getType())) {
                     return field.getType();
                 }
+                else if (field.getGenericType() instanceof ParameterizedType) {
+                    final Type actualTypeArgument = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+                    if (actualTypeArgument.getTypeName().contains("Enumeration")) {
+                        return getClassForName(modelPackage + "Enumeration");
+                    }
+                }
                 return types[0];
             } else if (field.getGenericType() instanceof ParameterizedType) {
                 final Type actualTypeArgument = ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
