@@ -49,6 +49,7 @@ public abstract class GenericTest {
     protected final FhirConnectModelMerger fhirConnectModelMerger = new FhirConnectModelMerger();
     protected final FhirPathR4 fhirPath = new FhirPathR4(FhirContext.forR4());
     protected final JsonParser jsonParser = (JsonParser) FhirContext.forR4().newJsonParser();
+    protected final JsonParser jsonStu3Parser = (JsonParser) FhirContext.forDstu3().newJsonParser();
 
     /**
      * Returns the {@link FhirContext} to use for all engine wiring in this test.
@@ -195,6 +196,11 @@ public abstract class GenericTest {
     protected Bundle getTestBundle(String path) {
         InputStream is = getClass().getResourceAsStream(path);
         return (Bundle) jsonParser.parseResource(is);
+    }
+
+    protected org.hl7.fhir.dstu3.model.Bundle getStu3TestBundle(String path) {
+        InputStream is = getClass().getResourceAsStream(path);
+        return (org.hl7.fhir.dstu3.model.Bundle) jsonStu3Parser.parseResource(is);
     }
 
     protected String getFlat(final String path) {

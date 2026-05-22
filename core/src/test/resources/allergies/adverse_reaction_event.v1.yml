@@ -1,0 +1,45 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "CLUSTER.adverse_reaction_event.v1"
+  version: 0.0.1a # version of this particular mapping
+spec: # schema specific to the FHIRConnect v0.0.1 engine
+  system: FHIR
+  version: STU3
+  openEhrConfig:
+    archetype: "openEHR-EHR-CLUSTER.adverse_reaction_event.v1"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+
+mappings:
+
+  - name: "Symptom"
+    with:
+      fhir: "$resource.manifestation"
+      openehr: "$archetype/items[at0006]"
+
+  - name: "SpecificSubstance"
+    with:
+      fhir: "$resource.substance"
+      openehr: "$archetype/items[at0001]"
+
+  - name: "ReactionDescription"
+    with:
+      fhir: "$resource.description"
+      openehr: "$archetype/items[at0007]"
+
+  - name: "Severity"
+    with:
+      fhir: "$resource.severity.extension.value"
+      openehr: "$archetype/items[at0010]"
+
+  - name: "RouteOfExposure"
+    with:
+      fhir: "$resource.exposureRoute"
+      openehr: "$archetype/items[at0017]"
+
+  - name: "ReactionTime"
+    with:
+      fhir: "$resource.onset"
+      openehr: "$archetype/items[at0008]"
