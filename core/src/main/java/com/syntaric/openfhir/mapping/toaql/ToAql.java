@@ -8,6 +8,7 @@ import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
+import com.syntaric.openfhir.fc.schema.context.Context;
 import com.syntaric.openfhir.fc.schema.context.ContextQuery;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.Mapping;
@@ -92,11 +93,13 @@ public class ToAql {
             throw new RequestValidationException(formattedError, null);
         } else if (relevantContext != null) {
             // first see if we have hardcoded aqls in our context files
-            final List<ContextQuery> queries = relevantContext.getFhirConnectContext().getContext().getQuery();
+            final Context context = relevantContext.getFhirConnectContext().getContext();
+            final List<ContextQuery> queries = context.getQuery();
             if (queries != null) {
                 for (final ContextQuery query : queries) {
                     if (queryMatchesAnyRule(resourceType, queryParams, query.getRules())) {
-                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION);
+                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION,
+                                                          context.getTemplate().getId());
                     }
                 }
             }

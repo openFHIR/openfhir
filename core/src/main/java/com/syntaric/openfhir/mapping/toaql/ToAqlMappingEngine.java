@@ -5,6 +5,7 @@ import com.syntaric.openfhir.aql.FhirQueryParam;
 import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.FhirConnectConst;
+import com.syntaric.openfhir.fc.schema.context.Context;
 import com.syntaric.openfhir.fc.schema.context.ContextQuery;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
@@ -68,11 +69,13 @@ public class ToAqlMappingEngine {
                 .distinct()
                 .toList();
         for (final FhirConnectContextEntity context : distinctContexts) {
-            final List<ContextQuery> queries = context.getFhirConnectContext().getContext().getQuery();
+            final Context context1 = context.getFhirConnectContext().getContext();
+            final List<ContextQuery> queries = context1.getQuery();
             if (queries != null) {
                 for (final ContextQuery query : queries) {
                     if (ToAql.queryMatchesAnyRule(resourceType, queryParams, query.getRules())) {
-                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION);
+                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION,
+                                                          context1.getTemplate().getId());
                     }
                 }
             }
@@ -81,7 +84,7 @@ public class ToAqlMappingEngine {
                     .filter(hv -> hv.context == context)
                     .toList();
             final String mainArchetype = forContext.get(0).getMainArchetype();
-            final List<ToAqlResponse.AqlResponse> aqls = createAqls(forContext, context.getFhirConnectContext().getContext().getStart(),
+            final List<ToAqlResponse.AqlResponse> aqls = createAqls(forContext, context.getFhirConnectContext().getContext(),
                     mainArchetype, narrowToTemplate);
             toAqlResponse.addAqls(aqls);
         }
@@ -104,7 +107,8 @@ public class ToAqlMappingEngine {
                                    final boolean narrowToTemplate) {
         final ToAqlResponse response = new ToAqlResponse();
         for (ToAql.ToAqlModels aModel : modelsToMap) {
-            final String compositionArchetype = aModel.getContext().getFhirConnectContext().getContext().getStart();
+            final Context context = aModel.getContext().getFhirConnectContext().getContext();
+            final String compositionArchetype = context.getStart();
             final List<MappingHelper> mappingHelpers = aModel.getMappingHelpers();
             final String archetype = mappingHelpers.get(0).getArchetype();
             final String commaDelimetedArchetypes = mappingHelpers.stream().map(MappingHelper::getArchetype).distinct()
@@ -112,25 +116,28 @@ public class ToAqlMappingEngine {
             final String entryAql = "SELECT h FROM EHR e CONTAINS %s h [%s] WHERE e/ehr_id/value='{{ehrid}}'";
             response.addAql(new ToAqlResponse.AqlResponse(
                     String.format(entryAql, getEntryType(archetype), commaDelimetedArchetypes),
-                    ToAqlResponse.AqlType.ENTRY));
+                    ToAqlResponse.AqlType.ENTRY,
+                    context.getTemplate().getId()));
 
             if (narrowToTemplate) {
                 final String compositionAql = "SELECT c from EHR e CONTAINS COMPOSITION c [%s] CONTAINS %s [%s] WHERE e/ehr_id/value='{{ehrid}}'";
                 response.addAql(new ToAqlResponse.AqlResponse(
                         String.format(compositionAql, compositionArchetype, getEntryType(archetype),
-                                      commaDelimetedArchetypes), ToAqlResponse.AqlType.COMPOSITION));
+                                      commaDelimetedArchetypes), ToAqlResponse.AqlType.COMPOSITION,
+                        context.getTemplate().getId()));
             } else {
                 final String compositionAql = "SELECT c FROM EHR e CONTAINS COMPOSITION c CONTAINS %s h [%s] WHERE e/ehr_id/value='{{ehrid}}'";
                 response.addAql(new ToAqlResponse.AqlResponse(
                         String.format(compositionAql, getEntryType(archetype), commaDelimetedArchetypes),
-                        ToAqlResponse.AqlType.COMPOSITION));
+                        ToAqlResponse.AqlType.COMPOSITION,
+                        context.getTemplate().getId()));
             }
         }
         return response;
     }
 
     private List<ToAqlResponse.AqlResponse> createAqls(final List<HelperValue> helperValues,
-                                                       final String compositionArchetype,
+                                                       final Context context,
                                                        final String mainArchetype,
                                                        final boolean narrowToTemplate) {
         final List<ToAqlResponse.AqlResponse> responses = new ArrayList<>();
@@ -142,13 +149,15 @@ public class ToAqlMappingEngine {
         }
         final String entryAql = createEntryAql(typedEntries, mainArchetype);
         if (isValidAql(entryAql)) {
-            responses.add(new ToAqlResponse.AqlResponse(entryAql, ToAqlResponse.AqlType.ENTRY));
+            responses.add(new ToAqlResponse.AqlResponse(entryAql, ToAqlResponse.AqlType.ENTRY,
+                                                        context.getTemplate().getId()));
         }
         // reset handled
         helperValues.forEach(h -> h.getValue().setHandled(false));
-        final String compositionAql = createCompositionAql(typedEntries, compositionArchetype, narrowToTemplate);
+        final String compositionAql = createCompositionAql(typedEntries, context.getStart(), narrowToTemplate);
         if (isValidAql(compositionAql)) {
-            responses.add(new ToAqlResponse.AqlResponse(compositionAql, ToAqlResponse.AqlType.COMPOSITION));
+            responses.add(new ToAqlResponse.AqlResponse(compositionAql, ToAqlResponse.AqlType.COMPOSITION,
+                                                        context.getTemplate().getId()));
         }
         return responses;
     }
