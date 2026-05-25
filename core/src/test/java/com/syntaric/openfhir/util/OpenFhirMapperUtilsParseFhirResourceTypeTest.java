@@ -57,17 +57,17 @@ public class OpenFhirMapperUtilsParseFhirResourceTypeTest {
 
     @Test
     public void parseFhirResourceType_operationNoParams_returnsOperation() {
-        Assert.assertEquals("$summary", utils.parseFhirResourceType("Patient/123/$summary"));
+        Assert.assertEquals("Patient", utils.parseFhirResourceType("Patient/123/$summary"));
     }
 
     @Test
     public void parseFhirResourceType_operationWithParams_returnsOperation() {
-        Assert.assertEquals("$everything", utils.parseFhirResourceType("Patient/$everything?patient=123"));
+        Assert.assertEquals("Patient", utils.parseFhirResourceType("Patient/$everything?patient=123"));
     }
 
     @Test
     public void parseFhirResourceType_fullUrlWithOperation_returnsOperation() {
-        Assert.assertEquals("$summary", utils.parseFhirResourceType("http://example.com/fhir/Patient/$summary"));
+        Assert.assertEquals("Patient", utils.parseFhirResourceType("http://example.com/fhir/Patient/$summary"));
     }
 
     // -----------------------------------------------------------------------------------------------------------------

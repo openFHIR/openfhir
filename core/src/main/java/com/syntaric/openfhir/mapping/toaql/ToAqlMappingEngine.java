@@ -6,9 +6,13 @@ import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.context.Context;
-import com.syntaric.openfhir.fc.schema.context.ContextQuery;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,12 +22,6 @@ import org.hl7.fhir.instance.model.api.IAnyResource;
 import org.hl7.fhir.r4.model.Observation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -69,17 +67,6 @@ public class ToAqlMappingEngine {
                 .distinct()
                 .toList();
         for (final FhirConnectContextEntity context : distinctContexts) {
-            final Context context1 = context.getFhirConnectContext().getContext();
-            final List<ContextQuery> queries = context1.getQuery();
-            if (queries != null) {
-                for (final ContextQuery query : queries) {
-                    if (ToAql.queryMatchesAnyRule(resourceType, queryParams, query.getRules())) {
-                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION,
-                                                          context1.getTemplate().getId());
-                    }
-                }
-            }
-
             final List<HelperValue> forContext = helperValues.stream()
                     .filter(hv -> hv.context == context)
                     .toList();

@@ -93,19 +93,19 @@ public class ToAql {
             throw new RequestValidationException(formattedError, null);
         } else if (relevantContext != null) {
             // first see if we have hardcoded aqls in our context files
-            final Context context = relevantContext.getFhirConnectContext().getContext();
-            final List<ContextQuery> queries = context.getQuery();
-            if (queries != null) {
-                for (final ContextQuery query : queries) {
-                    if (queryMatchesAnyRule(resourceType, queryParams, query.getRules())) {
-                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION,
-                                                          context.getTemplate().getId());
-                    }
-                }
+            final ToAqlResponse contextResponse = findQueryResponse(List.of(relevantContext), resourceType, queryParams);
+            if (contextResponse != null) {
+                return contextResponse;
             }
         }
 
-        final List<ToAqlModels> allModels = getRelevantModelEntities(relevantContext);
+        final List<FhirConnectContextEntity> allUserContexts = fhirConnectManager.allUserContextEntities();
+        final ToAqlResponse userContextResponse = findQueryResponse(allUserContexts, resourceType, queryParams);
+        if (userContextResponse != null) {
+            return userContextResponse;
+        }
+
+        final List<ToAqlModels> allModels = getRelevantModelEntities(relevantContext, allUserContexts);
         final List<ToAqlModels> narrowedByResourceType = new ArrayList<>();
 
         narrowByResourceTypeAndPrecondition(allModels, resourceType, narrowedByResourceType, queryParams);
@@ -146,6 +146,24 @@ public class ToAql {
 
         return toAqlMappingEngine.map(narrowedByResourceType, resourceType, queryParams,
                                       toAqlRequest.getTemplate() != null || profileUrl != null);
+    }
+
+    private ToAqlResponse findQueryResponse(final List<FhirConnectContextEntity> contexts,
+                                             final String resourceType,
+                                             final List<FhirQueryParam> queryParams) {
+        for (final FhirConnectContextEntity contextEntity : contexts) {
+            final Context context = contextEntity.getFhirConnectContext().getContext();
+            final List<ContextQuery> queries = context.getQuery();
+            if (queries != null) {
+                for (final ContextQuery query : queries) {
+                    if (queryMatchesAnyRule(resourceType, queryParams, query.getRules())) {
+                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION,
+                                                          context.getTemplate().getId());
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     static boolean queryMatchesAnyRule(final String resourceType,
@@ -342,13 +360,14 @@ public class ToAql {
         return true;
     }
 
-    private List<ToAqlModels> getRelevantModelEntities(final FhirConnectContextEntity relevantContext) {
+    private List<ToAqlModels> getRelevantModelEntities(final FhirConnectContextEntity relevantContext,
+                                                       final List<FhirConnectContextEntity> allUserContexts) {
         if (relevantContext != null) {
             log.info("Found relevant context for toAql translation {}", relevantContext.getId());
             return List.of(contextToToAqlModels(relevantContext));
         }
         // no specific context found — search across all tenant contexts
-        return fhirConnectManager.allUserContextEntities().stream()
+        return allUserContexts.stream()
                 .map(this::contextToToAqlModels)
                 .toList();
     }

@@ -92,18 +92,22 @@ public class OpenFhirMapperUtils {
      * Parses the FHIR resource type from a URL such as:
      * http://something.com/fhir/Observation?code=123 → "Observation"
      * Observation?code=123 → "Observation"
+     * Patient/$summary?something=param → "Patient"
+     * Patient/123/$summary → "Patient"
      */
     public String parseFhirResourceType(final String fhirFullUrl) {
         if (StringUtils.isBlank(fhirFullUrl)) {
             throw new IllegalArgumentException("fhirFullUrl must not be blank");
         }
-        String relevant = fhirFullUrl;
-        final int lastSlash = fhirFullUrl.lastIndexOf('/');
-        if (lastSlash >= 0) {
-            relevant = fhirFullUrl.substring(lastSlash + 1);
+        final int questionMark = fhirFullUrl.indexOf('?');
+        final String path = questionMark >= 0 ? fhirFullUrl.substring(0, questionMark) : fhirFullUrl;
+        final String[] segments = path.split("/");
+        for (final String segment : segments) {
+            if (!segment.isEmpty() && Character.isUpperCase(segment.charAt(0))) {
+                return segment;
+            }
         }
-        final int questionMark = relevant.indexOf('?');
-        return questionMark >= 0 ? relevant.substring(0, questionMark) : relevant;
+        return segments[segments.length - 1];
     }
 
     /**
