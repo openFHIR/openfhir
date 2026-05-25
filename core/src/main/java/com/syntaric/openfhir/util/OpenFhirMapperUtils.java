@@ -116,6 +116,12 @@ public class OpenFhirMapperUtils {
             return params;
         }
         final int questionMark = fhirFullUrl.indexOf('?');
+        final String pathPart = questionMark >= 0 ? fhirFullUrl.substring(0, questionMark) : fhirFullUrl;
+        final int lastSlash = pathPart.lastIndexOf('/');
+        final String lastSegment = lastSlash >= 0 ? pathPart.substring(lastSlash + 1) : pathPart;
+        if (lastSegment.startsWith("$")) {
+            params.add(new FhirQueryParam(null, null, lastSegment));
+        }
         if (questionMark < 0 || questionMark == fhirFullUrl.length() - 1) {
             return params;
         }
@@ -123,7 +129,7 @@ public class OpenFhirMapperUtils {
         for (final String pair : queryString.split("&")) {
             final int eq = pair.indexOf('=');
             if (eq > 0) {
-                params.add(new FhirQueryParam(pair.substring(0, eq), pair.substring(eq + 1)));
+                params.add(new FhirQueryParam(pair.substring(0, eq), pair.substring(eq + 1), null));
             }
         }
         return params;

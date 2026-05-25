@@ -10,7 +10,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## Unreleased
 
 ### Fixed
+- AQL generation proper paths for CodedText, CodePhrase
 ### Added
+- ability to specify hardcoded AQLs for specific contexts via `_query` in context mapping files. `_query` is a list of
+  entries, each with an `aql` string and a `rules` list. When a toAQL request matches any rule in an entry, the
+  hardcoded `aql` is returned directly instead of generating AQL dynamically. Rules are matched against the incoming
+  FHIR request as follows:
+  - **Operation** (e.g. `$summary`) — matches if the parsed URL contains that operation (e.g. `Patient/123/$summary`)
+  - **Resource with query params** (e.g. `Observation?category=height`) — matches if the resource type equals the rule
+    resource and all key-value pairs in the rule are present in the incoming query params (in any order; the request
+    may have additional params beyond what the rule specifies)
+  - **Resource only** (e.g. `Condition`) — matches any request for that resource type regardless of params
+
+  Example:
+  ```yaml
+  _query:
+    - aql: "SELECT c FROM EHR e[ehr_id/value='{{ehrid}}'] CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='something'"
+      rules:
+        - "$summary"
+    - aql: "SELECT c FROM EHR e[ehr_id/value='{{ehrid}}'] CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='something-else'"
+      rules:
+        - "Observation?category=height"
+  ```
 ### Changed
 
 ## [2.2.3] - 2026-05-23

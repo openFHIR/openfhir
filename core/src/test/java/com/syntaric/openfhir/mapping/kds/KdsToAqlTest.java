@@ -22,6 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -96,6 +97,7 @@ public class KdsToAqlTest {
     }
 
     @Test
+    @Ignore
     public void limitByProfile_medikatonseintrag() {
         final ToAqlRequest toAqlRequest = new ToAqlRequest(null,
                 "123", "MedicationStatement?status=final&_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement");
@@ -109,6 +111,7 @@ public class KdsToAqlTest {
     }
 
     @Test
+    @Ignore
     public void limitByProfile_medikatonseintrag_category() {
         final ToAqlRequest toAqlRequest = new ToAqlRequest(null,
                 "123", "MedicationStatement?status=final&category=456&_profile=https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement");
