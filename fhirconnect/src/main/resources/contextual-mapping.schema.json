@@ -91,6 +91,26 @@
         },
         "start": {
           "type": "string"
+        },
+        "_query": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "aql": {
+                "type": "string"
+              },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "aql"
+            ]
+          }
         }
       },
       "required": [

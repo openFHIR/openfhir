@@ -117,5 +117,21 @@ public class GrowthChartToAqlTest extends GenericToAqlTest {
         Assert.assertNull(aql.getAqls());
     }
 
+    @Test
+    public void toAql_fromContext_pinpointedContext() throws IOException {
+        final ToAqlRequest toAqlRequest = new ToAqlRequest("Growth chart",
+                "123", "Patient/123/$summary");
+        final ToAqlResponse aql = toAql.toAql(toAqlRequest);
+        Assert.assertEquals("SELECT c FROM EHR e[ehr_id/value='{{ehrid}}'] CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='something'", aql.getAqls().get(0).getAql());
+    }
+
+    @Test
+    public void toAql_fromContext_dynamicContext() throws IOException {
+        final ToAqlRequest toAqlRequest = new ToAqlRequest(null,
+                "123", "Observation?value-quantity=500&category=height");
+        final ToAqlResponse aql = toAql.toAql(toAqlRequest);
+        Assert.assertEquals("SELECT c FROM EHR e[ehr_id/value='{{ehrid}}'] CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='something-else'", aql.getAqls().get(0).getAql());
+    }
+
 
 }

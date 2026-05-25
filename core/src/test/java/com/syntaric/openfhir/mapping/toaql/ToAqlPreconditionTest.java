@@ -31,7 +31,7 @@ public class ToAqlPreconditionTest {
     @Test
     public void preconditionPasses_noPreprocessor_returnsTrue() {
         final OpenFhirFhirConnectModelMapper mapper = mapperWithPreprocessor(null);
-        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "123"))));
+        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "123", null))));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ToAqlPreconditionTest {
         final Preprocessor preprocessor = new Preprocessor();
         // fhirConditions left null
         final OpenFhirFhirConnectModelMapper mapper = mapperWithPreprocessor(preprocessor);
-        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "123"))));
+        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "123", null))));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ToAqlPreconditionTest {
         final Preprocessor preprocessor = new Preprocessor();
         preprocessor.setFhirConditions(List.of());
         final OpenFhirFhirConnectModelMapper mapper = mapperWithPreprocessor(preprocessor);
-        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "123"))));
+        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "123", null))));
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ public class ToAqlPreconditionTest {
         final OpenFhirFhirConnectModelMapper mapper = mapperWithCondition(
                 "Observation", "code", CONDITION_OPERATOR_ONE_OF, List.of("29463-7", "55284-4"));
 
-        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "29463-7"))));
+        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "29463-7", null))));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ToAqlPreconditionTest {
         final OpenFhirFhirConnectModelMapper mapper = mapperWithCondition(
                 "Observation", "code", CONDITION_OPERATOR_ONE_OF, List.of("29463-7", "55284-4"));
 
-        Assert.assertFalse(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "99999-9"))));
+        Assert.assertFalse(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "99999-9", null))));
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ public class ToAqlPreconditionTest {
         final OpenFhirFhirConnectModelMapper mapper = mapperWithCondition(
                 "Observation", "code", CONDITION_OPERATOR_NOT_OF, List.of("29463-7"));
 
-        Assert.assertFalse(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "29463-7"))));
+        Assert.assertFalse(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "29463-7", null))));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ToAqlPreconditionTest {
         final OpenFhirFhirConnectModelMapper mapper = mapperWithCondition(
                 "Observation", "code", CONDITION_OPERATOR_NOT_OF, List.of("29463-7"));
 
-        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "99999-9"))));
+        Assert.assertTrue(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "99999-9", null))));
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ public class ToAqlPreconditionTest {
                 "Observation", "status", CONDITION_OPERATOR_ONE_OF, List.of("final"));
 
         // assert false because the mapping says it's only relevant for those where observation.status is final
-        Assert.assertFalse(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "29463-7"))));
+        Assert.assertFalse(toAql.preconditionPasses("Observation", mapper, List.of(new FhirQueryParam("code", "29463-7", null))));
     }
 
     // -----------------------------------------------------------------------------------------------------------------

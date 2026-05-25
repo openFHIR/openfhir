@@ -10,7 +10,8 @@ import java.util.List;
 @Slf4j
 public class OpenEhrAqlPopulator {
 
-    public String getDataTypeAwareAqlSuffix(final String expectedValue,
+    public String getDataTypeAwareAqlSuffix(final String aqlPath,
+                                            final String expectedValue,
                                             final List<String> possibleRmTypes) {
         final String rmType = possibleRmTypes.get(0); // amend this
         switch (rmType) {
@@ -30,7 +31,13 @@ public class OpenEhrAqlPopulator {
                 return String.format("/value = %s", expectedValue);
 
             case FhirConnectConst.DV_CODED_TEXT:
-                return String.format("/defining_code/code_string = '%s'", expectedValue);
+            case FhirConnectConst.CODE_PHRASE:
+                if(aqlPath.endsWith("terminology_id")) {
+                    return String.format("/value/defining_code/terminology_id/value = '%s'", expectedValue);
+                } else if(aqlPath.endsWith("code_string")) {
+                    return String.format("/value/defining_code/code_string = '%s'", expectedValue);
+                }
+                return String.format("/value/value = '%s'", expectedValue);
 
             case FhirConnectConst.DV_TEXT:
                 return String.format("/value = '%s'", expectedValue);
