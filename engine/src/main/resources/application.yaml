@@ -5,16 +5,18 @@ mongock:
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://openfhir_tests:X5DNIzlyAHyx2AX7@vonk-gandrejc.s9qr7n0.mongodb.net/openfhir_development
+      uri:
   application:
     name: open-fhir-impl
 openfhir:
   db:
     type: mongo
-  metrics:
-    file:
-      enabled: true
-      path: /home/gandrejc/development/OPENFHIR/openfhir/engine/target/metrics.csv
+  narrative:
+  # Optional: classpath or file path to a custom HAPI narrative properties file.
+  # The file maps FHIR resource types to Thymeleaf HTML templates for the generateNarrative mapping code.
+  # Example: classpath:my-narratives.properties
+  # properties-file:
+
 server:
   error:
     include-stacktrace: never
