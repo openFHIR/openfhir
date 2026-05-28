@@ -24,7 +24,9 @@ context:
     - "CLUSTER.case_identification.v0"
     - "CLUSTER.timing_daily.v1"
     - "CLUSTER.timing_nondaily.v1"
+    - "COMPOSITION.medication_list.v1.MedicationStatement"
   extensions:
     - "KDS_medication.v3"
     - "KDS_medikamentenstatement"
+    - "KDS_composition.MedicationStatement"
   start: "OBSERVATION.medication_statement.v0"

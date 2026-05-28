@@ -20,13 +20,6 @@ mappings: # does create duplicates since content is iterated thats why this is e
       operator: "not of"
       criteria: "http://fhir.de/sid/gkv/kvid-10"
 
-  - name: "personData"
-    extension: "add"
-    with:
-      fhir: "$resource"
-      openehr: "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]"
-    slotArchetype: "ADMIN_ENTRY.person_data.v0"
-
   - name: "gender"
     extension: "add"
     with:

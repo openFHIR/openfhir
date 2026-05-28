@@ -296,6 +296,10 @@ public class ToAql {
                     .get(templateId);
             final List<OpenFhirFhirConnectModelMapper> nextSlots = relevantRepositoryForThisTemplate.getMappers()
                     .get(slotArchetype); // should only be one
+            if(nextSlots == null) {
+                log.warn("Next slot {} couldn't be found.", slotArchetype);
+                continue;
+            }
             nextSlots.forEach(nextSlot -> narrowByResourceTypeAndPrecondition(nextSlot, slotArchetype, resourceType,
                                                                               new ToAqlModels(null, nextSlots,
                                                                                               lookingIntoModel.getContext(), null),

@@ -22,38 +22,13 @@ mappings:
           - path: "profile"
             value: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/CodeSystem/Vitalstatus"
 
-  - name: "fallIdentifikationIdentifier"
+  - name: "compositionMapping"
     extension: "add"
     with:
-      fhir: "$resource.encounter.as(Reference).identifier"
-      openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
-    slotArchetype: "CLUSTER.case_identification.v0"
+      fhir: "$resource"
+      openehr: "$composition"
+    slotArchetype: "COMPOSITION.report.v1.Observation"
 
-  - name: "fallIdentifikationReference" # if reference is accessible overwrite fallIdentifikationIdentifier
-    extension: "add"
-    with:
-      fhir: "$resource.encounter"
-      openehr: "$reference"
-    reference: #type None
-      resourceType: "Encounter"
-      mappings:
-        - name: "identifierInReference"
-          with:
-            fhir: "$fhirRoot.identifier"
-            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]"
-          slotArchetype: "CLUSTER.case_identification.v0"
-        - name: "encounterMapping"
-          with:
-            fhir: "$fhirRoot"
-            openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.case_identification.v0]/links" # will use link
-          link:
-            meaning: "the case this composition relates to"
-            type: "case"
-  - name: "status"
-    extension: "add"
-    with:
-      fhir: "$resource.status"
-      openehr: "$composition/context/other_context[at0001]/items[at0005]"
   - name: "category"
     extension: "add"
     with:

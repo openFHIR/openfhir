@@ -9,16 +9,26 @@ spec:
   extends: ADMIN_ENTRY.person_data.v0
 
 mappings:
+  - name: "compositionMapping"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$composition"
+    slotArchetype: "COMPOSITION.person.v1"
 
+  - name: "personData"
+    extension: "overwrite"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.person.v1]"
+    slotArchetype: "CLUSTER.person.v1"
 
 #  - name: "identifier"
 #    with:
 #      fhir: "$resource.identifier"
 #      openehr: "$reference"
-#    type: "PROGRAMMED_MAPPING"
 #    mappingCode: "ehrStatusAddExternalREF" #TODO these identifiers of FHIR need to go to the EHR status to be honest as external references.
-#    fhirCondition: #@Gasper if we decide not to url::value mappings, we need this if cause of the overwrite of identifier
-#      # if we add url::value we can delete this followeBy, this mapping will prevail the one in the tempplate for fhir.identifier
+#    fhirCondition:
 #      targetRoot: "identifier"
 #      targetAttribute: "type.coding.code"
 #      operator: "one of"

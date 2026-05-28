@@ -18,6 +18,8 @@ context:
     - "CLUSTER.case_identification.v0"
     - "CLUSTER.specimen.v1"
     - "OBSERVATION.laboratory_test_result.v1"
+    - "COMPOSITION.report_result.v1.DiagnosticReport"
   extensions:
     - "KDS_laborbericht"
+    - "KDS_composition.DiagnosticReport"
   start: "OBSERVATION.laboratory_test_result.v1"
