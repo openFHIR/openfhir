@@ -121,6 +121,20 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
         Assert.assertEquals("2020-10-07T03:00:00", flat.get("growth_chart/body_weight/any_event:2/time").getAsString());
         Assert.assertEquals("just too fat", flat.get("growth_chart/body_weight/any_event:2/comment").getAsString());
         Assert.assertNull(flat.get("growth_chart/body_weight/any_event:0/time"));
+
+
+        Assert.assertEquals("http://something/PractitionerRole/123",
+                            flat.get("growth_chart/height_length/_other_participation:0|id")
+                                    .getAsString());
+        Assert.assertEquals("http://something",
+                            flat.get("growth_chart/height_length/_other_participation:0|id_namespace")
+                                    .getAsString());
+        Assert.assertEquals("PractitionerRole",
+                            flat.get("growth_chart/height_length/_other_participation:0|id_scheme")
+                                    .getAsString());
+        Assert.assertEquals("performer",
+                            flat.get("growth_chart/height_length/_other_participation:0|function")
+                                    .getAsString());
     }
 
     @Test
@@ -136,7 +150,7 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
 
 
         final Composition composition = toOpenEhr.fhirToCompositionRm(context, bundle,
-                webTemplate);
+                                                                      webTemplate);
         final String weightPath = "/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value";
         final String weightCommentPath = "/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0024]/value";
 
@@ -291,7 +305,9 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
 
     private static void addHeightEntry(final Bundle bundle, int index, boolean nonHeight, String unit) {
         final Observation observation = new Observation();
-
+        if (index == 0) {
+            observation.addPerformer(new Reference("http://something/PractitionerRole/123"));
+        }
         final Quantity value = new Quantity();
         value.setValue(180 + index);
         value.setUnit(unit);
