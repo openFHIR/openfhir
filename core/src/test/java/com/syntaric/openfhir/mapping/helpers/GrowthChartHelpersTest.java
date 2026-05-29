@@ -93,7 +93,7 @@ public class GrowthChartHelpersTest extends GenericHelpersTest {
         Assert.assertFalse(heightSlot.isEnteredFromSlotArchetypeLink());
         Assert.assertTrue(heightSlot.isUseParentRoot());
         Assert.assertTrue(heightSlot.isHasSlot());
-        Assert.assertEquals(3, heightSlot.getChildren().size());
+        Assert.assertEquals(4, heightSlot.getChildren().size());
 
         // height
         final MappingHelper height = heightSlot.getChildren().get(0);

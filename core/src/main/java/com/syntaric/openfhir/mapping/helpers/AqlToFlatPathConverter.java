@@ -73,6 +73,11 @@ public class AqlToFlatPathConverter {
                 result.rmType());
         mappingHelper.setFlatPathPipeSuffix(flatPathPipeSuffix);
 
+        final String flatPathSuffixFromMapping = getFlatPathSuffixFromMapping(mappingHelper.getFullOpenEhrPath());
+        if(flatPathSuffixFromMapping != null) {
+            mappingHelper.setFlatPathPipeSuffix(getFlatPathSuffixFromMapping(mappingHelper.getFullOpenEhrPath()));
+        }
+
         // if multiple rm types are here and children are really only manual mappings,
         // then rm types need to be propagated on
         if (mappingHelper.getChildren() != null) {
@@ -83,6 +88,15 @@ public class AqlToFlatPathConverter {
         }
 
         return result;
+    }
+
+    private String getFlatPathSuffixFromMapping(final String openehrPath) {
+        if(StringUtils.isEmpty(openehrPath)) {
+            return null;
+        }
+        final String[] split = openehrPath.split("/");
+        final String lastOccurence = split[split.length-1];
+        return lastOccurence.startsWith("|") ? lastOccurence : null;
     }
 
     private boolean shouldAddManualCodedText(final List<String> possibleRmTypes,
