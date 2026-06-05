@@ -335,49 +335,14 @@
                 },
                 "value" : {
                   "_type" : "DV_CODED_TEXT",
-                  "value" : "Dalbavancin",
-                  "mappings" : [ {
-                    "_type" : "TERM_MAPPING",
-                    "match" : "?",
-                    "target" : {
-                      "_type" : "CODE_PHRASE",
-                      "terminology_id" : {
-                        "_type" : "TERMINOLOGY_ID",
-                        "value" : "http://fdasis.nlm.nih.gov"
-                      },
-                      "code_string" : "808UI9MS5K"
-                    }
-                  }, {
-                    "_type" : "TERM_MAPPING",
-                    "match" : "?",
-                    "target" : {
-                      "_type" : "CODE_PHRASE",
-                      "terminology_id" : {
-                        "_type" : "TERMINOLOGY_ID",
-                        "value" : "http://terminology.hl7.org/CodeSystem/CAS"
-                      },
-                      "code_string" : "171500-79-1"
-                    }
-                  }, {
-                    "_type" : "TERM_MAPPING",
-                    "match" : "?",
-                    "target" : {
-                      "_type" : "CODE_PHRASE",
-                      "terminology_id" : {
-                        "_type" : "TERMINOLOGY_ID",
-                        "value" : "http://snomed.info/sct (20230731)"
-                      },
-                      "code_string" : "703917001",
-                      "preferred_term" : "Dalbavancin (substance)"
-                    }
-                  } ],
+                  "value" : "Dalbavancin (substance)",
                   "defining_code" : {
                     "_type" : "CODE_PHRASE",
                     "terminology_id" : {
                       "_type" : "TERMINOLOGY_ID",
-                      "value" : "http://fhir.de/CodeSystem/ask"
+                      "value" : "http://snomed.info/sct (20230731)"
                     },
-                    "code_string" : "33395"
+                    "code_string" : "703917001"
                   }
                 },
                 "archetype_node_id" : "at0142"

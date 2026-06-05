@@ -42,6 +42,27 @@
             },
             "ingredient": [
               {
+                "extension": [
+                  {
+                    "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstoffrelation",
+                    "extension": [
+                      {
+                        "url": "ingredientReference",
+                        "extension": [
+                          {
+                            "url": null
+                          },
+                          {
+                            "url": null
+                          }
+                        ]
+                      },
+                      {
+                        "url": "ingredientUri"
+                      }
+                    ]
+                  }
+                ],
                 "strength": {
                   "numerator": {
                     "value": 50.0,
