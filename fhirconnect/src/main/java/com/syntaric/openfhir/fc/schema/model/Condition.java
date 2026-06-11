@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "targetRoot",
-        "targetAttribute",
         "targetAttributes",
         "operator",
-        "criteria",
         "criterias",
         "identifying",
 })
@@ -37,7 +36,7 @@ public class Condition implements Serializable {
     @JsonProperty("targetAttributes")
     private List<String> targetAttributes; // if multiple, then OR is implied between them. If you want AND, you need to write multiple conditions
 
-    @JsonProperty("targetAttribute")
+    @JsonIgnore
     private String targetAttribute; // if multiple, then OR is implied between them. If you want AND, you need to write multiple conditions
 
     /**
@@ -48,7 +47,7 @@ public class Condition implements Serializable {
     /**
      * (Required)
      */
-    @JsonProperty("criteria")
+    @JsonIgnore
     private String criteria;
     @JsonProperty("criterias")
     private List<String> criterias;
@@ -141,15 +140,12 @@ public class Condition implements Serializable {
      * @return
      */
     @Deprecated
-    @JsonProperty("targetAttribute")
+    @JsonIgnore
     public String getTargetAttribute() {
         return targetAttribute;
     }
 
-    /**
-     * (Required)
-     */
-    @JsonProperty("targetAttribute")
+    @JsonSetter("targetAttribute")
     public void setTargetAttribute(String targetAttribute) {
         this.targetAttribute = targetAttribute;
     }
@@ -180,7 +176,7 @@ public class Condition implements Serializable {
         return this;
     }
 
-    @JsonProperty("criteria")
+    @JsonIgnore
     public String getCriteria() {
         if(criteria == null && criterias != null && !criterias.isEmpty()) {
             // todo: this needs to be adjusted once we support more condition on more criterias
@@ -189,7 +185,7 @@ public class Condition implements Serializable {
         return criteria;
     }
 
-    @JsonProperty("criteria")
+    @JsonSetter("criteria")
     public void setCriteria(String criteria) {
         this.criteria = criteria;
     }
