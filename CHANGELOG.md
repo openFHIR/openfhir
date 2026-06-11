@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
         - "Observation?category=height"
   ```
 ### Changed
+- certain deprecated fields in model mappings are now left out from serialization (fhirCondition, criteria, ..)
 
 ## [2.2.3] - 2026-05-23
 
