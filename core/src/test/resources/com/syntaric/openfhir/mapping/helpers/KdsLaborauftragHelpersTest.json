@@ -263,10 +263,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "ServiceRequest",
-        "targetAttribute" : "status",
         "targetAttributes" : [ "status" ],
         "operator" : "one of",
-        "criteria" : "completed",
         "criterias" : [ "completed" ]
       } ],
       "openEhrConditions" : null,
@@ -305,10 +303,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "ServiceRequest",
-        "targetAttribute" : "status",
         "targetAttributes" : [ "status" ],
         "operator" : "one of",
-        "criteria" : "completed",
         "criterias" : [ "completed" ]
       } ],
       "openEhrConditions" : null,
@@ -351,10 +347,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "ServiceRequest",
-        "targetAttribute" : "status",
         "targetAttributes" : [ "status" ],
         "operator" : "one of",
-        "criteria" : "completed",
         "criterias" : [ "completed" ]
       } ],
       "openEhrConditions" : null,
@@ -394,10 +388,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1",
-        "targetAttribute" : "protocol[at0008]/items[at0127]/defining_code/code_string",
         "targetAttributes" : [ "protocol[at0008]/items[at0127]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "completed",
         "criterias" : [ "completed" ]
       } ],
       "enteredFromSlotArchetypeLink" : false,
@@ -789,10 +781,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest.category.coding",
-      "targetAttribute" : "category.coding.code",
       "targetAttributes" : [ "category.coding.code" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "openEhrConditions" : null,
@@ -831,10 +821,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest.category.coding",
-      "targetAttribute" : "category.coding.code",
       "targetAttributes" : [ "category.coding.code" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "openEhrConditions" : null,
@@ -877,10 +865,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest.category.coding",
-      "targetAttribute" : "category.coding.code",
       "targetAttributes" : [ "category.coding.code" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "openEhrConditions" : null,
@@ -920,10 +906,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1",
-      "targetAttribute" : "activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string",
       "targetAttributes" : [ "activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -962,10 +946,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1",
-      "targetAttribute" : "activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string",
       "targetAttributes" : [ "activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1004,10 +986,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1",
-      "targetAttribute" : "activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string",
       "targetAttributes" : [ "activities[at0001]/description[at0009]/items[at0148]/defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1080,10 +1060,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest",
-      "targetAttribute" : "category.coding.code",
       "targetAttributes" : [ "category.coding.code" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "openEhrConditions" : null,
@@ -1122,10 +1100,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest",
-      "targetAttribute" : "category.coding.code",
       "targetAttributes" : [ "category.coding.code" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "openEhrConditions" : null,
@@ -1168,10 +1144,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest",
-      "targetAttribute" : "category.coding.code",
       "targetAttributes" : [ "category.coding.code" ],
       "operator" : "one of",
-      "criteria" : "laboratory",
       "criterias" : [ "laboratory" ]
     } ],
     "openEhrConditions" : null,
@@ -1211,10 +1185,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1",
-      "targetAttribute" : "activities[at0001]/description[at0009]/items[at0065]/defining_code/code_string",
       "targetAttributes" : [ "activities[at0001]/description[at0009]/items[at0065]/defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "order",
       "criterias" : [ "order" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1322,10 +1294,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "ServiceRequest.encounter.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -1500,10 +1470,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "ServiceRequest.encounter.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -1850,10 +1818,8 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-            "targetAttribute" : "items[at0015]",
             "targetAttributes" : [ "items[at0015]" ],
             "operator" : "type",
-            "criteria" : "DV_DATE_TIME",
             "criterias" : [ "DV_DATE_TIME" ]
           } ],
           "enteredFromSlotArchetypeLink" : true,
@@ -1892,10 +1858,8 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-            "targetAttribute" : "items[at0015]",
             "targetAttributes" : [ "items[at0015]" ],
             "operator" : "type",
-            "criteria" : "DV_INTERVAL",
             "criterias" : [ "DV_INTERVAL" ]
           } ],
           "enteredFromSlotArchetypeLink" : true,
@@ -2319,7 +2283,6 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]",
-            "targetAttribute" : "links",
             "targetAttributes" : [ "links" ],
             "operator" : "empty"
           } ],
@@ -2359,7 +2322,6 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]",
-            "targetAttribute" : "links",
             "targetAttributes" : [ "links" ],
             "operator" : "not empty"
           } ],
@@ -2472,10 +2434,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-          "targetAttribute" : "status",
           "targetAttributes" : [ "status" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "openEhrConditions" : null,
@@ -2510,10 +2470,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "available",
             "criterias" : [ "available" ]
           } ],
           "openEhrConditions" : null,
@@ -2552,10 +2510,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "available",
             "criterias" : [ "available" ]
           } ],
           "openEhrConditions" : null,
@@ -2594,10 +2550,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "available",
             "criterias" : [ "available" ]
           } ],
           "openEhrConditions" : null,
@@ -2637,10 +2591,8 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-            "targetAttribute" : "items[at0041]/defining_code/code_string",
             "targetAttributes" : [ "items[at0041]/defining_code/code_string" ],
             "operator" : "one of",
-            "criteria" : "at0062",
             "criterias" : [ "at0062" ]
           } ],
           "enteredFromSlotArchetypeLink" : true,
@@ -2678,10 +2630,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "unavailable",
             "criterias" : [ "unavailable" ]
           } ],
           "openEhrConditions" : null,
@@ -2720,10 +2670,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "unavailable",
             "criterias" : [ "unavailable" ]
           } ],
           "openEhrConditions" : null,
@@ -2762,10 +2710,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "unavailable",
             "criterias" : [ "unavailable" ]
           } ],
           "openEhrConditions" : null,
@@ -2805,10 +2751,8 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-            "targetAttribute" : "items[at0041]/defining_code/code_string",
             "targetAttributes" : [ "items[at0041]/defining_code/code_string" ],
             "operator" : "one of",
-            "criteria" : "at0064",
             "criterias" : [ "at0064" ]
           } ],
           "enteredFromSlotArchetypeLink" : true,
@@ -2846,10 +2790,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "unsatisfactory",
             "criterias" : [ "unsatisfactory" ]
           } ],
           "openEhrConditions" : null,
@@ -2888,10 +2830,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "unsatisfactory",
             "criterias" : [ "unsatisfactory" ]
           } ],
           "openEhrConditions" : null,
@@ -2930,10 +2870,8 @@
           "unidirectional" : "fhir->openehr",
           "fhirConditions" : [ {
             "targetRoot" : "ServiceRequest.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "one of",
-            "criteria" : "unsatisfactory",
             "criterias" : [ "unsatisfactory" ]
           } ],
           "openEhrConditions" : null,
@@ -2973,10 +2911,8 @@
           "fhirConditions" : null,
           "openEhrConditions" : [ {
             "targetRoot" : "openEHR-EHR-INSTRUCTION.service_request.v1/activities[at0001]/description[at0009]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-            "targetAttribute" : "items[at0041]/defining_code/code_string",
             "targetAttributes" : [ "items[at0041]/defining_code/code_string" ],
             "operator" : "one of",
-            "criteria" : "at0064",
             "criterias" : [ "at0064" ]
           } ],
           "enteredFromSlotArchetypeLink" : true,

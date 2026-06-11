@@ -6,7 +6,10 @@ import com.syntaric.openfhir.db.entity.UserBasedEntity;
 import com.syntaric.openfhir.db.repository.FhirConnectContextRepository;
 import com.syntaric.openfhir.db.repository.FhirConnectModelRepository;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
+import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.FhirConnectModel;
+import com.syntaric.openfhir.fc.schema.model.Mapping;
+import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.rest.RequestValidationException;
 import com.syntaric.openfhir.util.FhirConnectValidator;
@@ -54,6 +57,8 @@ public class FhirConnectService {
         try {
             final IdAndCreated resolved = resolveModelIdAndCreated(id);
             id = resolved.id;
+
+            normalizeSingularFields(fhirConnectModel);
 
             validateOrThrow(validator.validateAgainstModelSchema(fhirConnectModel),
                             "[{}] Error occurred trying to validate FC model mapper against the schema. Nothing has been created. Errors: {}",
@@ -249,5 +254,47 @@ public class FhirConnectService {
     public void deleteAllTenant() {
         modelRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
         contextRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
+    }
+
+    private void normalizeSingularFields(final FhirConnectModel model) {
+        final Preprocessor preprocessor = model.getPreprocessor();
+        if (preprocessor != null) {
+            if (preprocessor.getFhirCondition() != null && preprocessor.getFhirConditions() == null) {
+                preprocessor.setFhirConditions(List.of(preprocessor.getFhirCondition()));
+                preprocessor.setFhirCondition(null);
+            }
+            if (preprocessor.getFhirConditions() != null) {
+                preprocessor.getFhirConditions().forEach(this::normalizeCondition);
+            }
+            if (preprocessor.getOpenehrCondition() != null) {
+                normalizeCondition(preprocessor.getOpenehrCondition());
+            }
+        }
+        if (model.getMappings() != null) {
+            model.getMappings().forEach(this::normalizeMappingSingularFields);
+        }
+    }
+
+    private void normalizeMappingSingularFields(final Mapping mapping) {
+        if (mapping.getFhirCondition() != null) {
+            normalizeCondition(mapping.getFhirCondition());
+        }
+        if (mapping.getOpenehrCondition() != null) {
+            normalizeCondition(mapping.getOpenehrCondition());
+        }
+        if (mapping.getFollowedBy() != null && mapping.getFollowedBy().getMappings() != null) {
+            mapping.getFollowedBy().getMappings().forEach(this::normalizeMappingSingularFields);
+        }
+    }
+
+    private void normalizeCondition(final Condition condition) {
+        if (condition.getTargetAttribute() != null && condition.getTargetAttributes() == null) {
+            condition.setTargetAttributes(List.of(condition.getTargetAttribute()));
+            condition.setTargetAttribute(null);
+        }
+        if (condition.getCriteria() != null && condition.getCriterias() == null) {
+            condition.setCriterias(List.of(condition.getCriteria()));
+            condition.setCriteria(null);
+        }
     }
 }

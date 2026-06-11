@@ -58,10 +58,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-EVALUATION.gender.v1/data[at0002]/items[at0022]",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "other",
       "criterias" : [ "other" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -293,10 +291,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Patient",
-      "targetAttribute" : "active",
       "targetAttributes" : [ "active" ],
       "operator" : "not of",
-      "criteria" : "false",
       "criterias" : [ "false" ]
     } ],
     "fhir" : "Patient",
@@ -611,10 +607,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "physical",
                 "criterias" : [ "physical" ]
               } ],
               "openEhrConditions" : null,
@@ -653,10 +647,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "physical",
                 "criterias" : [ "physical" ]
               } ],
               "openEhrConditions" : null,
@@ -707,10 +699,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "physical",
                 "criterias" : [ "physical" ]
               } ],
               "openEhrConditions" : null,
@@ -750,10 +740,8 @@
               "fhirConditions" : null,
               "openEhrConditions" : [ {
                 "targetRoot" : "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]/data[at0001]/items[openEHR-EHR-CLUSTER.person.v1]/items[openEHR-EHR-CLUSTER.address.v1]/items[at0010]",
-                "targetAttribute" : "defining_code/code_string",
                 "targetAttributes" : [ "defining_code/code_string" ],
                 "operator" : "one of",
-                "criteria" : "at0011",
                 "criterias" : [ "at0011" ]
               } ],
               "enteredFromSlotArchetypeLink" : true,
@@ -791,10 +779,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "postal",
                 "criterias" : [ "postal" ]
               } ],
               "openEhrConditions" : null,
@@ -833,10 +819,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "postal",
                 "criterias" : [ "postal" ]
               } ],
               "openEhrConditions" : null,
@@ -887,10 +871,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "postal",
                 "criterias" : [ "postal" ]
               } ],
               "openEhrConditions" : null,
@@ -930,10 +912,8 @@
               "fhirConditions" : null,
               "openEhrConditions" : [ {
                 "targetRoot" : "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]/data[at0001]/items[openEHR-EHR-CLUSTER.person.v1]/items[openEHR-EHR-CLUSTER.address.v1]/items[at0010]",
-                "targetAttribute" : "defining_code/code_string",
                 "targetAttributes" : [ "defining_code/code_string" ],
                 "operator" : "one of",
-                "criteria" : "at0012",
                 "criterias" : [ "at0012" ]
               } ],
               "enteredFromSlotArchetypeLink" : true,
@@ -971,10 +951,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "both",
                 "criterias" : [ "both" ]
               } ],
               "openEhrConditions" : null,
@@ -1013,10 +991,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "both",
                 "criterias" : [ "both" ]
               } ],
               "openEhrConditions" : null,
@@ -1067,10 +1043,8 @@
               "unidirectional" : "fhir->openehr",
               "fhirConditions" : [ {
                 "targetRoot" : "Patient.address.type",
-                "targetAttribute" : "code",
                 "targetAttributes" : [ "code" ],
                 "operator" : "one of",
-                "criteria" : "both",
                 "criterias" : [ "both" ]
               } ],
               "openEhrConditions" : null,
@@ -1110,10 +1084,8 @@
               "fhirConditions" : null,
               "openEhrConditions" : [ {
                 "targetRoot" : "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]/data[at0001]/items[openEHR-EHR-CLUSTER.person.v1]/items[openEHR-EHR-CLUSTER.address.v1]/items[at0010]",
-                "targetAttribute" : "defining_code/code_string",
                 "targetAttributes" : [ "defining_code/code_string" ],
                 "operator" : "one of",
-                "criteria" : "at0013",
                 "criterias" : [ "at0013" ]
               } ],
               "enteredFromSlotArchetypeLink" : true,
@@ -1225,10 +1197,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Patient",
-      "targetAttribute" : "active",
       "targetAttributes" : [ "active" ],
       "operator" : "not of",
-      "criteria" : "false",
       "criterias" : [ "false" ]
     } ],
     "fhir" : "Patient",
@@ -1263,10 +1233,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Patient",
-        "targetAttribute" : "active",
         "targetAttributes" : [ "active" ],
         "operator" : "not of",
-        "criteria" : "false",
         "criterias" : [ "false" ]
       } ],
       "fhir" : "deceased.as(Boolean)",
@@ -1287,7 +1255,6 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/content[openEHR-EHR-ADMIN_ENTRY.person_data.v0]/data[at0001]/items[at0024]",
-        "targetAttribute" : "items[openEHR-EHR-CLUSTER.death_details.v1]/items[at0001]",
         "targetAttributes" : [ "items[openEHR-EHR-CLUSTER.death_details.v1]/items[at0001]" ],
         "operator" : "empty"
       } ],
@@ -1310,10 +1277,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Patient",
-        "targetAttribute" : "active",
         "targetAttributes" : [ "active" ],
         "operator" : "not of",
-        "criteria" : "false",
         "criterias" : [ "false" ]
       } ],
       "fhir" : "deceased.as(DateTime)",
@@ -1356,10 +1321,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Patient",
-      "targetAttribute" : "active",
       "targetAttributes" : [ "active" ],
       "operator" : "not of",
-      "criteria" : "false",
       "criterias" : [ "false" ]
     } ],
     "fhir" : "birthDate",
@@ -1433,10 +1396,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Patient",
-      "targetAttribute" : "active",
       "targetAttributes" : [ "active" ],
       "operator" : "not of",
-      "criteria" : "false",
       "criterias" : [ "false" ]
     } ],
     "fhir" : "link",
@@ -1471,10 +1432,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Patient",
-        "targetAttribute" : "active",
         "targetAttributes" : [ "active" ],
         "operator" : "not of",
-        "criteria" : "false",
         "criterias" : [ "false" ]
       } ],
       "fhir" : "other",
@@ -1509,10 +1468,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Patient",
-          "targetAttribute" : "active",
           "targetAttributes" : [ "active" ],
           "operator" : "not of",
-          "criteria" : "false",
           "criterias" : [ "false" ]
         } ],
         "fhir" : "link.type.value",
@@ -1579,10 +1536,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "Patient.identifier",
-    "targetAttribute" : "system",
     "targetAttributes" : [ "system" ],
     "operator" : "not of",
-    "criteria" : "http://fhir.de/sid/gkv/kvid-10",
     "criterias" : [ "http://fhir.de/sid/gkv/kvid-10" ]
   } ],
   "openEhrConditions" : null,
@@ -1621,10 +1576,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "Patient.identifier",
-    "targetAttribute" : "system",
     "targetAttributes" : [ "system" ],
     "operator" : "one of",
-    "criteria" : "http://fhir.de/sid/gkv/kvid-10",
     "criterias" : [ "http://fhir.de/sid/gkv/kvid-10" ]
   } ],
   "openEhrConditions" : null,
