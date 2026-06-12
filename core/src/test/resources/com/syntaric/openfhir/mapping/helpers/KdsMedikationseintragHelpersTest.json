@@ -610,10 +610,8 @@
         "fhirConditions" : null,
         "openEhrConditions" : [ {
           "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-          "targetAttribute" : "items[at0144]",
           "targetAttributes" : [ "items[at0144]" ],
           "operator" : "type",
-          "criteria" : "DV_QUANTITY",
           "criterias" : [ "DV_QUANTITY" ]
         } ],
         "enteredFromSlotArchetypeLink" : true,
@@ -652,10 +650,8 @@
         "fhirConditions" : null,
         "openEhrConditions" : [ {
           "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-          "targetAttribute" : "items[at0144]",
           "targetAttributes" : [ "items[at0144]" ],
           "operator" : "type",
-          "criteria" : "DV_INTERVAL",
           "criterias" : [ "DV_INTERVAL" ]
         } ],
         "enteredFromSlotArchetypeLink" : true,
@@ -694,7 +690,6 @@
         "fhirConditions" : null,
         "openEhrConditions" : [ {
           "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-          "targetAttribute" : "items[at0102]",
           "targetAttributes" : [ "items[at0102]" ],
           "operator" : "empty"
         } ],
@@ -734,7 +729,6 @@
         "fhirConditions" : null,
         "openEhrConditions" : [ {
           "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-          "targetAttribute" : "items[at0102]",
           "targetAttributes" : [ "items[at0102]" ],
           "operator" : "not empty"
         } ],
@@ -812,10 +806,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "MedicationStatement.dosage",
-        "targetAttribute" : "timing.repeat.periodUnit",
         "targetAttributes" : [ "timing.repeat.periodUnit" ],
         "operator" : "one of",
-        "criteria" : "s",
         "criterias" : [ "s", "min", "h", "d" ]
       } ],
       "openEhrConditions" : null,
@@ -1029,10 +1021,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "MedicationStatement.dosage",
-        "targetAttribute" : "timing.repeat.periodUnit",
         "targetAttributes" : [ "timing.repeat.periodUnit" ],
         "operator" : "not of",
-        "criteria" : "s",
         "criterias" : [ "s", "min", "h", "d" ]
       } ],
       "openEhrConditions" : null,
@@ -1313,10 +1303,8 @@
         "fhirConditions" : null,
         "openEhrConditions" : [ {
           "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-          "targetAttribute" : "items[at0132]",
           "targetAttributes" : [ "items[at0132]" ],
           "operator" : "type",
-          "criteria" : "DV_TEXT",
           "criterias" : [ "DV_TEXT" ]
         } ],
         "enteredFromSlotArchetypeLink" : true,
@@ -2295,10 +2283,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "MedicationStatement.medication.as(Reference).resolve().ingredient.extension",
-            "targetAttribute" : "url",
             "targetAttributes" : [ "url" ],
             "operator" : "one of",
-            "criteria" : "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstofftyp",
             "criterias" : [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstofftyp" ]
           } ],
           "openEhrConditions" : null,
@@ -2442,10 +2428,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "MedicationStatement.medication.as(Reference).resolve().ingredient.extension",
-            "targetAttribute" : "url",
             "targetAttributes" : [ "url" ],
             "operator" : "one of",
-            "criteria" : "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstoffrelation",
             "criterias" : [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstoffrelation" ]
           } ],
           "openEhrConditions" : null,
@@ -2550,10 +2534,8 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "MedicationStatement.medication.as(Reference).resolve().ingredient.extension.extension",
-              "targetAttribute" : "url",
               "targetAttributes" : [ "url" ],
               "operator" : "one of",
-              "criteria" : "ingredientReference",
               "criterias" : [ "ingredientReference" ]
             } ],
             "openEhrConditions" : null,
@@ -3187,10 +3169,8 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "MedicationStatement.medication.as(Reference).resolve().ingredient.extension.extension",
-              "targetAttribute" : "url",
               "targetAttributes" : [ "url" ],
               "operator" : "one of",
-              "criteria" : "ingredientUri",
               "criterias" : [ "ingredientUri" ]
             } ],
             "openEhrConditions" : null,
@@ -3413,10 +3393,8 @@
         "fhirConditions" : null,
         "openEhrConditions" : [ {
           "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-          "targetAttribute" : "items[at0132]",
           "targetAttributes" : [ "items[at0132]" ],
           "operator" : "type",
-          "criteria" : "DV_CODED_TEXT",
           "criterias" : [ "DV_CODED_TEXT" ]
         } ],
         "enteredFromSlotArchetypeLink" : true,
@@ -3502,7 +3480,6 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-OBSERVATION.medication_statement.v0/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-      "targetAttribute" : "items[at0132]",
       "targetAttributes" : [ "items[at0132]" ],
       "operator" : "empty"
     } ],
@@ -3856,10 +3833,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "MedicationStatement.context.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -4034,10 +4009,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "MedicationStatement.context.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -4532,10 +4505,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/content[openEHR-EHR-OBSERVATION.medication_statement.v0]/data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-        "targetAttribute" : "items[at0132]",
         "targetAttributes" : [ "items[at0132]" ],
         "operator" : "type",
-        "criteria" : "DV_TEXT",
         "criterias" : [ "DV_TEXT" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -5514,10 +5485,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "MedicationStatement.medication.as(Reference).as(Reference).resolve().ingredient.extension",
-          "targetAttribute" : "url",
           "targetAttributes" : [ "url" ],
           "operator" : "one of",
-          "criteria" : "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstofftyp",
           "criterias" : [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstofftyp" ]
         } ],
         "openEhrConditions" : null,
@@ -5661,10 +5630,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "MedicationStatement.medication.as(Reference).as(Reference).resolve().ingredient.extension",
-          "targetAttribute" : "url",
           "targetAttributes" : [ "url" ],
           "operator" : "one of",
-          "criteria" : "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstoffrelation",
           "criterias" : [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstoffrelation" ]
         } ],
         "openEhrConditions" : null,
@@ -5769,10 +5736,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "MedicationStatement.medication.as(Reference).as(Reference).resolve().ingredient.extension.extension",
-            "targetAttribute" : "url",
             "targetAttributes" : [ "url" ],
             "operator" : "one of",
-            "criteria" : "ingredientReference",
             "criterias" : [ "ingredientReference" ]
           } ],
           "openEhrConditions" : null,
@@ -6406,10 +6371,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "MedicationStatement.medication.as(Reference).as(Reference).resolve().ingredient.extension.extension",
-            "targetAttribute" : "url",
             "targetAttributes" : [ "url" ],
             "operator" : "one of",
-            "criteria" : "ingredientUri",
             "criterias" : [ "ingredientUri" ]
           } ],
           "openEhrConditions" : null,
@@ -6632,10 +6595,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/content[openEHR-EHR-OBSERVATION.medication_statement.v0]/data[at0003]/items[openEHR-EHR-CLUSTER.medication.v2]",
-        "targetAttribute" : "items[at0132]",
         "targetAttributes" : [ "items[at0132]" ],
         "operator" : "type",
-        "criteria" : "DV_CODED_TEXT",
         "criterias" : [ "DV_CODED_TEXT" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,

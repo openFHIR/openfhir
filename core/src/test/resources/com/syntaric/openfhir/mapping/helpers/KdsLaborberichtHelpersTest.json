@@ -1337,10 +1337,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-              "targetAttribute" : "items[at0015]",
               "targetAttributes" : [ "items[at0015]" ],
               "operator" : "type",
-              "criteria" : "DV_DATE_TIME",
               "criterias" : [ "DV_DATE_TIME" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1379,10 +1377,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-              "targetAttribute" : "items[at0015]",
               "targetAttributes" : [ "items[at0015]" ],
               "operator" : "type",
-              "criteria" : "DV_INTERVAL",
               "criterias" : [ "DV_INTERVAL" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1806,7 +1802,6 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]",
-              "targetAttribute" : "links",
               "targetAttributes" : [ "links" ],
               "operator" : "empty"
             } ],
@@ -1846,7 +1841,6 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]/items[at0003]",
-              "targetAttribute" : "links",
               "targetAttributes" : [ "links" ],
               "operator" : "not empty"
             } ],
@@ -1959,10 +1953,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-            "targetAttribute" : "status",
             "targetAttributes" : [ "status" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "openEhrConditions" : null,
@@ -1997,10 +1989,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "available",
               "criterias" : [ "available" ]
             } ],
             "openEhrConditions" : null,
@@ -2039,10 +2029,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "available",
               "criterias" : [ "available" ]
             } ],
             "openEhrConditions" : null,
@@ -2081,10 +2069,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "available",
               "criterias" : [ "available" ]
             } ],
             "openEhrConditions" : null,
@@ -2124,10 +2110,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-              "targetAttribute" : "items[at0041]/defining_code/code_string",
               "targetAttributes" : [ "items[at0041]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0062",
               "criterias" : [ "at0062" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -2165,10 +2149,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "unavailable",
               "criterias" : [ "unavailable" ]
             } ],
             "openEhrConditions" : null,
@@ -2207,10 +2189,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "unavailable",
               "criterias" : [ "unavailable" ]
             } ],
             "openEhrConditions" : null,
@@ -2249,10 +2229,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "unavailable",
               "criterias" : [ "unavailable" ]
             } ],
             "openEhrConditions" : null,
@@ -2292,10 +2270,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-              "targetAttribute" : "items[at0041]/defining_code/code_string",
               "targetAttributes" : [ "items[at0041]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0064",
               "criterias" : [ "at0064" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -2333,10 +2309,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "unsatisfactory",
               "criterias" : [ "unsatisfactory" ]
             } ],
             "openEhrConditions" : null,
@@ -2375,10 +2349,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "unsatisfactory",
               "criterias" : [ "unsatisfactory" ]
             } ],
             "openEhrConditions" : null,
@@ -2417,10 +2389,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.specimen.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "unsatisfactory",
               "criterias" : [ "unsatisfactory" ]
             } ],
             "openEhrConditions" : null,
@@ -2460,10 +2430,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.specimen.v1]",
-              "targetAttribute" : "items[at0041]/defining_code/code_string",
               "targetAttributes" : [ "items[at0041]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0064",
               "criterias" : [ "at0064" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -2746,10 +2714,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "registered",
               "criterias" : [ "registered" ]
             } ],
             "openEhrConditions" : null,
@@ -2788,10 +2754,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "registered",
               "criterias" : [ "registered" ]
             } ],
             "openEhrConditions" : null,
@@ -2830,10 +2794,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "registered",
               "criterias" : [ "registered" ]
             } ],
             "openEhrConditions" : null,
@@ -2873,10 +2835,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0015",
               "criterias" : [ "at0015" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -2915,10 +2875,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0016",
               "criterias" : [ "at0016" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -2956,10 +2914,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "preliminary",
               "criterias" : [ "preliminary" ]
             } ],
             "openEhrConditions" : null,
@@ -2998,10 +2954,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "preliminary",
               "criterias" : [ "preliminary" ]
             } ],
             "openEhrConditions" : null,
@@ -3040,10 +2994,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "preliminary",
               "criterias" : [ "preliminary" ]
             } ],
             "openEhrConditions" : null,
@@ -3083,10 +3035,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -3124,10 +3074,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "final",
               "criterias" : [ "final" ]
             } ],
             "openEhrConditions" : null,
@@ -3166,10 +3114,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "final",
               "criterias" : [ "final" ]
             } ],
             "openEhrConditions" : null,
@@ -3208,10 +3154,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "final",
               "criterias" : [ "final" ]
             } ],
             "openEhrConditions" : null,
@@ -3251,10 +3195,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0018",
               "criterias" : [ "at0018" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -3292,10 +3234,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "amended",
               "criterias" : [ "amended" ]
             } ],
             "openEhrConditions" : null,
@@ -3334,10 +3274,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "amended",
               "criterias" : [ "amended" ]
             } ],
             "openEhrConditions" : null,
@@ -3376,10 +3314,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "amended",
               "criterias" : [ "amended" ]
             } ],
             "openEhrConditions" : null,
@@ -3419,10 +3355,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0020",
               "criterias" : [ "at0020" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -3460,10 +3394,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "corrected",
               "criterias" : [ "corrected" ]
             } ],
             "openEhrConditions" : null,
@@ -3502,10 +3434,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "corrected",
               "criterias" : [ "corrected" ]
             } ],
             "openEhrConditions" : null,
@@ -3544,10 +3474,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "corrected",
               "criterias" : [ "corrected" ]
             } ],
             "openEhrConditions" : null,
@@ -3587,10 +3515,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0019",
               "criterias" : [ "at0019" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -3628,10 +3554,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "appended",
               "criterias" : [ "appended" ]
             } ],
             "openEhrConditions" : null,
@@ -3670,10 +3594,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "appended",
               "criterias" : [ "appended" ]
             } ],
             "openEhrConditions" : null,
@@ -3712,10 +3634,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "appended",
               "criterias" : [ "appended" ]
             } ],
             "openEhrConditions" : null,
@@ -3755,10 +3675,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0021",
               "criterias" : [ "at0021" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -3796,10 +3714,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "cancelled",
               "criterias" : [ "cancelled" ]
             } ],
             "openEhrConditions" : null,
@@ -3838,10 +3754,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "cancelled",
               "criterias" : [ "cancelled" ]
             } ],
             "openEhrConditions" : null,
@@ -3880,10 +3794,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "cancelled",
               "criterias" : [ "cancelled" ]
             } ],
             "openEhrConditions" : null,
@@ -3923,10 +3835,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0023",
               "criterias" : [ "at0023" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -3964,10 +3874,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "openEhrConditions" : null,
@@ -4006,10 +3914,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "openEhrConditions" : null,
@@ -4048,10 +3954,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "DiagnosticReport.result.as(Reference).resolve()",
-              "targetAttribute" : "status",
               "targetAttributes" : [ "status" ],
               "operator" : "one of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "openEhrConditions" : null,
@@ -4091,10 +3995,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]",
-              "targetAttribute" : "items[at0005]/defining_code/code_string",
               "targetAttributes" : [ "items[at0005]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0022",
               "criterias" : [ "at0022" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -4343,7 +4245,6 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]/items[at0026]",
-              "targetAttribute" : "links",
               "targetAttributes" : [ "links" ],
               "operator" : "empty"
             } ],
@@ -4383,7 +4284,6 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-OBSERVATION.laboratory_test_result.v1/data[at0001]/events[at0002]/data[at0003]/items[openEHR-EHR-CLUSTER.laboratory_test_analyte.v1]/items[at0026]",
-              "targetAttribute" : "links",
               "targetAttributes" : [ "links" ],
               "operator" : "not empty"
             } ],
@@ -4683,10 +4583,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "DiagnosticReport.encounter.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -4861,10 +4759,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "DiagnosticReport.encounter.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -5016,10 +4912,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "DiagnosticReport.identifier",
-    "targetAttribute" : "type.coding.code",
     "targetAttributes" : [ "type.coding.code" ],
     "operator" : "one of",
-    "criteria" : "FILL",
     "criterias" : [ "FILL" ]
   } ],
   "openEhrConditions" : null,

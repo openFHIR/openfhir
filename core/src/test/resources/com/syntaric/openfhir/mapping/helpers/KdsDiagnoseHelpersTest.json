@@ -10,10 +10,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "recordedDate",
@@ -52,10 +50,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "asserter",
@@ -90,10 +86,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.asserter",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.asserter",
@@ -128,10 +122,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.asserter",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "Condition.asserter",
@@ -174,10 +166,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.asserter",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.asserter",
@@ -220,10 +210,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "recorder",
@@ -262,10 +250,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "asserter",
@@ -300,10 +286,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.asserter",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.asserter",
@@ -338,10 +322,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.asserter",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "Condition.asserter",
@@ -384,10 +366,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.asserter",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.asserter",
@@ -430,10 +410,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "recorder",
@@ -472,10 +450,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "code",
@@ -510,10 +486,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.code",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "coding",
@@ -533,10 +507,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition.code.coding",
-      "targetAttribute" : "system",
       "targetAttributes" : [ "system" ],
       "operator" : "one of",
-      "criteria" : "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
       "criterias" : [ "http://fhir.de/CodeSystem/bfarm/icd-10-gm" ]
     } ],
     "openEhrConditions" : null,
@@ -555,10 +527,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.code.coding",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "Condition.code.coding",
@@ -593,10 +563,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "system",
@@ -639,10 +607,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.code.coding",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "extension",
@@ -662,10 +628,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Condition.code.coding.extension",
-        "targetAttribute" : "url",
         "targetAttributes" : [ "url" ],
         "operator" : "one of",
-        "criteria" : "http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit",
         "criterias" : [ "http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit" ]
       } ],
       "openEhrConditions" : null,
@@ -684,10 +648,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "value",
@@ -726,10 +688,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "value",
@@ -768,10 +728,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition.code.coding.extension",
@@ -806,10 +764,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.code.coding.extension",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "url",
@@ -856,10 +812,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.code.coding",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "extension",
@@ -879,10 +833,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Condition.code.coding.extension",
-        "targetAttribute" : "url",
         "targetAttributes" : [ "url" ],
         "operator" : "one of",
-        "criteria" : "http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen",
         "criterias" : [ "http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen" ]
       } ],
       "openEhrConditions" : null,
@@ -901,10 +853,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition.code.coding.extension",
@@ -986,10 +936,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "*",
               "criterias" : [ "*" ]
             } ],
             "openEhrConditions" : null,
@@ -1028,10 +976,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "*",
               "criterias" : [ "*" ]
             } ],
             "openEhrConditions" : null,
@@ -1082,10 +1028,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "*",
               "criterias" : [ "*" ]
             } ],
             "openEhrConditions" : null,
@@ -1125,10 +1069,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0003",
               "criterias" : [ "at0003" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1167,10 +1109,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0003",
               "criterias" : [ "at0003" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1209,10 +1149,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0003",
               "criterias" : [ "at0003" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1250,10 +1188,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "†",
               "criterias" : [ "†" ]
             } ],
             "openEhrConditions" : null,
@@ -1292,10 +1228,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "†",
               "criterias" : [ "†" ]
             } ],
             "openEhrConditions" : null,
@@ -1346,10 +1280,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "†",
               "criterias" : [ "†" ]
             } ],
             "openEhrConditions" : null,
@@ -1389,10 +1321,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0002",
               "criterias" : [ "at0002" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1431,10 +1361,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0002",
               "criterias" : [ "at0002" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1473,10 +1401,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0002",
               "criterias" : [ "at0002" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1514,10 +1440,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "!",
               "criterias" : [ "!" ]
             } ],
             "openEhrConditions" : null,
@@ -1556,10 +1480,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "!",
               "criterias" : [ "!" ]
             } ],
             "openEhrConditions" : null,
@@ -1610,10 +1532,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "!",
               "criterias" : [ "!" ]
             } ],
             "openEhrConditions" : null,
@@ -1653,10 +1573,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0004",
               "criterias" : [ "at0004" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1695,10 +1613,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0004",
               "criterias" : [ "at0004" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1737,10 +1653,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-              "targetAttribute" : "defining_code/code_string",
               "targetAttributes" : [ "defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0004",
               "criterias" : [ "at0004" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -1770,10 +1684,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition.code.coding.extension",
@@ -1808,10 +1720,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.code.coding.extension",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "url",
@@ -1858,10 +1768,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.code.coding",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "extension",
@@ -1881,10 +1789,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Condition.code.coding.extension",
-        "targetAttribute" : "url",
         "targetAttributes" : [ "url" ],
         "operator" : "one of",
-        "criteria" : "http://fhir.de/StructureDefinition/seitenlokalisation",
         "criterias" : [ "http://fhir.de/StructureDefinition/seitenlokalisation" ]
       } ],
       "openEhrConditions" : null,
@@ -1903,10 +1809,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition.code.coding.extension",
@@ -1958,7 +1862,6 @@
           "fhirConditions" : [ {
             "targetRoot" : "Condition.code.coding.extension",
             "operator" : "type",
-            "criteria" : "CodeableConcept",
             "criterias" : [ "CodeableConcept" ]
           } ],
           "openEhrConditions" : null,
@@ -1993,7 +1896,6 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "Condition.code.coding.extension",
-              "targetAttribute" : "coding",
               "targetAttributes" : [ "coding" ],
               "operator" : "empty"
             } ],
@@ -2073,7 +1975,6 @@
           "fhirConditions" : [ {
             "targetRoot" : "Condition.code.coding.extension",
             "operator" : "type",
-            "criteria" : "Extension",
             "criterias" : [ "Extension" ]
           } ],
           "openEhrConditions" : null,
@@ -2100,10 +2001,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.code.coding.extension",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition.code.coding.extension",
@@ -2138,10 +2037,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.code.coding.extension",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "url",
@@ -2196,10 +2093,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "note.text",
@@ -2238,10 +2133,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "Condition",
@@ -2276,10 +2169,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "onset.as(Period)",
@@ -2314,10 +2205,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.onset.as(Period)",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "Condition.onset.as(Period)",
@@ -2352,10 +2241,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.onset.as(Period)",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "start",
@@ -2410,10 +2297,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "Condition.onset.as(Period).start.extension",
-          "targetAttribute" : "url",
           "targetAttributes" : [ "url" ],
           "operator" : "one of",
-          "criteria" : "http://fhir.de/StructureDefinition/lebensphase",
           "criterias" : [ "http://fhir.de/StructureDefinition/lebensphase" ]
         } ],
         "openEhrConditions" : null,
@@ -2522,10 +2407,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "Condition.onset.as(Period).end.extension",
-          "targetAttribute" : "url",
           "targetAttributes" : [ "url" ],
           "operator" : "one of",
-          "criteria" : "http://fhir.de/StructureDefinition/lebensphase",
           "criterias" : [ "http://fhir.de/StructureDefinition/lebensphase" ]
         } ],
         "openEhrConditions" : null,
@@ -2626,10 +2509,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "onset.as(DateTime)",
@@ -2676,10 +2557,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "bodySite",
@@ -2718,10 +2597,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "bodySite",
@@ -2773,7 +2650,6 @@
     "fhirConditions" : [ {
       "targetRoot" : "Condition.bodySite",
       "operator" : "type",
-      "criteria" : "CodeableConcept",
       "criterias" : [ "CodeableConcept" ]
     } ],
     "openEhrConditions" : null,
@@ -2808,7 +2684,6 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Condition.bodySite",
-        "targetAttribute" : "coding",
         "targetAttributes" : [ "coding" ],
         "operator" : "empty"
       } ],
@@ -2888,7 +2763,6 @@
     "fhirConditions" : [ {
       "targetRoot" : "Condition.bodySite",
       "operator" : "type",
-      "criteria" : "Extension",
       "criterias" : [ "Extension" ]
     } ],
     "openEhrConditions" : null,
@@ -2915,10 +2789,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "severity",
@@ -2957,10 +2829,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "encounter.as(Reference).identifier",
@@ -3011,10 +2881,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition.encounter.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -3111,10 +2979,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "encounter.as(Reference).resolve()",
@@ -3149,10 +3015,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.encounter.as(Reference).resolve()",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "identifier",
@@ -3203,10 +3067,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Condition.encounter.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -3303,10 +3165,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.encounter.as(Reference).resolve()",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.encounter.as(Reference).resolve()",
@@ -3349,10 +3209,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "extension",
@@ -3372,10 +3230,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "Condition.extension",
-    "targetAttribute" : "url",
     "targetAttributes" : [ "url" ],
     "operator" : "one of",
-    "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
     "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-assertedDate" ]
   } ],
   "openEhrConditions" : null,
@@ -3394,10 +3250,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.extension",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "value.as(DateTime)",
@@ -3436,10 +3290,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.extension",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.extension",
@@ -3474,10 +3326,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.extension",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "url",
@@ -3524,10 +3374,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "meta",
@@ -3562,10 +3410,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.meta",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "profile",
@@ -3608,10 +3454,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "Condition",
@@ -3662,10 +3506,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition.verificationStatus",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -3700,10 +3542,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "provisional",
         "criterias" : [ "provisional" ]
       } ],
       "openEhrConditions" : null,
@@ -3742,10 +3582,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "provisional",
         "criterias" : [ "provisional" ]
       } ],
       "openEhrConditions" : null,
@@ -3800,10 +3638,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "provisional",
         "criterias" : [ "provisional" ]
       } ],
       "openEhrConditions" : null,
@@ -3843,10 +3679,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -3885,10 +3719,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -3927,10 +3759,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -3968,10 +3798,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "differential",
         "criterias" : [ "differential" ]
       } ],
       "openEhrConditions" : null,
@@ -4010,10 +3838,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "differential",
         "criterias" : [ "differential" ]
       } ],
       "openEhrConditions" : null,
@@ -4068,10 +3894,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "differential",
         "criterias" : [ "differential" ]
       } ],
       "openEhrConditions" : null,
@@ -4111,10 +3935,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4153,10 +3975,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4195,10 +4015,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4236,10 +4054,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "unconfirmed",
         "criterias" : [ "unconfirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -4278,10 +4094,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "unconfirmed",
         "criterias" : [ "unconfirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -4336,10 +4150,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "unconfirmed",
         "criterias" : [ "unconfirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -4379,10 +4191,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0016",
         "criterias" : [ "at0016" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4421,10 +4231,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0016",
         "criterias" : [ "at0016" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4463,10 +4271,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0016",
         "criterias" : [ "at0016" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4504,10 +4310,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "confirmed",
         "criterias" : [ "confirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -4546,10 +4350,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "confirmed",
         "criterias" : [ "confirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -4604,10 +4406,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "confirmed",
         "criterias" : [ "confirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -4647,10 +4447,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0018",
         "criterias" : [ "at0018" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4689,10 +4487,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0018",
         "criterias" : [ "at0018" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4731,10 +4527,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0018",
         "criterias" : [ "at0018" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4772,10 +4566,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "refuted",
         "criterias" : [ "refuted" ]
       } ],
       "openEhrConditions" : null,
@@ -4814,10 +4606,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "refuted",
         "criterias" : [ "refuted" ]
       } ],
       "openEhrConditions" : null,
@@ -4872,10 +4662,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "refuted",
         "criterias" : [ "refuted" ]
       } ],
       "openEhrConditions" : null,
@@ -4915,10 +4703,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0088",
         "criterias" : [ "at0088" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4957,10 +4743,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0088",
         "criterias" : [ "at0088" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -4999,10 +4783,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0088",
         "criterias" : [ "at0088" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -5079,10 +4861,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition",
-      "targetAttribute" : "extension.url",
       "targetAttributes" : [ "extension.url" ],
       "operator" : "not of",
-      "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
       "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
     } ],
     "openEhrConditions" : null,
@@ -5117,10 +4897,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition",
-        "targetAttribute" : "extension.url",
         "targetAttributes" : [ "extension.url" ],
         "operator" : "not of",
-        "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
         "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
       } ],
       "openEhrConditions" : null,
@@ -5159,10 +4937,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition",
-        "targetAttribute" : "extension.url",
         "targetAttributes" : [ "extension.url" ],
         "operator" : "not of",
-        "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
         "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
       } ],
       "openEhrConditions" : null,
@@ -5213,10 +4989,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition",
-        "targetAttribute" : "extension.url",
         "targetAttributes" : [ "extension.url" ],
         "operator" : "not of",
-        "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
         "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
       } ],
       "openEhrConditions" : null,
@@ -5259,10 +5033,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition",
-      "targetAttribute" : "extension.url",
       "targetAttributes" : [ "extension.url" ],
       "operator" : "one of",
-      "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
       "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
     } ],
     "openEhrConditions" : null,
@@ -5297,10 +5069,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition",
-        "targetAttribute" : "extension.url",
         "targetAttributes" : [ "extension.url" ],
         "operator" : "one of",
-        "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
         "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
       } ],
       "openEhrConditions" : null,
@@ -5339,10 +5109,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition",
-        "targetAttribute" : "extension.url",
         "targetAttributes" : [ "extension.url" ],
         "operator" : "one of",
-        "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
         "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
       } ],
       "openEhrConditions" : null,
@@ -5393,10 +5161,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition",
-        "targetAttribute" : "extension.url",
         "targetAttributes" : [ "extension.url" ],
         "operator" : "one of",
-        "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
         "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
       } ],
       "openEhrConditions" : null,
@@ -5427,10 +5193,8 @@
   "preprocessorOpenEhrCondition" : null,
   "preprocessorFhirConditions" : [ {
     "targetRoot" : "Condition",
-    "targetAttribute" : "verificationStatus.coding.code",
     "targetAttributes" : [ "verificationStatus.coding.code" ],
     "operator" : "not of",
-    "criteria" : "entered-in-error",
     "criterias" : [ "entered-in-error" ]
   } ],
   "fhir" : "extension",
@@ -5450,10 +5214,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "Condition.extension",
-    "targetAttribute" : "url",
     "targetAttributes" : [ "url" ],
     "operator" : "one of",
-    "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
     "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
   } ],
   "openEhrConditions" : null,
@@ -5472,10 +5234,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.extension",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "Condition.extension",
@@ -5510,10 +5270,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.extension",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "url",
@@ -5556,10 +5314,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Condition.extension",
-      "targetAttribute" : "verificationStatus.coding.code",
       "targetAttributes" : [ "verificationStatus.coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "fhir" : "value.as(Reference).resolve()",
@@ -5594,10 +5350,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-        "targetAttribute" : "verificationStatus.coding.code",
         "targetAttributes" : [ "verificationStatus.coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error" ]
       } ],
       "fhir" : "Condition.extension.value.as(Reference).resolve()",
@@ -5618,10 +5372,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
-        "targetAttribute" : "data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]/items[at0063]/defining_code/code_string",
         "targetAttributes" : [ "data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]/items[at0063]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0064",
         "criterias" : [ "at0064" ]
       } ],
       "enteredFromSlotArchetypeLink" : false,
@@ -5639,10 +5391,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "recordedDate",
@@ -5681,10 +5431,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "asserter",
@@ -5719,10 +5467,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().asserter",
@@ -5757,10 +5503,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "Condition.extension.value.as(Reference).resolve().asserter",
@@ -5803,10 +5547,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().asserter",
@@ -5849,10 +5591,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "recorder",
@@ -5891,10 +5631,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "asserter",
@@ -5929,10 +5667,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().asserter",
@@ -5967,10 +5703,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "Condition.extension.value.as(Reference).resolve().asserter",
@@ -6013,10 +5747,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().asserter",
@@ -6059,10 +5791,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "recorder",
@@ -6101,10 +5831,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "code",
@@ -6139,10 +5867,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "coding",
@@ -6162,10 +5888,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding",
-            "targetAttribute" : "system",
             "targetAttributes" : [ "system" ],
             "operator" : "one of",
-            "criteria" : "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
             "criterias" : [ "http://fhir.de/CodeSystem/bfarm/icd-10-gm" ]
           } ],
           "openEhrConditions" : null,
@@ -6184,10 +5908,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "Condition.extension.value.as(Reference).resolve().code.coding",
@@ -6222,10 +5944,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "system",
@@ -6268,10 +5988,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "extension",
@@ -6291,10 +6009,8 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
-              "targetAttribute" : "url",
               "targetAttributes" : [ "url" ],
               "operator" : "one of",
-              "criteria" : "http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit",
               "criterias" : [ "http://fhir.de/StructureDefinition/icd-10-gm-diagnosesicherheit" ]
             } ],
             "openEhrConditions" : null,
@@ -6313,10 +6029,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "value",
@@ -6355,10 +6069,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "value",
@@ -6397,10 +6109,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
@@ -6435,10 +6145,8 @@
                 "preprocessorOpenEhrCondition" : null,
                 "preprocessorFhirConditions" : [ {
                   "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                  "targetAttribute" : "verificationStatus.coding.code",
                   "targetAttributes" : [ "verificationStatus.coding.code" ],
                   "operator" : "not of",
-                  "criteria" : "entered-in-error",
                   "criterias" : [ "entered-in-error" ]
                 } ],
                 "fhir" : "url",
@@ -6485,10 +6193,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "extension",
@@ -6508,10 +6214,8 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
-              "targetAttribute" : "url",
               "targetAttributes" : [ "url" ],
               "operator" : "one of",
-              "criteria" : "http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen",
               "criterias" : [ "http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen" ]
             } ],
             "openEhrConditions" : null,
@@ -6530,10 +6234,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
@@ -6615,10 +6317,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "*",
                     "criterias" : [ "*" ]
                   } ],
                   "openEhrConditions" : null,
@@ -6657,10 +6357,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "*",
                     "criterias" : [ "*" ]
                   } ],
                   "openEhrConditions" : null,
@@ -6711,10 +6409,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "*",
                     "criterias" : [ "*" ]
                   } ],
                   "openEhrConditions" : null,
@@ -6754,10 +6450,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0003",
                     "criterias" : [ "at0003" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -6796,10 +6490,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0003",
                     "criterias" : [ "at0003" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -6838,10 +6530,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0003",
                     "criterias" : [ "at0003" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -6879,10 +6569,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "†",
                     "criterias" : [ "†" ]
                   } ],
                   "openEhrConditions" : null,
@@ -6921,10 +6609,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "†",
                     "criterias" : [ "†" ]
                   } ],
                   "openEhrConditions" : null,
@@ -6975,10 +6661,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "†",
                     "criterias" : [ "†" ]
                   } ],
                   "openEhrConditions" : null,
@@ -7018,10 +6702,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0002",
                     "criterias" : [ "at0002" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -7060,10 +6742,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0002",
                     "criterias" : [ "at0002" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -7102,10 +6782,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0002",
                     "criterias" : [ "at0002" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -7143,10 +6821,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "!",
                     "criterias" : [ "!" ]
                   } ],
                   "openEhrConditions" : null,
@@ -7185,10 +6861,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "!",
                     "criterias" : [ "!" ]
                   } ],
                   "openEhrConditions" : null,
@@ -7239,10 +6913,8 @@
                   "unidirectional" : "fhir->openehr",
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension.value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding).value.as(Coding)",
-                    "targetAttribute" : "code",
                     "targetAttributes" : [ "code" ],
                     "operator" : "one of",
-                    "criteria" : "!",
                     "criterias" : [ "!" ]
                   } ],
                   "openEhrConditions" : null,
@@ -7282,10 +6954,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0004",
                     "criterias" : [ "at0004" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -7324,10 +6994,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0004",
                     "criterias" : [ "at0004" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -7366,10 +7034,8 @@
                   "fhirConditions" : null,
                   "openEhrConditions" : [ {
                     "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.multiple_coding_icd10gm.v1]/items[at0001]",
-                    "targetAttribute" : "defining_code/code_string",
                     "targetAttributes" : [ "defining_code/code_string" ],
                     "operator" : "one of",
-                    "criteria" : "at0004",
                     "criterias" : [ "at0004" ]
                   } ],
                   "enteredFromSlotArchetypeLink" : true,
@@ -7399,10 +7065,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
@@ -7437,10 +7101,8 @@
                 "preprocessorOpenEhrCondition" : null,
                 "preprocessorFhirConditions" : [ {
                   "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                  "targetAttribute" : "verificationStatus.coding.code",
                   "targetAttributes" : [ "verificationStatus.coding.code" ],
                   "operator" : "not of",
-                  "criteria" : "entered-in-error",
                   "criterias" : [ "entered-in-error" ]
                 } ],
                 "fhir" : "url",
@@ -7487,10 +7149,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "extension",
@@ -7510,10 +7170,8 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
-              "targetAttribute" : "url",
               "targetAttributes" : [ "url" ],
               "operator" : "one of",
-              "criteria" : "http://fhir.de/StructureDefinition/seitenlokalisation",
               "criterias" : [ "http://fhir.de/StructureDefinition/seitenlokalisation" ]
             } ],
             "openEhrConditions" : null,
@@ -7532,10 +7190,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
@@ -7587,7 +7243,6 @@
                 "fhirConditions" : [ {
                   "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
                   "operator" : "type",
-                  "criteria" : "CodeableConcept",
                   "criterias" : [ "CodeableConcept" ]
                 } ],
                 "openEhrConditions" : null,
@@ -7622,7 +7277,6 @@
                   "unidirectional" : null,
                   "fhirConditions" : [ {
                     "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
-                    "targetAttribute" : "coding",
                     "targetAttributes" : [ "coding" ],
                     "operator" : "empty"
                   } ],
@@ -7702,7 +7356,6 @@
                 "fhirConditions" : [ {
                   "targetRoot" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
                   "operator" : "type",
-                  "criteria" : "Extension",
                   "criterias" : [ "Extension" ]
                 } ],
                 "openEhrConditions" : null,
@@ -7729,10 +7382,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "Condition.extension.value.as(Reference).resolve().code.coding.extension",
@@ -7767,10 +7418,8 @@
                 "preprocessorOpenEhrCondition" : null,
                 "preprocessorFhirConditions" : [ {
                   "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                  "targetAttribute" : "verificationStatus.coding.code",
                   "targetAttributes" : [ "verificationStatus.coding.code" ],
                   "operator" : "not of",
-                  "criteria" : "entered-in-error",
                   "criterias" : [ "entered-in-error" ]
                 } ],
                 "fhir" : "url",
@@ -7825,10 +7474,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "note.text",
@@ -7867,10 +7514,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition",
@@ -7905,10 +7550,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "onset.as(Period)",
@@ -7943,10 +7586,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "Condition.extension.value.as(Reference).resolve().onset.as(Period)",
@@ -7981,10 +7622,8 @@
               "preprocessorOpenEhrCondition" : null,
               "preprocessorFhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-                "targetAttribute" : "verificationStatus.coding.code",
                 "targetAttributes" : [ "verificationStatus.coding.code" ],
                 "operator" : "not of",
-                "criteria" : "entered-in-error",
                 "criterias" : [ "entered-in-error" ]
               } ],
               "fhir" : "start",
@@ -8039,10 +7678,8 @@
               "unidirectional" : null,
               "fhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve().onset.as(Period).start.extension",
-                "targetAttribute" : "url",
                 "targetAttributes" : [ "url" ],
                 "operator" : "one of",
-                "criteria" : "http://fhir.de/StructureDefinition/lebensphase",
                 "criterias" : [ "http://fhir.de/StructureDefinition/lebensphase" ]
               } ],
               "openEhrConditions" : null,
@@ -8151,10 +7788,8 @@
               "unidirectional" : null,
               "fhirConditions" : [ {
                 "targetRoot" : "Condition.extension.value.as(Reference).resolve().onset.as(Period).end.extension",
-                "targetAttribute" : "url",
                 "targetAttributes" : [ "url" ],
                 "operator" : "one of",
-                "criteria" : "http://fhir.de/StructureDefinition/lebensphase",
                 "criterias" : [ "http://fhir.de/StructureDefinition/lebensphase" ]
               } ],
               "openEhrConditions" : null,
@@ -8255,10 +7890,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "onset.as(DateTime)",
@@ -8305,10 +7938,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "bodySite",
@@ -8347,10 +7978,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "bodySite",
@@ -8402,7 +8031,6 @@
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve().bodySite",
             "operator" : "type",
-            "criteria" : "CodeableConcept",
             "criterias" : [ "CodeableConcept" ]
           } ],
           "openEhrConditions" : null,
@@ -8437,7 +8065,6 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().bodySite",
-              "targetAttribute" : "coding",
               "targetAttributes" : [ "coding" ],
               "operator" : "empty"
             } ],
@@ -8517,7 +8144,6 @@
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve().bodySite",
             "operator" : "type",
-            "criteria" : "Extension",
             "criterias" : [ "Extension" ]
           } ],
           "openEhrConditions" : null,
@@ -8544,10 +8170,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "severity",
@@ -8586,10 +8210,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "encounter.as(Reference).identifier",
@@ -8640,10 +8262,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve().encounter.as(Reference).identifier",
-            "targetAttribute" : "type.coding.code",
             "targetAttributes" : [ "type.coding.code" ],
             "operator" : "one of",
-            "criteria" : "VN",
             "criterias" : [ "VN" ]
           } ],
           "openEhrConditions" : null,
@@ -8740,10 +8360,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "encounter.as(Reference).resolve()",
@@ -8778,10 +8396,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "identifier",
@@ -8832,10 +8448,8 @@
             "unidirectional" : null,
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().encounter.as(Reference).resolve().identifier",
-              "targetAttribute" : "type.coding.code",
               "targetAttributes" : [ "type.coding.code" ],
               "operator" : "one of",
-              "criteria" : "VN",
               "criterias" : [ "VN" ]
             } ],
             "openEhrConditions" : null,
@@ -8932,10 +8546,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().encounter.as(Reference).resolve()",
@@ -8978,10 +8590,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "extension",
@@ -9001,10 +8611,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve().extension",
-          "targetAttribute" : "url",
           "targetAttributes" : [ "url" ],
           "operator" : "one of",
-          "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
           "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-assertedDate" ]
         } ],
         "openEhrConditions" : null,
@@ -9023,10 +8631,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "value.as(DateTime)",
@@ -9065,10 +8671,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().extension",
@@ -9103,10 +8707,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "url",
@@ -9153,10 +8755,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "meta",
@@ -9191,10 +8791,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "profile",
@@ -9237,10 +8835,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "Condition",
@@ -9291,10 +8887,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus",
-            "targetAttribute" : "coding.code",
             "targetAttributes" : [ "coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "openEhrConditions" : null,
@@ -9329,10 +8923,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "provisional",
               "criterias" : [ "provisional" ]
             } ],
             "openEhrConditions" : null,
@@ -9371,10 +8963,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "provisional",
               "criterias" : [ "provisional" ]
             } ],
             "openEhrConditions" : null,
@@ -9429,10 +9019,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "provisional",
               "criterias" : [ "provisional" ]
             } ],
             "openEhrConditions" : null,
@@ -9472,10 +9060,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -9514,10 +9100,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -9556,10 +9140,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -9597,10 +9179,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "differential",
               "criterias" : [ "differential" ]
             } ],
             "openEhrConditions" : null,
@@ -9639,10 +9219,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "differential",
               "criterias" : [ "differential" ]
             } ],
             "openEhrConditions" : null,
@@ -9697,10 +9275,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "differential",
               "criterias" : [ "differential" ]
             } ],
             "openEhrConditions" : null,
@@ -9740,10 +9316,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -9782,10 +9356,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -9824,10 +9396,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0017",
               "criterias" : [ "at0017" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -9865,10 +9435,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "unconfirmed",
               "criterias" : [ "unconfirmed" ]
             } ],
             "openEhrConditions" : null,
@@ -9907,10 +9475,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "unconfirmed",
               "criterias" : [ "unconfirmed" ]
             } ],
             "openEhrConditions" : null,
@@ -9965,10 +9531,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "unconfirmed",
               "criterias" : [ "unconfirmed" ]
             } ],
             "openEhrConditions" : null,
@@ -10008,10 +9572,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0016",
               "criterias" : [ "at0016" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10050,10 +9612,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0016",
               "criterias" : [ "at0016" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10092,10 +9652,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0016",
               "criterias" : [ "at0016" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10133,10 +9691,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "confirmed",
               "criterias" : [ "confirmed" ]
             } ],
             "openEhrConditions" : null,
@@ -10175,10 +9731,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "confirmed",
               "criterias" : [ "confirmed" ]
             } ],
             "openEhrConditions" : null,
@@ -10233,10 +9787,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "confirmed",
               "criterias" : [ "confirmed" ]
             } ],
             "openEhrConditions" : null,
@@ -10276,10 +9828,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0018",
               "criterias" : [ "at0018" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10318,10 +9868,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0018",
               "criterias" : [ "at0018" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10360,10 +9908,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0018",
               "criterias" : [ "at0018" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10401,10 +9947,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "refuted",
               "criterias" : [ "refuted" ]
             } ],
             "openEhrConditions" : null,
@@ -10443,10 +9987,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "refuted",
               "criterias" : [ "refuted" ]
             } ],
             "openEhrConditions" : null,
@@ -10501,10 +10043,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve().verificationStatus.coding",
-              "targetAttribute" : "code",
               "targetAttributes" : [ "code" ],
               "operator" : "one of",
-              "criteria" : "refuted",
               "criterias" : [ "refuted" ]
             } ],
             "openEhrConditions" : null,
@@ -10544,10 +10084,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0088",
               "criterias" : [ "at0088" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10586,10 +10124,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0088",
               "criterias" : [ "at0088" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10628,10 +10164,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-              "targetAttribute" : "items[at0004]/defining_code/code_string",
               "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0088",
               "criterias" : [ "at0088" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,
@@ -10708,10 +10242,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "extension.url",
             "targetAttributes" : [ "extension.url" ],
             "operator" : "not of",
-            "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
             "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
           } ],
           "openEhrConditions" : null,
@@ -10746,10 +10278,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "extension.url",
               "targetAttributes" : [ "extension.url" ],
               "operator" : "not of",
-              "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
               "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
             } ],
             "openEhrConditions" : null,
@@ -10788,10 +10318,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "extension.url",
               "targetAttributes" : [ "extension.url" ],
               "operator" : "not of",
-              "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
               "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
             } ],
             "openEhrConditions" : null,
@@ -10842,10 +10370,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "extension.url",
               "targetAttributes" : [ "extension.url" ],
               "operator" : "not of",
-              "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
               "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
             } ],
             "openEhrConditions" : null,
@@ -10888,10 +10414,8 @@
           "unidirectional" : null,
           "fhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "extension.url",
             "targetAttributes" : [ "extension.url" ],
             "operator" : "one of",
-            "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
             "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
           } ],
           "openEhrConditions" : null,
@@ -10926,10 +10450,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "extension.url",
               "targetAttributes" : [ "extension.url" ],
               "operator" : "one of",
-              "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
               "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
             } ],
             "openEhrConditions" : null,
@@ -10968,10 +10490,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "extension.url",
               "targetAttributes" : [ "extension.url" ],
               "operator" : "one of",
-              "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
               "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
             } ],
             "openEhrConditions" : null,
@@ -11022,10 +10542,8 @@
             "unidirectional" : "fhir->openehr",
             "fhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "extension.url",
               "targetAttributes" : [ "extension.url" ],
               "operator" : "one of",
-              "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
               "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
             } ],
             "openEhrConditions" : null,
@@ -11056,10 +10574,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-          "targetAttribute" : "verificationStatus.coding.code",
           "targetAttributes" : [ "verificationStatus.coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error" ]
         } ],
         "fhir" : "extension",
@@ -11079,10 +10595,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "Condition.extension.value.as(Reference).resolve().extension",
-          "targetAttribute" : "url",
           "targetAttributes" : [ "url" ],
           "operator" : "one of",
-          "criteria" : "http://hl7.org/fhir/StructureDefinition/condition-related",
           "criterias" : [ "http://hl7.org/fhir/StructureDefinition/condition-related" ]
         } ],
         "openEhrConditions" : null,
@@ -11101,10 +10615,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "Condition.extension.value.as(Reference).resolve().extension",
@@ -11139,10 +10651,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "url",
@@ -11185,10 +10695,8 @@
           "preprocessorOpenEhrCondition" : null,
           "preprocessorFhirConditions" : [ {
             "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-            "targetAttribute" : "verificationStatus.coding.code",
             "targetAttributes" : [ "verificationStatus.coding.code" ],
             "operator" : "not of",
-            "criteria" : "entered-in-error",
             "criterias" : [ "entered-in-error" ]
           } ],
           "fhir" : "value.as(Reference).resolve()",
@@ -11223,10 +10731,8 @@
             "preprocessorOpenEhrCondition" : null,
             "preprocessorFhirConditions" : [ {
               "targetRoot" : "Condition.extension.value.as(Reference).resolve()",
-              "targetAttribute" : "verificationStatus.coding.code",
               "targetAttributes" : [ "verificationStatus.coding.code" ],
               "operator" : "not of",
-              "criteria" : "entered-in-error",
               "criterias" : [ "entered-in-error" ]
             } ],
             "fhir" : "Condition.extension.value.as(Reference).resolve().extension.value.as(Reference).resolve()",
@@ -11247,10 +10753,8 @@
             "fhirConditions" : null,
             "openEhrConditions" : [ {
               "targetRoot" : "openEHR-EHR-EVALUATION.problem_diagnosis.v1",
-              "targetAttribute" : "data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]/items[at0063]/defining_code/code_string",
               "targetAttributes" : [ "data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]/items[at0063]/defining_code/code_string" ],
               "operator" : "one of",
-              "criteria" : "at0064",
               "criterias" : [ "at0064" ]
             } ],
             "enteredFromSlotArchetypeLink" : true,

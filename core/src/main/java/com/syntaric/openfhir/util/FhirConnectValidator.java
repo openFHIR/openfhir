@@ -30,6 +30,7 @@ public class FhirConnectValidator {
     public List<String> validateAgainstSchema(final Object parsed, final String schemaName) {
         final ObjectMapper objectMapper = new ObjectMapper();
 
+        final List<String> errors = new ArrayList<>();
         try {
             String schemaString = IOUtils.toString(getClass().getResourceAsStream(schemaName),
                                                    StandardCharsets.UTF_8);
@@ -40,7 +41,6 @@ public class FhirConnectValidator {
             JsonSchema schema = schemaFactory.getJsonSchema(schemaNode);
             ProcessingReport report = schema.validate(jsonNode);
             if (!report.isSuccess()) {
-                final List<String> errors = new ArrayList<>();
                 report.iterator().forEachRemaining(err -> {
                     if (err.getLogLevel() == LogLevel.ERROR || err.getLogLevel() == LogLevel.FATAL) {
                         if (!err.getMessage().contains("(matched 2 out of 2)")) {
@@ -56,7 +56,7 @@ public class FhirConnectValidator {
             log.error("Couldn't validate model mapper against the schema", e);
             throw new IllegalArgumentException("Couldn't validate model mapper against the schema");
         }
-        return null;
+        return errors;
     }
 
     public List<String> validateFhirConnectModel(final FhirConnectModel modelMapper) {

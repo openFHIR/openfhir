@@ -377,7 +377,6 @@
   "fhirConditions" : null,
   "openEhrConditions" : [ {
     "targetRoot" : "$composition/context",
-    "targetAttribute" : "_end_time",
     "targetAttributes" : [ "_end_time" ],
     "operator" : "not empty"
   } ],
@@ -522,7 +521,6 @@
   "fhirConditions" : null,
   "openEhrConditions" : [ {
     "targetRoot" : "$composition/context",
-    "targetAttribute" : "_end_time",
     "targetAttributes" : [ "_end_time" ],
     "operator" : "empty"
   } ],
@@ -702,10 +700,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "preparation",
       "criterias" : [ "preparation" ]
     } ],
     "openEhrConditions" : null,
@@ -744,10 +740,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "preparation",
       "criterias" : [ "preparation" ]
     } ],
     "openEhrConditions" : null,
@@ -790,10 +784,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "preparation",
       "criterias" : [ "preparation" ]
     } ],
     "openEhrConditions" : null,
@@ -872,10 +864,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -914,10 +904,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -960,10 +948,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -1042,10 +1028,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -1084,10 +1068,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -1130,10 +1112,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -1212,10 +1192,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -1254,10 +1232,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -1300,10 +1276,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -1382,10 +1356,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -1424,10 +1396,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -1470,10 +1440,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -1552,10 +1520,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -1594,10 +1560,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -1640,10 +1604,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -1798,10 +1760,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "245",
       "criterias" : [ "245" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1880,10 +1840,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "530",
       "criterias" : [ "530" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1962,10 +1920,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "530",
       "criterias" : [ "530" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2044,10 +2000,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "531",
       "criterias" : [ "531" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2126,10 +2080,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "528",
       "criterias" : [ "528" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2208,10 +2160,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "528",
       "criterias" : [ "528" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2290,10 +2240,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "524",
       "criterias" : [ "524" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2372,10 +2320,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "526",
       "criterias" : [ "526" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2454,10 +2400,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "526",
       "criterias" : [ "526" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2536,10 +2480,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "527",
       "criterias" : [ "527" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2618,10 +2560,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "527",
       "criterias" : [ "527" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2700,10 +2640,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "529",
       "criterias" : [ "529" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2782,10 +2720,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "529",
       "criterias" : [ "529" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2864,10 +2800,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "533",
       "criterias" : [ "533" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -2946,10 +2880,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "533",
       "criterias" : [ "533" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -3028,10 +2960,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "532",
       "criterias" : [ "532" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -3110,10 +3040,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "532",
       "criterias" : [ "532" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -3227,10 +3155,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.procedure.v1/description[at0001]/items[at0002]/items[at0001]",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "http://fhir.de/CodeSystem/bfarm/ops",
       "criterias" : [ "http://fhir.de/CodeSystem/bfarm/ops" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -3514,7 +3440,6 @@
     "fhirConditions" : [ {
       "targetRoot" : "Procedure",
       "operator" : "type",
-      "criteria" : "CodeableConcept",
       "criterias" : [ "CodeableConcept" ]
     } ],
     "openEhrConditions" : null,
@@ -3549,7 +3474,6 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Procedure",
-        "targetAttribute" : "coding",
         "targetAttributes" : [ "coding" ],
         "operator" : "empty"
       } ],
@@ -3768,10 +3692,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Procedure.encounter.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -3946,10 +3868,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Procedure.encounter.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -4136,10 +4056,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "Procedure.extension",
-    "targetAttribute" : "url",
     "targetAttributes" : [ "url" ],
     "operator" : "one of",
-    "criteria" : "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht",
     "criterias" : [ "https://www.medizininformatik-initiative.de/fhir/core/modul-prozedur/StructureDefinition/Durchfuehrungsabsicht" ]
   } ],
   "openEhrConditions" : null,
@@ -4283,10 +4201,8 @@
   "unidirectional" : null,
   "fhirConditions" : [ {
     "targetRoot" : "Procedure.extension",
-    "targetAttribute" : "url",
     "targetAttributes" : [ "url" ],
     "operator" : "one of",
-    "criteria" : "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
     "criterias" : [ "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum" ]
   } ],
   "openEhrConditions" : null,
