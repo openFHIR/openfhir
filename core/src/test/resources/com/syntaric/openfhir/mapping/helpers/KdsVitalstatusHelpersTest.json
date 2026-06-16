@@ -776,10 +776,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Observation.status",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
     } ],
     "fhir" : "Observation",
@@ -814,10 +812,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Observation.status",
-        "targetAttribute" : "coding.code",
         "targetAttributes" : [ "coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
       } ],
       "fhir" : "onset.as(Period)",
@@ -852,10 +848,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Observation.status",
-          "targetAttribute" : "coding.code",
           "targetAttributes" : [ "coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
         } ],
         "fhir" : "end",
@@ -894,10 +888,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Observation.status",
-          "targetAttribute" : "coding.code",
           "targetAttributes" : [ "coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
         } ],
         "fhir" : "start",
@@ -940,10 +932,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Observation.status",
-        "targetAttribute" : "coding.code",
         "targetAttributes" : [ "coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
       } ],
       "fhir" : "onset.as(DateTimeType)",
@@ -986,10 +976,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Observation.status",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
     } ],
     "fhir" : "asserter",
@@ -1024,10 +1012,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Observation.status",
-        "targetAttribute" : "coding.code",
         "targetAttributes" : [ "coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
       } ],
       "fhir" : "Observation.asserter",
@@ -1062,10 +1048,8 @@
         "preprocessorOpenEhrCondition" : null,
         "preprocessorFhirConditions" : [ {
           "targetRoot" : "Observation.status",
-          "targetAttribute" : "coding.code",
           "targetAttributes" : [ "coding.code" ],
           "operator" : "not of",
-          "criteria" : "entered-in-error",
           "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
         } ],
         "fhir" : "Observation.asserter",
@@ -1108,10 +1092,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Observation.status",
-        "targetAttribute" : "coding.code",
         "targetAttributes" : [ "coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
       } ],
       "fhir" : "Observation.asserter",
@@ -1154,10 +1136,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Observation.status",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
     } ],
     "fhir" : "recorder",
@@ -1196,10 +1176,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Observation.status",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
     } ],
     "fhir" : "encounter.as(Reference).identifier",
@@ -1250,10 +1228,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Observation.encounter.as(Reference).identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -1350,10 +1326,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Observation.status",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
     } ],
     "fhir" : "encounter.as(Reference).resolve()",
@@ -1388,10 +1362,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Observation.status",
-        "targetAttribute" : "coding.code",
         "targetAttributes" : [ "coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
       } ],
       "fhir" : "identifier",
@@ -1442,10 +1414,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "Observation.encounter.as(Reference).resolve().identifier",
-          "targetAttribute" : "type.coding.code",
           "targetAttributes" : [ "type.coding.code" ],
           "operator" : "one of",
-          "criteria" : "VN",
           "criterias" : [ "VN" ]
         } ],
         "openEhrConditions" : null,
@@ -1542,10 +1512,8 @@
       "preprocessorOpenEhrCondition" : null,
       "preprocessorFhirConditions" : [ {
         "targetRoot" : "Observation.status",
-        "targetAttribute" : "coding.code",
         "targetAttributes" : [ "coding.code" ],
         "operator" : "not of",
-        "criteria" : "entered-in-error",
         "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
       } ],
       "fhir" : "Observation.encounter.as(Reference).resolve()",
@@ -1588,10 +1556,8 @@
     "preprocessorOpenEhrCondition" : null,
     "preprocessorFhirConditions" : [ {
       "targetRoot" : "Observation.status",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error", "amended", "cancelled", "unknown" ]
     } ],
     "fhir" : "status",

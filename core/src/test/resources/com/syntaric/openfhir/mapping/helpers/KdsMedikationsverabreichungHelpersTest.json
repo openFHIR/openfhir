@@ -373,10 +373,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/description[at0017]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-      "targetAttribute" : "items[at0134]",
       "targetAttributes" : [ "items[at0134]" ],
       "operator" : "type",
-      "criteria" : "DV_QUANTITY",
       "criterias" : [ "DV_QUANTITY" ]
     } ],
     "enteredFromSlotArchetypeLink" : true,
@@ -415,7 +413,6 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/description[at0017]/items[openEHR-EHR-CLUSTER.dosage.v2]",
-      "targetAttribute" : "items[at0102]",
       "targetAttributes" : [ "items[at0102]" ],
       "operator" : "not empty"
     } ],
@@ -1649,7 +1646,6 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/protocol[at0030]/items[at0103]",
-      "targetAttribute" : "links",
       "targetAttributes" : [ "links" ],
       "operator" : "empty"
     } ],
@@ -1689,7 +1685,6 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/protocol[at0030]/items[at0103]",
-      "targetAttribute" : "links",
       "targetAttributes" : [ "links" ],
       "operator" : "not empty"
     } ],
@@ -1945,10 +1940,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -1987,10 +1980,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -2033,10 +2024,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -2334,10 +2323,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -2376,10 +2363,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -2422,10 +2407,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -2723,10 +2706,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -2765,10 +2746,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -2811,10 +2790,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -3112,10 +3089,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -3154,10 +3129,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -3200,10 +3173,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -3501,10 +3472,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -3543,10 +3512,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -3589,10 +3556,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -3890,10 +3855,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -3932,10 +3895,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -3978,10 +3939,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -4426,10 +4385,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -4468,10 +4425,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -4514,10 +4469,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "in-progress",
       "criterias" : [ "in-progress" ]
     } ],
     "openEhrConditions" : null,
@@ -4669,10 +4622,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "245",
       "criterias" : [ "245" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -4822,10 +4773,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -4864,10 +4813,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -4910,10 +4857,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "on-hold",
       "criterias" : [ "on-hold" ]
     } ],
     "openEhrConditions" : null,
@@ -5065,10 +5010,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "530",
       "criterias" : [ "530" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -5218,10 +5161,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -5260,10 +5201,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -5306,10 +5245,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "stopped",
       "criterias" : [ "stopped" ]
     } ],
     "openEhrConditions" : null,
@@ -5461,10 +5398,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "531",
       "criterias" : [ "531" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -5614,10 +5549,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -5656,10 +5589,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -5702,10 +5633,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "completed",
       "criterias" : [ "completed" ]
     } ],
     "openEhrConditions" : null,
@@ -5857,10 +5786,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "532",
       "criterias" : [ "532" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -6010,10 +5937,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -6052,10 +5977,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -6098,10 +6021,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "not-done",
       "criterias" : [ "not-done" ]
     } ],
     "openEhrConditions" : null,
@@ -6253,10 +6174,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "528",
       "criterias" : [ "528" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -6406,10 +6325,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -6448,10 +6365,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -6494,10 +6409,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -6649,10 +6562,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "524",
       "criterias" : [ "524" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -6802,10 +6713,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -6844,10 +6753,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -6890,10 +6797,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7045,10 +6950,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "526",
       "criterias" : [ "526" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -7198,10 +7101,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7240,10 +7141,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7286,10 +7185,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7441,10 +7338,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "527",
       "criterias" : [ "527" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -7594,10 +7489,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7636,10 +7529,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7682,10 +7573,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -7837,10 +7726,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "529",
       "criterias" : [ "529" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -7990,10 +7877,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -8032,10 +7917,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -8078,10 +7961,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "MedicationAdministration",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "unknown",
       "criterias" : [ "unknown" ]
     } ],
     "openEhrConditions" : null,
@@ -8233,10 +8114,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.medication.v1/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "533",
       "criterias" : [ "533" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -8632,7 +8511,6 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "$composition/context",
-      "targetAttribute" : "end_time",
       "targetAttributes" : [ "end_time" ],
       "operator" : "not empty"
     } ],
@@ -8807,10 +8685,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "outpatient",
         "criterias" : [ "outpatient" ]
       } ],
       "openEhrConditions" : null,
@@ -8849,10 +8725,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "outpatient",
         "criterias" : [ "outpatient" ]
       } ],
       "openEhrConditions" : null,
@@ -8895,10 +8769,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "outpatient",
         "criterias" : [ "outpatient" ]
       } ],
       "openEhrConditions" : null,
@@ -8938,10 +8810,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "228",
         "criterias" : [ "228" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -8980,10 +8850,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "228",
         "criterias" : [ "228" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9022,10 +8890,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "228",
         "criterias" : [ "228" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9063,10 +8929,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "inpatient",
         "criterias" : [ "inpatient" ]
       } ],
       "openEhrConditions" : null,
@@ -9105,10 +8969,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "inpatient",
         "criterias" : [ "inpatient" ]
       } ],
       "openEhrConditions" : null,
@@ -9151,10 +9013,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "inpatient",
         "criterias" : [ "inpatient" ]
       } ],
       "openEhrConditions" : null,
@@ -9194,10 +9054,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "232",
         "criterias" : [ "232" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9236,10 +9094,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "232",
         "criterias" : [ "232" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9278,10 +9134,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "232",
         "criterias" : [ "232" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9319,10 +9173,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "community",
         "criterias" : [ "community" ]
       } ],
       "openEhrConditions" : null,
@@ -9361,10 +9213,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "community",
         "criterias" : [ "community" ]
       } ],
       "openEhrConditions" : null,
@@ -9407,10 +9257,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.category.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "community",
         "criterias" : [ "community" ]
       } ],
       "openEhrConditions" : null,
@@ -9450,10 +9298,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "238",
         "criterias" : [ "238" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9492,10 +9338,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "238",
         "criterias" : [ "238" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9534,10 +9378,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "$composition/context/setting",
-        "targetAttribute" : "defining_code/code_string",
         "targetAttributes" : [ "defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "238",
         "criterias" : [ "238" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -9680,10 +9522,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "MedicationAdministration.context.as(Reference).identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,
@@ -9858,10 +9698,8 @@
         "unidirectional" : null,
         "fhirConditions" : [ {
           "targetRoot" : "MedicationAdministration.context.as(Reference).resolve().identifier",
-          "targetAttribute" : "type.coding.code",
           "targetAttributes" : [ "type.coding.code" ],
           "operator" : "one of",
-          "criteria" : "VN",
           "criterias" : [ "VN" ]
         } ],
         "openEhrConditions" : null,
