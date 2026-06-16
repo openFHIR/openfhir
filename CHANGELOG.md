@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## [2.2.4] - 2026-06-16
+
 ### Fixed
 - AQL generation proper paths for CodedText, CodePhrase
 ### Added
