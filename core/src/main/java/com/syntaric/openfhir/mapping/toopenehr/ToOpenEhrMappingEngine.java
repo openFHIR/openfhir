@@ -427,6 +427,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         final String fhirType = result.fhirType();
         switch (fhirType) {
             case "CodeableConcept" -> {
+                if (possibleRmTypes.contains(DV_ORDINAL)) return DV_ORDINAL;
                 if (possibleRmTypes.contains(DV_CODED_TEXT)) return DV_CODED_TEXT;
                 if (possibleRmTypes.contains(DV_TEXT)) return DV_TEXT;
             }
