@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
       rules:
         - "Observation?category=height"
   ```
+  - ordinal mappings
 ### Changed
 - certain deprecated fields in model mappings are now left out from serialization (fhirCondition, criteria, ..)
 
