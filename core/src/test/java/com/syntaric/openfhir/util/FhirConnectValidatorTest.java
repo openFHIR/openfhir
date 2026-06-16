@@ -26,6 +26,6 @@ class FhirConnectValidatorTest {
                 getClass().getResourceAsStream("/growth_chart/body-height.model.yml"),
                 FhirConnectModel.class);
         final List<String> strings = new FhirConnectValidator().validateAgainstModelSchema(fhirConnectModel);
-        Assert.assertNull(strings);
+        Assert.assertTrue(strings.isEmpty());
     }
 }

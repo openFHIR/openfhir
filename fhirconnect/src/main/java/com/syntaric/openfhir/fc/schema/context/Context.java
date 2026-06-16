@@ -18,7 +18,8 @@ import java.util.List;
         "templateId",
         "archetypes",
         "extensions",
-        "start"
+        "start",
+        "_query"
 })
 public class Context implements Serializable {
 
@@ -49,6 +50,9 @@ public class Context implements Serializable {
      */
     @JsonProperty("start")
     private String start;
+
+    @JsonProperty("_query")
+    private List<ContextQuery> query;
 
     /**
      * (Required)
@@ -134,6 +138,16 @@ public class Context implements Serializable {
     @JsonProperty("start")
     public void setStart(String start) {
         this.start = start;
+    }
+
+    @JsonProperty("_query")
+    public List<ContextQuery> getQuery() {
+        return query;
+    }
+
+    @JsonProperty("_query")
+    public void setQuery(List<ContextQuery> query) {
+        this.query = query;
     }
 
 }

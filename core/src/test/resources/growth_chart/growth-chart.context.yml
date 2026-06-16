@@ -19,3 +19,10 @@ context:
     - "OBSERVATION.head_circumference.v1"
     - "openEHR-EHR-COMPOSITION.growth_chart.v0"
   start: "openEHR-EHR-COMPOSITION.growth_chart.v0"
+  _query:
+    - aql: "SELECT c FROM EHR e[ehr_id/value='{{ehrid}}'] CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='something'"
+      rules:
+        - "$summary"
+    - aql: "SELECT c FROM EHR e[ehr_id/value='{{ehrid}}'] CONTAINS COMPOSITION c WHERE c/archetype_details/template_id/value='something-else'"
+      rules:
+        - "Observation?category=height"

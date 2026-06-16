@@ -6,5 +6,6 @@ import lombok.Data;
 public class FhirQueryParam {
     private final String name;
     private final String value;
+    private final String operation;
     private boolean handled;
 }

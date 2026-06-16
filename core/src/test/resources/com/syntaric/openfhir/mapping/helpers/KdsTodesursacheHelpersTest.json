@@ -442,10 +442,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition.verificationStatus",
-      "targetAttribute" : "coding.code",
       "targetAttributes" : [ "coding.code" ],
       "operator" : "not of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -480,10 +478,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "provisional",
         "criterias" : [ "provisional" ]
       } ],
       "openEhrConditions" : null,
@@ -522,10 +518,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "provisional",
         "criterias" : [ "provisional" ]
       } ],
       "openEhrConditions" : null,
@@ -580,10 +574,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "provisional",
         "criterias" : [ "provisional" ]
       } ],
       "openEhrConditions" : null,
@@ -623,10 +615,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -665,10 +655,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -707,10 +695,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -748,10 +734,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "differential",
         "criterias" : [ "differential" ]
       } ],
       "openEhrConditions" : null,
@@ -790,10 +774,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "differential",
         "criterias" : [ "differential" ]
       } ],
       "openEhrConditions" : null,
@@ -848,10 +830,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "differential",
         "criterias" : [ "differential" ]
       } ],
       "openEhrConditions" : null,
@@ -891,10 +871,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -933,10 +911,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -975,10 +951,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0017",
         "criterias" : [ "at0017" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1016,10 +990,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "unconfirmed",
         "criterias" : [ "unconfirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -1058,10 +1030,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "unconfirmed",
         "criterias" : [ "unconfirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -1116,10 +1086,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "unconfirmed",
         "criterias" : [ "unconfirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -1159,10 +1127,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0016",
         "criterias" : [ "at0016" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1201,10 +1167,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0016",
         "criterias" : [ "at0016" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1243,10 +1207,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0016",
         "criterias" : [ "at0016" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1284,10 +1246,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "confirmed",
         "criterias" : [ "confirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -1326,10 +1286,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "confirmed",
         "criterias" : [ "confirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -1384,10 +1342,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "confirmed",
         "criterias" : [ "confirmed" ]
       } ],
       "openEhrConditions" : null,
@@ -1427,10 +1383,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0018",
         "criterias" : [ "at0018" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1469,10 +1423,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0018",
         "criterias" : [ "at0018" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1511,10 +1463,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0018",
         "criterias" : [ "at0018" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1552,10 +1502,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "refuted",
         "criterias" : [ "refuted" ]
       } ],
       "openEhrConditions" : null,
@@ -1594,10 +1542,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "refuted",
         "criterias" : [ "refuted" ]
       } ],
       "openEhrConditions" : null,
@@ -1652,10 +1598,8 @@
       "unidirectional" : "fhir->openehr",
       "fhirConditions" : [ {
         "targetRoot" : "Condition.verificationStatus.coding",
-        "targetAttribute" : "code",
         "targetAttributes" : [ "code" ],
         "operator" : "one of",
-        "criteria" : "refuted",
         "criterias" : [ "refuted" ]
       } ],
       "openEhrConditions" : null,
@@ -1695,10 +1639,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0088",
         "criterias" : [ "at0088" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1737,10 +1679,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0088",
         "criterias" : [ "at0088" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -1779,10 +1719,8 @@
       "fhirConditions" : null,
       "openEhrConditions" : [ {
         "targetRoot" : "openEHR-EHR-EVALUATION.cause_of_death.v1/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]",
-        "targetAttribute" : "items[at0004]/defining_code/code_string",
         "targetAttributes" : [ "items[at0004]/defining_code/code_string" ],
         "operator" : "one of",
-        "criteria" : "at0088",
         "criterias" : [ "at0088" ]
       } ],
       "enteredFromSlotArchetypeLink" : true,
@@ -2279,10 +2217,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Condition.encounter.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -2457,10 +2393,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Condition.encounter.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,

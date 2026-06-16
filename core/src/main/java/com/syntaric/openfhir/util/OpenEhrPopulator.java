@@ -79,31 +79,33 @@ public class OpenEhrPopulator {
     /**
      * Adds extracted value to the openEHR flat path composition represented with the 'constructingFlat' variable
      *
-     * @param openEhrPath      path that should be used in the flat path composition
-     * @param extractedValue   value as extracted from a FHIR object
-     * @param openEhrType      openEHR type as defined in the fhir connect model mapping
+     * @param openEhrPath path that should be used in the flat path composition
+     * @param extractedValue value as extracted from a FHIR object
+     * @param openEhrType openEHR type as defined in the fhir connect model mapping
      * @param constructingFlat composition in a flat path format that's being constructed
      */
     public void setOpenEhrValue(final MappingHelper mappingHelper,
                                 String openEhrPath,
                                 final IBase extractedValue,
                                 final String openEhrType,
-                                final boolean isMultipleTypes, // true if there can be multiple types for a certain field, in which case we need to add the leaf type suffix (i.e. quantity_value)
+                                final boolean isMultipleTypes,
+                                // true if there can be multiple types for a certain field, in which case we need to add the leaf type suffix (i.e. quantity_value)
                                 final JsonObject constructingFlat,
                                 final Terminology terminology,
                                 final List<OfCoding> availableCodings) {
         prePostOpenEhrPopulatorInterface.prePopulateElement(mappingHelper,
-                openEhrPath,
-                extractedValue,
-                openEhrType,
-                constructingFlat,
-                terminology,
-                availableCodings);
+                                                            openEhrPath,
+                                                            extractedValue,
+                                                            openEhrType,
+                                                            constructingFlat,
+                                                            terminology,
+                                                            availableCodings);
 
         final Set<String> keysBefore = new HashSet<>(constructingFlat.keySet());
 
-        setOpenEhrValueInternal(mappingHelper, openEhrPath, extractedValue, openEhrType, isMultipleTypes, constructingFlat, terminology,
-                availableCodings);
+        setOpenEhrValueInternal(mappingHelper, openEhrPath, extractedValue, openEhrType, isMultipleTypes,
+                                constructingFlat, terminology,
+                                availableCodings);
 
         final List<String> toPaths = constructingFlat.keySet().stream()
                 .filter(k -> !keysBefore.contains(k))
@@ -113,14 +115,14 @@ public class OpenEhrPopulator {
                 .collect(java.util.stream.Collectors.toList());
 
         prePostOpenEhrPopulatorInterface.postPopulateElement(mappingHelper,
-                openEhrPath,
-                extractedValue,
-                openEhrType,
-                constructingFlat,
-                terminology,
-                availableCodings,
-                toPaths,
-                added);
+                                                             openEhrPath,
+                                                             extractedValue,
+                                                             openEhrType,
+                                                             constructingFlat,
+                                                             terminology,
+                                                             availableCodings,
+                                                             toPaths,
+                                                             added);
     }
 
 
@@ -153,8 +155,8 @@ public class OpenEhrPopulator {
 
         if (openEhrPath.contains("null_flavour")) {
             final boolean handledNullFlavour = setNullFlavourForDataAbsentReason(openEhrPath,
-                    extractedValue,
-                    constructingFlat);
+                                                                                 extractedValue,
+                                                                                 constructingFlat);
             if (handledNullFlavour) {
                 return;
             }
@@ -171,40 +173,47 @@ public class OpenEhrPopulator {
                 handleDvMultimedia(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
                 return;
             case FhirConnectConst.DV_QUANTITY:
-                final boolean addedQuantity = handleDvQuantity(mappingHelper, openEhrPath, extractedValue, constructingFlat,
-                        terminology, isMultipleTypes, availableCodings);
+                final boolean addedQuantity = handleDvQuantity(mappingHelper, openEhrPath, extractedValue,
+                                                               constructingFlat,
+                                                               terminology, isMultipleTypes, availableCodings);
                 if (addedQuantity) {
                     return;
                 }
             case FhirConnectConst.DV_ORDINAL:
-                boolean addedOrdinal = handleDvOrdinal(openEhrPath, extractedValue, isMultipleTypes, constructingFlat, terminology);
+                boolean addedOrdinal = handleDvOrdinal(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
+                                                       terminology);
                 if (addedOrdinal) {
                     return;
                 }
             case FhirConnectConst.DV_PROPORTION:
-                boolean addedProportion = handleDvProportion(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
+                boolean addedProportion = handleDvProportion(openEhrPath, extractedValue, isMultipleTypes,
+                                                             constructingFlat);
                 if (addedProportion) {
                     return;
                 }
             case FhirConnectConst.DV_COUNT:
-                final boolean addedCount = handleDvCount(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
+                final boolean addedCount = handleDvCount(openEhrPath, extractedValue, isMultipleTypes,
+                                                         constructingFlat);
                 if (addedCount) {
                     return;
                 }
             case FhirConnectConst.DV_DATE_TIME:
-                final boolean addedDateTime = handleDvDateTime(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
+                final boolean addedDateTime = handleDvDateTime(openEhrPath, extractedValue, isMultipleTypes,
+                                                               constructingFlat);
                 if (addedDateTime) {
                     return;
                 }
             case FhirConnectConst.DV_INTERVAL:
                 final boolean addedInterval = handleDvInterval(mappingHelper, openEhrPath, extractedValue,
-                        constructingFlat, terminology, isMultipleTypes, availableCodings);
+                                                               constructingFlat, terminology, isMultipleTypes,
+                                                               availableCodings);
                 if (addedInterval) {
                     return;
                 }
             case FhirConnectConst.DV_DURATION:
-                final boolean addedDuration = handleDvDuration(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
-                        terminology);
+                final boolean addedDuration = handleDvDuration(openEhrPath, extractedValue, isMultipleTypes,
+                                                               constructingFlat,
+                                                               terminology);
                 if (addedDuration) {
                     return;
                 }
@@ -219,37 +228,44 @@ public class OpenEhrPopulator {
                     return;
                 }
             case FhirConnectConst.DV_CODED_TEXT:
-                final boolean addedCodeText = handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
-                        terminology);
+                final boolean addedCodeText = handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes,
+                                                                constructingFlat,
+                                                                terminology);
                 if (addedCodeText) {
                     return;
                 }
             case FhirConnectConst.DV_IDENTIFIER:
-                final boolean addedIdentifier = handleIdentifier(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
-                        terminology);
+                final boolean addedIdentifier = handleIdentifier(openEhrPath, extractedValue, isMultipleTypes,
+                                                                 constructingFlat,
+                                                                 terminology);
                 if (addedIdentifier) {
                     return;
                 }
             case FhirConnectConst.CODE_PHRASE:
-                final boolean addedCode = handleCodePhrase(mappingHelper, openEhrPath, extractedValue, isMultipleTypes, constructingFlat, openEhrType,
-                        terminology, availableCodings);
+                final boolean addedCode = handleCodePhrase(mappingHelper, openEhrPath, extractedValue, isMultipleTypes,
+                                                           constructingFlat, openEhrType,
+                                                           terminology, availableCodings);
                 if (addedCode) {
                     return;
                 }
             case FhirConnectConst.DV_TEXT:
                 if (isCodeableConcept(extractedValue) && !getCodeableConceptCodings(extractedValue).isEmpty()) {
                     handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes, constructingFlat, terminology);
-                } else if (isCodeableConcept(extractedValue) && StringUtils.isNotEmpty(getCodeableConceptText(extractedValue))) {
-                    addValuePerFhirType(mappingHelper, primitiveStringValue(getCodeableConceptText(extractedValue)), openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
-                            terminology, availableCodings);
+                } else if (isCodeableConcept(extractedValue) && StringUtils.isNotEmpty(
+                        getCodeableConceptText(extractedValue))) {
+                    addValuePerFhirType(mappingHelper, primitiveStringValue(getCodeableConceptText(extractedValue)),
+                                        openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
+                                        terminology, availableCodings);
                 } else {
-                    addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
-                            terminology, availableCodings);
+                    addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat,
+                                        FhirConnectConst.DV_TEXT,
+                                        terminology, availableCodings);
                 }
                 return;
             case FhirConnectConst.EVENT_CONTEXT:
-                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
-                        terminology, availableCodings);
+                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat,
+                                    FhirConnectConst.DV_TEXT,
+                                    terminology, availableCodings);
                 return;
             case FhirConnectConst.DV_BOOL:
                 final boolean addedBool = handleDvBool(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
@@ -258,30 +274,35 @@ public class OpenEhrPopulator {
                 }
             case FhirConnectConst.DV_PARTY_IDENTIFIED:
                 final boolean addedPartyIdentified = handlePartyIdentifier(openEhrPath, extractedValue,
-                        isMultipleTypes, constructingFlat, terminology);
+                                                                           isMultipleTypes, constructingFlat,
+                                                                           terminology);
                 if (addedPartyIdentified) {
                     return;
                 }
             case FhirConnectConst.DV_PARTICIPATION:
                 final boolean addedParticipation = handleParticipation(openEhrPath, extractedValue,
-                        isMultipleTypes, constructingFlat, terminology);
+                                                                       isMultipleTypes, constructingFlat, terminology);
                 if (addedParticipation) {
                     return;
                 }
             case FhirConnectConst.DV_PARTY_PROXY:
-                final boolean addedPartyProxy = handlePartyProxy(openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
-                        terminology);
+                final boolean addedPartyProxy = handlePartyProxy(openEhrPath, extractedValue, isMultipleTypes,
+                                                                 constructingFlat,
+                                                                 terminology);
                 if (addedPartyProxy) {
                     return;
                 }
                 return;
             case FhirConnectConst.DV_PARSABLE:
-                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat, FhirConnectConst.DV_TEXT,
-                        terminology, availableCodings);
-                addToConstructingFlat(String.format("%s|formalism", openEhrPath), "text/html", constructingFlat); // todo: should detect proper type
+                addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat,
+                                    FhirConnectConst.DV_TEXT,
+                                    terminology, availableCodings);
+                addToConstructingFlat(String.format("%s|formalism", openEhrPath), "text/html",
+                                      constructingFlat); // todo: should detect proper type
                 return;
             case FhirConnectConst.DV_EVENT:
-                final boolean addedDvEvent = handleDateTimeEvent(openEhrPath, extractedValue, isMultipleTypes, constructingFlat);
+                final boolean addedDvEvent = handleDateTimeEvent(openEhrPath, extractedValue, isMultipleTypes,
+                                                                 constructingFlat);
                 if (addedDvEvent) {
                     return;
                 }
@@ -323,7 +344,8 @@ public class OpenEhrPopulator {
         addToConstructingFlat(openEhrPath, translate(primitiveValue, null, terminology), constructingFlat);
     }
 
-    private void handleDvMultimedia(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
+    private void handleDvMultimedia(String path, final IBase value, final boolean isMultipleTypes,
+                                    final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_MULTIMEDIA_DATA;
         }
@@ -413,8 +435,9 @@ public class OpenEhrPopulator {
             addToConstructingFlat(path + "|unit", translate(unit, getQuantitySystem(value), terminology), flat);
             return true;
         } else if (isRatio(value)) {
-            setOpenEhrValue(helper, path, getRatioNumerator(value), FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat, terminology,
-                    availableCodings);
+            setOpenEhrValue(helper, path, getRatioNumerator(value), FhirConnectConst.DV_QUANTITY, isMultipleTypes, flat,
+                            terminology,
+                            availableCodings);
             return true;
         } else if (value instanceof IPrimitiveType<?> prim && prim.getValueAsString() != null) {
             try {
@@ -425,11 +448,12 @@ public class OpenEhrPopulator {
             }
         }
         log.warn("openEhrType is DV_QUANTITY but extracted value is not Quantity and not Ratio; is {}",
-                value.getClass());
+                 value.getClass());
         return false;
     }
 
-    private boolean handleDvDuration(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleDvDuration(String path, final IBase value, final boolean isMultipleTypes,
+                                     final JsonObject flat,
                                      final Terminology terminology) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DURATION_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_DURATION_VALUE;
@@ -453,7 +477,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvOrdinal(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleDvOrdinal(String path, final IBase value, final boolean isMultipleTypes,
+                                    final JsonObject flat,
                                     final Terminology terminology) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_ORDINAL_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_ORDINAL_VALUE;
@@ -463,8 +488,30 @@ public class OpenEhrPopulator {
             if (qValue != null) {
                 addToConstructingFlat(path + "|ordinal", qValue.toPlainString(), flat);
             }
-            addToConstructingFlat(path + "|value", translate(getQuantityUnit(value), getQuantitySystem(value), terminology), flat);
-            addToConstructingFlat(path + "|code", translate(getQuantityCode(value), getQuantitySystem(value), terminology), flat);
+            addToConstructingFlat(path + "|value",
+                                  translate(getQuantityUnit(value), getQuantitySystem(value), terminology), flat);
+            addToConstructingFlat(path + "|code",
+                                  translate(getQuantityCode(value), getQuantitySystem(value), terminology), flat);
+            return true;
+        } else if (isCodeableConcept(value)) {
+            List<IBaseCoding> codings = getCodeableConceptCodings(value).stream()
+                    .filter(coding -> StringUtils.isNotBlank(coding.getCode()))
+                    .toList();
+            if (!codings.isEmpty()) {
+                // Handle the first coding as the primary coded text
+                IBaseCoding primaryCoding = codings.get(0);
+                addToConstructingFlat(path + "|code",
+                                      translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology), flat);
+                addToConstructingFlat(path + "|value", "None", flat);
+                try {
+                    addToConstructingFlatInteger(path + "|ordinal",
+                                                 Integer.valueOf(translate(primaryCoding.getDisplay(), primaryCoding.getSystem(), terminology)),
+                                          flat);
+                } catch (NumberFormatException e) {
+                    log.error("Ordinal has to be an integer");
+                }
+
+            }
             return true;
         } else {
             log.warn("openEhrType is DV_ORDINAL but extracted value is not Quantity; is {}", value.getClass());
@@ -472,7 +519,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvProportion(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvProportion(String path, final IBase value, final boolean isMultipleTypes,
+                                       final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE;
         }
@@ -492,7 +540,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvCount(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvCount(String path, final IBase value, final boolean isMultipleTypes,
+                                  final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_COUNT_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_COUNT_VALUE;
         }
@@ -509,12 +558,13 @@ public class OpenEhrPopulator {
             return true;
         } else {
             log.warn("openEhrType is DV_COUNT but extracted value is not Quantity and not IntegerType; is {}",
-                    value.getClass());
+                     value.getClass());
         }
         return false;
     }
 
-    private boolean handleDvDateTime(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDvDateTime(String path, final IBase value, final boolean isMultipleTypes,
+                                     final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE;
         }
@@ -556,20 +606,22 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvInterval(final MappingHelper mappingHelper, final String path, final IBase value, final JsonObject flat,
-                                     final Terminology terminology, final boolean isMultipleTypes, final List<OfCoding> availableCodings) {
+    private boolean handleDvInterval(final MappingHelper mappingHelper, final String path, final IBase value,
+                                     final JsonObject flat,
+                                     final Terminology terminology, final boolean isMultipleTypes,
+                                     final List<OfCoding> availableCodings) {
         if (isPeriod(value)) {
             final java.util.Date start = getPeriodStart(value);
             final java.util.Date end = getPeriodEnd(value);
             if (start != null) {
                 addToConstructingFlat(path + "/lower|value",
-                        openFhirMapperUtils.dateTimeToString(start), flat);
+                                      openFhirMapperUtils.dateTimeToString(start), flat);
 //                addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_DATE_TIME, flat);
 //                addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
             }
             if (end != null) {
                 addToConstructingFlat(path + "/upper|value",
-                        openFhirMapperUtils.dateTimeToString(end), flat);
+                                      openFhirMapperUtils.dateTimeToString(end), flat);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_DATE_TIME, flat);
                 //               addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
             }
@@ -583,7 +635,8 @@ public class OpenEhrPopulator {
 
             IBase low = getRangeLow(value);
             if (low != null && isQuantityWithContent(low)) {
-                handleDvQuantity(mappingHelper, path + "/lower", low, flat, terminology, isMultipleTypes, availableCodings);
+                handleDvQuantity(mappingHelper, path + "/lower", low, flat, terminology, isMultipleTypes,
+                                 availableCodings);
                 //               addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_QUANTITY, flat);
                 //               addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
                 lowerPopulated = true;
@@ -591,7 +644,8 @@ public class OpenEhrPopulator {
 
             IBase high = getRangeHigh(value);
             if (high != null && isQuantityWithContent(high)) {
-                handleDvQuantity(mappingHelper, path + "/upper", high, flat, terminology, isMultipleTypes, availableCodings);
+                handleDvQuantity(mappingHelper, path + "/upper", high, flat, terminology, isMultipleTypes,
+                                 availableCodings);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_QUANTITY, flat);
 //                addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
                 upperPopulated = true;
@@ -635,7 +689,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvCodedText(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleDvCodedText(String path, final IBase value, final boolean isMultipleTypes,
+                                      final JsonObject flat,
                                       final Terminology terminology) {
 //        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
 //            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
@@ -648,23 +703,25 @@ public class OpenEhrPopulator {
                 // Handle the first coding as the primary coded text
                 IBaseCoding primaryCoding = codings.get(0);
                 addToConstructingFlat(path + "|code",
-                        translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology), flat);
+                                      translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology), flat);
                 setTerminology(path + "|terminology", primaryCoding, flat, terminology);
                 if (StringUtils.isNotBlank(primaryCoding.getDisplay())) {
                     addToConstructingFlat(path + "|value",
-                            translate(primaryCoding.getDisplay(), primaryCoding.getSystem(), terminology),
-                            flat);
+                                          translate(primaryCoding.getDisplay(), primaryCoding.getSystem(), terminology),
+                                          flat);
                 } else if (StringUtils.isNotBlank(primaryCoding.getCode())) {
                     addToConstructingFlat(path + "|value",
-                            translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology),
-                            flat);
+                                          translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology),
+                                          flat);
                 }
 
                 // Handle additional codings as mappings
                 addAdditionalCodingsAsMappings(path, codings, flat, terminology);
-                addToConstructingFlat(path + "|value", translate(getCodeableConceptText(value), null, terminology), flat);
+                addToConstructingFlat(path + "|value", translate(getCodeableConceptText(value), null, terminology),
+                                      flat);
             } else if (isMultipleTypes) {
-                addToConstructingFlat(path + "|other", translate(getCodeableConceptText(value), null, terminology), flat);
+                addToConstructingFlat(path + "|other", translate(getCodeableConceptText(value), null, terminology),
+                                      flat);
             }
             return true;
         } else if (value instanceof IBaseCoding coding) {
@@ -675,17 +732,18 @@ public class OpenEhrPopulator {
             setTerminology(path + "|terminology", coding, flat, terminology);
             setDisplay(path, coding, flat, terminology);
             addToConstructingFlat(path + "|value", translate(coding.getDisplay(), coding.getSystem(), terminology),
-                    flat);
+                                  flat);
             return true;
         } else if (value instanceof IPrimitiveType<?> prim && path.contains("|")) {
             addToConstructingFlat(path, translate(prim.getValueAsString(), null, terminology), flat);
             return true;
         } else if (isIdentifier(value)) {
-            addToConstructingFlat(path + "|code", translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
-                    flat);
+            addToConstructingFlat(path + "|code",
+                                  translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
+                                  flat);
             addToConstructingFlat(path + "|terminology", getIdentifierSystem(value), flat);
             addToConstructingFlat(path + "|value",
-                    translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
+                                  translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
             return true;
         } else if (value instanceof IBaseEnumeration<?> enumeration) {
             final String enumVal = enumeration.getValueAsString();
@@ -698,7 +756,7 @@ public class OpenEhrPopulator {
             return true;
         } else {
             log.warn("openEhrType is DV_CODED_TEXT but extracted value is not CodeableConcept; is {}",
-                    value.getClass());
+                     value.getClass());
         }
         return false;
     }
@@ -707,7 +765,7 @@ public class OpenEhrPopulator {
     private void setDisplay(String path, IBaseCoding coding, JsonObject flat, Terminology terminology) {
         if (StringUtils.isNotBlank(coding.getDisplay())) {
             addToConstructingFlat(path + "|value", translate(coding.getDisplay(), coding.getSystem(), terminology),
-                    flat);
+                                  flat);
         } else if (StringUtils.isNotBlank(coding.getCode())) {
             addToConstructingFlat(path + "|value", translate(coding.getCode(), coding.getSystem(), terminology), flat);
         }
@@ -717,8 +775,8 @@ public class OpenEhrPopulator {
     private void setTerminology(String path, IBaseCoding coding, JsonObject flat,
                                 final Terminology terminology) {
         final String translatedSystem = translateSystem(coding.getCode(),
-                coding.getSystem(),
-                terminology);
+                                                        coding.getSystem(),
+                                                        terminology);
         final String version = coding.getVersion();
         if (translatedSystem == null && StringUtils.isNotBlank(version)) {
             String displayVersion;
@@ -736,9 +794,9 @@ public class OpenEhrPopulator {
     /**
      * Adds additional codings from a CodeableConcept as mappings in the openEHR flat format
      *
-     * @param path    The base path for the mappings
+     * @param path The base path for the mappings
      * @param codings The list of codings (first one is skipped as it's the primary coding)
-     * @param flat    The JSON object to add the mappings to
+     * @param flat The JSON object to add the mappings to
      */
     private void addAdditionalCodingsAsMappings(String path, List<IBaseCoding> codings, JsonObject flat,
                                                 Terminology terminology) {
@@ -752,9 +810,9 @@ public class OpenEhrPopulator {
 
             addToConstructingFlat(mappingPath + "/match", "=", flat);
             addToConstructingFlat(mappingPath + "/target|preferred_term",
-                    translate(coding.getDisplay(), coding.getSystem(), terminology), flat);
+                                  translate(coding.getDisplay(), coding.getSystem(), terminology), flat);
             addToConstructingFlat(mappingPath + "/target|code",
-                    translate(coding.getCode(), coding.getSystem(), terminology), flat);
+                                  translate(coding.getCode(), coding.getSystem(), terminology), flat);
             setTerminology(mappingPath + "/target|terminology", coding, flat, terminology);
         }
     }
@@ -860,14 +918,16 @@ public class OpenEhrPopulator {
         }
     }
 
-    private boolean handleIdentifier(String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleIdentifier(String path, final IBase value, final boolean isMultipleTypes,
+                                     final JsonObject flat,
                                      final Terminology terminology) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_IDENTIFIER_VALUE;
         }
         if (isIdentifier(value)) {
-            addToConstructingFlat(path + "|id", translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
-                    flat);
+            addToConstructingFlat(path + "|id",
+                                  translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
+                                  flat);
             addToConstructingFlat(path + "|issuer", normalizeIdentifierSystem(getIdentifierSystem(value)), flat);
             addToConstructingFlat(path + "|type", buildIdentifierTypeString(value), flat);
             addToConstructingFlat(path + "|assigner", buildIdentifierAssignerString(value), flat);
@@ -933,13 +993,15 @@ public class OpenEhrPopulator {
         return chosenValue;
     }
 
-    private boolean handlePartyIdentifier(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handlePartyIdentifier(final String path, final IBase value, final boolean isMultipleTypes,
+                                          final JsonObject flat,
                                           final Terminology terminology) {
         if (value instanceof IPrimitiveType<?> prim) {
             addToConstructingFlat(path + "|name", translate(prim.getValueAsString(), null, terminology), flat);
             return true;
         } else if (isIdentifier(value)) {
-            addToConstructingFlat(path + "|id", translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
+            addToConstructingFlat(path + "|id",
+                                  translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
             addToConstructingFlat(path + "|assigner", getIdentifierSystem(value), flat);
             addToConstructingFlat(path + "|type", getIdentifierTypeText(value), flat);
             // if coding.code exists, it should override the type
@@ -948,7 +1010,7 @@ public class OpenEhrPopulator {
                 addToConstructingFlat(path + "|type", typeCoding.getCode(), flat);
             }
             return true;
-        }  else if (value  instanceof IBaseReference) {
+        } else if (value instanceof IBaseReference) {
             //todo
             return true;
         } else {
@@ -959,33 +1021,39 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleParticipation(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleParticipation(final String path, final IBase value, final boolean isMultipleTypes,
+                                        final JsonObject flat,
                                         final Terminology terminology) {
         final String participationPath = path.replace("other_participations", "_other_participation");
         if (value instanceof IBaseReference reference) {
             addToConstructingFlat(participationPath + "|name", reference.getDisplayElement().getValueAsString(), flat);
             IIdType referenceElement = reference.getReferenceElement();
-            if(referenceElement != null && !referenceElement.isEmpty()) {
+            if (referenceElement != null && !referenceElement.isEmpty()) {
                 addToConstructingFlat(participationPath + "|id", referenceElement.getValue(), flat);
-                final String baseUrl = referenceElement.getBaseUrl() == null ? "http://hl7.org/fhir" : referenceElement.getBaseUrl();
+                final String baseUrl =
+                        referenceElement.getBaseUrl() == null ? "http://hl7.org/fhir" : referenceElement.getBaseUrl();
                 addToConstructingFlat(participationPath + "|id_namespace", translate(baseUrl, null, terminology), flat);
                 addToConstructingFlat(participationPath + "|id_scheme", referenceElement.getResourceType(), flat);
             } else {
                 if (value instanceof Reference r4Reference) {
                     addToConstructingFlat(participationPath + "|id", r4Reference.getIdentifier().getValue(), flat);
-                    addToConstructingFlat(participationPath + "|id_namespace", translate(r4Reference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace",
+                                          translate(r4Reference.getIdentifier().getSystem(), null, terminology), flat);
                     addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
                 } else if (value instanceof org.hl7.fhir.r5.model.Reference r5Reference) {
                     addToConstructingFlat(participationPath + "|id", r5Reference.getIdentifier().getValue(), flat);
-                    addToConstructingFlat(participationPath + "|id_namespace", translate(r5Reference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace",
+                                          translate(r5Reference.getIdentifier().getSystem(), null, terminology), flat);
                     addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
                 } else if (value instanceof org.hl7.fhir.dstu3.model.Reference r3Reference) {
                     addToConstructingFlat(participationPath + "|id", r3Reference.getIdentifier().getValue(), flat);
-                    addToConstructingFlat(participationPath + "|id_namespace", translate(r3Reference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace",
+                                          translate(r3Reference.getIdentifier().getSystem(), null, terminology), flat);
                     addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
                 } else if (value instanceof org.hl7.fhir.r4b.model.Reference r4bReference) {
                     addToConstructingFlat(participationPath + "|id", r4bReference.getIdentifier().getValue(), flat);
-                    addToConstructingFlat(participationPath + "|id_namespace", translate(r4bReference.getIdentifier().getSystem(), null, terminology), flat);
+                    addToConstructingFlat(participationPath + "|id_namespace",
+                                          translate(r4bReference.getIdentifier().getSystem(), null, terminology), flat);
                     addToConstructingFlat(participationPath + "|id_scheme", "Base", flat);
                 }
             }
@@ -995,7 +1063,7 @@ public class OpenEhrPopulator {
             final String codeableConceptText = getCodeableConceptText(value);
             addToConstructingFlat(participationPath + "|function", codeableConceptText, flat);
             for (IBaseCoding coding : getCodeableConceptCodings(value)) {
-                if(coding.isEmpty()) {
+                if (coding.isEmpty()) {
                     continue;
                 }
                 final String code = coding.getCode();
@@ -1011,7 +1079,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handlePartyProxy(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handlePartyProxy(final String path, final IBase value, final boolean isMultipleTypes,
+                                     final JsonObject flat,
                                      final Terminology terminology) {
         if (value instanceof IPrimitiveType<?> prim) {
             addToConstructingFlat(path + "|name", translate(prim.getValueAsString(), null, terminology), flat);
@@ -1024,7 +1093,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDateTimeEvent(final String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat) {
+    private boolean handleDateTimeEvent(final String path, final IBase value, final boolean isMultipleTypes,
+                                        final JsonObject flat) {
         if (value != null && "dateTime".equals(value.fhirType())) {
             final java.util.Date date = getDateValue(value);
             if (date != null) {
@@ -1039,7 +1109,8 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleCodePhrase(final MappingHelper mappingHelper, String path, final IBase value, final boolean isMultipleTypes, final JsonObject flat,
+    private boolean handleCodePhrase(final MappingHelper mappingHelper, String path, final IBase value,
+                                     final boolean isMultipleTypes, final JsonObject flat,
                                      final String openEhrType, final Terminology terminology,
                                      final List<OfCoding> availableCodes) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
@@ -1051,10 +1122,12 @@ public class OpenEhrPopulator {
             setTerminology(path + "|terminology", coding, flat, terminology);
             return true;
         } else if (value instanceof IBaseExtension<?, ?> extension) {
-            setOpenEhrValue(mappingHelper, path, extension.getValue(), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
+            setOpenEhrValue(mappingHelper, path, extension.getValue(), openEhrType, isMultipleTypes, flat, terminology,
+                            availableCodes);
             return true;
         } else if (isCodeableConcept(value)) {
-            setOpenEhrValue(mappingHelper, path, getCodeableConceptCodingFirstRep(value), openEhrType, isMultipleTypes, flat, terminology, availableCodes);
+            setOpenEhrValue(mappingHelper, path, getCodeableConceptCodingFirstRep(value), openEhrType, isMultipleTypes,
+                            flat, terminology, availableCodes);
             return true;
         } else if (value instanceof IBaseEnumeration<?> enumeration) {
             final String enumVal = enumeration.getValueAsString();
@@ -1096,28 +1169,34 @@ public class OpenEhrPopulator {
                 addToConstructingFlat(openEhrPath, qValue.toPlainString(), constructingFlat);
             }
         } else if (fhirValue instanceof IBaseCoding extractedCoding) {
-            handleCodePhrase(mappingHelper, openEhrPath, extractedCoding, false, constructingFlat, openehrType, terminology, availableCodes);
+            handleCodePhrase(mappingHelper, openEhrPath, extractedCoding, false, constructingFlat, openehrType,
+                             terminology, availableCodes);
         } else if (isCodeableConcept(fhirValue)) {
-            handleDvCodedText(openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false, constructingFlat, terminology);
+            handleDvCodedText(openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false, constructingFlat,
+                              terminology);
         } else if (fhirValue != null && "dateTime".equals(fhirValue.fhirType())) {
             final java.util.Date date = getDateValue(fhirValue);
             if (date != null) {
                 addToConstructingFlat(openEhrPath, openFhirMapperUtils.dateTimeToString(date), constructingFlat);
             }
         } else if (fhirValue != null && "Annotation".equals(fhirValue.fhirType())) {
-            addToConstructingFlat(openEhrPath, translate(getAnnotationText(fhirValue), null, terminology), constructingFlat);
+            addToConstructingFlat(openEhrPath, translate(getAnnotationText(fhirValue), null, terminology),
+                                  constructingFlat);
         } else if (fhirValue != null && "Address".equals(fhirValue.fhirType())) {
-            addToConstructingFlat(openEhrPath, translate(getAddressText(fhirValue), null, terminology), constructingFlat);
+            addToConstructingFlat(openEhrPath, translate(getAddressText(fhirValue), null, terminology),
+                                  constructingFlat);
         } else if (fhirValue != null && "HumanName".equals(fhirValue.fhirType())) {
-            addToConstructingFlat(openEhrPath, translate(getHumanNameText(fhirValue), null, terminology), constructingFlat);
+            addToConstructingFlat(openEhrPath, translate(getHumanNameText(fhirValue), null, terminology),
+                                  constructingFlat);
         } else if (fhirValue instanceof IBaseExtension<?, ?> extracted) {
             if (hasPrimitiveValue(extracted.getValue())) {
-                addValuePerFhirType(mappingHelper, extracted.getValue(), openEhrPath, false, constructingFlat, openehrType, terminology,
-                        availableCodes);
+                addValuePerFhirType(mappingHelper, extracted.getValue(), openEhrPath, false, constructingFlat,
+                                    openehrType, terminology,
+                                    availableCodes);
             }
         } else if (hasPrimitiveValue(fhirValue)) {
             addToConstructingFlat(openEhrPath, translate(getPrimitiveValue(fhirValue), null, terminology),
-                    constructingFlat);
+                                  constructingFlat);
         } else {
             log.error("Unsupported fhir value toString!: {}", fhirValue);
         }
@@ -1235,34 +1314,66 @@ public class OpenEhrPopulator {
     }
 
     private static java.math.BigDecimal getQuantityValue(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getValue();
-        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getValue();
-        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getValue();
-        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getValue();
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) {
+            return q.getValue();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            return q.getValue();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            return q.getValue();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) {
+            return q.getValue();
+        }
         return null;
     }
 
     private static String getQuantityUnit(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getUnit();
-        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getUnit();
-        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getUnit();
-        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getUnit();
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) {
+            return q.getUnit();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            return q.getUnit();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            return q.getUnit();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) {
+            return q.getUnit();
+        }
         return null;
     }
 
     private static String getQuantityCode(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getCode();
-        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getCode();
-        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getCode();
-        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getCode();
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) {
+            return q.getCode();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            return q.getCode();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            return q.getCode();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) {
+            return q.getCode();
+        }
         return null;
     }
 
     private static String getQuantitySystem(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Quantity q) return q.getSystem();
-        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) return q.getSystem();
-        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) return q.getSystem();
-        if (value instanceof org.hl7.fhir.r5.model.Quantity q) return q.getSystem();
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) {
+            return q.getSystem();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            return q.getSystem();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            return q.getSystem();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) {
+            return q.getSystem();
+        }
         return null;
     }
 
@@ -1271,10 +1382,18 @@ public class OpenEhrPopulator {
     }
 
     private static IBase getRatioNumerator(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Ratio r) return r.getNumerator();
-        if (value instanceof org.hl7.fhir.dstu3.model.Ratio r) return r.getNumerator();
-        if (value instanceof org.hl7.fhir.r4b.model.Ratio r) return r.getNumerator();
-        if (value instanceof org.hl7.fhir.r5.model.Ratio r) return r.getNumerator();
+        if (value instanceof org.hl7.fhir.r4.model.Ratio r) {
+            return r.getNumerator();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Ratio r) {
+            return r.getNumerator();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Ratio r) {
+            return r.getNumerator();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Ratio r) {
+            return r.getNumerator();
+        }
         return null;
     }
 
@@ -1283,18 +1402,34 @@ public class OpenEhrPopulator {
     }
 
     private static java.util.Date getPeriodStart(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Period p) return p.getStart();
-        if (value instanceof org.hl7.fhir.dstu3.model.Period p) return p.getStart();
-        if (value instanceof org.hl7.fhir.r4b.model.Period p) return p.getStart();
-        if (value instanceof org.hl7.fhir.r5.model.Period p) return p.getStart();
+        if (value instanceof org.hl7.fhir.r4.model.Period p) {
+            return p.getStart();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) {
+            return p.getStart();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) {
+            return p.getStart();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Period p) {
+            return p.getStart();
+        }
         return null;
     }
 
     private static java.util.Date getPeriodEnd(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Period p) return p.getEnd();
-        if (value instanceof org.hl7.fhir.dstu3.model.Period p) return p.getEnd();
-        if (value instanceof org.hl7.fhir.r4b.model.Period p) return p.getEnd();
-        if (value instanceof org.hl7.fhir.r5.model.Period p) return p.getEnd();
+        if (value instanceof org.hl7.fhir.r4.model.Period p) {
+            return p.getEnd();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) {
+            return p.getEnd();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) {
+            return p.getEnd();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Period p) {
+            return p.getEnd();
+        }
         return null;
     }
 
@@ -1303,18 +1438,34 @@ public class OpenEhrPopulator {
     }
 
     private static IBase getRangeLow(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Range r) return r.getLow();
-        if (value instanceof org.hl7.fhir.dstu3.model.Range r) return r.getLow();
-        if (value instanceof org.hl7.fhir.r4b.model.Range r) return r.getLow();
-        if (value instanceof org.hl7.fhir.r5.model.Range r) return r.getLow();
+        if (value instanceof org.hl7.fhir.r4.model.Range r) {
+            return r.getLow();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Range r) {
+            return r.getLow();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Range r) {
+            return r.getLow();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Range r) {
+            return r.getLow();
+        }
         return null;
     }
 
     private static IBase getRangeHigh(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Range r) return r.getHigh();
-        if (value instanceof org.hl7.fhir.dstu3.model.Range r) return r.getHigh();
-        if (value instanceof org.hl7.fhir.r4b.model.Range r) return r.getHigh();
-        if (value instanceof org.hl7.fhir.r5.model.Range r) return r.getHigh();
+        if (value instanceof org.hl7.fhir.r4.model.Range r) {
+            return r.getHigh();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Range r) {
+            return r.getHigh();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Range r) {
+            return r.getHigh();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Range r) {
+            return r.getHigh();
+        }
         return null;
     }
 
@@ -1323,14 +1474,18 @@ public class OpenEhrPopulator {
     }
 
     private static List<IBaseCoding> getCodeableConceptCodings(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.CodeableConcept cc)
+        if (value instanceof org.hl7.fhir.r4.model.CodeableConcept cc) {
             return new java.util.ArrayList<>(cc.getCoding());
-        if (value instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc)
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) {
             return new java.util.ArrayList<>(cc.getCoding());
-        if (value instanceof org.hl7.fhir.r4b.model.CodeableConcept cc)
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.CodeableConcept cc) {
             return new java.util.ArrayList<>(cc.getCoding());
-        if (value instanceof org.hl7.fhir.r5.model.CodeableConcept cc)
+        }
+        if (value instanceof org.hl7.fhir.r5.model.CodeableConcept cc) {
             return new java.util.ArrayList<>(cc.getCoding());
+        }
         return java.util.Collections.emptyList();
     }
 
@@ -1340,10 +1495,18 @@ public class OpenEhrPopulator {
     }
 
     private static String getCodeableConceptText(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.CodeableConcept cc) return cc.getText();
-        if (value instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) return cc.getText();
-        if (value instanceof org.hl7.fhir.r4b.model.CodeableConcept cc) return cc.getText();
-        if (value instanceof org.hl7.fhir.r5.model.CodeableConcept cc) return cc.getText();
+        if (value instanceof org.hl7.fhir.r4.model.CodeableConcept cc) {
+            return cc.getText();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) {
+            return cc.getText();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.CodeableConcept cc) {
+            return cc.getText();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.CodeableConcept cc) {
+            return cc.getText();
+        }
         return null;
     }
 
@@ -1352,38 +1515,66 @@ public class OpenEhrPopulator {
     }
 
     private static String getIdentifierValue(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Identifier id) return id.getValue();
-        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) return id.getValue();
-        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) return id.getValue();
-        if (value instanceof org.hl7.fhir.r5.model.Identifier id) return id.getValue();
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) {
+            return id.getValue();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) {
+            return id.getValue();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) {
+            return id.getValue();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) {
+            return id.getValue();
+        }
         return null;
     }
 
     private static String getIdentifierSystem(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Identifier id) return id.getSystem();
-        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) return id.getSystem();
-        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) return id.getSystem();
-        if (value instanceof org.hl7.fhir.r5.model.Identifier id) return id.getSystem();
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) {
+            return id.getSystem();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) {
+            return id.getSystem();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) {
+            return id.getSystem();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) {
+            return id.getSystem();
+        }
         return null;
     }
 
     private static String getIdentifierTypeText(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Identifier id) return id.getType().getText();
-        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) return id.getType().getText();
-        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) return id.getType().getText();
-        if (value instanceof org.hl7.fhir.r5.model.Identifier id) return id.getType().getText();
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) {
+            return id.getType().getText();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) {
+            return id.getType().getText();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) {
+            return id.getType().getText();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) {
+            return id.getType().getText();
+        }
         return null;
     }
 
     private static IBaseCoding getIdentifierTypeCodingFirstRep(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Identifier id)
+        if (value instanceof org.hl7.fhir.r4.model.Identifier id) {
             return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
-        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id)
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) {
             return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
-        if (value instanceof org.hl7.fhir.r4b.model.Identifier id)
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Identifier id) {
             return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
-        if (value instanceof org.hl7.fhir.r5.model.Identifier id)
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Identifier id) {
             return id.hasType() && id.getType().hasCoding() ? id.getType().getCodingFirstRep() : null;
+        }
         return null;
     }
 
@@ -1392,65 +1583,113 @@ public class OpenEhrPopulator {
      */
     private static String[] getIdentifierAssignerInfo(final IBase value) {
         if (value instanceof org.hl7.fhir.r4.model.Identifier id) {
-            if (!id.hasAssigner()) return null;
+            if (!id.hasAssigner()) {
+                return null;
+            }
             final org.hl7.fhir.r4.model.Reference assigner = id.getAssigner();
             final String display = assigner.getDisplay();
-            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            if (!assigner.hasIdentifier()) {
+                return new String[]{display, null, null};
+            }
             return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
         }
         if (value instanceof org.hl7.fhir.dstu3.model.Identifier id) {
-            if (!id.hasAssigner()) return null;
+            if (!id.hasAssigner()) {
+                return null;
+            }
             final org.hl7.fhir.dstu3.model.Reference assigner = id.getAssigner();
             final String display = assigner.getDisplay();
-            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            if (!assigner.hasIdentifier()) {
+                return new String[]{display, null, null};
+            }
             return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
         }
         if (value instanceof org.hl7.fhir.r4b.model.Identifier id) {
-            if (!id.hasAssigner()) return null;
+            if (!id.hasAssigner()) {
+                return null;
+            }
             final org.hl7.fhir.r4b.model.Reference assigner = id.getAssigner();
             final String display = assigner.getDisplay();
-            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            if (!assigner.hasIdentifier()) {
+                return new String[]{display, null, null};
+            }
             return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
         }
         if (value instanceof org.hl7.fhir.r5.model.Identifier id) {
-            if (!id.hasAssigner()) return null;
+            if (!id.hasAssigner()) {
+                return null;
+            }
             final org.hl7.fhir.r5.model.Reference assigner = id.getAssigner();
             final String display = assigner.getDisplay();
-            if (!assigner.hasIdentifier()) return new String[]{display, null, null};
+            if (!assigner.hasIdentifier()) {
+                return new String[]{display, null, null};
+            }
             return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
         }
         return null;
     }
 
     private static java.util.Date getDateValue(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.BaseDateTimeType dt) return dt.getValue();
-        if (value instanceof org.hl7.fhir.dstu3.model.BaseDateTimeType dt) return dt.getValue();
-        if (value instanceof org.hl7.fhir.r4b.model.BaseDateTimeType dt) return dt.getValue();
-        if (value instanceof org.hl7.fhir.r5.model.BaseDateTimeType dt) return dt.getValue();
+        if (value instanceof org.hl7.fhir.r4.model.BaseDateTimeType dt) {
+            return dt.getValue();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.BaseDateTimeType dt) {
+            return dt.getValue();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.BaseDateTimeType dt) {
+            return dt.getValue();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.BaseDateTimeType dt) {
+            return dt.getValue();
+        }
         return null;
     }
 
     private static String getAnnotationText(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Annotation a) return a.getText();
-        if (value instanceof org.hl7.fhir.dstu3.model.Annotation a) return a.getText();
-        if (value instanceof org.hl7.fhir.r4b.model.Annotation a) return a.getText();
-        if (value instanceof org.hl7.fhir.r5.model.Annotation a) return a.getText();
+        if (value instanceof org.hl7.fhir.r4.model.Annotation a) {
+            return a.getText();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Annotation a) {
+            return a.getText();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Annotation a) {
+            return a.getText();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Annotation a) {
+            return a.getText();
+        }
         return null;
     }
 
     private static String getAddressText(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.Address a) return a.getText();
-        if (value instanceof org.hl7.fhir.dstu3.model.Address a) return a.getText();
-        if (value instanceof org.hl7.fhir.r4b.model.Address a) return a.getText();
-        if (value instanceof org.hl7.fhir.r5.model.Address a) return a.getText();
+        if (value instanceof org.hl7.fhir.r4.model.Address a) {
+            return a.getText();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Address a) {
+            return a.getText();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Address a) {
+            return a.getText();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Address a) {
+            return a.getText();
+        }
         return null;
     }
 
     private static String getHumanNameText(final IBase value) {
-        if (value instanceof org.hl7.fhir.r4.model.HumanName n) return n.getNameAsSingleString();
-        if (value instanceof org.hl7.fhir.dstu3.model.HumanName n) return n.getNameAsSingleString();
-        if (value instanceof org.hl7.fhir.r4b.model.HumanName n) return n.getNameAsSingleString();
-        if (value instanceof org.hl7.fhir.r5.model.HumanName n) return n.getNameAsSingleString();
+        if (value instanceof org.hl7.fhir.r4.model.HumanName n) {
+            return n.getNameAsSingleString();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.HumanName n) {
+            return n.getNameAsSingleString();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.HumanName n) {
+            return n.getNameAsSingleString();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.HumanName n) {
+            return n.getNameAsSingleString();
+        }
         return null;
     }
 

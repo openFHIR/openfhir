@@ -39,7 +39,32 @@
                 }
               ],
               "text": "Emulsion for injection/infusion"
-            }
+            },
+            "ingredient": [
+              {
+                "extension": [
+                  {
+                    "url": "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/wirkstoffrelation",
+                    "extension": [
+                      {
+                        "url": "ingredientReference",
+                        "extension": [
+                          {
+                            "url": null
+                          },
+                          {
+                            "url": null
+                          }
+                        ]
+                      },
+                      {
+                        "url": "ingredientUri"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             "resourceType": "Encounter",

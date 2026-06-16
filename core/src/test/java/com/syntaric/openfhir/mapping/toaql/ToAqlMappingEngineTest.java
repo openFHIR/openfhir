@@ -25,7 +25,7 @@ public class ToAqlMappingEngineTest {
 
     @Test
     public void findByFhirPath_nullHelpers_returnsEmpty() {
-        final List<MappingHelper> result = engine.findByFhirPath(null, "Observation.code");
+        final List<MappingHelper> result = engine.findByFhirPath(null, "Observation.code", null);
         Assert.assertTrue(result.isEmpty());
     }
 
@@ -33,8 +33,9 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_matchOnTopLevel_returnsHelper() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code");
+        helper.setFhir("code");
 
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), "Observation.code");
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), "Observation.code", null);
 
         Assert.assertEquals(1, result.size());
         Assert.assertSame(helper, result.get(0));
@@ -44,8 +45,9 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_noMatch_returnsEmpty() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.status");
+        helper.setFhir("status");
 
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), "Observation.code");
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), "Observation.code", null);
 
         Assert.assertTrue(result.isEmpty());
     }
@@ -54,12 +56,14 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_matchOnChild_returnsChild() {
         final MappingHelper child = new MappingHelper();
         child.setFullFhirPath("Observation.code.coding");
+        child.setFhir("code.coding");
 
         final MappingHelper parent = new MappingHelper();
         parent.setFullFhirPath("Observation.status");
+        parent.setFhir("status");
         parent.getChildren().add(child);
 
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(parent), "Observation.code.coding");
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(parent), "Observation.code.coding", null);
 
         Assert.assertEquals(1, result.size());
         Assert.assertSame(child, result.get(0));
@@ -69,12 +73,14 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_matchOnBothParentAndChild_returnsBoth() {
         final MappingHelper child = new MappingHelper();
         child.setFullFhirPath("Observation.code.coding");
+        child.setFhir("code.coding");
 
         final MappingHelper parent = new MappingHelper();
         parent.setFullFhirPath("Observation.code");
+        parent.setFhir("code");
         parent.getChildren().add(child);
 
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(parent), "Observation.code");
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(parent), "Observation.code", null);
 
         Assert.assertEquals(2, result.size()); // parent matches, child also contains "Observation.code"
     }
@@ -83,8 +89,9 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_containsMatch_returnsHelper() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code.coding.system");
+        helper.setFhir("code.coding.system");
 
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), "Observation.code");
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), "Observation.code", null);
 
         Assert.assertEquals(1, result.size());
     }
@@ -93,10 +100,11 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_pipeSeparatedPaths_matchesFirstSegment() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.value");
+        helper.setFhir("value");
 
         // "value-quantity" resolves to "(Observation.value as Quantity) | (Observation.value as SampledData)"
         final String pipePath = "(Observation.value as Quantity) | (Observation.value as SampledData)";
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), pipePath);
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), pipePath, null);
 
         Assert.assertEquals(1, result.size());
         Assert.assertSame(helper, result.get(0));
@@ -106,9 +114,10 @@ public class ToAqlMappingEngineTest {
     public void findByFhirPath_pipeSeparatedPaths_matchesSecondSegment() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.component.value");
+        helper.setFhir("component.value");
 
         final String pipePath = "(Observation.value as Quantity) | (Observation.component.value as SampledData)";
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), pipePath);
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), pipePath, null);
 
         Assert.assertEquals(1, result.size());
         Assert.assertSame(helper, result.get(0));
@@ -120,7 +129,7 @@ public class ToAqlMappingEngineTest {
         helper.setFullFhirPath("Observation.code");
 
         final String pipePath = "(Observation.value as Quantity) | (Observation.value as SampledData)";
-        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), pipePath);
+        final List<MappingHelper> result = engine.findByFhirPath(List.of(helper), pipePath, null);
 
         Assert.assertTrue(result.isEmpty());
     }
@@ -131,7 +140,7 @@ public class ToAqlMappingEngineTest {
 
     @Test
     public void mapQueryToMappingHelper_unknownParam_returnsEmpty() {
-        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper("nonexistent-param", "Observation", List.of());
+        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper(new FhirQueryParam("nonexistent-param", null, null), "Observation", List.of());
         Assert.assertTrue(result.isEmpty());
     }
 
@@ -146,7 +155,7 @@ public class ToAqlMappingEngineTest {
                 .mappingHelpers(List.of(helper))
                 .build();
 
-        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper("code", "Observation", List.of(model));
+        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper(new FhirQueryParam("code", null, null), "Observation", List.of(model));
 
         Assert.assertTrue(result.isEmpty());
     }
@@ -156,6 +165,7 @@ public class ToAqlMappingEngineTest {
         // "code" resolves to path "Observation.code" — helper contains that path
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code");
+        helper.setFhir("code");
 
         final FhirConnectContextEntity context = new FhirConnectContextEntity();
         final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
@@ -163,7 +173,7 @@ public class ToAqlMappingEngineTest {
                 .mappingHelpers(List.of(helper))
                 .build();
 
-        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper("code", "Observation", List.of(model));
+        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper(new FhirQueryParam("code", null, null), "Observation", List.of(model));
 
         Assert.assertEquals(1, result.size());
         Assert.assertSame(context, result.get(0).getContext());
@@ -176,9 +186,11 @@ public class ToAqlMappingEngineTest {
         // "category" resolves to "Observation.category" — match is in a child helper
         final MappingHelper child = new MappingHelper();
         child.setFullFhirPath("Observation.category");
+        child.setFhir("category");
 
         final MappingHelper parent = new MappingHelper();
         parent.setFullFhirPath("Observation.code");
+        parent.setFhir("code");
         parent.getChildren().add(child);
 
         final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
@@ -186,7 +198,7 @@ public class ToAqlMappingEngineTest {
                 .mappingHelpers(List.of(parent))
                 .build();
 
-        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper("category", "Observation", List.of(model));
+        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper(new FhirQueryParam("category", null, null), "Observation", List.of(model));
 
         Assert.assertEquals(1, result.size());
         Assert.assertEquals(1, result.get(0).getMappingHelpers().size());
@@ -304,15 +316,17 @@ public class ToAqlMappingEngineTest {
         // Two params both matching helpers on the same model — should produce one AQL with both conditions AND-ed
         final MappingHelper codeHelper = new MappingHelper();
         codeHelper.setFullFhirPath("Observation.code");
+        codeHelper.setFhir("code");
         codeHelper.setPossibleRmTypes(List.of("DvCodedText"));
         codeHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
-        codeHelper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
+        codeHelper.setFullOpenEhrPath("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
 
         final MappingHelper statusHelper = new MappingHelper();
         statusHelper.setFullFhirPath("Observation.status");
+        statusHelper.setFhir("status");
         statusHelper.setPossibleRmTypes(List.of("DvCodedText"));
         statusHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
-        statusHelper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0005]");
+        statusHelper.setFullOpenEhrPath("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0005]");
 
 
         final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
@@ -321,8 +335,8 @@ public class ToAqlMappingEngineTest {
                 .build();
 
         final List<FhirQueryParam> params = new ArrayList<>();
-        params.add(new FhirQueryParam("code", "29463-7"));
-        params.add(new FhirQueryParam("status", "final"));
+        params.add(new FhirQueryParam("code", "29463-7", null));
+        params.add(new FhirQueryParam("status", "final", null));
 
         final ToAqlResponse response = engine.map(List.of(model), "Observation", params, false);
 
@@ -350,7 +364,7 @@ public class ToAqlMappingEngineTest {
 
     @Test
     public void map_unknownParam_addsUnhandledParam() {
-        final ToAqlResponse response = engine.map(List.of(), "Observation", List.of(new FhirQueryParam("nonexistent-param", "val")), false);
+        final ToAqlResponse response = engine.map(List.of(), "Observation", List.of(new FhirQueryParam("nonexistent-param", "val", null)), false);
 
         Assert.assertNotNull(response.getUnhandledParams());
         Assert.assertEquals(1, response.getUnhandledParams().size());
@@ -371,7 +385,7 @@ public class ToAqlMappingEngineTest {
                 .mappingHelpers(List.of(helper))
                 .build();
 
-        final ToAqlResponse response = engine.map(List.of(model), "Observation", List.of(new FhirQueryParam("code", "123")), false);
+        final ToAqlResponse response = engine.map(List.of(model), "Observation", List.of(new FhirQueryParam("code", "123", null)), false);
 
         Assert.assertNotNull(response.getUnhandledParams());
         Assert.assertEquals(1, response.getUnhandledParams().size());
@@ -384,6 +398,7 @@ public class ToAqlMappingEngineTest {
         // "code" resolves to "Observation.code" — helper matches, so no unhandled param
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code");
+        helper.setFhir("code");
         helper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         helper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
         helper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
@@ -393,7 +408,7 @@ public class ToAqlMappingEngineTest {
                 .mappingHelpers(List.of(helper))
                 .build();
 
-        final ToAqlResponse response = engine.map(List.of(model), "Observation", List.of(new FhirQueryParam("code", "123")), false);
+        final ToAqlResponse response = engine.map(List.of(model), "Observation", List.of(new FhirQueryParam("code", "123", null)), false);
 
         Assert.assertTrue(response.getUnhandledParams() == null || response.getUnhandledParams().isEmpty());
     }
@@ -402,6 +417,7 @@ public class ToAqlMappingEngineTest {
     public void map_multipleParams_onlyUnmatchedAddedToUnhandled() {
         final MappingHelper helper = new MappingHelper();
         helper.setFullFhirPath("Observation.code");
+        helper.setFhir("code");
         helper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         helper.setFullOpenEhrPath("openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
         helper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
@@ -413,7 +429,7 @@ public class ToAqlMappingEngineTest {
 
         // "code" matches, "status" does not (different path)
         final ToAqlResponse response = engine.map(List.of(model), "Observation",
-                List.of(new FhirQueryParam("code", "123"), new FhirQueryParam("nonexistent-param", "val")), false);
+                List.of(new FhirQueryParam("code", "123", null), new FhirQueryParam("nonexistent-param", "val", null)), false);
 
         Assert.assertNotNull(response.getUnhandledParams());
         Assert.assertEquals(1, response.getUnhandledParams().size());
@@ -425,9 +441,11 @@ public class ToAqlMappingEngineTest {
         // Two models — only one has a helper matching "Observation.status"
         final MappingHelper matching = new MappingHelper();
         matching.setFullFhirPath("Observation.status");
+        matching.setFhir("status");
 
         final MappingHelper nonMatching = new MappingHelper();
         nonMatching.setFullFhirPath("Observation.code");
+        nonMatching.setFhir("code");
 
         final FhirConnectContextEntity matchingContext = new FhirConnectContextEntity();
         final ToAql.ToAqlModels matchingModel = ToAql.ToAqlModels.builder()
@@ -439,7 +457,7 @@ public class ToAqlMappingEngineTest {
                 .mappingHelpers(List.of(nonMatching))
                 .build();
 
-        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper("status", "Observation",
+        final List<ToAql.ToAqlModels> result = engine.mapQueryToMappingHelper(new FhirQueryParam("status", null, null), "Observation",
                 List.of(matchingModel, nonMatchingModel));
 
         Assert.assertEquals(1, result.size());

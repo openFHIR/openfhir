@@ -792,10 +792,8 @@
     "unidirectional" : null,
     "fhirConditions" : [ {
       "targetRoot" : "Observation.encounter.as(Reference).identifier",
-      "targetAttribute" : "type.coding.code",
       "targetAttributes" : [ "type.coding.code" ],
       "operator" : "one of",
-      "criteria" : "VN",
       "criterias" : [ "VN" ]
     } ],
     "openEhrConditions" : null,
@@ -970,10 +968,8 @@
       "unidirectional" : null,
       "fhirConditions" : [ {
         "targetRoot" : "Observation.encounter.as(Reference).resolve().identifier",
-        "targetAttribute" : "type.coding.code",
         "targetAttributes" : [ "type.coding.code" ],
         "operator" : "one of",
-        "criteria" : "VN",
         "criterias" : [ "VN" ]
       } ],
       "openEhrConditions" : null,

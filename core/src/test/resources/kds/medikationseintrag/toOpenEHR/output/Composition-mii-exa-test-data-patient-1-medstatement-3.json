@@ -337,53 +337,14 @@
                           },
                           "value": {
                             "_type": "DV_CODED_TEXT",
-                            "value": "Propofol",
-                            "mappings": [
-                              {
-                                "_type": "TERM_MAPPING",
-                                "match": "?",
-                                "target": {
-                                  "_type": "CODE_PHRASE",
-                                  "terminology_id": {
-                                    "_type": "TERMINOLOGY_ID",
-                                    "value": "http://fdasis.nlm.nih.gov"
-                                  },
-                                  "code_string": "YI7VU623SF"
-                                }
-                              },
-                              {
-                                "_type": "TERM_MAPPING",
-                                "match": "?",
-                                "target": {
-                                  "_type": "CODE_PHRASE",
-                                  "terminology_id": {
-                                    "_type": "TERMINOLOGY_ID",
-                                    "value": "http://terminology.hl7.org/CodeSystem/CAS"
-                                  },
-                                  "code_string": "2078-54-8"
-                                }
-                              },
-                              {
-                                "_type": "TERM_MAPPING",
-                                "match": "?",
-                                "target": {
-                                  "_type": "CODE_PHRASE",
-                                  "terminology_id": {
-                                    "_type": "TERMINOLOGY_ID",
-                                    "value": "http://snomed.info/sct (20230731)"
-                                  },
-                                  "code_string": "387423006",
-                                  "preferred_term": "Propofol (substance)"
-                                }
-                              }
-                            ],
+                            "value": "Propofol (substance)",
                             "defining_code": {
                               "_type": "CODE_PHRASE",
                               "terminology_id": {
                                 "_type": "TERMINOLOGY_ID",
-                                "value": "http://fhir.de/CodeSystem/ask"
+                                "value": "http://snomed.info/sct (20230731)"
                               },
-                              "code_string": "22898"
+                              "code_string": "387423006"
                             }
                           },
                           "archetype_node_id": "at0142"

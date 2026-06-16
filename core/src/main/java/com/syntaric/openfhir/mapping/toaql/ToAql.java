@@ -8,6 +8,8 @@ import com.syntaric.openfhir.aql.ToAqlRequest;
 import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
+import com.syntaric.openfhir.fc.schema.context.Context;
+import com.syntaric.openfhir.fc.schema.context.ContextQuery;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.Preprocessor;
@@ -18,6 +20,10 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.rest.RequestValidationException;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -71,29 +77,153 @@ public class ToAql {
         final String resourceType = openFhirMapperUtils.parseFhirResourceType(fhirFullUrl);
         final List<FhirQueryParam> queryParams = openFhirMapperUtils.parseFhirQueryParams(fhirFullUrl);
         log.debug("Parsed FHIR resource type '{}' and query params {} from URL '{}'",
-                resourceType, queryParams, fhirFullUrl);
+                  resourceType, queryParams, fhirFullUrl);
         final String profileUrl = queryParams.stream().filter(p -> "_profile".equals(p.getName()))
                 .map(param -> {
                     param.setHandled(true);
                     return param.getValue();
                 }).findFirst().orElse(null);
 
-        final List<ToAqlModels> allModels = getRelevantModelEntities(template, profileUrl);
+        final FhirConnectContextEntity relevantContext = getContext(template, profileUrl);
+        if (relevantContext == null && (StringUtils.isNotEmpty(template) || StringUtils.isNotEmpty(profileUrl))) {
+            final String formattedError = String.format(
+                    "Couldn't find context relevant to template %s or profile %s",
+                    template, profileUrl);
+            log.error(formattedError);
+            throw new RequestValidationException(formattedError, null);
+        } else if (relevantContext != null) {
+            // first see if we have hardcoded aqls in our context files
+            final ToAqlResponse contextResponse = findQueryResponse(List.of(relevantContext), resourceType, queryParams);
+            if (contextResponse != null) {
+                return contextResponse;
+            }
+        }
+
+        final List<FhirConnectContextEntity> allUserContexts = fhirConnectManager.allUserContextEntities();
+        final ToAqlResponse userContextResponse = findQueryResponse(allUserContexts, resourceType, queryParams);
+        if (userContextResponse != null) {
+            return userContextResponse;
+        }
+
+        final List<ToAqlModels> allModels = getRelevantModelEntities(relevantContext, allUserContexts);
         final List<ToAqlModels> narrowedByResourceType = new ArrayList<>();
 
         narrowByResourceTypeAndPrecondition(allModels, resourceType, narrowedByResourceType, queryParams);
 
+        final Map<String, List<MappingHelper>> cacheHelpersOfTemplate = new HashMap<>();
+
         for (final ToAqlModels aModel : narrowedByResourceType) {
             final String templateId = OpenFhirMappingContext.normalizeTemplateId(aModel.getContext().getTemplateId());
-            final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(templateId));
+            final WebTemplate webTemplate = templateUtils.parseWebTemplate(
+                    optManager.byTemplateIdAndOrganization(templateId));
 
-            final List<MappingHelper> mappingHelpers = helpersCreator.constructHelpers(templateId,
-                    aModel.getModelMappers(),
-                    webTemplate);
-            aModel.setMappingHelpers(mappingHelpers);
+            final List<MappingHelper> mappers;
+            if (cacheHelpersOfTemplate.containsKey(templateId)) {
+                mappers = cacheHelpersOfTemplate.get(templateId);
+            } else {
+                mappers = helpersCreator.constructHelpers(templateId,
+                                                          aModel.getContext()
+                                                                  .getFhirConnectContext()
+                                                                  .getContext()
+                                                                  .getStart(),
+                                                          aModel.getContext()
+                                                                  .getFhirConnectContext()
+                                                                  .getContext()
+                                                                  .getArchetypes(),
+                                                          webTemplate).values().stream()
+                        .flatMap(List::stream)
+                        .collect(Collectors.toList());
+                cacheHelpersOfTemplate.put(templateId, mappers);
+            }
+
+            final List<OpenFhirFhirConnectModelMapper> relevantModelMappers = aModel.getModelMappers();
+
+
+            aModel.setMappingHelpers(getRelevantMappingHelpers(relevantModelMappers,
+                                                               mappers,
+                                                               new ArrayList<>()));
         }
 
-        return toAqlMappingEngine.map(narrowedByResourceType, resourceType, queryParams, toAqlRequest.getTemplate() != null || profileUrl != null);
+        return toAqlMappingEngine.map(narrowedByResourceType, resourceType, queryParams,
+                                      toAqlRequest.getTemplate() != null || profileUrl != null);
+    }
+
+    private ToAqlResponse findQueryResponse(final List<FhirConnectContextEntity> contexts,
+                                             final String resourceType,
+                                             final List<FhirQueryParam> queryParams) {
+        for (final FhirConnectContextEntity contextEntity : contexts) {
+            final Context context = contextEntity.getFhirConnectContext().getContext();
+            final List<ContextQuery> queries = context.getQuery();
+            if (queries != null) {
+                for (final ContextQuery query : queries) {
+                    if (queryMatchesAnyRule(resourceType, queryParams, query.getRules())) {
+                        return new ToAqlResponse().addAql(query.getAql(), ToAqlResponse.AqlType.COMPOSITION,
+                                                          context.getTemplate().getId());
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    static boolean queryMatchesAnyRule(final String resourceType,
+                                       final List<FhirQueryParam> queryParams,
+                                       final List<String> rules) {
+        if (rules == null || rules.isEmpty()) {
+            return false;
+        }
+        return rules.stream().anyMatch(rule -> matchesRule(resourceType, queryParams, rule));
+    }
+
+    static boolean matchesRule(final String resourceType,
+                               final List<FhirQueryParam> queryParams,
+                               final String rule) {
+        if (rule == null) {
+            return false;
+        }
+        // operation rule e.g. "$summary"
+        if (rule.startsWith("$")) {
+            return queryParams.stream().anyMatch(p -> rule.equals(p.getOperation()));
+        }
+        // resource[?params] rule e.g. "Condition?code=123&category=lab"
+        final int qIdx = rule.indexOf('?');
+        final String ruleResource = qIdx < 0 ? rule : rule.substring(0, qIdx);
+        if (!ruleResource.equals(resourceType)) {
+            return false;
+        }
+        if (qIdx < 0) {
+            return true; // resource matches, no params required
+        }
+        final String paramsPart = rule.substring(qIdx + 1);
+        for (final String pair : paramsPart.split("&")) {
+            final String[] kv = pair.split("=", 2);
+            final String ruleKey = kv[0];
+            final String ruleVal = kv.length > 1 ? kv[1] : null;
+            final boolean found = queryParams.stream().anyMatch(p ->
+                    p.getName().equals(ruleKey) && (ruleVal == null || ruleVal.equals(p.getValue())));
+            if (!found) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    final List<MappingHelper> getRelevantMappingHelpers(final List<OpenFhirFhirConnectModelMapper> relevantModelMappers,
+                                                        final List<MappingHelper> mappers,
+                                                        final List<MappingHelper> relevanOnes) {
+        for (final OpenFhirFhirConnectModelMapper relevantModelMapper : relevantModelMappers) {
+            for (final MappingHelper mapper : mappers) {
+                if (mapper.getModelMetadataName().equals(relevantModelMapper.getName())) {
+                    relevanOnes.add(mapper);
+                }
+                if (mapper.getChildren() != null && !mapper.getChildren().isEmpty()) {
+                    getRelevantMappingHelpers(relevantModelMappers,
+                                              mapper.getChildren(),
+                                              relevanOnes);
+                }
+            }
+        }
+        return relevanOnes;
     }
 
     /**
@@ -108,7 +238,8 @@ public class ToAql {
                 continue;
             }
             for (final OpenFhirFhirConnectModelMapper modelMapper : aModel.getModelMappers()) {
-                narrowByResourceTypeAndPrecondition(modelMapper, null, resourceType, aModel, relevantModels, queryParams);
+                narrowByResourceTypeAndPrecondition(modelMapper, null, resourceType, aModel, relevantModels,
+                                                    queryParams);
             }
         }
     }
@@ -123,11 +254,12 @@ public class ToAql {
             // slot doesnt exist within this AqlModel, which means FhirConnect mapping is not ok
             return;
         }
-        if (resourceType.equals(theSlot.getFhirConfig().getResource()) && preconditionPasses(resourceType, theSlot, queryParams)) {
+        if (resourceType.equals(theSlot.getFhirConfig().getResource()) && preconditionPasses(resourceType, theSlot,
+                                                                                             queryParams)) {
             relevantModels.add(lookingIntoModel);
         }
         narrowByResourceTypeAndPrecondition(theSlot.getMappings(), comingFromSlot, resourceType,
-                lookingIntoModel, relevantModels, queryParams);
+                                            lookingIntoModel, relevantModels, queryParams);
     }
 
     private void narrowByResourceTypeAndPrecondition(final List<Mapping> mappings,
@@ -142,11 +274,13 @@ public class ToAql {
         for (final Mapping mapping : mappings) {
             if (mapping.getFollowedBy() != null) {
                 List<Mapping> followedByMappings = mapping.getFollowedBy().getMappings();
-                narrowByResourceTypeAndPrecondition(followedByMappings, comingFromSlot, resourceType, lookingIntoModel, relevantModels, queryParams);
+                narrowByResourceTypeAndPrecondition(followedByMappings, comingFromSlot, resourceType, lookingIntoModel,
+                                                    relevantModels, queryParams);
             }
             if (mapping.getReference() != null) {
                 List<Mapping> referenceMappings = mapping.getReference().getMappings();
-                narrowByResourceTypeAndPrecondition(referenceMappings, comingFromSlot, resourceType, lookingIntoModel, relevantModels, queryParams);
+                narrowByResourceTypeAndPrecondition(referenceMappings, comingFromSlot, resourceType, lookingIntoModel,
+                                                    relevantModels, queryParams);
             }
             if (StringUtils.isEmpty(mapping.getSlotArchetype())) {
                 continue;
@@ -156,11 +290,16 @@ public class ToAql {
                 continue; // recursion infinite loop
             }
 
-            String templateId = OpenFhirMappingContext.normalizeTemplateId(lookingIntoModel.getContext().getTemplateId());
-            final OpenFhirContextRepository relevantRepositoryForThisTemplate = openFhirMappingContext.getRepository().get(templateId);
-            final List<OpenFhirFhirConnectModelMapper> nextSlots = relevantRepositoryForThisTemplate.getMappers().get(slotArchetype); // should only be one
-            nextSlots.forEach(nextSlot -> narrowByResourceTypeAndPrecondition(nextSlot, slotArchetype, resourceType, new ToAqlModels(null, nextSlots,
-                    lookingIntoModel.getContext()), relevantModels, queryParams));
+            String templateId = OpenFhirMappingContext.normalizeTemplateId(
+                    lookingIntoModel.getContext().getTemplateId());
+            final OpenFhirContextRepository relevantRepositoryForThisTemplate = openFhirMappingContext.getRepository()
+                    .get(templateId);
+            final List<OpenFhirFhirConnectModelMapper> nextSlots = relevantRepositoryForThisTemplate.getMappers()
+                    .get(slotArchetype); // should only be one
+            nextSlots.forEach(nextSlot -> narrowByResourceTypeAndPrecondition(nextSlot, slotArchetype, resourceType,
+                                                                              new ToAqlModels(null, nextSlots,
+                                                                                              lookingIntoModel.getContext(), null),
+                                                                              relevantModels, queryParams));
         }
     }
 
@@ -185,9 +324,11 @@ public class ToAql {
                 final String paramValue = param.getValue();
 
                 final String fhirPathForQueryName = toAqlMappingEngine.getFhirPathForQueryName(resourceType, paramName);
-                final Set<String> fhirPathsForQueryName = Set.of(fhirPathForQueryName.split("\\|"));// because it can be many
+                final Set<String> fhirPathsForQueryName = Set.of(
+                        fhirPathForQueryName.split("\\|"));// because it can be many
 
-                if (fhirPathsForQueryName.stream().noneMatch(conditionPath::startsWith)) { // not sure if starsWith is ok here, but fhirPath on i.e. Observation.code.coding.code is actually Observation.code
+                if (fhirPathsForQueryName.stream().noneMatch(
+                        conditionPath::startsWith)) { // not sure if starsWith is ok here, but fhirPath on i.e. Observation.code.coding.code is actually Observation.code
                     // if ONE OF says this mapping is only relevant for a specific condition
                     // yet that queryParam is not present, it means it's not relevant for the AQL translation
                     if (CONDITION_OPERATOR_ONE_OF.equals(fhirCondition.getOperator())) {
@@ -219,22 +360,14 @@ public class ToAql {
         return true;
     }
 
-    private List<ToAqlModels> getRelevantModelEntities(final String templateId,
-                                                       final String profileUrl) {
-        final FhirConnectContextEntity relevantContext = getContext(templateId, profileUrl);
-        if (relevantContext == null && (StringUtils.isNotEmpty(templateId) || StringUtils.isNotEmpty(profileUrl))) {
-            final String formattedError = String.format(
-                    "Couldn't find context relevant to template %s or profile %s",
-                    templateId, profileUrl);
-            log.error(formattedError);
-            throw new RequestValidationException(formattedError, null);
-        }
+    private List<ToAqlModels> getRelevantModelEntities(final FhirConnectContextEntity relevantContext,
+                                                       final List<FhirConnectContextEntity> allUserContexts) {
         if (relevantContext != null) {
             log.info("Found relevant context for toAql translation {}", relevantContext.getId());
             return List.of(contextToToAqlModels(relevantContext));
         }
         // no specific context found — search across all tenant contexts
-        return fhirConnectManager.allUserContextEntities().stream()
+        return allUserContexts.stream()
                 .map(this::contextToToAqlModels)
                 .toList();
     }
@@ -244,7 +377,7 @@ public class ToAql {
         initRepo(context);
         final List<OpenFhirFhirConnectModelMapper> mapperForArchetype = openFhirMappingContext
                 .getMapperForArchetype(context.getFhirConnectContext().getContext().getTemplate().getId(),
-                        context.getFhirConnectContext().getContext().getStart());
+                                       context.getFhirConnectContext().getContext().getStart());
         return ToAqlModels.builder()
                 .modelMappers(mapperForArchetype)
                 .context(context)
@@ -252,13 +385,14 @@ public class ToAql {
     }
 
     private void initRepo(final FhirConnectContextEntity context) {
-        if(prodOpenFhirMappingContext == null) {
+        if (prodOpenFhirMappingContext == null) {
             // todo: refactor this similarly to OpenFhirEngine, beacuse right now this class is invoked both
             // from tests as well as from rest, meaning this can be null in tests because it's initialized elsewhere
             return;
         }
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(context.getTemplateId());
-        final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(templateId));
+        final WebTemplate webTemplate = templateUtils.parseWebTemplate(
+                optManager.byTemplateIdAndOrganization(templateId));
         prodOpenFhirMappingContext.initMappingCache(context.getFhirConnectContext());
     }
 
@@ -282,8 +416,10 @@ public class ToAql {
     @Data
     @Builder
     public static class ToAqlModels {
+
         private List<MappingHelper> mappingHelpers;
         private List<OpenFhirFhirConnectModelMapper> modelMappers;
         private FhirConnectContextEntity context;
+        private String mainArchetype;
     }
 }

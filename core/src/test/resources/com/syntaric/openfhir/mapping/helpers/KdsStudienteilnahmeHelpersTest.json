@@ -171,10 +171,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "draft",
       "criterias" : [ "draft" ]
     } ],
     "openEhrConditions" : null,
@@ -213,10 +211,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "draft",
       "criterias" : [ "draft" ]
     } ],
     "openEhrConditions" : null,
@@ -299,10 +295,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "draft",
       "criterias" : [ "draft" ]
     } ],
     "openEhrConditions" : null,
@@ -346,10 +340,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "524",
       "criterias" : [ "524" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -431,10 +423,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "proposed",
       "criterias" : [ "proposed" ]
     } ],
     "openEhrConditions" : null,
@@ -473,10 +463,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "proposed",
       "criterias" : [ "proposed" ]
     } ],
     "openEhrConditions" : null,
@@ -559,10 +547,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "proposed",
       "criterias" : [ "proposed" ]
     } ],
     "openEhrConditions" : null,
@@ -606,10 +592,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "526",
       "criterias" : [ "526" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -691,10 +675,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "active",
       "criterias" : [ "active" ]
     } ],
     "openEhrConditions" : null,
@@ -733,10 +715,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "active",
       "criterias" : [ "active" ]
     } ],
     "openEhrConditions" : null,
@@ -819,10 +799,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "active",
       "criterias" : [ "active" ]
     } ],
     "openEhrConditions" : null,
@@ -866,10 +844,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "245",
       "criterias" : [ "245" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -951,10 +927,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "rejected",
       "criterias" : [ "rejected" ]
     } ],
     "openEhrConditions" : null,
@@ -993,10 +967,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "rejected",
       "criterias" : [ "rejected" ]
     } ],
     "openEhrConditions" : null,
@@ -1079,10 +1051,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "rejected",
       "criterias" : [ "rejected" ]
     } ],
     "openEhrConditions" : null,
@@ -1126,10 +1096,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "528",
       "criterias" : [ "528" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1211,10 +1179,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "inactive",
       "criterias" : [ "inactive" ]
     } ],
     "openEhrConditions" : null,
@@ -1253,10 +1219,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "inactive",
       "criterias" : [ "inactive" ]
     } ],
     "openEhrConditions" : null,
@@ -1339,10 +1303,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "inactive",
       "criterias" : [ "inactive" ]
     } ],
     "openEhrConditions" : null,
@@ -1386,10 +1348,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "532",
       "criterias" : [ "532" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,
@@ -1471,10 +1431,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -1513,10 +1471,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -1599,10 +1555,8 @@
     "unidirectional" : "fhir->openehr",
     "fhirConditions" : [ {
       "targetRoot" : "Consent",
-      "targetAttribute" : "status",
       "targetAttributes" : [ "status" ],
       "operator" : "one of",
-      "criteria" : "entered-in-error",
       "criterias" : [ "entered-in-error" ]
     } ],
     "openEhrConditions" : null,
@@ -1646,10 +1600,8 @@
     "fhirConditions" : null,
     "openEhrConditions" : [ {
       "targetRoot" : "openEHR-EHR-ACTION.informed_consent.v0/ism_transition/current_state",
-      "targetAttribute" : "defining_code/code_string",
       "targetAttributes" : [ "defining_code/code_string" ],
       "operator" : "one of",
-      "criteria" : "528",
       "criterias" : [ "528" ]
     } ],
     "enteredFromSlotArchetypeLink" : false,

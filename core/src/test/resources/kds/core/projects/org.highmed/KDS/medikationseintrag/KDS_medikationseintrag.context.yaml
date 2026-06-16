@@ -21,8 +21,6 @@ context:
     - "CLUSTER.dosage.v2"
     - "CLUSTER.entry_category.v0"
     - "CLUSTER.identifier_fhir.v0"
-    - "RESOURCE.list.min"
-    - "RESOURCE.medication.min"
     - "CLUSTER.case_identification.v0"
     - "CLUSTER.timing_daily.v1"
     - "CLUSTER.timing_nondaily.v1"

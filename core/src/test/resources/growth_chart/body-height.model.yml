@@ -52,4 +52,19 @@ mappings:
         fhir:
           - path: "code"
             value: "8302-2"
-      
+
+  - name: "other_participations"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$archetype/other_participations"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "|function"
+                  value: "performer"

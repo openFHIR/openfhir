@@ -16,12 +16,13 @@ public class ToAqlResponse {
     private List<UnhandledParam> unhandledParams;
 
     public ToAqlResponse addAql(final String aql,
-                                final AqlType type) {
+                                final AqlType type,
+                                final String templateId) {
         if (aqls == null) {
             aqls = new ArrayList<>();
         }
         if (StringUtils.isNotEmpty(aql)) {
-            aqls.add(new AqlResponse(aql, type));
+            aqls.add(new AqlResponse(aql, type, templateId));
         }
         return this;
     }
@@ -53,6 +54,7 @@ public class ToAqlResponse {
         @Setter
         private String aql;
         private AqlType type;
+        private String templateId;
     }
 
     public enum AqlType {
