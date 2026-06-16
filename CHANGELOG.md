@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- KDS v1.0 mappings in unit tests
 
 ## [2.2.4] - 2026-06-16
 

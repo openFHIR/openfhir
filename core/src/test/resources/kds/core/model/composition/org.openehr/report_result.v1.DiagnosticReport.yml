@@ -1,0 +1,129 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: COMPOSITION.report_result.v1.DiagnosticReport
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-COMPOSITION.report-result.v1
+    revision: 1.0.6
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/DiagnosticReport
+
+mappings:
+  # status needs to be mapped in the archetype mapping not here
+
+  - name: "healthCareFacility"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$composition/context/health_care_facility"
+
+  - name: "participations"
+    with:
+      fhir: "$resource.resultsInterpreter"
+      openehr: "$composition/context/participations"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "result interpreter"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot/performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+
+  - name: "composer"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$composition/composer"
+
+#  - name: "composerEmpty"
+#    with:
+#      fhir: "$resource.performer"
+#      openehr: "$composition/composer"
+#    fhirCondition:
+#      targetRoot: "$resource"
+#      targetAttribute: "performer"
+#      operator: "empty"
+#    manual:
+#      - name: "no information"
+#        openehr:
+#          - path: "_null_flavour/value"
+#            value: "no information"
+#          - path: "_null_flavour/defining_code/terminology_id"
+#            value: "openehr"
+#          - path: "_null_flavour/defining_code/code_string"
+#            value: "271"
+
+  - name: "performer"
+    with:
+      fhir: "$resource.performer"
+      openehr: "$composition/perfomer"
+
+  - name: "context"
+    with:
+      fhir: "$resource"
+      openehr: "$composition/context"
+      type: "NONE"
+    unidirectional: "fhir->openehr" # TODO this should calculate the latest and earliest from the events and put them in fhir
+    followedBy:
+      mappings:
+        - name: "effective"
+          with:
+            fhir: "effective.as(Period)"
+            openehr: "$reference"
+          followedBy:
+            mappings:
+              - name: "effectiveEnd"
+                with:
+                  fhir: "end"
+                  openehr: "end_time"
+
+              - name: "effectiveStart"
+                with:
+                  fhir: "start"
+                  openehr: "start_time"
+
+        - name: "effectiveDateTime"
+          with:
+            fhir: "effective.as(DateTimeType)"
+            openehr: "start_time"
+
+#  - name: "contextStartTimeEmpty"
+#    with:
+#      fhir: "$resource"
+#      openehr: "$composition/context"
+#      type: "NONE"
+#    unidirectional: "fhir->openehr"
+#    fhirCondition:
+#      targetRoot: "$resource"
+#      targetAttribute: "effective"
+#      operator: "empty"
+#    followedBy:
+#      mappings:
+#        - name: "effectiveStart"
+#          with:
+#            openehr: "start_time"
+#          manual:
+#            - name: "no information"
+#              openehr:
+#                - path: "_null_flavour/value"
+#                  value: "no information"
+#                - path: "_null_flavour/defining_code/terminology_id"
+#                  value: "openehr"
+#                - path: "_null_flavour/defining_code/code_string"
+#                  value: "271"
+
+
+# NULL FLAVOR set if no effective provided when ingesting
+# export -> here please only import into the context  ?
+# in general they should take the first and the last one

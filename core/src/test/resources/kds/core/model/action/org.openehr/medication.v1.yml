@@ -30,37 +30,6 @@ spec:
 #          - "timing.event" # If the route value differs per dosage slice, create a new event
 
 mappings:
-  - name: "healthcareFacility"
-    with:
-      fhir: "$resource.request.requester"
-      openehr: "$archetype/context/health_care_facility"
-
-  - name: "effectivePeriodContext"
-    with:
-      fhir: "$resource.effective.as(Period)"
-      openehr: "$composition"
-    openehrCondition:
-      targetRoot: "$composition/context"
-      targetAttribute: "end_time"
-      operator: "not empty"
-    followedBy:
-      mappings:
-        - name: "effectiveEnd"
-          with:
-            fhir: "end"
-            openehr: "context/end_time"
-
-
-        - name: "effectiveStart"
-          with:
-            fhir: "start"
-            openehr: "context/start_time"
-
-  - name: "effectiveDateTimeContext"
-    unidirectional: "fhir->openehr"
-    with:
-      fhir: "$resource.effective.as(DateTime)"
-      openehr: "$composition/context/start_time"
 
   - name: "effectivePeriod"
     unidirectional: "fhir->openehr"
@@ -73,98 +42,10 @@ mappings:
       fhir: "$resource.effective.as(DateTime)"
       openehr: "$archetype/time"
 
-  - name: "composer"
-    with:
-      fhir: "$resource.request.requester" # take identifier
-      openehr: "$composition/composer"
-
   - name: "provider"
     with:
       fhir: "$resource.actor.performer"
       openehr: "$archetype/provider"
-
-  - name: "category"
-    with:
-      fhir: "$resource.category.coding"
-      openehr: "$composition/context/setting"
-    manual:
-      - name: "outpatient"
-        fhir:
-          - path: "code"
-            value: "outpatient"
-          - path: "system"
-            value: "http://terminology.hl7.org/CodeSystem/medication-admin-category"
-          - path: "display"
-            value: "Outpatient"
-        openehrCondition:
-          targetRoot: "$openehrRoot"
-          targetAttribute: "defining_code/code_string"
-          operator: "one of"
-          criteria: "228"
-        openehr:
-          - path: "defining_code/terminology_id"
-            value: "openehr"
-          - path: "defining_code/code_string"
-            value: "232"
-          - path: "value"
-            value: "secondary medical care"
-        fhirCondition:
-          targetRoot: "$resource"
-          targetAttribute: "category.coding.code"
-          operator: "one of"
-          criteria: "outpatient"
-
-      - name: "inpatient"
-        fhir:
-          - path: "code"
-            value: "inpatient"
-          - path: "system"
-            value: "http://terminology.hl7.org/CodeSystem/medication-admin-category"
-          - path: "display"
-            value: "Inpatient"
-        openehrCondition:
-          targetRoot: "$openehrRoot"
-          targetAttribute: "defining_code/code_string"
-          operator: "one of"
-          criteria: "232"
-        openehr:
-          - path: "defining_code/terminology_id"
-            value: "openehr"
-          - path: "defining_code/code_string"
-            value: "232"
-          - path: "value"
-            value: "secondary medical care"
-        fhirCondition:
-          targetRoot: "$resource"
-          targetAttribute: "category.coding.code"
-          operator: "one of"
-          criteria: "inpatient"
-
-      - name: "community"
-        fhir:
-          - path: "code"
-            value: "community"
-          - path: "system"
-            value: "http://terminology.hl7.org/CodeSystem/medication-admin-category"
-          - path: "display"
-            value: "Community"
-        openehrCondition:
-          targetRoot: "$openehrRoot"
-          targetAttribute: "defining_code/code_string"
-          operator: "one of"
-          criteria: "238"
-        openehr:
-          - path: "defining_code/terminology_id"
-            value: "openehr"
-          - path: "defining_code/code_string"
-            value: "238"
-          - path: "value"
-            value: "Community"
-        fhirCondition:
-          targetRoot: "$resource"
-          targetAttribute: "category.coding.code"
-          operator: "one of"
-          criteria: "community"
 
   - name: "note"
     with:

@@ -19,7 +19,9 @@ context:
     - "ACTION.procedure.v1"
     - "CLUSTER.anatomical_location.v1"
     - "CLUSTER.case_identification.v0"
+    - "COMPOSITION.report.v1.Procedure"
   extensions:
     - "KDS_procedure.v1"
     - "KDS_anatomical_location_prozedur"
+    - "KDS_composition"
   start: "ACTION.procedure.v1"

@@ -9,57 +9,26 @@ spec:
   extends: ADMIN_ENTRY.episode_institution_local.v0
 
 mappings:
-
-  - name: "fallklasse"
+  - name: "compositionMapping"
     extension: "add"
     with:
-      fhir: "$resource.class"
-      openehr: "$composition/context/other_context[at0001]/items[at0004]"
+      fhir: "$resource"
+      openehr: "$composition"
+    slotArchetype: "COMPOSITION.fall.v1.encounter"
 
-
-  - name: "fallstatus"
+  - name: "serviceProvider" # TODO deprecated needs to be deleted
     extension: "add"
     with:
-      fhir: "$resource.status"
-      openehr: "$composition/context/other_context[at0001]/items[at0010]"
-
-  - name: "fallIdParent"
-    extension: "add"
-    with:
-      fhir: "$resource.identifier"
-      openehr: "$composition/context/other_context[at0001]/items[at0003]"
-    fhirCondition:
-      targetRoot: "$resource.identifier"
-      targetAttribute: "type.coding.code"
-      operator: "one of"
-      criteria: "VN"
-    followedBy:
+      fhir: "$resource.serviceProvider.as(Organization)"
+      openehr: "$reference"
+    reference:
+      resourceType: "Organization"
       mappings:
-        - name: "vncodingcode"
+        - name: "organization"
           with:
-            fhir: "type.coding"
-          manual:
-            - name: "vncoding"
-              fhir:
-                - path: "code"
-                  value: "VN"
-                - path: "system"
-                  value: "http://terminology.hl7.org/CodeSystem/v2-0203"
-
-  - name: "serviceType" # TODO deprecated needs to be deleted
-    extension: "add"
-    with:
-      fhir: "$resource.serviceType.coding"
-      openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.organization.v0]"
-    slotArchetype: "CLUSTER.organization.v0"
-
-  - name: "kontaktTyp" # TODO deprecated needs to be deleted
-    extension: "add"
-    with:
-      fhir: "$resource.type"
-      openehr: "$composition/context/other_context[at0001]/items[openEHR-EHR-CLUSTER.kontakttyp.v0]"
-    slotArchetype: "CLUSTER.kontakttyp.v0"
-
+            fhir: "$fhirRoot"
+            openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.organisation.v1]"
+          slotArchetype: "CLUSTER.organisation.v1"
 
   - name: "aufnahmegrundExtension"
     extension: "add"

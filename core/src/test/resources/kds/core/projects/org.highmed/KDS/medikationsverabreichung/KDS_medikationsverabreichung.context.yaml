@@ -20,8 +20,10 @@ context:
     - "CLUSTER.dosage.v2.BackboneElement"
     - "CLUSTER.case_identification.v0"
     - "CLUSTER.medication.v2.substance"
+    - "COMPOSITION.report.v1.MedicationAdministration"
   extensions:
     - "KDS_medikamentenverabreichung"
+    - "KDS_composition.MedicationAdministration"
     - "KDS_medication.v2.substance"
   start: "ACTION.medication.v1"
 

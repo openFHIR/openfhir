@@ -23,8 +23,10 @@ context:
     - "CLUSTER.location.v1"
     # need to reference also all those from problem diagnose?
     - "CLUSTER.anatomical_location.v1"
+    - "COMPOSITION.fall.v1.encounter"
   extensions:
     - "KDS_episode_institution_local"
     - "KDS_fall_problem_diagnose"
     - "KDS_anatomical_location"
+    - "KDS_composition"
   start: "ADMIN_ENTRY.episode_institution_local.v0"

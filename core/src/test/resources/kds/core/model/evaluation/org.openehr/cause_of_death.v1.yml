@@ -13,36 +13,12 @@ spec:
     structureDefinition: http://hl7.org/fhir/StructureDefinition/Condition
 
 mappings:
-  - name: "contextStartTime"
+  - name: "compositionMapping"
+    extension: "add"
     with:
-      fhir: "$resource.recordedDate"
-      openehr: "$composition/context/start_time"
-
-  - name: "participations"
-    with:
-      fhir: "$resource.asserter"
-      openehr: "$composition/context/participations"  # reference to part
-      type: "NONE"
-    followedBy:
-      mappings:
-        - name : "participationFunction"
-          with:
-            fhir: "$fhirRoot"
-            openehr: "$openEHRRoot"
-          manual:
-            - name: "function"
-              openehr:
-                - path: "function"
-                  value: "asserter"
-        - name: "performer"
-          with:
-            fhir: "$fhirRoot"
-            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
-
-  - name: "composer"
-    with:
-      fhir: "$resource.recorder"
-      openehr: "$composition/composer"
+      fhir: "$resource"
+      openehr: "$composition"
+    slotArchetype: "COMPOSITION.report.v1.Condition"
 
   - name: "other_participations"
     with:
@@ -63,7 +39,7 @@ mappings:
         - name: "performer"
           with:
             fhir: "$fhirRoot"
-            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+            openehr: "$openehrRoot/performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
   - name: "provider"
     with:
@@ -88,33 +64,33 @@ mappings:
     unidirectional: "openEHR->fhir"
     followedBy:
       mappings:
-        - name: "category_code_coding_loinc"
+        - name: "categoryCodeCodingLoinc"
           with:
             fhir: "coding"
             openehr: "$archetype"
           manual:
-            - name: "loinc_code"
+            - name: "loincCode"
               fhir:
                 - path: "code"
                   value: "79378-6"
 
-            - name: "loinc_system"
+            - name: "loincSystem"
               fhir:
                 - path: "system"
                   value: "http://loinc.org"
 
 
-        - name: "category_code_coding_snomed"
+        - name: "categoryCodeCodingSnomed"
           with:
             fhir: "coding"
             openehr: "$archetype"
           manual:
-            - name: "snomed_code"
+            - name: "snomedCode"
               fhir:
                 - path: "code"
                   value: "16100001"
 
-            - name: "snomed_system"
+            - name: "snomedSystem"
               fhir:
                 - path: "system"
                   value: "http://snomed.info/sct"
