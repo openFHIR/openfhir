@@ -33,7 +33,7 @@ mappings:
   - name: "provider"
     with:
       fhir: "$resource.informationSource"
-      openehr: "$archetype/provider"
+      openehr: "$archetype/_provider"
 
   - name: "eventsParent"
     with:

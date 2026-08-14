@@ -31,7 +31,7 @@ mappings:
   - name: "provider"
     with:
       fhir: "$resource.requester" # mapping is twice, entry level will overwrite the composer from above if not changed in the extension mapping
-      openehr: "$composition/provider"
+      openehr: "$archetype/_provider"
 
   - name: "protocol0008Parent"
     with:

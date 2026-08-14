@@ -273,6 +273,7 @@ public class OpenEhrPopulator {
                     return;
                 }
             case FhirConnectConst.DV_PARTY_IDENTIFIED:
+            case FhirConnectConst.DV_PARTY_PROXY:
                 final boolean addedPartyIdentified = handlePartyIdentifier(openEhrPath, extractedValue,
                                                                            isMultipleTypes, constructingFlat,
                                                                            terminology);
@@ -285,14 +286,6 @@ public class OpenEhrPopulator {
                 if (addedParticipation) {
                     return;
                 }
-            case FhirConnectConst.DV_PARTY_PROXY:
-                final boolean addedPartyProxy = handlePartyProxy(openEhrPath, extractedValue, isMultipleTypes,
-                                                                 constructingFlat,
-                                                                 terminology);
-                if (addedPartyProxy) {
-                    return;
-                }
-                return;
             case FhirConnectConst.DV_PARSABLE:
                 addValuePerFhirType(mappingHelper, extractedValue, openEhrPath, isMultipleTypes, constructingFlat,
                                     FhirConnectConst.DV_TEXT,
@@ -505,8 +498,9 @@ public class OpenEhrPopulator {
                 addToConstructingFlat(path + "|value", "None", flat);
                 try {
                     addToConstructingFlatInteger(path + "|ordinal",
-                                                 Integer.valueOf(translate(primaryCoding.getDisplay(), primaryCoding.getSystem(), terminology)),
-                                          flat);
+                                                 Integer.valueOf(translate(primaryCoding.getDisplay(),
+                                                                           primaryCoding.getSystem(), terminology)),
+                                                 flat);
                 } catch (NumberFormatException e) {
                     log.error("Ordinal has to be an integer");
                 }
@@ -1000,18 +994,34 @@ public class OpenEhrPopulator {
             addToConstructingFlat(path + "|name", translate(prim.getValueAsString(), null, terminology), flat);
             return true;
         } else if (isIdentifier(value)) {
-            addToConstructingFlat(path + "|id",
-                                  translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
-            addToConstructingFlat(path + "|assigner", getIdentifierSystem(value), flat);
-            addToConstructingFlat(path + "|type", getIdentifierTypeText(value), flat);
-            // if coding.code exists, it should override the type
-            final IBaseCoding typeCoding = getIdentifierTypeCodingFirstRep(value);
-            if (typeCoding != null) {
-                addToConstructingFlat(path + "|type", typeCoding.getCode(), flat);
+            if (path.endsWith("_external_ref")) {
+                final String noExternalRef = path.replace("/_external_ref", "");
+                addToConstructingFlat(noExternalRef + "|id", getIdentifierValue(value), flat);
+                final String identifierSystem = getIdentifierSystem(value);
+                addToConstructingFlat(noExternalRef + "|id_scheme", identifierSystem == null ? "N/A" : identifierSystem,
+                                      flat);
+                addToConstructingFlat(noExternalRef + "|id_namespace", identifierSystem == null ? "N/A" : identifierSystem,
+                                      flat);
+            } else {
+                addToConstructingFlat(path + "/_identifier:0|id",
+                                      translate(getIdentifierValue(value), getIdentifierSystem(value), terminology),
+                                      flat);
+                addToConstructingFlat(path + "/_identifier:0|assigner", getIdentifierSystem(value), flat);
+                addToConstructingFlat(path + "/_identifier:0|type", getIdentifierTypeText(value), flat);
+                // if coding.code exists, it should override the type
+                final IBaseCoding typeCoding = getIdentifierTypeCodingFirstRep(value);
+                if (typeCoding != null) {
+                    addToConstructingFlat(path + "/_identifier:0|type", typeCoding.getCode(), flat);
+                }
             }
             return true;
         } else if (value instanceof IBaseReference) {
-            //todo
+            addToConstructingFlat(path + "|id", ((IBaseReference) value).getReferenceElement().getValue(), flat);
+            final String baseUrl = ((IBaseReference) value).getReferenceElement().getBaseUrl();
+            addToConstructingFlat(path + "|id_scheme", baseUrl == null ? "N/A" : baseUrl,
+                                  flat);
+            addToConstructingFlat(path + "|id_namespace", baseUrl == null ? "N/A" : baseUrl,
+                                  flat);
             return true;
         } else {
             log.warn(
@@ -1084,6 +1094,11 @@ public class OpenEhrPopulator {
                                      final Terminology terminology) {
         if (value instanceof IPrimitiveType<?> prim) {
             addToConstructingFlat(path + "|name", translate(prim.getValueAsString(), null, terminology), flat);
+            return true;
+        } else if (isIdentifier(value)) {
+            addToConstructingFlat(path + "|id", getIdentifierValue(value), flat);
+            addToConstructingFlat(path + "|id_scheme", getIdentifierSystem(value), flat);
+            addToConstructingFlat(path + "|id_namespace", getIdentifierSystem(value), flat);
             return true;
         } else {
             log.warn(

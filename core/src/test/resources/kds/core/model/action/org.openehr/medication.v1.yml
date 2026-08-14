@@ -45,7 +45,7 @@ mappings:
   - name: "provider"
     with:
       fhir: "$resource.actor.performer"
-      openehr: "$archetype/provider"
+      openehr: "$archetype/_provider"
 
   - name: "note"
     with:

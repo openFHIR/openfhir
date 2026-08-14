@@ -42,7 +42,17 @@
     }
   },
   "composer": {
-    "_type": "PARTY_SELF"
+    "_type": "PARTY_IDENTIFIED",
+    "external_ref": {
+      "_type": "PARTY_REF",
+      "namespace": "N/A",
+      "type": "PARTY",
+      "id": {
+        "_type": "GENERIC_ID",
+        "value": "Patient/mii-exa-test-data-patient-1",
+        "scheme": "N/A"
+      }
+    }
   },
   "context": {
     "_type": "EVENT_CONTEXT",

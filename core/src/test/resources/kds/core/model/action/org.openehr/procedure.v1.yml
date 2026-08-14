@@ -67,7 +67,7 @@ mappings:
   - name: "provider"
     with:
       fhir: "$resource.performer.actor"
-      openehr: "$composition/provider"  # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+      openehr: "$archetype/_provider"  # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
 
   - name: "composer"

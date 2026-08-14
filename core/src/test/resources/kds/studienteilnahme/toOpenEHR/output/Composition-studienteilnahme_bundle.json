@@ -46,6 +46,19 @@
   },
   "context": {
     "_type": "EVENT_CONTEXT",
+    "health_care_facility": {
+      "_type": "PARTY_IDENTIFIED",
+      "external_ref": {
+        "_type": "PARTY_REF",
+        "namespace": "N/A",
+        "type": "PARTY",
+        "id": {
+          "_type": "GENERIC_ID",
+          "value": "Organization/example-lab",
+          "scheme": "N/A"
+        }
+      }
+    },
     "start_time": {
       "_type": "DV_DATE_TIME",
       "value": "2024-08-22T10:30:00"

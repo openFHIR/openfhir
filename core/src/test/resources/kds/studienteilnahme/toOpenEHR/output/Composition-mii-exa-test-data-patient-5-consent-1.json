@@ -46,6 +46,19 @@
   },
   "context": {
     "_type": "EVENT_CONTEXT",
+    "health_care_facility": {
+      "_type": "PARTY_IDENTIFIED",
+      "external_ref": {
+        "_type": "PARTY_REF",
+        "namespace": "N/A",
+        "type": "PARTY",
+        "id": {
+          "_type": "GENERIC_ID",
+          "value": "Organization/mii-exa-test-data-organization-charite",
+          "scheme": "N/A"
+        }
+      }
+    },
     "start_time": {
       "_type": "DV_DATE_TIME",
       "value": "2023-07-05T09:15:00"

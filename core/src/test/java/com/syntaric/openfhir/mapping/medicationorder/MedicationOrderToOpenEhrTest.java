@@ -4,6 +4,8 @@ import ca.uhn.fhir.fhirpath.IFhirPathEvaluationContext;
 import com.nedap.archie.rm.composition.Composition;
 import com.nedap.archie.rm.datavalues.DvText;
 import com.nedap.archie.rm.datavalues.quantity.DvQuantity;
+import com.nedap.archie.rm.generic.PartyIdentified;
+import com.nedap.archie.rm.generic.PartyProxy;
 import com.syntaric.openfhir.mapping.GenericTest;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -58,6 +60,14 @@ public class MedicationOrderToOpenEhrTest extends GenericTest {
         Assert.assertEquals("2", ((DvText) composition.itemAtPath(doseDescription)).getValue());
         Assert.assertEquals(Double.valueOf(111.0),
                             ((DvQuantity) composition.itemAtPath(doseAmountPath)).getMagnitude());
+        final PartyProxy composer = composition.getComposer();
+        Assert.assertEquals("urn:oid:4.5.6", ((PartyIdentified) composer).getIdentifiers().get(0).getAssigner());
+        Assert.assertEquals("456", ((PartyIdentified) composer).getIdentifiers().get(0).getId());
+
+        final PartyIdentified healthCareFacility = composition.getContext().getHealthCareFacility();
+        Assert.assertEquals("urn:oid:1.2.3", healthCareFacility.getIdentifiers().get(0).getAssigner());
+        Assert.assertEquals("123", healthCareFacility.getIdentifiers().get(0).getId());
+        Assert.assertEquals("123", healthCareFacility.getExternalRef().getId().getValue());
     }
 
     public static Bundle testMedicationMedicationRequestBundle() {
@@ -73,6 +83,9 @@ public class MedicationOrderToOpenEhrTest extends GenericTest {
 
         final Bundle.BundleEntryComponent medicationRequestEntry = new Bundle.BundleEntryComponent();
         final MedicationRequest medicationRequest = new MedicationRequest();
+        medicationRequest.addIdentifier(new Identifier().setSystem("urn:oid:1.2.3").setValue("123"));
+        medicationRequest.addIdentifier(new Identifier().setSystem("urn:oid:4.5.6").setValue("456"));
+        medicationRequest.addIdentifier(new Identifier().setSystem("urn:oid:7.8.9").setValue("789"));
         final Dosage dosage = new Dosage();
         final Dosage.DosageDoseAndRateComponent doseAndRate = new Dosage.DosageDoseAndRateComponent();
         doseAndRate.setDose(new Quantity(111).setUnit("unit"));
