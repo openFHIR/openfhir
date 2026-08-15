@@ -37,6 +37,15 @@
             },
             "ingredient": [
               {
+                "itemCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://fhir.de/CodeSystem/ask",
+                      "code": "26509",
+                      "display": "26509"
+                    }
+                  ]
+                },
                 "strength": {
                   "numerator": {
                     "value": 175.0,

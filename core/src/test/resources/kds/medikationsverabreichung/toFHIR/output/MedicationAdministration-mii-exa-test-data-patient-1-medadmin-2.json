@@ -38,7 +38,20 @@
                 }
               ],
               "text": "Powder for concentrate for solution for infusion"
-            }
+            },
+            "ingredient": [
+              {
+                "itemCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://fhir.de/CodeSystem/ask",
+                      "code": "33395",
+                      "display": "33395"
+                    }
+                  ]
+                }
+              }
+            ]
           },
           {
             "resourceType": "Encounter",

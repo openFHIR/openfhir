@@ -41,6 +41,15 @@
             },
             "ingredient": [
               {
+                "itemCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://fhir.de/CodeSystem/ask",
+                      "code": "12915",
+                      "display": "12915"
+                    }
+                  ]
+                },
                 "strength": {
                   "numerator": {
                     "value": 500.0,
