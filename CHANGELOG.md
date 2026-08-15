@@ -25,6 +25,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   clusters — the second mapping's index restarted at 0 and overwrote the first entry, so the official
   name got `use: maiden` and the maiden name lost its `use` entirely. Each entry now binds to the
   element its own mapping is building. (#90)
+- toOpenEHR: a minute-denominated infusion `rateRatio` (e.g. 1500 mg / 30 min) is now stored as a
+  `PT30M` administration duration instead of `PT30H`. A DV_DURATION can only be written to the flat
+  format through its `|day`/`|hour`/`|minute`/`|second` components, and the ehrbase SDK (2.19.0)
+  unmarshaller builds the value as `ofHours(hour) + ofHours(minute) + ofHours(second)`, inflating
+  every sub-hour component to hours. The decoded duration is now corrected against the components
+  that were actually written. Hour- and day-denominated rates were never affected. (#92)
 - Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
 - KDS mappings (test suite) for #93
 - toFHIR: an openEHR `null_flavour` on an ELEMENT is now reconstructed as a FHIR

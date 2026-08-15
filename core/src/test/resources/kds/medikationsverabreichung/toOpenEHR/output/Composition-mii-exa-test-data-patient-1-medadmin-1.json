@@ -350,7 +350,7 @@
           },
           "value" : {
             "_type" : "DV_DURATION",
-            "value" : "PT30H"
+            "value" : "PT30M"
           },
           "archetype_node_id" : "at0102"
         } ],
