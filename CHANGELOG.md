@@ -11,12 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - KDS v1.0 mappings in unit tests
 - support for PARTY_PROXY (from Reference and Idenifier)
-- 
-### Fixes
-- Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
-- KDS mappings (test suite) for #93
 
 ### Fixed
+- Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
+- KDS mappings (test suite) for #93
 - toFHIR: an openEHR `null_flavour` on an ELEMENT is now reconstructed as a FHIR
   `data-absent-reason` extension on the FHIR primitive it maps to, so it is serialized as the
   primitive's sibling element (`_city`, `_line`, …) instead of being dropped. openEHR null flavours
