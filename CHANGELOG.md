@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - support for PARTY_PROXY (from Reference and Idenifier)
 
 ### Fixed
+- toFHIR: values no longer leak between FHIR list entries when the same slot archetype is instantiated
+  more than once. The openEHR occurrence index of a data point (the `0` in `prefix:0`) addresses a
+  position inside the source cluster, not a position in the FHIR list it is being written to, and was
+  being used as the latter. With two instances of the same slot feeding one list — e.g. a Patient's
+  `name` receiving both an official name and a maiden name from two `CLUSTER.structured_name.v1`
+  clusters — the second mapping's index restarted at 0 and overwrote the first entry, so the official
+  name got `use: maiden` and the maiden name lost its `use` entirely. Each entry now binds to the
+  element its own mapping is building. (#90)
 - Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
 - KDS mappings (test suite) for #93
 - toFHIR: an openEHR `null_flavour` on an ELEMENT is now reconstructed as a FHIR

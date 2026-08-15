@@ -52,7 +52,7 @@
         ],
         "name": [
           {
-            "use": "maiden",
+            "use": "official",
             "family": "Klein",
             "given": [
               "Petra",
@@ -60,6 +60,7 @@
             ]
           },
           {
+            "use": "maiden",
             "family": "Fischer"
           }
         ],
