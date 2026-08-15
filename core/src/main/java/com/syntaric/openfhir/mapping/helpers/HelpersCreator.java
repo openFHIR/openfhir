@@ -173,7 +173,7 @@ public class HelpersCreator {
 
             mappingHelper.setHardcodedType(mapping.getWith().getType());
 
-            mappingHelper.setUnidirectional(mapping.getUnidirectional());
+            mappingHelper.setUnidirectional(resolveUnidirectional(mapping, fhirConnectModel));
 
             // manual values
             if (mapping.getWith().getValue() != null) {
@@ -254,6 +254,22 @@ public class HelpersCreator {
                 }
             }
         }
+    }
+
+    /**
+     * A mapping file can declare unidirectional in its header (spec), in which case every mapping within
+     * the file is treated as unidirectional. A unidirectional on the mapping itself takes precedence,
+     * so a file-level declaration acts as the default for mappings that don't declare one.
+     * https://github.com/openFHIR/openfhir/issues/98
+     */
+    private String resolveUnidirectional(final Mapping mapping, final FhirConnectModel fhirConnectModel) {
+        if (StringUtils.isNotBlank(mapping.getUnidirectional())) {
+            return mapping.getUnidirectional();
+        }
+        if (fhirConnectModel.getSpec() == null) {
+            return null;
+        }
+        return fhirConnectModel.getSpec().getUnidirectional();
     }
 
     /**

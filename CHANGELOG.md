@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - KDS v1.0 mappings in unit tests
 - support for PARTY_PROXY (from Reference and Idenifier)
+- `unidirectional` can now also be declared in the header (`spec`) of a mapping file, in which case
+  the whole file is treated as unidirectional and is skipped when mapping in the opposite direction.
+  A `unidirectional` on an individual mapping still takes precedence, so the header acts as the
+  default for mappings that don't declare one. (#98)
 
 ### Fixed
 - Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
