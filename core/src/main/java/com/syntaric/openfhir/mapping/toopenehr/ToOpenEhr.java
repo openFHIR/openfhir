@@ -92,6 +92,9 @@ public class ToOpenEhr {
         // unmarshall flat path to a canonical json format
         final Composition composition = flatJsonUnmarshaller.unmarshal(gson.toJson(flattenedWithValues), webTemplate);
 
+        // the unmarshaller inflates sub-hour DV_DURATION components to hours, see FlatDurationComponentFixer
+        FlatDurationComponentFixer.fix(composition, flattenedWithValues);
+
         prePostProcessor.postProcess(composition);
 
         metricsLogger.record("fhirToCompositionRm", "template=" + templateId, compositionRmTimer.elapsedMs());
