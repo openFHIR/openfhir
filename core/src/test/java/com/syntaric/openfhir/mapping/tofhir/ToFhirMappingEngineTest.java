@@ -70,7 +70,8 @@ public class ToFhirMappingEngineTest {
                 new ToFhirInstantiator(fhirInstanceCreator),
                 new CustomMappingRegistry(),
                 openFhirMapperUtils,
-                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ },
+                new ToFhirNullFlavour(openFhirStringUtils, fhirInstanceCreatorUtility));
     }
 
     // -----------------------------------------------------------------------

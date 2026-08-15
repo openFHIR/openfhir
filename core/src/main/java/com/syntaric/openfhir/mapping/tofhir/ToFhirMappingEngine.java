@@ -46,6 +46,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     final private CustomMappingRegistry customMappingRegistry;
     final private OpenFhirMapperUtils openFhirMapperUtils;
     final private MappingMetricsLogger metricsLogger;
+    final private ToFhirNullFlavour toFhirNullFlavour;
 
     @Autowired
     public ToFhirMappingEngine(final OpenEhrConditionEvaluator openEhrConditionEvaluator,
@@ -57,7 +58,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                final ToFhirInstantiator toFhirInstantiator,
                                final CustomMappingRegistry customMappingRegistry,
                                final OpenFhirMapperUtils openFhirMapperUtils,
-                               final MappingMetricsLogger metricsLogger) {
+                               final MappingMetricsLogger metricsLogger,
+                               final ToFhirNullFlavour toFhirNullFlavour) {
         super(fhirContextRegistry);
         this.openEhrConditionEvaluator = openEhrConditionEvaluator;
         this.fhirInstanceCreatorUtility = fhirInstanceCreatorUtility;
@@ -68,6 +70,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         this.customMappingRegistry = customMappingRegistry;
         this.openFhirMapperUtils = openFhirMapperUtils;
         this.metricsLogger = metricsLogger;
+        this.toFhirNullFlavour = toFhirNullFlavour;
     }
 
     public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
@@ -334,6 +337,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                     fhirVersion.modelPackage());
 
             populateExtractedDataPoint(mappingHelper, instantiated, extractedDataPoint);
+            toFhirNullFlavour.handleNullFlavour(mappingHelper, instantiated, List.of(extractedDataPoint),
+                    relevantJsonObject, fhirVersion.modelPackage());
             propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, fhirVersion);
         }
 

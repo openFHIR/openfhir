@@ -28,14 +28,14 @@
         "birthDate": "1962-01-01",
         "address": [
           {
-//            "_city": {
-//              "extension": [
-//                {
-//                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason", #todo: implement nullflavor
-//                  "valueCode": "masked"
-//                }
-//              ]
-//            },
+            "_city": {
+              "extension": [
+                {
+                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                  "valueCode": "masked"
+                }
+              ]
+            },
             "type": "both",
             "postalCode": "10"
           }

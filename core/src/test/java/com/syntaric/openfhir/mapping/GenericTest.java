@@ -134,7 +134,8 @@ public abstract class GenericTest {
                 new ToFhirInstantiator(fhirInstanceCreator),
                 new CustomMappingRegistry(),
                 openFhirMapperUtils,
-                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ },
+                new ToFhirNullFlavour(openFhirStringUtils, fhirInstanceCreatorUtility));
         toFhir = new ToFhir(new FlatJsonMarshaller(),
                 new Gson(),
                 helpersCreator,
