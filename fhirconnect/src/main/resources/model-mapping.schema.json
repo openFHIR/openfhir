@@ -50,6 +50,13 @@
         "extends": {
           "type": "string"
         },
+        "unidirectional": {
+          "type": "string",
+          "enum": [
+            "openehr->fhir",
+            "fhir->openehr"
+          ]
+        },
         "openEhrConfig": {
           "type": "object",
           "properties": {

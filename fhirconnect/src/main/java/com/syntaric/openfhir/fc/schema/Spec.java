@@ -17,6 +17,7 @@ import java.util.Map;
     "system",
     "version",
     "extends",
+    "unidirectional",
     "openEhrConfig",
     "fhirConfig"
 })
@@ -43,6 +44,13 @@ public class Spec implements Serializable {
      */
     @JsonProperty("extends")
     private String _extends;
+
+    /**
+     * When set, the whole mapping file is only ever executed in this direction. Individual mappings
+     * may still narrow it further with their own unidirectional.
+     */
+    @JsonProperty("unidirectional")
+    private String unidirectional;
 
     /**
      * FHIR Config
@@ -102,9 +110,25 @@ public class Spec implements Serializable {
     }
 
     /**
-     * 
+     * When set, the whole mapping file is only ever executed in this direction.
+     */
+    @JsonProperty("unidirectional")
+    public String getUnidirectional() {
+        return unidirectional;
+    }
+
+    /**
+     * When set, the whole mapping file is only ever executed in this direction.
+     */
+    @JsonProperty("unidirectional")
+    public void setUnidirectional(String unidirectional) {
+        this.unidirectional = unidirectional;
+    }
+
+    /**
+     *
      * (Required)
-     * 
+     *
      */
     @JsonProperty("version")
     public Version getVersion() {

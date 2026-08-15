@@ -1476,4 +1476,128 @@ public class HelpersCreatorTest {
         Assert.assertEquals("Observation.component", helper2.getFhirConditions().get(0).getTargetRoot());
         Assert.assertEquals("718-7", helper2.getFhirConditions().get(0).getCriteria());
     }
+
+    // ==================== unidirectional Tests ====================
+
+    /**
+     * Test that a unidirectional declared in the header (spec) of a mapping file applies to every
+     * mapping within that file, including nested ones.
+     * https://github.com/openFHIR/openfhir/issues/98
+     *
+     * <pre>
+     * spec:
+     *   unidirectional: "openehr->fhir"
+     * mappings:
+     *   - name: "componentParent"
+     *     with:
+     *       fhir: "$resource.component"
+     *       openehr: "$archetype/data[at0001]/events[at0006]"
+     *     followedBy:
+     *       mappings:
+     *         - name: "systolic"
+     *           with:
+     *             fhir: "value"
+     *             openehr: "data[at0003]/items[at0004]"
+     * </pre>
+     * <p>
+     * Expected result: both the parent and the nested child carry "openehr->fhir".
+     */
+    @Test
+    public void createHelpers_withHeaderUnidirectional_appliesToAllMappings() {
+        FhirConnectModel context = createFcModel("blood_pressure", "openEHR-EHR-OBSERVATION.blood_pressure.v2");
+        context.getSpec().setUnidirectional(FhirConnectConst.UNIDIRECTIONAL_TOFHIR);
+
+        Mapping componentParent = new Mapping();
+        componentParent.setName("componentParent");
+        With componentWith = new With();
+        componentWith.setFhir("$resource.component");
+        componentWith.setOpenehr("$archetype/data[at0001]/events[at0006]");
+        componentParent.setWith(componentWith);
+
+        Mapping systolic = new Mapping();
+        systolic.setName("systolic");
+        With systolicWith = new With();
+        systolicWith.setFhir("value");
+        systolicWith.setOpenehr("data[at0003]/items[at0004]");
+        systolic.setWith(systolicWith);
+
+        FollowedBy followedBy = new FollowedBy();
+        followedBy.setMappings(java.util.Arrays.asList(systolic));
+        componentParent.setFollowedBy(followedBy);
+
+        List<MappingHelper> result = helpersCreator.createHelpers(context, "Observation",
+                                                                  java.util.Arrays.asList(componentParent), null, null);
+
+        Assert.assertEquals(1, result.size());
+        MappingHelper parent = result.get(0);
+        Assert.assertEquals(FhirConnectConst.UNIDIRECTIONAL_TOFHIR, parent.getUnidirectional());
+
+        Assert.assertEquals(1, parent.getChildren().size());
+        Assert.assertEquals(FhirConnectConst.UNIDIRECTIONAL_TOFHIR,
+                            parent.getChildren().get(0).getUnidirectional());
+    }
+
+    /**
+     * Test that a unidirectional on the mapping itself takes precedence over the one in the header,
+     * so a file-level declaration only acts as the default.
+     * https://github.com/openFHIR/openfhir/issues/98
+     *
+     * <pre>
+     * spec:
+     *   unidirectional: "openehr->fhir"
+     * mappings:
+     *   - name: "withOwn"
+     *     unidirectional: "fhir->openehr"
+     *   - name: "withoutOwn"
+     * </pre>
+     */
+    @Test
+    public void createHelpers_mappingUnidirectional_takesPrecedenceOverHeader() {
+        FhirConnectModel context = createFcModel("blood_pressure", "openEHR-EHR-OBSERVATION.blood_pressure.v2");
+        context.getSpec().setUnidirectional(FhirConnectConst.UNIDIRECTIONAL_TOFHIR);
+
+        Mapping withOwn = new Mapping();
+        withOwn.setName("withOwn");
+        With ownWith = new With();
+        ownWith.setFhir("$resource.method");
+        ownWith.setOpenehr("$archetype/protocol[at0011]/items[at1035]");
+        withOwn.setWith(ownWith);
+        withOwn.setUnidirectional(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR);
+
+        Mapping withoutOwn = new Mapping();
+        withoutOwn.setName("withoutOwn");
+        With withoutWith = new With();
+        withoutWith.setFhir("$resource.bodySite");
+        withoutWith.setOpenehr("$archetype/protocol[at0011]/items[at0014]");
+        withoutOwn.setWith(withoutWith);
+
+        List<MappingHelper> result = helpersCreator.createHelpers(context, "Observation",
+                                                                  java.util.Arrays.asList(withOwn, withoutOwn), null,
+                                                                  null);
+
+        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR, result.get(0).getUnidirectional());
+        Assert.assertEquals(FhirConnectConst.UNIDIRECTIONAL_TOFHIR, result.get(1).getUnidirectional());
+    }
+
+    /**
+     * Test that with no unidirectional anywhere, mappings stay bidirectional (null).
+     */
+    @Test
+    public void createHelpers_withoutAnyUnidirectional_staysBidirectional() {
+        FhirConnectModel context = createFcModel("blood_pressure", "openEHR-EHR-OBSERVATION.blood_pressure.v2");
+
+        Mapping mapping = new Mapping();
+        mapping.setName("method");
+        With with = new With();
+        with.setFhir("$resource.method");
+        with.setOpenehr("$archetype/protocol[at0011]/items[at1035]");
+        mapping.setWith(with);
+
+        List<MappingHelper> result = helpersCreator.createHelpers(context, "Observation",
+                                                                  java.util.Arrays.asList(mapping), null, null);
+
+        Assert.assertEquals(1, result.size());
+        Assert.assertNull(result.get(0).getUnidirectional());
+    }
 }
