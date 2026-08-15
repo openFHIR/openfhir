@@ -37,6 +37,15 @@
             },
             "ingredient": [
               {
+                "itemCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://fhir.de/CodeSystem/ask",
+                      "code": "07374",
+                      "display": "07374"
+                    }
+                  ]
+                },
                 "strength": {
                   "numerator": {
                     "value": 1000.0,

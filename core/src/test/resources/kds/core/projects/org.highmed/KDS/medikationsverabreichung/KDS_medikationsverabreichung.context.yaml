@@ -24,10 +24,7 @@ context:
   extensions:
     - "KDS_medikamentenverabreichung"
     - "KDS_composition.MedicationAdministration"
+    - "KDS_medication.v2"
     - "KDS_medication.v2.substance"
   start: "ACTION.medication.v1"
-
-#todo: should we extend also CLUSTER.medication.v2.medication-to-medication
-# because currently it doesn't map Medication.ingredient, as there are no corresponding
-# openehr paths available in this template (bestandteil.bestandteil)
 

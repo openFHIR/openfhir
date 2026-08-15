@@ -12,12 +12,12 @@ component for modern health IT architectures.
 
 openFHIR supports all major HL7 FHIR versions:
 
-| Version | Status |
-|---------|:------:|
-| FHIR STU3 (3.0) | ✅ |
-| FHIR R4 (4.0) | ✅ |
-| FHIR R4B (4.3) | ✅ |
-| FHIR R5 (5.0) | ✅ |
+| Version         | Status |
+|-----------------|:------:|
+| FHIR STU3 (3.0) |   ✅   |
+| FHIR R4 (4.0)   |   ✅   |
+| FHIR R4B (4.3)  |   ✅   |
+| FHIR R5 (5.0)   |   ✅   |
 
 > **Note:** This open-source version is **not intended for production use**. It lacks critical production capabilities
 > including **authentication and role-based access control**, **terminology server integration**, and **performance
@@ -29,6 +29,7 @@ optimizations**. For production-ready deployments with full security, scalabilit
 > | Feature                                                        | Open Source | Enterprise |
 > |----------------------------------------------------------------|:-----------:|:----------:|
 > | Bi-directional mapping between openEHR and FHIR                | ✅ | ✅ |
+> | AQL Generation                                                 | ✅ | ✅ |
 > | Compliance with FHIRConnect specification                      | ✅ | ✅ |
 > | Included support and consultancy                               | No | ✅ |
 > | Postgres support                                               | No | ✅ |
@@ -39,7 +40,7 @@ optimizations**. For production-ready deployments with full security, scalabilit
 > | Authentication and role-based access control                   | No | ✅ |
 > | Integration with a git repository as a source of mapping files | No | ✅ |
 > | Optimized performance                                          | No | ✅ |
-> | Support for High Availability setups                            | No | ✅ |
+> | Support for High Availability setups                           | No | ✅ |
 
 ----
 
