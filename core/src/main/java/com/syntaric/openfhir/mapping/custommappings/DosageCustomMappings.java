@@ -859,7 +859,7 @@ public class DosageCustomMappings extends CustomMapping {
                                                                 final Integer lastIndex,
                                                                 final String path,
                                                                 final OpenFhirMapperUtils mapperUtils) {
-        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true);
+        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true, false);
     }
 
     private DataWithIndex toFhirTimingNonDaily(final List<String> joinedValues,
@@ -867,7 +867,7 @@ public class DosageCustomMappings extends CustomMapping {
                                                                    final Integer lastIndex,
                                                                    final String path,
                                                                    final OpenFhirMapperUtils mapperUtils) {
-        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true);
+        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true, true);
     }
 
     private DataWithIndex toFhirTiming(final List<String> joinedValues,
@@ -876,7 +876,8 @@ public class DosageCustomMappings extends CustomMapping {
                                                            final String path,
                                                            final OpenFhirMapperUtils mapperUtils,
                                                            final boolean includeZeitpunkt,
-                                                           final boolean inferPeriodFromFrequency) {
+                                                           final boolean inferPeriodFromFrequency,
+                                                           final boolean nonDaily) {
         FhirValueReaders readers = new FhirValueReaders(mapperUtils);
         List<String> timingValues = collectTimingValues(joinedValues, valueHolder, path);
         Timing timing = new Timing();
@@ -926,6 +927,9 @@ public class DosageCustomMappings extends CustomMapping {
         }
 
         TimingFlatMapper.DurationValue duration = TimingFlatMapper.readDuration(valueHolder, timingValues, readers);
+        if (nonDaily && (duration == null || StringUtils.isBlank(duration.value))) {
+            duration = readNonDailyPeriod(valueHolder, timingValues, readers);
+        }
         if (duration != null && StringUtils.isNotBlank(duration.value)) {
             DurationParts start = parseIsoDuration(duration.value);
             if (start != null) {
@@ -938,6 +942,11 @@ public class DosageCustomMappings extends CustomMapping {
                     repeat.setPeriodMax(end.value);
                 }
             }
+            // The non-daily cluster records only the period ("Periode"); FHIR needs an explicit
+            // frequency for the repeat to be meaningful, and one administration per period is implied.
+            if (nonDaily && start != null && !repeat.hasFrequency()) {
+                repeat.setFrequency(1);
+            }
         }
 
         if (!repeat.isEmpty()) {
@@ -948,6 +957,40 @@ public class DosageCustomMappings extends CustomMapping {
                     timingAnchorPath(path), null);
         }
         return null;
+    }
+
+    /**
+     * Reads the non-daily "Periode" element, which openEHR stores as a DV_DURATION on the element
+     * itself (".../periode") rather than under a "|value" or component suffix, so the generic
+     * duration reader does not pick it up.
+     */
+    private TimingFlatMapper.DurationValue readNonDailyPeriod(final JsonObject valueHolder,
+                                                              final List<String> timingValues,
+                                                              final FhirValueReaders readers) {
+        if (valueHolder == null || timingValues == null) {
+            return null;
+        }
+        String lower = null;
+        String upper = null;
+        String single = null;
+        for (String candidate : timingValues) {
+            String normalized = removeIndexes(candidate);
+            if (normalized == null) {
+                continue;
+            }
+            if (normalized.endsWith("/periode")) {
+                single = readers.get(valueHolder, candidate);
+            } else if (normalized.endsWith("/periode/lower")) {
+                lower = readers.get(valueHolder, candidate);
+            } else if (normalized.endsWith("/periode/upper")) {
+                upper = readers.get(valueHolder, candidate);
+            }
+        }
+        String start = StringUtils.isNotBlank(single) ? single : lower;
+        if (StringUtils.isBlank(start)) {
+            return null;
+        }
+        return new TimingFlatMapper.DurationValue(start, upper);
     }
 
     private List<String> collectTimingValues(final List<String> joinedValues,
