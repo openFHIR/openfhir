@@ -16,6 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
 - KDS mappings (test suite) for #93
 
+### Fixed
+- toFHIR: an openEHR `null_flavour` on an ELEMENT is now reconstructed as a FHIR
+  `data-absent-reason` extension on the FHIR primitive it maps to, so it is serialized as the
+  primitive's sibling element (`_city`, `_line`, …) instead of being dropped. openEHR null flavours
+  are translated to their FHIR equivalents (`masked`/272 → `masked`, `unknown`/253 and
+  `no information`/271 → `unknown`, `not applicable`/273 → `not-applicable`). This is generic
+  plumbing and requires no per-field mapping expression. Complex datatypes are left untouched,
+  since elements such as `Observation.value[x]` carry a dedicated sibling `dataAbsentReason`
+  element instead. (#91)
+
 ## [2.2.4] - 2026-06-16
 
 ### Fixed
