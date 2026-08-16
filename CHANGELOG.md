@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   plumbing and requires no per-field mapping expression. Complex datatypes are left untouched,
   since elements such as `Observation.value[x]` carry a dedicated sibling `dataAbsentReason`
   element instead. (#91)
+- any condition not amended against a web template threw an NPE, now fixed
 
 ## [2.2.4] - 2026-06-16
 
