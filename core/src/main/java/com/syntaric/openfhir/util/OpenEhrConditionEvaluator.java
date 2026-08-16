@@ -289,6 +289,13 @@ public class OpenEhrConditionEvaluator {
     public List<String> narrowingCriteria(final Condition openEhrCondition,
                                           final JsonObject fullFlatPath) {
         final String flatRoot = openEhrCondition.getTargetRootFlatPath();
+        if (StringUtils.isBlank(flatRoot)) {
+            // The condition was never resolved against a web template (targetRoot could not be mapped
+            // to a flat path). There is nothing to narrow by, so no group prefixes are produced.
+            log.warn("openEhrCondition {} has no resolved targetRootFlatPath; skipping narrowing.",
+                    openEhrCondition.getTargetRoot());
+            return List.of();
+        }
 
         // Strip [n] recurring markers before building the regex so the pattern matches real indices (:0, :1 …)
         final String flatRootStripped = flatRoot.replace(OpenFhirStringUtils.RECURRING_SYNTAX, "");
