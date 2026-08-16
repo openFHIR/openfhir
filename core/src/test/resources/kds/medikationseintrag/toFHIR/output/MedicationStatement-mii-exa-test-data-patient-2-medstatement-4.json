@@ -70,6 +70,26 @@
               ],
               "text": "Intravenous use"
             }
+          },
+          {
+            "doseAndRate": [
+              {
+                "rateRange": {
+                  "low": {
+                    "value": 150.0,
+                    "unit": "ml/h",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "ml/h"
+                  },
+                  "high": {
+                    "value": 300.0,
+                    "unit": "ml/h",
+                    "system": "http://unitsofmeasure.org",
+                    "code": "ml/h"
+                  }
+                }
+              }
+            ]
           }
         ]
       }

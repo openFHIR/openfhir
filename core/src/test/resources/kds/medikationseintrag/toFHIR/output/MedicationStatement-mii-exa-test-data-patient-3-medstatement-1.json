@@ -140,6 +140,24 @@
               ],
               "text": "Oral use"
             }
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "low": {
+                    "value": 500.0,
+                    "unit": "mg",
+                    "system": "http://unitsofmeasure.org"
+                  },
+                  "high": {
+                    "value": 1000.0,
+                    "unit": "mg",
+                    "system": "http://unitsofmeasure.org"
+                  }
+                }
+              }
+            ]
           }
         ]
       }

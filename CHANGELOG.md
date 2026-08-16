@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   default for mappings that don't declare one. (#98)
 
 ### Fixed
+- toFHIR: `dosage.doseAndRate` Range values are no longer dropped, so both a dose Range
+  (`DV_INTERVAL<DV_QUANTITY>` in `Dosis`) and a rate Range now survive the roundtrip instead of
+  producing a dosage with only `route`. Three gaps contributed: a `Range` had no branch in the FHIR
+  instance populator and so was silently discarded; programmed mappings never set the detected RM
+  type, so a `type` openEHR condition could not tell an interval-valued element from a
+  quantity-valued one; and the dosage custom mappings were handed the unresolved template path
+  (with `[n]` placeholders) instead of the composition's concrete flat keys, so they found no
+  values to read. (#94)
 - toFHIR: values no longer leak between FHIR list entries when the same slot archetype is instantiated
   more than once. The openEHR occurrence index of a data point (the `0` in `prefix:0`) addresses a
   position inside the source cluster, not a position in the FHIR list it is being written to, and was
