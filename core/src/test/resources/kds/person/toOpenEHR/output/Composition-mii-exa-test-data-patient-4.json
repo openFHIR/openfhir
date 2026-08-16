@@ -39,8 +39,8 @@
           "value": {
             "_type": "DV_IDENTIFIER",
             "id": "CP5712840020128",
-            "type": "http:\/\/terminology.hl7.org\/CodeSystem\/v3-ObservationValue::PSEUDED",
-            "issuer": "https:\/\/www.charite.de\/fhir\/sid\/pseudonyme"
+            "type": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue::PSEUDED",
+            "issuer": "https://www.charite.de/fhir/sid/pseudonyme"
           }
         }
       ]
@@ -106,7 +106,7 @@
               "defining_code": {
                 "terminology_id": {
                   "_type": "TERMINOLOGY_ID",
-                  "value": "ValueSet\/$expand?url=http:\/\/terminology.hl7.org\/ValueSet\/v2-0001"
+                  "value": "ValueSet/$expand?url=http://terminology.hl7.org/ValueSet/v2-0001"
                 },
                 "code_string": "male",
                 "_type": "CODE_PHRASE"
@@ -203,7 +203,7 @@
                     "_type": "ELEMENT",
                     "name": {
                       "_type": "DV_TEXT",
-                      "value": "Stadtteil \/ Stadt \/ Gemeindeschlüssel"
+                      "value": "Stadtteil / Stadt / Gemeindeschlüssel"
                     }
                   },
                   {
@@ -229,7 +229,7 @@
                       "defining_code": {
                         "terminology_id": {
                           "_type": "TERMINOLOGY_ID",
-                          "value": "ValueSet\/$expand?url=http:\/\/hl7.org\/fhir\/address-type"
+                          "value": "ValueSet/$expand?url=http://hl7.org/fhir/address-type"
                         },
                         "code_string": "both",
                         "_type": "CODE_PHRASE"
