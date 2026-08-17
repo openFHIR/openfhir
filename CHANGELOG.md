@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+## [2.2.5] - 2026-08-17
 ### Added
 - KDS v1.0 mappings in unit tests
 - support for PARTY_PROXY (from Reference and Idenifier)
