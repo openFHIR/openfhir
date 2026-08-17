@@ -52,13 +52,14 @@
         ],
         "name": [
           {
-            "use": "maiden",
+            "use": "official",
             "family": "Hoffmann",
             "given": [
               "Anna"
             ]
           },
           {
+            "use": "maiden",
             "family": "Schmidt"
           }
         ],

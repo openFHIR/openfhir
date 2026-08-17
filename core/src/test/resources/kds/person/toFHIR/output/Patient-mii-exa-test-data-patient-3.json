@@ -52,7 +52,7 @@
         ],
         "name": [
           {
-            "use": "maiden",
+            "use": "official",
             "family": "Schumann",
             "_family": {
               "extension": [
@@ -68,6 +68,7 @@
             ]
           },
           {
+            "use": "maiden",
             "family": "Wieck"
           }
         ],

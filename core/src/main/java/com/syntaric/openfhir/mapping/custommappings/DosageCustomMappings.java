@@ -1,5 +1,6 @@
 package com.syntaric.openfhir.mapping.custommappings;
 
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
 import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX_ESCAPED;
 
 import com.google.gson.JsonObject;
@@ -506,14 +507,18 @@ public class DosageCustomMappings extends CustomMapping {
         FhirValueReaders readers = new FhirValueReaders(mapperUtils);
         boolean wantsRange = fhirPath != null && fhirPath.contains("as(Range)");
 
-        String lowerMagPath = find(joinedValues, "lower|magnitude");
-        String upperMagPath = find(joinedValues, "upper|magnitude");
+        // The engine hands programmed mappings the unresolved template path (with "[n]" placeholders)
+        // rather than the concrete flat keys, so resolve the keys this element actually owns.
+        final List<String> candidateValues = resolveCandidateValues(joinedValues, valueHolder, path);
+
+        String lowerMagPath = find(candidateValues, "lower|magnitude");
+        String upperMagPath = find(candidateValues, "upper|magnitude");
         boolean hasRange = lowerMagPath != null || upperMagPath != null;
 
         if (wantsRange || hasRange) {
             Range range = new Range();
-            Quantity low = readQuantityForSide(readers, valueHolder, joinedValues, "lower");
-            Quantity high = readQuantityForSide(readers, valueHolder, joinedValues, "upper");
+            Quantity low = readQuantityForSide(readers, valueHolder, candidateValues, "lower");
+            Quantity high = readQuantityForSide(readers, valueHolder, candidateValues, "upper");
             if (low != null) range.setLow(low);
             if (high != null) range.setHigh(high);
             if (range.getLow() == null && range.getHigh() == null) {
@@ -523,7 +528,7 @@ public class DosageCustomMappings extends CustomMapping {
         }
 
         // Quantity
-        Quantity q = readQuantityForSide(readers, valueHolder, joinedValues, "");
+        Quantity q = readQuantityForSide(readers, valueHolder, candidateValues, "");
         if (q == null) {
             return null;
         }
@@ -570,11 +575,14 @@ public class DosageCustomMappings extends CustomMapping {
                                                                   final Integer lastIndex,
                                                                   final String path,
                                                                   final OpenFhirMapperUtils mapperUtils) {
-        if (!hasTextLikeRangeSource(joinedValues, path, valueHolder)) {
+        // As in toFhirDose, the engine passes the unresolved template path for programmed mappings,
+        // so expand it to the concrete keys holding this element's serialized range text.
+        final List<String> candidateValues = resolveCandidateValues(joinedValues, valueHolder, path);
+        if (!hasTextLikeRangeSource(candidateValues, path, valueHolder)) {
             return null;
         }
         FhirValueReaders readers = new FhirValueReaders(mapperUtils);
-        String text = extractRangeTextValue(joinedValues, valueHolder, path, readers);
+        String text = extractRangeTextValue(candidateValues, valueHolder, path, readers);
         if (StringUtils.isBlank(text)) {
             return null;
         }
@@ -859,7 +867,7 @@ public class DosageCustomMappings extends CustomMapping {
                                                                 final Integer lastIndex,
                                                                 final String path,
                                                                 final OpenFhirMapperUtils mapperUtils) {
-        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true);
+        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true, false);
     }
 
     private DataWithIndex toFhirTimingNonDaily(final List<String> joinedValues,
@@ -867,7 +875,7 @@ public class DosageCustomMappings extends CustomMapping {
                                                                    final Integer lastIndex,
                                                                    final String path,
                                                                    final OpenFhirMapperUtils mapperUtils) {
-        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true);
+        return toFhirTiming(joinedValues, valueHolder, lastIndex, path, mapperUtils, true, true, true);
     }
 
     private DataWithIndex toFhirTiming(final List<String> joinedValues,
@@ -876,7 +884,8 @@ public class DosageCustomMappings extends CustomMapping {
                                                            final String path,
                                                            final OpenFhirMapperUtils mapperUtils,
                                                            final boolean includeZeitpunkt,
-                                                           final boolean inferPeriodFromFrequency) {
+                                                           final boolean inferPeriodFromFrequency,
+                                                           final boolean nonDaily) {
         FhirValueReaders readers = new FhirValueReaders(mapperUtils);
         List<String> timingValues = collectTimingValues(joinedValues, valueHolder, path);
         Timing timing = new Timing();
@@ -926,6 +935,9 @@ public class DosageCustomMappings extends CustomMapping {
         }
 
         TimingFlatMapper.DurationValue duration = TimingFlatMapper.readDuration(valueHolder, timingValues, readers);
+        if (nonDaily && (duration == null || StringUtils.isBlank(duration.value))) {
+            duration = readNonDailyPeriod(valueHolder, timingValues, readers);
+        }
         if (duration != null && StringUtils.isNotBlank(duration.value)) {
             DurationParts start = parseIsoDuration(duration.value);
             if (start != null) {
@@ -938,6 +950,11 @@ public class DosageCustomMappings extends CustomMapping {
                     repeat.setPeriodMax(end.value);
                 }
             }
+            // The non-daily cluster records only the period ("Periode"); FHIR needs an explicit
+            // frequency for the repeat to be meaningful, and one administration per period is implied.
+            if (nonDaily && start != null && !repeat.hasFrequency()) {
+                repeat.setFrequency(1);
+            }
         }
 
         if (!repeat.isEmpty()) {
@@ -948,6 +965,40 @@ public class DosageCustomMappings extends CustomMapping {
                     timingAnchorPath(path), null);
         }
         return null;
+    }
+
+    /**
+     * Reads the non-daily "Periode" element, which openEHR stores as a DV_DURATION on the element
+     * itself (".../periode") rather than under a "|value" or component suffix, so the generic
+     * duration reader does not pick it up.
+     */
+    private TimingFlatMapper.DurationValue readNonDailyPeriod(final JsonObject valueHolder,
+                                                              final List<String> timingValues,
+                                                              final FhirValueReaders readers) {
+        if (valueHolder == null || timingValues == null) {
+            return null;
+        }
+        String lower = null;
+        String upper = null;
+        String single = null;
+        for (String candidate : timingValues) {
+            String normalized = removeIndexes(candidate);
+            if (normalized == null) {
+                continue;
+            }
+            if (normalized.endsWith("/periode")) {
+                single = readers.get(valueHolder, candidate);
+            } else if (normalized.endsWith("/periode/lower")) {
+                lower = readers.get(valueHolder, candidate);
+            } else if (normalized.endsWith("/periode/upper")) {
+                upper = readers.get(valueHolder, candidate);
+            }
+        }
+        String start = StringUtils.isNotBlank(single) ? single : lower;
+        if (StringUtils.isBlank(start)) {
+            return null;
+        }
+        return new TimingFlatMapper.DurationValue(start, upper);
     }
 
     private List<String> collectTimingValues(final List<String> joinedValues,
@@ -1361,6 +1412,51 @@ public class DosageCustomMappings extends CustomMapping {
     private String find(List<String> joinedValues, String suffix) {
         if (joinedValues == null) return null;
         return joinedValues.stream().filter(s -> s.endsWith(suffix)).findFirst().orElse(null);
+    }
+
+    /**
+     * Resolves the concrete flat keys belonging to the element {@code path} points at.
+     *
+     * <p>For programmed mappings the engine passes the unresolved template path (containing "[n]"
+     * occurrence placeholders and no leaf suffix), which never matches the indexed keys present in the
+     * composition. Any such placeholder path is therefore expanded into the value holder's keys that
+     * sit under the same element, so callers can locate suffixes like {@code lower|magnitude}.
+     *
+     * <p>Keys are matched against the element prefix rather than merely by suffix, so a mapping for one
+     * dosage occurrence cannot pick up values belonging to another.
+     */
+    private List<String> resolveCandidateValues(final List<String> joinedValues,
+                                                final JsonObject valueHolder,
+                                                final String path) {
+        final List<String> resolved = new ArrayList<>();
+        if (joinedValues != null) {
+            for (String joinedValue : joinedValues) {
+                if (valueHolder != null && !valueHolder.has(joinedValue) && isUnresolvedTemplatePath(joinedValue)) {
+                    continue;
+                }
+                resolved.add(joinedValue);
+            }
+        }
+        if (valueHolder == null || StringUtils.isBlank(path)) {
+            return resolved;
+        }
+
+        // "medikamentenliste/…/dosierung[n]/dosis" -> "medikamentenliste/…/dosierung:0/dosis/…".
+        // The "[n]" placeholders become optional occurrence indexes; quoting happens around them so
+        // the rest of the path (which may contain regex metacharacters) stays literal.
+        final String prefixRegex = Pattern.quote(stripValueSuffix(path))
+                .replace(RECURRING_SYNTAX, "\\E(:\\d+)?\\Q") + "(/.*|\\|.*)";
+        final Pattern prefixPattern = Pattern.compile(prefixRegex);
+        for (String key : valueHolder.keySet()) {
+            if (prefixPattern.matcher(key).matches() && !resolved.contains(key)) {
+                resolved.add(key);
+            }
+        }
+        return resolved;
+    }
+
+    private boolean isUnresolvedTemplatePath(final String path) {
+        return path != null && path.contains(RECURRING_SYNTAX);
     }
 
     private String findInValueHolder(JsonObject valueHolder, String suffix) {

@@ -20,10 +20,12 @@ context:
     - "CLUSTER.lebensphase.v0"
     - "CLUSTER.case_identification.v0"
     - "CLUSTER.anatomical_location.v1"
+    - "COMPOSITION.report.v1.Condition"
   extensions:
     - "KDS_problem_diagnose" #they overload the vanilla mappings, no version = take the latest
     - "KDS_problem_qualifier"
     - "KDS_lebensphase"
     - "KDS_anatomical_location"
+    - "KDS_composition.Condition"
   start: "EVALUATION.problem_diagnosis.v1"
 

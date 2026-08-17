@@ -41,8 +41,18 @@
       "code_string" : "433"
     }
   },
-  "composer" : {
-    "_type" : "PARTY_SELF"
+  "composer": {
+    "_type": "PARTY_IDENTIFIED",
+    "external_ref": {
+      "_type": "PARTY_REF",
+      "namespace": "N/A",
+      "type": "PARTY",
+      "id": {
+        "_type": "GENERIC_ID",
+        "value": "Organization/mii-exa-test-data-organization-charite",
+        "scheme": "N/A"
+      }
+    }
   },
   "context" : {
     "_type" : "EVENT_CONTEXT",
@@ -64,6 +74,19 @@
           "value" : "openehr"
         },
         "code_string" : "238"
+      }
+    },
+    "health_care_facility": {
+      "_type": "PARTY_IDENTIFIED",
+      "external_ref": {
+        "_type": "PARTY_REF",
+        "namespace": "N/A",
+        "type": "PARTY",
+        "id": {
+          "_type": "GENERIC_ID",
+          "value": "Organization/mii-exa-test-data-organization-charite",
+          "scheme": "N/A"
+        }
       }
     },
     "other_context" : {

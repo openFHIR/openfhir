@@ -5,6 +5,7 @@ import com.nedap.archie.rm.composition.Composition;
 import com.syntaric.openfhir.mapping.kds.KdsGenericTest;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
+import org.ehrbase.openehr.sdk.serialisation.jsonencoding.CanonicalJson;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
 import org.hl7.fhir.r4.model.Bundle;
 import org.junit.Assert;
@@ -224,6 +225,27 @@ public class MedikamentenverabreichungenToOpenEHRTest extends KdsGenericTest {
      */
     @Test
     public void assertToOpenEHR_23() { assertToOpenEHR(22); }
+
+    /**
+     * A minute-denominated rateRatio (1500 mg / 30 min) has to end up as a PT30M administration
+     * duration. The flat format can only express a DV_DURATION through its |day/|hour/|minute/|second
+     * components, and the SDK unmarshaller inflates every sub-hour component to hours, which used to
+     * turn this into PT30H. Hour-denominated rates were unaffected, so this is asserted explicitly
+     * rather than being left to the canonical comparison alone.
+     */
+    @Test
+    public void minuteDenominatedRate_isNotInflatedToHours() {
+        final JsonObject flat = toOpenEhr.fhirToFlatJsonObject(context, getTestBundle(FHIR_INPUTS[0]), webTemplate);
+        Assert.assertEquals(30,
+                flat.getAsJsonPrimitive("kds_medikamentenverabreichungen/arzneimittelanwendung:0/dosierung/verabreichungsdauer/duration_value|minute").getAsInt());
+
+        final Composition composition = toOpenEhr.fhirToCompositionRm(context, getTestBundle(FHIR_INPUTS[0]), webTemplate);
+        final String canonical = new CanonicalJson().marshal(composition);
+        Assert.assertTrue("expected the 30 minute rate denominator to be stored as PT30M, was: "
+                                  + canonical.replaceAll("(?s).*?(\"value\" : \"P[^\"]*\").*", "$1"),
+                          canonical.contains("\"PT30M\""));
+        Assert.assertFalse("30 minutes must not be inflated to 30 hours", canonical.contains("\"PT30H\""));
+    }
 
     @Test
     public void kdsMedicationAdministrations_toOpenEhr_bundleFlat() {

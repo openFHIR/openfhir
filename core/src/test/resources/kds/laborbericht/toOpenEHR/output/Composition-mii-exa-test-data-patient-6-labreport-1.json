@@ -42,10 +42,33 @@
     }
   },
   "composer": {
-    "_type": "PARTY_SELF"
+    "_type": "PARTY_IDENTIFIED",
+    "external_ref": {
+      "_type": "PARTY_REF",
+      "namespace": "N/A",
+      "type": "PARTY",
+      "id": {
+        "_type": "GENERIC_ID",
+        "value": "Organization/mii-exa-test-data-organization-labor-berlin",
+        "scheme": "N/A"
+      }
+    }
   },
   "context": {
     "_type": "EVENT_CONTEXT",
+    "health_care_facility": {
+      "_type": "PARTY_IDENTIFIED",
+      "external_ref": {
+        "_type": "PARTY_REF",
+        "namespace": "N/A",
+        "type": "PARTY",
+        "id": {
+          "_type": "GENERIC_ID",
+          "value": "Organization/mii-exa-test-data-organization-labor-berlin",
+          "scheme": "N/A"
+        }
+      }
+    },
     "start_time": {
       "_type": "DV_DATE_TIME",
       "value": "2022-03-14T07:00:00"

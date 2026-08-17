@@ -133,12 +133,32 @@ public class BidirectionalMappingEngine {
             if (mappingHelper.getDetectedType() != null) {
                 // this should be populated when going openehr -> fhir, because in that case we know exactly which
                 // type it is
-                return condition.getCriterias().stream().anyMatch(c -> mappingHelper.getDetectedType().equals(c));
+                return condition.getCriterias().stream()
+                        .anyMatch(c -> detectedTypeMatches(c, mappingHelper.getDetectedType()));
             } else {
                 // this is fhir->openehr and we just check if possibleRmType is one of those
                 return condition.getCriterias().stream().anyMatch(c -> mappingHelper.getPossibleRmTypes().contains(c));
             }
         });
+    }
+
+    /**
+     * Compares a condition criteria against the detected RM type, tolerating generic parameters.
+     *
+     * <p>Templates report interval types in their parameterized form (e.g.
+     * {@code DV_INTERVAL<DV_QUANTITY>}) while mappings usually declare the bare container type
+     * ({@code DV_INTERVAL}), so a bare criteria matches any parameterization of itself. This only
+     * widens the criteria — never the detected type — so a mapping guarded on {@code DV_QUANTITY}
+     * still does not match a value that was detected as an interval.
+     */
+    private boolean detectedTypeMatches(final String criteria, final String detectedType) {
+        if (criteria == null || detectedType == null) {
+            return false;
+        }
+        if (criteria.equals(detectedType)) {
+            return true;
+        }
+        return !criteria.contains("<") && detectedType.startsWith(criteria + "<");
     }
 
     private IBase getReferencedResource(final IBase initialResource, final String fhirPathExpr,

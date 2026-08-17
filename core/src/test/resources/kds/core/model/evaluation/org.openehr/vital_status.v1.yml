@@ -17,7 +17,7 @@ mappings:
   - name: "healthCareFacility"
     with:
       fhir: "$resource.performer"
-      openehr: "$archetype/context/health_care_facility"
+      openehr: "$composition/context/health_care_facility"
 
   - name: "participations"
     with:
@@ -38,7 +38,7 @@ mappings:
         - name: "performer"
           with:
             fhir: "$fhirRoot"
-            openehr: "$openEHRRoot" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+            openehr: "$openehrRoot/performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
   - name: "composer"
     with:

@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOFHIR;
 
@@ -46,6 +47,13 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     final private CustomMappingRegistry customMappingRegistry;
     final private OpenFhirMapperUtils openFhirMapperUtils;
     final private MappingMetricsLogger metricsLogger;
+    final private ToFhirNullFlavour toFhirNullFlavour;
+
+    /**
+     * Flat-path leaf openEHR uses for a DV_INTERVAL value, e.g.
+     * {@code …/dosis/interval<dv_quantity>_value/lower|magnitude}.
+     */
+    private static final String OPENEHR_INTERVAL_FLAT_LEAF = "/interval<";
 
     @Autowired
     public ToFhirMappingEngine(final OpenEhrConditionEvaluator openEhrConditionEvaluator,
@@ -57,7 +65,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                final ToFhirInstantiator toFhirInstantiator,
                                final CustomMappingRegistry customMappingRegistry,
                                final OpenFhirMapperUtils openFhirMapperUtils,
-                               final MappingMetricsLogger metricsLogger) {
+                               final MappingMetricsLogger metricsLogger,
+                               final ToFhirNullFlavour toFhirNullFlavour) {
         super(fhirContextRegistry);
         this.openEhrConditionEvaluator = openEhrConditionEvaluator;
         this.fhirInstanceCreatorUtility = fhirInstanceCreatorUtility;
@@ -68,6 +77,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         this.customMappingRegistry = customMappingRegistry;
         this.openFhirMapperUtils = openFhirMapperUtils;
         this.metricsLogger = metricsLogger;
+        this.toFhirNullFlavour = toFhirNullFlavour;
     }
 
     public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
@@ -173,6 +183,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
 
             final List<DataWithIndex> extractedData;
             if (StringUtils.isNotEmpty(mappingHelper.getProgrammedMapping())) {
+                detectTypeForProgrammedMapping(mappingHelper, relevantJsonObject);
                 extractedData = invokeProgrammedMapping(mappingHelper, relevantJsonObject);
             } else {
                 extractedData = openEhrFlatPathDataExtractor.extract(mappingHelper,
@@ -195,6 +206,48 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                     "mapping=" + mappingHelper.getMappingName() + " model=" + mappingHelper.getModelMetadataName(),
                     mappingTimer.elapsedMs());
         }
+    }
+
+    /**
+     * Detects the concrete RM type a programmed mapping is about to read, so that {@code type}
+     * openEHR conditions can discriminate between the alternatives an element allows.
+     *
+     * <p>Programmed mappings bypass {@link OpenEhrFlatPathDataExtractor}, which is what normally sets
+     * {@link MappingHelper#setDetectedType}. Without it, a condition falls back to comparing against
+     * every type the template permits, so a mapping guarded on one alternative (e.g. a dose stored as
+     * an interval) would also run for a sibling stored as a plain quantity, and vice versa.
+     *
+     * <p>Detection is driven by the flat-path leaf openEHR uses for interval values
+     * ({@code …/interval<dv_quantity>_value/…}); when that is absent the element holds a single value
+     * and the detected type is left unset so existing behaviour is preserved.
+     */
+    private void detectTypeForProgrammedMapping(final MappingHelper mappingHelper,
+                                                final JsonObject relevantJsonObject) {
+        final String flatPath = mappingHelper.getFullOpenEhrFlatPath();
+        if (StringUtils.isBlank(flatPath) || relevantJsonObject == null) {
+            return;
+        }
+        final List<String> possibleRmTypes = mappingHelper.getPossibleRmTypes();
+        if (possibleRmTypes == null || possibleRmTypes.size() < 2) {
+            // nothing to disambiguate — leave detection to the existing possibleRmTypes check
+            return;
+        }
+
+        // Match the element itself and everything nested under it, e.g.
+        // ".../dosis/interval<dv_quantity>_value/lower|magnitude". Each "[n]" becomes an optional
+        // occurrence index; the surrounding path is quoted so its metacharacters stay literal.
+        final String elementRegex = Pattern.quote(flatPath)
+                .replace(OpenFhirStringUtils.RECURRING_SYNTAX, "\\E(:\\d+)?\\Q") + "([/|].*)?";
+        final Pattern elementPattern = Pattern.compile(elementRegex);
+        final boolean storedAsInterval = relevantJsonObject.keySet().stream()
+                .filter(key -> elementPattern.matcher(key).matches())
+                .anyMatch(key -> key.contains(OPENEHR_INTERVAL_FLAT_LEAF));
+        possibleRmTypes.stream()
+                .filter(rmType -> storedAsInterval
+                        ? rmType.startsWith(FhirConnectConst.DV_INTERVAL)
+                        : !rmType.startsWith(FhirConnectConst.DV_INTERVAL))
+                .findFirst()
+                .ifPresent(mappingHelper::setDetectedType);
     }
 
     private List<DataWithIndex> invokeProgrammedMapping(final MappingHelper mappingHelper,
@@ -334,6 +387,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                     fhirVersion.modelPackage());
 
             populateExtractedDataPoint(mappingHelper, instantiated, extractedDataPoint);
+            toFhirNullFlavour.handleNullFlavour(mappingHelper, instantiated, List.of(extractedDataPoint),
+                    relevantJsonObject, fhirVersion.modelPackage());
             propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, fhirVersion);
         }
 

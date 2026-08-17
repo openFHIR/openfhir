@@ -8,6 +8,68 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+## [2.2.5] - 2026-08-17
+### Added
+- KDS v1.0 mappings in unit tests
+- support for PARTY_PROXY (from Reference and Idenifier)
+- `unidirectional` can now also be declared in the header (`spec`) of a mapping file, in which case
+  the whole file is treated as unidirectional and is skipped when mapping in the opposite direction.
+  A `unidirectional` on an individual mapping still takes precedence, so the header acts as the
+  default for mappings that don't declare one. (#98)
+- `POST /$bootstrap` — re-runs the bootstrap directory scan without a restart, returning a JSON summary
+  (`created`, `updated`, `unchanged`, `failed` and a per-file breakdown). Returns `409` if a run is already in
+  progress.
+- `GET /bootstrap` — lists the bootstrap ledger of the logged-in user: which files have been bootstrapped, from
+  which path, and which entity each one created.
+- bootstrapped files are now re-applied when their content changes. Each bootstrap ledger entry records a SHA-256
+  hash of the file content and the id of the entity it created, so a re-run (on startup or via `POST /$bootstrap`)
+  creates new files, updates changed ones **in place under the same entity id**, and skips unchanged ones. Files
+  that were bootstrapped before but are no longer on disk are reported with a warning; their entities are left
+  untouched. Ledger rows written by earlier versions have no hash and are treated as changed, which re-applies
+  them once and backfills the new fields without creating duplicate entities.
+### Changed
+- bootstrap ledger entries are now keyed by the file's path relative to the bootstrap dir instead of its bare
+  filename, so identically named files in different sub-folders no longer collide, and they are written with the
+  tenant they were created under.
+- `BootstrapEntity` gained four fields: `path`, `contentHash`, `entityId` and `entityType`, and now extends
+  `UserBasedEntity` like the other entities
+
+### Fixed
+- a sub-directory whose name ended in `.yaml`/`.yml`/`.opt` was processed as if it were a mapping file after being
+  recursed into
+- toFHIR: `dosage.doseAndRate` Range values are no longer dropped, so both a dose Range
+  (`DV_INTERVAL<DV_QUANTITY>` in `Dosis`) and a rate Range now survive the roundtrip instead of
+  producing a dosage with only `route`. Three gaps contributed: a `Range` had no branch in the FHIR
+  instance populator and so was silently discarded; programmed mappings never set the detected RM
+  type, so a `type` openEHR condition could not tell an interval-valued element from a
+  quantity-valued one; and the dosage custom mappings were handed the unresolved template path
+  (with `[n]` placeholders) instead of the composition's concrete flat keys, so they found no
+  values to read. (#94)
+- toFHIR: values no longer leak between FHIR list entries when the same slot archetype is instantiated
+  more than once. The openEHR occurrence index of a data point (the `0` in `prefix:0`) addresses a
+  position inside the source cluster, not a position in the FHIR list it is being written to, and was
+  being used as the latter. With two instances of the same slot feeding one list — e.g. a Patient's
+  `name` receiving both an official name and a maiden name from two `CLUSTER.structured_name.v1`
+  clusters — the second mapping's index restarted at 0 and overwrote the first entry, so the official
+  name got `use: maiden` and the maiden name lost its `use` entirely. Each entry now binds to the
+  element its own mapping is building. (#90)
+- toOpenEHR: a minute-denominated infusion `rateRatio` (e.g. 1500 mg / 30 min) is now stored as a
+  `PT30M` administration duration instead of `PT30H`. A DV_DURATION can only be written to the flat
+  format through its `|day`/`|hour`/`|minute`/`|second` components, and the ehrbase SDK (2.19.0)
+  unmarshaller builds the value as `ofHours(hour) + ofHours(minute) + ofHours(second)`, inflating
+  every sub-hour component to hours. The decoded duration is now corrected against the components
+  that were actually written. Hour- and day-denominated rates were never affected. (#92)
+- Non-daily dosage schedules are now reconstructed as `timing.repeat` when mapping to FHIR. Previously the period stored in the openEHR `timing_nondaily.v1` cluster was dropped, leaving the schedule only as prose in `dosage.text` (#95)
+- KDS mappings (test suite) for #93
+- toFHIR: an openEHR `null_flavour` on an ELEMENT is now reconstructed as a FHIR
+  `data-absent-reason` extension on the FHIR primitive it maps to, so it is serialized as the
+  primitive's sibling element (`_city`, `_line`, …) instead of being dropped. openEHR null flavours
+  are translated to their FHIR equivalents (`masked`/272 → `masked`, `unknown`/253 and
+  `no information`/271 → `unknown`, `not applicable`/273 → `not-applicable`). This is generic
+  plumbing and requires no per-field mapping expression. Complex datatypes are left untouched,
+  since elements such as `Observation.value[x]` carry a dedicated sibling `dataAbsentReason`
+  element instead. (#91)
+- any condition not amended against a web template threw an NPE, now fixed
 
 ## [2.2.4] - 2026-06-16
 

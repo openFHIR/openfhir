@@ -145,7 +145,9 @@ public class FhirInstancePopulator {
             populateBooleanType(toPopulate, (BooleanType) data);
         } else if (data instanceof Period) {
             populatePeriodType(toPopulate, (Period) data);
-        }else if (data instanceof Reference reference) {
+        } else if (data instanceof Range) {
+            populateRangeType(toPopulate, (Range) data, terminology);
+        } else if (data instanceof Reference reference) {
             populateReference(toPopulate, reference);
         }
     }
@@ -352,6 +354,40 @@ public class FhirInstancePopulator {
     private void populateReference(Object toPopulate, Reference data) {
         if (toPopulate instanceof Reference ref) {
             data.copyValues(ref);
+        }
+    }
+
+    /**
+     * Populates a Range (e.g. {@code Dosage.doseAndRate.dose[x]} as a Range), translating the
+     * terminology of each bound the same way a standalone Quantity would be translated.
+     */
+    private void populateRangeType(final Object toPopulate, final Range data, final Terminology terminology) {
+        translateQuantityTerminology(data.hasLow() ? data.getLow() : null, terminology);
+        translateQuantityTerminology(data.hasHigh() ? data.getHigh() : null, terminology);
+        if (toPopulate instanceof Range range) {
+            data.copyValues(range);
+        } else {
+            populateRangeTypeCrossVersion(toPopulate, data);
+        }
+    }
+
+    /**
+     * Applies the configured terminology mapping to a Quantity's code/system, in place.
+     */
+    private void translateQuantityTerminology(final Quantity quantity, final Terminology terminology) {
+        if (quantity == null) {
+            return;
+        }
+        final Coding translated = terminologyTranslator.translateToFhir(quantity.getCode(), quantity.getSystem(),
+                null, terminology);
+        if (translated == null) {
+            return;
+        }
+        if (StringUtils.isNotBlank(translated.getCode())) {
+            quantity.setCode(translated.getCode());
+        }
+        if (StringUtils.isNotBlank(translated.getSystem())) {
+            quantity.setSystem(translated.getSystem());
         }
     }
 
@@ -670,6 +706,48 @@ public class FhirInstancePopulator {
             if (start != null) p.setStart(start);
             if (end != null) p.setEnd(end);
         }
+    }
+
+    private void populateRangeTypeCrossVersion(final Object toPopulate, final Range data) {
+        final Quantity low = data.hasLow() ? data.getLow() : null;
+        final Quantity high = data.hasHigh() ? data.getHigh() : null;
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Range r) {
+            if (low != null) r.setLow(toDstu3SimpleQuantity(low));
+            if (high != null) r.setHigh(toDstu3SimpleQuantity(high));
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Range r) {
+            if (low != null) r.setLow(toR4bSimpleQuantity(low));
+            if (high != null) r.setHigh(toR4bSimpleQuantity(high));
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Range r) {
+            if (low != null) r.setLow(toR5SimpleQuantity(low));
+            if (high != null) r.setHigh(toR5SimpleQuantity(high));
+        }
+    }
+
+    private org.hl7.fhir.dstu3.model.SimpleQuantity toDstu3SimpleQuantity(final Quantity source) {
+        final org.hl7.fhir.dstu3.model.SimpleQuantity target = new org.hl7.fhir.dstu3.model.SimpleQuantity();
+        if (source.getValue() != null) target.setValue(source.getValue());
+        if (source.getCode() != null) target.setCode(source.getCode());
+        if (source.getSystem() != null) target.setSystem(source.getSystem());
+        if (source.getUnit() != null) target.setUnit(source.getUnit());
+        return target;
+    }
+
+    private org.hl7.fhir.r4b.model.Quantity toR4bSimpleQuantity(final Quantity source) {
+        final org.hl7.fhir.r4b.model.Quantity target = new org.hl7.fhir.r4b.model.Quantity();
+        if (source.getValue() != null) target.setValue(source.getValue());
+        if (source.getCode() != null) target.setCode(source.getCode());
+        if (source.getSystem() != null) target.setSystem(source.getSystem());
+        if (source.getUnit() != null) target.setUnit(source.getUnit());
+        return target;
+    }
+
+    private org.hl7.fhir.r5.model.Quantity toR5SimpleQuantity(final Quantity source) {
+        final org.hl7.fhir.r5.model.Quantity target = new org.hl7.fhir.r5.model.Quantity();
+        if (source.getValue() != null) target.setValue(source.getValue());
+        if (source.getCode() != null) target.setCode(source.getCode());
+        if (source.getSystem() != null) target.setSystem(source.getSystem());
+        if (source.getUnit() != null) target.setUnit(source.getUnit());
+        return target;
     }
 
     private void populateTimingCrossVersion(final Object toPopulate,

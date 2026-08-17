@@ -138,6 +138,18 @@ public class OptService {
     }
 
     /**
+     * Extracts the normalized template id of the given operational template payload, using the very same
+     * normalization {@link #upsert(String, String, String)} applies when persisting it.
+     *
+     * @param opt string payload of the operational template
+     * @return normalized template id
+     * @throws XmlException if content is invalid XML
+     */
+    public String templateIdOf(final String opt) throws XmlException {
+        return OpenFhirMappingContext.normalizeTemplateId(parseOptFromString(opt).getTemplateId().getValue());
+    }
+
+    /**
      * Ignore any white character at the beginning of the payload and parse content to OPERATIONALTEMPLATE
      *
      * @param content XML that represents a serialized operational template

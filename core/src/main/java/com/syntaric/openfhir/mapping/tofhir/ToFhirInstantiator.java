@@ -44,7 +44,7 @@ public class ToFhirInstantiator {
         }
 
         final String remainingPath = resolveRemainingPath(mappingHelper);
-        final Object instantiated = resolveFromBase(fhirBase, remainingPath, forcingClass, resolveResourceType, index,
+        final Object instantiated = resolveFromBase(fhirBase, remainingPath, forcingClass, resolveResourceType,
                                                     modelPackage);
         return propagateAndReturn(mappingHelper, instantiated);
     }
@@ -82,26 +82,30 @@ public class ToFhirInstantiator {
                                    final String remainingPath,
                                    final String forcingClass,
                                    final String resolveResourceType,
-                                   final int index,
                                    final String modelPackage) {
         if (fhirBase instanceof List<?> fhirBaseList) {
-            return resolveFromList(fhirBaseList, remainingPath, forcingClass, resolveResourceType, index, modelPackage);
+            return resolveFromList(fhirBaseList, remainingPath, forcingClass, resolveResourceType, modelPackage);
         }
         return resolveFromSingle(fhirBase, remainingPath, forcingClass, resolveResourceType, modelPackage);
     }
 
     /**
-     * Resolves the target element from a List base, picking the last element when index is -1.
+     * Resolves the target element from a List base, always against the element the current iteration is
+     * building — the last one.
+     *
+     * <p>The openEHR occurrence index of the data point being mapped (e.g. the {@code 0} in
+     * {@code prefix:0}) addresses a position inside the source cluster, not a position in this FHIR list.
+     * The two only coincide when the list was built one-to-one from that same cluster. When one FHIR list
+     * is fed by several mappings — e.g. a Patient's {@code name} receiving both an official name and a
+     * maiden name from two instances of CLUSTER.structured_name.v1 — each mapping's occurrence index
+     * restarts at 0, so using it here would reach back into an earlier mapping's entry and overwrite it.
      */
     private Object resolveFromList(final List<?> fhirBaseList,
                                    final String remainingPath,
                                    final String forcingClass,
                                    final String resolveResourceType,
-                                   final int index,
                                    final String modelPackage) {
-        final Object listEntry = index == -1
-                ? fhirBaseList.get(fhirBaseList.size() - 1)
-                : fhirBaseList.get(index);
+        final Object listEntry = fhirBaseList.get(fhirBaseList.size() - 1);
         return resolveFromSingle(listEntry, remainingPath, forcingClass, resolveResourceType, modelPackage);
     }
 

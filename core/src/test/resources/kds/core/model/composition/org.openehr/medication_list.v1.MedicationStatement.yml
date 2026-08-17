@@ -1,0 +1,65 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: COMPOSITION.medication_list.v1.MedicationStatement
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-COMPOSITION.medication_list.v1
+    revision: 1.0.6
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/MedicationStatement
+
+mappings:
+  - name: "statusDefault"
+    with:
+      fhir: "$resource"
+    manual:
+      - name: "final"
+        fhir:
+          - path: "status"
+            value: "final"
+
+  - name: "composer"
+    with:
+      fhir: "$resource.informationSource"
+      openehr: "$composition/composer" # often required therefore simplified mapping engine is to resolve Reference -> Composer
+
+
+  - name: "healthcareFacility"
+    with:
+      fhir: "$resource.informationSource.as(Organization)"
+      openehr: "$composition/context/health_care_facility"
+    unidirectional: "fhir->openehr"
+
+  - name: "dateAsserted"
+    with:
+      fhir: "$resource.dateAsserted"
+      openehr: "$composition/context/start_time"
+
+  - name: "effectivePeriod"
+    unidirectional: "fhir->openehr"
+    with:
+      fhir: "effective.as(Period)"
+      openehr: "$composition"
+    followedBy:
+      mappings:
+        - name: "effectiveEnd"
+          with:
+            fhir: "end"
+            openehr: "context/end_time"
+
+
+        - name: "effectiveStart"
+          with:
+            fhir: "start"
+            openehr: "context/start_time"
+
+
+  - name: "effectiveDateTime"
+    unidirectional: "fhir->openehr"
+    with:
+      fhir: "effective.as(DateTime)"
+      openehr: "$composition/context/start_time"

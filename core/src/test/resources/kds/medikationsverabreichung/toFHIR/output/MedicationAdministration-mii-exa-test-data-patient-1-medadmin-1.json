@@ -38,7 +38,20 @@
                 }
               ],
               "text": "Powder for concentrate for solution for infusion"
-            }
+            },
+            "ingredient": [
+              {
+                "itemCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://fhir.de/CodeSystem/ask",
+                      "code": "33395",
+                      "display": "33395"
+                    }
+                  ]
+                }
+              }
+            ]
           },
           {
             "resourceType": "Encounter",
@@ -90,7 +103,10 @@
         "context": {
           "reference": "#2"
         },
-        "effectiveDateTime": "2024-02-16T10:20:00+01:00",
+        "effectivePeriod": {
+          "start": "2024-07-15",
+          "end": "2024-08-01"
+        },
         "request": {
           "reference": "#3"
         },

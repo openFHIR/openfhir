@@ -38,10 +38,10 @@
           },
           "value": {
             "_type": "DV_IDENTIFIER",
-            "assigner": "https:\/\/www.medizininformatik-initiative.de\/fhir\/core\/CodeSystem\/core-location-identifier::Charité",
+            "assigner": "https://www.medizininformatik-initiative.de/fhir/core/CodeSystem/core-location-identifier::Charité",
             "id": "321654987",
-            "type": "http:\/\/terminology.hl7.org\/CodeSystem\/v2-0203::MR",
-            "issuer": "https:\/\/www.medizininformatik-initiative.de\/fhir\/sid\/patienten"
+            "type": "http://terminology.hl7.org/CodeSystem/v2-0203::MR",
+            "issuer": "https://www.medizininformatik-initiative.de/fhir/sid/patienten"
           }
         }
       ]
@@ -105,10 +105,10 @@
             },
             "value": {
               "_type": "DV_IDENTIFIER",
-              "assigner": "http:\/\/fhir.de\/sid\/arge-ik\/iknr::345678901",
+              "assigner": "http://fhir.de/sid/arge-ik/iknr::345678901",
               "id": "G678901234",
-              "type": "http:\/\/fhir.de\/CodeSystem\/identifier-type-de-basis::KVZ10",
-              "issuer": "http:\/\/fhir.de\/sid\/gkv\/kvid-10"
+              "type": "http://fhir.de/CodeSystem/identifier-type-de-basis::KVZ10",
+              "issuer": "http://fhir.de/sid/gkv/kvid-10"
             }
           }
         ]
@@ -165,7 +165,7 @@
               "defining_code": {
                 "terminology_id": {
                   "_type": "TERMINOLOGY_ID",
-                  "value": "ValueSet\/$expand?url=http:\/\/terminology.hl7.org\/ValueSet\/v2-0001"
+                  "value": "ValueSet/$expand?url=http://terminology.hl7.org/ValueSet/v2-0001"
                 },
                 "code_string": "female",
                 "_type": "CODE_PHRASE"
@@ -366,7 +366,7 @@
                     "_type": "ELEMENT",
                     "name": {
                       "_type": "DV_TEXT",
-                      "value": "Stadtteil \/ Stadt \/ Gemeindeschlüssel"
+                      "value": "Stadtteil / Stadt / Gemeindeschlüssel"
                     },
                     "value": {
                       "_type": "DV_TEXT",
@@ -396,7 +396,7 @@
                       "defining_code": {
                         "terminology_id": {
                           "_type": "TERMINOLOGY_ID",
-                          "value": "ValueSet\/$expand?url=http:\/\/hl7.org\/fhir\/address-type"
+                          "value": "ValueSet/$expand?url=http://hl7.org/fhir/address-type"
                         },
                         "code_string": "both",
                         "_type": "CODE_PHRASE"

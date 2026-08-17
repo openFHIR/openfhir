@@ -52,7 +52,7 @@
         ],
         "name": [
           {
-            "use": "maiden",
+            "use": "official",
             "family": "Weber",
             "given": [
               "Sabine",
@@ -60,6 +60,7 @@
             ]
           },
           {
+            "use": "maiden",
             "family": "Müller"
           }
         ],

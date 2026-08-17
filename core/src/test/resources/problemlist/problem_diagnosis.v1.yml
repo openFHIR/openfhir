@@ -78,7 +78,7 @@ mappings:
   - name: "provider"
     with:
       fhir: "$resource.recorder"
-      openehr: "$archetype/provider"
+      openehr: "$archetype/_provider"
 
   - name: "problemDiagnose"
     with:

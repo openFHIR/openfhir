@@ -37,6 +37,15 @@
             },
             "ingredient": [
               {
+                "itemCodeableConcept": {
+                  "coding": [
+                    {
+                      "system": "http://fhir.de/CodeSystem/ask",
+                      "code": "26509",
+                      "display": "26509"
+                    }
+                  ]
+                },
                 "strength": {
                   "numerator": {
                     "value": 175.0,
@@ -104,7 +113,10 @@
         "context": {
           "reference": "#2"
         },
-        "effectiveDateTime": "2024-03-07T10:30:00+01:00",
+        "effectivePeriod": {
+          "start": "2024-07-15",
+          "end": "2024-08-01"
+        },
         "request": {
           "reference": "#3"
         },

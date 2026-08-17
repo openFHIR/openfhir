@@ -67,7 +67,7 @@ mappings:
   - name: "provider"
     with:
       fhir: "$resource.performer.actor"
-      openehr: "$composition/provider"  # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+      openehr: "$archetype/_provider"  # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
 
 
   - name: "composer"
@@ -124,6 +124,26 @@ mappings:
       fhir: "$resource.performed.as(DateTime)"
       openehr: "$archetype/time" # this field is more fiting then start_time thats why it overwrites the initial performed in fhir.
 
+
+  # ISM transition mapping summary
+  #
+  # 1) ISMTransitionFhirToOpenEhr (fhir->openehr)
+  # - preparation -> 526 (Planned)
+  # - in-progress -> 245 (Active)
+  # - not-done -> 528 (Cancelled)
+  # - on-hold -> 530 (Suspended)
+  # - completed -> 532 (Completed)
+  # - stopped -> 531 (Aborted)
+  # - entered-in-error -> no mapping (handled as invalid record/audit metadata)
+  # - unknown -> 524 (Initial) + explicit unknown marker outside ISM state
+  #
+  # 2) ISMTransitionOpenEhrToFhir (openehr->fhir)
+  # - 245 (Active) -> in-progress
+  # - 530 (Suspended) -> on-hold
+  # - 531 (Aborted) -> stopped
+  # - 532 (Completed) -> completed
+  # - 528 (Cancelled) -> not-done
+  # - 524/526/527/529/533 (Initial/Planned/Postponed/Scheduled/Expired) -> unknown
   - name: "ISMTransitionFhirToOpenEhr"
     unidirectional: "fhir->openehr"
     with:
