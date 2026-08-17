@@ -3,6 +3,7 @@ package com.syntaric.openfhir.manager;
 import com.syntaric.openfhir.db.OptService;
 import com.syntaric.openfhir.db.entity.OptEntity;
 import java.util.List;
+import org.apache.xmlbeans.XmlException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,10 @@ public class OptManager {
 
     public OptEntity byTemplateIdAndOrganization(final String templateId) {
         return optService.byTemplateIdAndOrganization(templateId);
+    }
+
+    public String templateIdOf(final String opt) throws XmlException {
+        return optService.templateIdOf(opt);
     }
 
     public List<OptEntity> allOfUser(final String reqId) {

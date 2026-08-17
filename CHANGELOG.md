@@ -15,8 +15,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   the whole file is treated as unidirectional and is skipped when mapping in the opposite direction.
   A `unidirectional` on an individual mapping still takes precedence, so the header acts as the
   default for mappings that don't declare one. (#98)
+- `POST /$bootstrap` — re-runs the bootstrap directory scan without a restart, returning a JSON summary
+  (`created`, `updated`, `unchanged`, `failed` and a per-file breakdown). Returns `409` if a run is already in
+  progress.
+- `GET /bootstrap` — lists the bootstrap ledger of the logged-in user: which files have been bootstrapped, from
+  which path, and which entity each one created.
+- bootstrapped files are now re-applied when their content changes. Each bootstrap ledger entry records a SHA-256
+  hash of the file content and the id of the entity it created, so a re-run (on startup or via `POST /$bootstrap`)
+  creates new files, updates changed ones **in place under the same entity id**, and skips unchanged ones. Files
+  that were bootstrapped before but are no longer on disk are reported with a warning; their entities are left
+  untouched. Ledger rows written by earlier versions have no hash and are treated as changed, which re-applies
+  them once and backfills the new fields without creating duplicate entities.
+### Changed
+- bootstrap ledger entries are now keyed by the file's path relative to the bootstrap dir instead of its bare
+  filename, so identically named files in different sub-folders no longer collide, and they are written with the
+  tenant they were created under.
+- `BootstrapEntity` gained four fields: `path`, `contentHash`, `entityId` and `entityType`, and now extends
+  `UserBasedEntity` like the other entities
 
 ### Fixed
+- a sub-directory whose name ended in `.yaml`/`.yml`/`.opt` was processed as if it were a mapping file after being
+  recursed into
 - toFHIR: `dosage.doseAndRate` Range values are no longer dropped, so both a dose Range
   (`DV_INTERVAL<DV_QUANTITY>` in `Dosis`) and a rate Range now survive the roundtrip instead of
   producing a dosage with only `route`. Three gaps contributed: a `Range` had no branch in the FHIR
