@@ -1,8 +1,10 @@
 package com.syntaric.openfhir.bootstrap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -408,5 +410,48 @@ public class BootstrapServiceTest {
         assertEquals(0, summary.getCreated());
         assertEquals(0, summary.getFailed());
         assertTrue(summary.getFiles().isEmpty());
+    }
+
+    /**
+     * Readiness must stay false until something explicitly marks the startup scan done - a plain re-run through
+     * {@code POST /$bootstrap} is not the startup scan and must not flip it.
+     */
+    @Test
+    public void startupScanComplete_isFalseUntilMarked() {
+        assertFalse(service.isStartupScanComplete());
+
+        service.runBootstrap("req");
+        assertFalse(service.isStartupScanComplete());
+
+        service.markStartupScanComplete();
+        assertTrue(service.isStartupScanComplete());
+    }
+
+    /**
+     * The runner reports readiness even when the scan throws, so an unparseable fixture cannot leave the
+     * application permanently advertising itself as not ready.
+     */
+    @Test
+    public void runner_marksComplete_evenWhenScanThrows() {
+        final BootstrapService throwing = Mockito.mock(BootstrapService.class);
+        when(throwing.runBootstrap(anyString())).thenThrow(new RuntimeException("boom"));
+
+        final BootstrapRunner runner = new BootstrapRunner(throwing);
+        assertThrows(RuntimeException.class, () -> runner.run(null));
+
+        verify(throwing).markStartupScanComplete();
+    }
+
+    /**
+     * The happy path: a successful startup scan leaves the application ready.
+     */
+    @Test
+    public void runner_marksComplete_afterSuccessfulScan() {
+        final BootstrapService ok = Mockito.mock(BootstrapService.class);
+
+        new BootstrapRunner(ok).run(null);
+
+        verify(ok).runBootstrap(anyString());
+        verify(ok).markStartupScanComplete();
     }
 }

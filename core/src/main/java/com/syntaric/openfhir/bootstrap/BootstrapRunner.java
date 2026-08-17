@@ -21,8 +21,17 @@ public class BootstrapRunner implements ApplicationRunner {
         this.bootstrapService = bootstrapService;
     }
 
+    /**
+     * The flag is set in a {@code finally} block on purpose: a scan that blows up (an unparseable fixture, say) has
+     * still finished, and leaving the application permanently un-ready over it would turn a bad mapping file into an
+     * outage. Individual file failures are already reported in the summary and the log.
+     */
     @Override
     public void run(final ApplicationArguments args) {
-        bootstrapService.runBootstrap("bootstrap-req");
+        try {
+            bootstrapService.runBootstrap("bootstrap-req");
+        } finally {
+            bootstrapService.markStartupScanComplete();
+        }
     }
 }

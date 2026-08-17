@@ -63,6 +63,15 @@ public class BootstrapService {
 
     private final ReentrantLock lock = new ReentrantLock();
 
+    /**
+     * Whether the one-off startup scan has finished. The web server starts accepting requests before
+     * {@link BootstrapRunner} (an {@link org.springframework.boot.ApplicationRunner}) has run, so without this a
+     * caller can reach {@code POST /$bootstrap} while the startup scan still holds {@link #lock} and get a 409
+     * back, or read a half-written ledger. Readiness checks gate on this. It is never reset: the startup scan runs
+     * once per process, and later manual re-runs do not make the application un-ready.
+     */
+    private volatile boolean startupScanComplete = false;
+
     @Autowired
     public BootstrapService(final BootstrapRepository bootstrapRepository,
                             final FhirConnectManager fhirConnectManager,
@@ -92,6 +101,22 @@ public class BootstrapService {
         } finally {
             lock.unlock();
         }
+    }
+
+    /**
+     * Marks the startup scan as done, so {@link #isStartupScanComplete()} starts reporting the application ready.
+     * Called by {@link BootstrapRunner} once, after the startup scan returns.
+     */
+    void markStartupScanComplete() {
+        startupScanComplete = true;
+    }
+
+    /**
+     * Whether the startup bootstrap scan has finished, i.e. whether the bootstrap ledger is fully written and
+     * {@code POST /$bootstrap} can be served without colliding with the startup scan.
+     */
+    public boolean isStartupScanComplete() {
+        return startupScanComplete;
     }
 
     /**
