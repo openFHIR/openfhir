@@ -311,17 +311,23 @@ public class BootstrapService {
     private void saveLedgerEntry(final BootstrapEntity existing, final String relativePath, final String fileName,
                                  final String hash, final String entityId, final FileType fileType,
                                  final String tenant) {
-        bootstrapRepository.save(BootstrapEntity.builder()
-                                         // reuse the row id on update so the entry is updated, not duplicated
-                                         .id(existing == null ? UUID.randomUUID().toString() : existing.getId())
-                                         .file(fileName)
-                                         .path(relativePath)
-                                         .contentHash(hash)
-                                         .entityId(entityId)
-                                         .entityType(fileType.name())
-                                         .organisation(tenant)
-                                         .date(new Date())
-                                         .build());
+        final Date now = new Date();
+        final BootstrapEntity entry = BootstrapEntity.builder()
+                // reuse the row id on update so the entry is updated, not duplicated
+                .id(existing == null ? UUID.randomUUID().toString() : existing.getId())
+                .file(fileName)
+                .path(relativePath)
+                .contentHash(hash)
+                .entityId(entityId)
+                .entityType(fileType.name())
+                .date(now)
+                .build();
+        // the UserBasedEntity fields are not part of the generated builder, so they are set here
+        entry.setOrganisation(tenant);
+        entry.setUser(userContextProducer.getAuthContext().getUserId());
+        entry.setCreated(existing == null || existing.getCreated() == null ? now : existing.getCreated());
+        entry.setUpdated(now);
+        bootstrapRepository.save(entry);
     }
 
     private void logOrphans(final String tenant, final Set<String> seenPaths) {

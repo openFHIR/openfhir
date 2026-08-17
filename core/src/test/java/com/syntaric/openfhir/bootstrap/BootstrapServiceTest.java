@@ -222,12 +222,11 @@ public class BootstrapServiceTest {
     public void legacyFallbackDoesNotAdoptAnotherTenantsRow() throws Exception {
         writeFile("some.yaml", MODEL_YAML);
         // a pathless row belonging to a different tenant must not be mistaken for this tenant's legacy row
-        final BootstrapEntity otherTenants = BootstrapEntity.builder()
+        final BootstrapEntity otherTenants = withOrganisation(BootstrapEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .file("some.yaml")
-                .organisation("someone-else")
                 .date(new Date())
-                .build();
+                .build(), "someone-else");
         when(bootstrapRepository.findByFile("some.yaml")).thenReturn(List.of(otherTenants));
         stubModelParsing();
         stubModelUpsert("model-id-1");
@@ -318,16 +317,15 @@ public class BootstrapServiceTest {
         writeFile("present.yaml", MODEL_YAML);
         stubModelParsing();
         stubModelUpsert("model-id-1");
-        final BootstrapEntity orphan = BootstrapEntity.builder()
+        final BootstrapEntity orphan = withOrganisation(BootstrapEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .file("gone.yaml")
                 .path("gone.yaml")
                 .contentHash("hash")
                 .entityId("model-id-9")
                 .entityType("MODEL")
-                .organisation(TENANT)
                 .date(new Date())
-                .build();
+                .build(), TENANT);
         when(bootstrapRepository.findAllByTenant(TENANT)).thenReturn(List.of(orphan));
 
         final BootstrapSummary summary = service.runBootstrap("req");
@@ -342,13 +340,12 @@ public class BootstrapServiceTest {
 
     @Test
     public void allOfTenantReturnsOnlyThisTenantsLedgerEntries() {
-        final BootstrapEntity mine = BootstrapEntity.builder()
+        final BootstrapEntity mine = withOrganisation(BootstrapEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .file("mine.yaml")
                 .path("mine.yaml")
-                .organisation(TENANT)
                 .date(new Date())
-                .build();
+                .build(), TENANT);
         when(bootstrapRepository.findAllByTenant(TENANT)).thenReturn(List.of(mine));
 
         final List<BootstrapEntity> result = service.allOfTenant();
@@ -359,22 +356,29 @@ public class BootstrapServiceTest {
         verify(bootstrapRepository).findAllByTenant(TENANT);
     }
 
+    /**
+     * {@code organisation} is inherited from UserBasedEntity, so it is outside Lombok's generated builder.
+     */
+    private BootstrapEntity withOrganisation(final BootstrapEntity entity, final String organisation) {
+        entity.setOrganisation(organisation);
+        return entity;
+    }
+
     private void writeFile(final String name, final String contents) throws Exception {
         Files.writeString(bootstrapDir.resolve(name), contents, StandardCharsets.UTF_8);
     }
 
     private BootstrapEntity existingLedgerRow(final String path, final String file, final String hash,
                                               final String entityId, final String entityType) {
-        final BootstrapEntity entity = BootstrapEntity.builder()
+        final BootstrapEntity entity = withOrganisation(BootstrapEntity.builder()
                 .id(UUID.randomUUID().toString())
                 .file(file)
                 .path(path)
                 .contentHash(hash)
                 .entityId(entityId)
                 .entityType(entityType)
-                .organisation(TENANT)
                 .date(new Date())
-                .build();
+                .build(), TENANT);
         when(bootstrapRepository.findByPathAndTenant(path, TENANT)).thenReturn(List.of(entity));
         return entity;
     }

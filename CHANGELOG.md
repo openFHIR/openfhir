@@ -30,9 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - bootstrap ledger entries are now keyed by the file's path relative to the bootstrap dir instead of its bare
   filename, so identically named files in different sub-folders no longer collide, and they are written with the
   tenant they were created under.
-- `BootstrapEntity` gained four fields: `path`, `contentHash`, `entityId` and `entityType`. Under Mongo these
-  simply read back as `null` on existing documents, so no migration is needed; **Postgres deployments need a DDL
-  migration adding the four columns to the `bootstrap` table.**
+- `BootstrapEntity` gained four fields: `path`, `contentHash`, `entityId` and `entityType`, and now extends
+  `UserBasedEntity` like the other entities
 
 ### Fixed
 - a sub-directory whose name ended in `.yaml`/`.yml`/`.opt` was processed as if it were a mapping file after being

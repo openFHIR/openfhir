@@ -18,14 +18,13 @@ import java.util.Date;
 @Builder
 @Entity                             // for postgres
 @Table(name = "bootstrap")         // for postgres
-public class BootstrapEntity {
+public class BootstrapEntity extends UserBasedEntity {
     @Id
     @GeneratedValue
     @UuidGenerator
     String id;
     String file;
     Date date;
-    String organisation;
     String path;         // relative to the bootstrap dir, e.g. "kds/diagnose.context.yaml"
     String contentHash;  // SHA-256 hex of the file content at the time it was bootstrapped
     String entityId;     // engine-assigned id of the created model mapper / context mapper / OPT
@@ -35,7 +34,12 @@ public class BootstrapEntity {
         this(id, file, date, null);
     }
 
+    /**
+     * {@code organisation} lives on {@link UserBasedEntity}, so Lombok's generated constructor and builder do not
+     * cover it — it has to be set afterwards, the same way {@code OptEntity.copy()} does.
+     */
     public BootstrapEntity(final String id, final String file, final Date date, final String organisation) {
-        this(id, file, date, organisation, null, null, null, null);
+        this(id, file, date, null, null, null, null);
+        setOrganisation(organisation);
     }
 }
