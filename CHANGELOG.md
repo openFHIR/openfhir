@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Changed
+- `BootstrapService` extension points widened so a distribution can add file types of its own to the bootstrap
+  scan instead of running a parallel one: `classify`, `apply`, `resolveExisting`, `saveLedgerEntry` and
+  `relativePath` are now `protected`, and `FileType` is public. A subclass can override `classify` to recognise a
+  new suffix and `apply` to route that one type elsewhere, delegating every other type to `super` and inheriting
+  the directory walk, hash comparison, ledger and summary unchanged. No behaviour change here — no bodies moved,
+  and with no subclass on the classpath nothing dispatches differently.
+- `FileType` gained a `CONCEPTMAP` constant, so the ledger's `entityType` and the `BootstrapSummary` breakdown
+  share one vocabulary across distributions. It is inert in this project: `classify` never returns it, and the
+  `upsert` arm it forces is unreachable.
+
 ## [2.2.5] - 2026-08-17
 ### Added
 - KDS v1.0 mappings in unit tests

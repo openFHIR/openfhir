@@ -188,7 +188,12 @@ public class BootstrapService {
         }
     }
 
-    private FileType classify(final String fileName) {
+    /**
+     * Maps a file name onto the type of thing it bootstraps, or null when the file is not one openFHIR
+     * bootstraps. {@code protected} so a distribution that bootstraps further file types can recognise them here
+     * rather than running a parallel scan of its own.
+     */
+    protected FileType classify(final String fileName) {
         if (fileName.endsWith(CONTEXT_SUFFIX) || fileName.endsWith(CONTEXT_SUFFIX2)) {
             return FileType.CONTEXT;
         }
@@ -205,14 +210,19 @@ public class BootstrapService {
      * Path of the file relative to the bootstrap dir, with separators normalized to '/' so the ledger key is
      * stable across platforms.
      */
-    private String relativePath(final File root, final File file) {
+    protected String relativePath(final File root, final File file) {
         final Path relative = root.toPath().toAbsolutePath().normalize()
                 .relativize(file.toPath().toAbsolutePath().normalize());
         return relative.toString().replace(File.separatorChar, '/');
     }
 
-    private BootstrapFileResult apply(final File file, final String relativePath, final FileType fileType,
-                                      final String tenant, final String reqId) {
+    /**
+     * Whole create / update / skip decision for one file: hash it, look the ledger up, apply it if it is new or
+     * has changed, and record what happened. {@code protected} so a distribution that adds a file type can route
+     * that one type elsewhere and delegate the rest here, instead of duplicating the ledger logic.
+     */
+    protected BootstrapFileResult apply(final File file, final String relativePath, final FileType fileType,
+                                        final String tenant, final String reqId) {
         final String fileName = file.getName();
         try {
             final String contents = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
@@ -264,7 +274,7 @@ public class BootstrapService {
      * written before this feature existed (which have neither {@code path} nor {@code organisation}) are adopted
      * and upgraded rather than duplicated.
      */
-    private BootstrapEntity resolveExisting(final String relativePath, final String fileName, final String tenant) {
+    protected BootstrapEntity resolveExisting(final String relativePath, final String fileName, final String tenant) {
         if (tenant != null) {
             final List<BootstrapEntity> byPath = bootstrapRepository.findByPathAndTenant(relativePath, tenant);
             if (byPath != null && !byPath.isEmpty()) {
@@ -330,12 +340,16 @@ public class BootstrapService {
                     .getId();
             // OptService.upsert returns a copy with redacted content, but the id on it is the real one
             case OPT -> optManager.upsert(contents, targetId, reqId).getId();
+            // classify() never returns CONCEPTMAP here, so this arm is unreachable in core; a distribution that
+            // does bootstrap concept maps overrides apply() and never routes them through this method
+            case CONCEPTMAP -> throw new IllegalStateException(
+                    "Concept maps are not bootstrapped by this distribution.");
         };
     }
 
-    private void saveLedgerEntry(final BootstrapEntity existing, final String relativePath, final String fileName,
-                                 final String hash, final String entityId, final FileType fileType,
-                                 final String tenant) {
+    protected void saveLedgerEntry(final BootstrapEntity existing, final String relativePath, final String fileName,
+                                   final String hash, final String entityId, final FileType fileType,
+                                   final String tenant) {
         final Date now = new Date();
         final BootstrapEntity entry = BootstrapEntity.builder()
                 // reuse the row id on update so the entry is updated, not duplicated
@@ -376,8 +390,13 @@ public class BootstrapService {
                          + "Their entities remain in the engine.", orphans.size(), orphans);
     }
 
-    enum FileType {
-        MODEL, CONTEXT, OPT
+    /**
+     * What a bootstrapped file produces. {@code CONCEPTMAP} is never returned by {@link #classify(String)} here —
+     * terminology is not a core feature — but it lives in this enum so the ledger's {@code entityType} and the
+     * {@link BootstrapSummary} breakdown speak one vocabulary across distributions.
+     */
+    public enum FileType {
+        MODEL, CONTEXT, OPT, CONCEPTMAP
     }
 
     enum Outcome {
