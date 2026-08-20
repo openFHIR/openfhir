@@ -42,6 +42,13 @@ public class OpenEhrPopulator {
     );
     private static final String NULL_FLAVOUR_TERMINOLOGY = "openehr";
 
+    /**
+     * Prefix of the placeholder systems {@code IdentifierParser} invents on the openEHR → FHIR leg
+     * for DV_IDENTIFIER parts that carry no system of their own. It marks "no real system", so it has
+     * to be stripped again on the way back rather than surfacing in the openEHR value.
+     */
+    private static final String OPENEHR_IDENTIFIER_SENTINEL_PREFIX = "http://openehr.org/identifier";
+
     private enum NullFlavourAttributes {
         UNKNOWN("unknown", "253"),
         NO_INFORMATION("no information", "271"),
@@ -939,9 +946,8 @@ public class OpenEhrPopulator {
         if (StringUtils.isBlank(system)) {
             return system;
         }
-        final String prefix = "http://openehr.org/identifier";
-        if (system.startsWith(prefix)) {
-            String trimmed = system.substring(prefix.length());
+        if (system.startsWith(OPENEHR_IDENTIFIER_SENTINEL_PREFIX)) {
+            String trimmed = system.substring(OPENEHR_IDENTIFIER_SENTINEL_PREFIX.length());
             while (trimmed.startsWith("/") || trimmed.startsWith("#")) {
                 trimmed = trimmed.substring(1);
             }
@@ -959,10 +965,30 @@ public class OpenEhrPopulator {
         if (StringUtils.isBlank(code)) {
             return null;
         }
-        if (StringUtils.isNotBlank(coding.getSystem())) {
-            return coding.getSystem() + "::" + code;
+        final String system = stripIdentifierSentinelSystem(coding.getSystem());
+        if (StringUtils.isNotBlank(system)) {
+            return system + "::" + code;
         }
         return code;
+    }
+
+    /**
+     * Drops the {@code http://openehr.org/identifier/...} placeholder system that
+     * {@code IdentifierParser} invents on the openEHR → FHIR leg for a DV_IDENTIFIER {@code |type} or
+     * {@code |assigner} that carried no system of its own.
+     * <p>
+     * The placeholder means "there was no real system here", so re-emitting it as
+     * {@code system::value} would corrupt the value on the way back: {@code Prescription number}
+     * would return as {@code http://openehr.org/identifier/type::Prescription number}. This mirrors
+     * what {@link #normalizeIdentifierSystem(String)} already does for {@code |issuer}, which is why
+     * that field round-tripped correctly while these two did not. A genuine system set by the source
+     * FHIR is not affected and is still preserved.
+     */
+    private String stripIdentifierSentinelSystem(final String system) {
+        if (StringUtils.isBlank(system)) {
+            return system;
+        }
+        return system.startsWith(OPENEHR_IDENTIFIER_SENTINEL_PREFIX) ? null : system;
     }
 
     private String buildIdentifierAssignerString(final IBase value) {
@@ -981,8 +1007,9 @@ public class OpenEhrPopulator {
         if (StringUtils.isBlank(chosenValue)) {
             return null;
         }
-        if (StringUtils.isNotBlank(assignerIdSystem)) {
-            return assignerIdSystem + "::" + chosenValue;
+        final String system = stripIdentifierSentinelSystem(assignerIdSystem);
+        if (StringUtils.isNotBlank(system)) {
+            return system + "::" + chosenValue;
         }
         return chosenValue;
     }

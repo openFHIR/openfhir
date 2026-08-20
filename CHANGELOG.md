@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   share one vocabulary across distributions. It is inert in this project: `classify` never returns it, and the
   `upsert` arm it forces is unreachable.
 
+ ### Fixed
+- toOpenEHR: a `DV_IDENTIFIER`'s `|type` and `|assigner` no longer come back with a placeholder system
+  prepended. On the openEHR → FHIR leg `IdentifierParser` invents the systems
+  `http://openehr.org/identifier/type` and `…/assigner` for parts that carry no system of their own, to record
+  that there was none. Coming back, `buildIdentifierTypeString`/`buildIdentifierAssignerString` re-emitted that
+  placeholder as `system::value` instead of stripping it, so a `|type` of `Prescription number` returned as
+  `http://openehr.org/identifier/type::Prescription number`. `normalizeIdentifierSystem` already did the
+  stripping for `|issuer`, which is why `|id` and `|issuer` round-tripped exactly while these two did not. A
+  system that genuinely came from the source FHIR is unaffected and is still carried across as `system::value`.
+
 ## [2.2.5] - 2026-08-17
 ### Added
 - KDS v1.0 mappings in unit tests
