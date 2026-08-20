@@ -140,7 +140,7 @@
             },
             "value": {
               "_type": "DV_DATE_TIME",
-              "value": "2024-02-21T16:46:17"
+              "value": "2024-02-21T16:46:17+01:00"
             },
             "archetype_node_id": "at0018"
           }

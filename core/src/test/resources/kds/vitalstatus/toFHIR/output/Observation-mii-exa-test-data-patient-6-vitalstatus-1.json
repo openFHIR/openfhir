@@ -29,7 +29,7 @@
             }
           ]
         },
-        "effectiveDateTime": "2024-05-22T00:00:00+02:00",
+        "effectiveDateTime": "2024-05-22T00:00:00",
         "valueCodeableConcept": {
           "coding": [
             {

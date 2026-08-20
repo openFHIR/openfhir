@@ -52,7 +52,7 @@
     },
     "end_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2022-03-20T08:00:00"
+      "value": "2022-03-20T08:00:00+01:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -247,7 +247,7 @@
         },
         "origin": {
           "_type": "DV_DATE_TIME",
-          "value": "2022-03-13T08:00:00"
+          "value": "2022-03-13T08:00:00+01:00"
         },
         "events": [
           {
@@ -258,7 +258,7 @@
             },
             "time": {
               "_type": "DV_DATE_TIME",
-              "value": "2022-03-13T08:00:00"
+              "value": "2022-03-13T08:00:00+01:00"
             },
             "data": {
               "_type": "ITEM_TREE",

@@ -61,7 +61,7 @@
     },
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2023-07-05T09:15:00"
+      "value": "2023-07-05T09:15:00+02:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",

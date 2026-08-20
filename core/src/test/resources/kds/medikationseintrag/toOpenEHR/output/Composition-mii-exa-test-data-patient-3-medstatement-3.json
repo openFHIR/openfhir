@@ -52,7 +52,7 @@
     },
     "end_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2022-04-25T11:30:00"
+      "value": "2022-04-25T11:30:00+02:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -247,7 +247,7 @@
         },
         "origin": {
           "_type": "DV_DATE_TIME",
-          "value": "2022-04-25T09:30:00"
+          "value": "2022-04-25T09:30:00+02:00"
         },
         "events": [
           {
@@ -258,7 +258,7 @@
             },
             "time": {
               "_type": "DV_DATE_TIME",
-              "value": "2022-04-25T09:30:00"
+              "value": "2022-04-25T09:30:00+02:00"
             },
             "data": {
               "_type": "ITEM_TREE",

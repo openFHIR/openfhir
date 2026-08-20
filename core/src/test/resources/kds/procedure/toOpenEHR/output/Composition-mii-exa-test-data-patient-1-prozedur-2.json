@@ -48,11 +48,11 @@
     "_type": "EVENT_CONTEXT",
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-02-16T10:20:00"
+      "value": "2024-02-16T10:20:00+01:00"
     },
     "end_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-02-16T10:50:00"
+      "value": "2024-02-16T10:50:00+01:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -147,7 +147,7 @@
       },
       "time": {
         "_type": "DV_DATE_TIME",
-        "value": "2024-02-16T10:50:00"
+        "value": "2024-02-16T10:50:00+01:00"
       },
       "description": {
         "_type": "ITEM_TREE",
@@ -234,7 +234,7 @@
             },
             "value": {
               "_type": "DV_DATE_TIME",
-              "value": "2024-02-16T10:50:00"
+              "value": "2024-02-16T10:50:00+01:00"
             },
             "archetype_node_id": "at0060"
           },
