@@ -48,7 +48,7 @@
     "_type": "EVENT_CONTEXT",
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-02-21T08:00:00"
+      "value": "2024-02-21T08:00:00+01:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -206,7 +206,7 @@
       },
       "time": {
         "_type": "DV_DATE_TIME",
-        "value": "2024-02-21T08:00:00"
+        "value": "2024-02-21T08:00:00+01:00"
       },
       "description": {
         "_type": "ITEM_TREE",

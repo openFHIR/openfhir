@@ -180,7 +180,7 @@
         },
         "origin": {
           "_type": "DV_DATE_TIME",
-          "value": "2024-08-22T10:30:00"
+          "value": "2024-08-22T08:30:00Z"
         },
         "events": [
           {
@@ -191,7 +191,7 @@
             },
             "time": {
               "_type": "DV_DATE_TIME",
-              "value": "2024-08-22T10:30:00"
+              "value": "2024-08-22T08:30:00Z"
             },
             "data": {
               "_type": "ITEM_TREE",
@@ -326,7 +326,7 @@
                       },
                       "value": {
                         "_type": "DV_DATE_TIME",
-                        "value": "2024-08-24T11:00:00"
+                        "value": "2024-08-24T09:00:00Z"
                       },
                       "archetype_node_id": "at0015"
                     },

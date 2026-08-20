@@ -71,7 +71,7 @@
     },
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2019-05-16T08:00:00"
+      "value": "2019-05-16T08:00:00+02:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -349,7 +349,7 @@
                     },
                     "value": {
                       "_type": "DV_DATE_TIME",
-                      "value": "2019-05-16T07:45:00"
+                      "value": "2019-05-16T07:45:00+02:00"
                     },
                     "archetype_node_id": "at0015"
                   }

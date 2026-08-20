@@ -43,7 +43,7 @@
                 "text": "Middle ear structure (body structure)"
               }
             ],
-            "onsetDateTime": "2024-02-21T00:00:00+01:00",
+            "onsetDateTime": "2024-02-21T00:00:00",
             "note": [
               {
                 "text": "Masernotitis"
@@ -178,8 +178,8 @@
           ]
         },
         "period": {
-          "start": "2024-02-14T00:00:00+01:00",
-          "end": "2024-02-22T00:00:00+01:00"
+          "start": "2024-02-14T00:00:00",
+          "end": "2024-02-22T00:00:00"
         },
         "diagnosis": [
           {

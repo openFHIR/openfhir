@@ -137,14 +137,14 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
         Assert.assertEquals("Food", allergy.getCategory().get(0).getValueAsString());
 
-        Assert.assertEquals("2022-02-03T04:05:07+01:00", allergy.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:07", allergy.getOnsetDateTimeType().getValueAsString());
 
 
         AllergyIntolerance.AllergyIntoleranceReactionComponent reactionFirstRep = allergy.getReactionFirstRep();
         Assert.assertEquals("Lorem ipsum Specific Substance", reactionFirstRep.getSubstance().getText());
         Assert.assertEquals("manifestation thing", reactionFirstRep.getManifestationFirstRep().getText());
         Assert.assertEquals("reaction description", reactionFirstRep.getDescription());
-        Assert.assertEquals("2027-02-03T04:05:06+01:00", reactionFirstRep.getOnsetElement().getValueAsString());
+        Assert.assertEquals("2027-02-03T04:05:06", reactionFirstRep.getOnsetElement().getValueAsString());
         Assert.assertEquals("moderate", reactionFirstRep.getSeverityElement().getValueAsString());
         Assert.assertEquals("Exposure Lorem ipsum", reactionFirstRep.getExposureRoute().getText());
         Assert.assertEquals("Reaction text", reactionFirstRep.getNoteFirstRep().getText());
@@ -218,9 +218,9 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips' available", codeCoding.getDisplay());
         Assert.assertEquals("No example for termínology '//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips' available", condition.getCode().getText());
 
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getOnsetDateTimeType().getValueAsString());
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getAbatementDateTimeType().getValueAsString());
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getRecordedDateElement().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getAbatementDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getRecordedDateElement().getValueAsString());
 
         final Condition.ConditionStageComponent stage = condition.getStage().stream()
                 .filter(s -> "Lorem ipsum".equals(s.getType().getText()))
@@ -262,8 +262,8 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("Chronic back pain", codeCoding2.getDisplay());
         Assert.assertEquals("Chronic back pain", condition2.getCode().getText());
 
-        Assert.assertEquals("2020-06-15T10:00:00+02:00", condition2.getOnsetDateTimeType().getValueAsString());
-        Assert.assertEquals("2024-01-01T00:00:00+01:00", condition2.getAbatementDateTimeType().getValueAsString());
+        Assert.assertEquals("2020-06-15T10:00:00", condition2.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2024-01-01T00:00:00", condition2.getAbatementDateTimeType().getValueAsString());
 
         final Condition.ConditionStageComponent stage2 = condition2.getStage().stream()
                 .filter(s -> "MRI confirmed".equals(s.getType().getText()))

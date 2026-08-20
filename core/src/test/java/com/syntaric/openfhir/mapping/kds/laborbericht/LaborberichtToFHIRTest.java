@@ -239,7 +239,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         assertEquals("identifierOfSpecimen", specimen.getAccessionIdentifier().getValue());
 
         // - name: "dateReceived"
-        assertEquals("2022-02-03T04:05:06+01:00", specimen.getReceivedTimeElement().getValueAsString());
+        assertEquals("2022-02-03T04:05:06", specimen.getReceivedTimeElement().getValueAsString());
 
         // specimen - name: "status"
         assertEquals("available", specimen.getStatusElement().getValueAsString());
@@ -338,7 +338,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         assertEquals("identifierOfSpecimen", specimen.getAccessionIdentifier().getValue());
 
         // - name: "dateReceived"
-        assertEquals("2022-02-03T04:05:06+01:00", specimen.getReceivedTimeElement().getValueAsString());
+        assertEquals("2022-02-03T04:05:06", specimen.getReceivedTimeElement().getValueAsString());
 
         // specimen - name: "status"
         assertEquals("available", specimen.getStatusElement().getValueAsString());
@@ -367,7 +367,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         assertEquals("1_identifierOfSpecimen", specimen1.getAccessionIdentifier().getValue());
 
         // - name: "dateReceived"
-        assertEquals("3022-02-03T04:05:06+01:00", specimen1.getReceivedTimeElement().getValueAsString());
+        assertEquals("3022-02-03T04:05:06", specimen1.getReceivedTimeElement().getValueAsString());
 
         // specimen - name: "status"
         assertEquals("unsatisfactory", specimen1.getStatusElement().getValueAsString());

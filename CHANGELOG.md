@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 ### Changed
+- **date/time values now keep their source's timezone offset in both directions, and no longer gain
+  one that was not there.** Offsets are preserved exactly as written: `Z` stays `Z`, `+00:00` stays
+  `+00:00`, `+01:00` keeps its wall-clock reading.
 - `BootstrapService` extension points widened so a distribution can add file types of its own to the bootstrap
   scan instead of running a parallel one: `classify`, `apply`, `resolveExisting`, `saveLedgerEntry` and
   `relativePath` are now `protected`, and `FileType` is public. A subclass can override `classify` to recognise a
@@ -19,15 +22,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   share one vocabulary across distributions. It is inert in this project: `classify` never returns it, and the
   `upsert` arm it forces is unreachable.
 
- ### Fixed
+### Fixed
 - toOpenEHR: a `DV_IDENTIFIER`'s `|type` and `|assigner` no longer come back with a placeholder system
-  prepended. On the openEHR → FHIR leg `IdentifierParser` invents the systems
-  `http://openehr.org/identifier/type` and `…/assigner` for parts that carry no system of their own, to record
-  that there was none. Coming back, `buildIdentifierTypeString`/`buildIdentifierAssignerString` re-emitted that
-  placeholder as `system::value` instead of stripping it, so a `|type` of `Prescription number` returned as
-  `http://openehr.org/identifier/type::Prescription number`. `normalizeIdentifierSystem` already did the
-  stripping for `|issuer`, which is why `|id` and `|issuer` round-tripped exactly while these two did not. A
-  system that genuinely came from the source FHIR is unaffected and is still carried across as `system::value`.
+  prepended, so a `|type` of `Prescription number` no longer returns as
+  `http://openehr.org/identifier/type::Prescription number`. `IdentifierParser` invents those
+  placeholder systems on the way out for parts that carry no system of their own; the return leg
+  re-emitted them as `system::value` instead of stripping them, as it already did for `|issuer`. A
+  system that genuinely came from the source FHIR is unaffected.
 
 ## [2.2.5] - 2026-08-17
 ### Added

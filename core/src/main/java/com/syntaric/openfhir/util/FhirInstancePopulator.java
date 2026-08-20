@@ -195,7 +195,14 @@ public class FhirInstancePopulator {
 
     private void populateDateTime(Object toPopulate, DateTimeType data) {
         if (toPopulate instanceof DateTimeType) {
-            ((DateTimeType) toPopulate).setValue(data.getValue());
+            // Copy the lexical form rather than going through getValue(): a java.util.Date is a bare
+            // instant, so it cannot carry an offset, and re-rendering it lands the value in the
+            // server's default zone. That both dropped the offset the source was authored with and
+            // shifted the wall clock ('09:15+01:00' became '10:15+02:00' on a +02:00 host), so the
+            // same input mapped in two zones produced two different readings.
+            // Preserve the offset when the source has one, and do not invent one when it does not —
+            // setValueAsString keeps the offset exactly as written, and the precision with it.
+            ((DateTimeType) toPopulate).setValueAsString(data.getValueAsString());
         } else if (toPopulate instanceof InstantType) {
             ((InstantType) toPopulate).setValue(data.getValue());
         } else if (toPopulate instanceof DateType) {

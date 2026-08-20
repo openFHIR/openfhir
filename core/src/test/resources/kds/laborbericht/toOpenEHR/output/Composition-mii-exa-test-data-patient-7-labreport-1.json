@@ -71,7 +71,7 @@
     },
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-01-10T08:15:00"
+      "value": "2024-01-10T08:15:00+01:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -203,7 +203,7 @@
         },
         "origin": {
           "_type": "DV_DATE_TIME",
-          "value": "2024-01-10T08:15:00"
+          "value": "2024-01-10T08:15:00+01:00"
         },
         "events": [
           {
@@ -214,7 +214,7 @@
             },
             "time": {
               "_type": "DV_DATE_TIME",
-              "value": "2024-01-10T08:15:00"
+              "value": "2024-01-10T08:15:00+01:00"
             },
             "data": {
               "_type": "ITEM_TREE",
@@ -317,7 +317,7 @@
                       },
                       "value": {
                         "_type": "DV_DATE_TIME",
-                        "value": "2024-01-10T07:30:00"
+                        "value": "2024-01-10T07:30:00+01:00"
                       },
                       "archetype_node_id": "at0015"
                     },
@@ -418,7 +418,7 @@
                       },
                       "value": {
                         "_type": "DV_DATE_TIME",
-                        "value": "2024-01-10T07:30:00"
+                        "value": "2024-01-10T07:30:00+01:00"
                       },
                       "archetype_node_id": "at0015"
                     },
@@ -559,7 +559,7 @@
                       },
                       "value": {
                         "_type": "DV_DATE_TIME",
-                        "value": "2024-01-10T10:00:00"
+                        "value": "2024-01-10T10:00:00+01:00"
                       },
                       "archetype_node_id": "at0006"
                     },
@@ -705,7 +705,7 @@
                       },
                       "value": {
                         "_type": "DV_DATE_TIME",
-                        "value": "2024-01-10T10:00:00"
+                        "value": "2024-01-10T10:00:00+01:00"
                       },
                       "archetype_node_id": "at0006"
                     },
@@ -839,7 +839,7 @@
                       },
                       "value": {
                         "_type": "DV_DATE_TIME",
-                        "value": "2024-01-10T10:00:00"
+                        "value": "2024-01-10T10:00:00+01:00"
                       },
                       "archetype_node_id": "at0006"
                     },

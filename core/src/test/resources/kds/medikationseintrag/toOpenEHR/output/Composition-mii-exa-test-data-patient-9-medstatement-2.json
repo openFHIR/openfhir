@@ -48,7 +48,7 @@
     "_type": "EVENT_CONTEXT",
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-02-22T16:00:00"
+      "value": "2024-02-22T16:00:00+01:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -243,7 +243,7 @@
         },
         "origin": {
           "_type": "DV_DATE_TIME",
-          "value": "2024-02-22T16:00:00"
+          "value": "2024-02-22T16:00:00+01:00"
         },
         "events": [
           {
@@ -254,7 +254,7 @@
             },
             "time": {
               "_type": "DV_DATE_TIME",
-              "value": "2024-02-22T16:00:00"
+              "value": "2024-02-22T16:00:00+01:00"
             },
             "data": {
               "_type": "ITEM_TREE",

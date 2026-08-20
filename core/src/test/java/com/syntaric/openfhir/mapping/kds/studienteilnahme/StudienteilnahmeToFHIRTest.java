@@ -189,7 +189,7 @@ public class StudienteilnahmeToFHIRTest extends KdsGenericTest {
 
         final DateTimeType periodStart = consent.getProvision().getPeriod().getStartElement();
         final DateTimeType periodEnd = consent.getProvision().getPeriod().getEndElement();
-        Assert.assertEquals("2020-02-03T04:05:06+01:00", periodStart.getValueAsString());
-        Assert.assertEquals("2024-02-03T04:05:06+01:00", periodEnd.getValueAsString());
+        Assert.assertEquals("2020-02-03T04:05:06", periodStart.getValueAsString());
+        Assert.assertEquals("2024-02-03T04:05:06", periodEnd.getValueAsString());
     }
 }

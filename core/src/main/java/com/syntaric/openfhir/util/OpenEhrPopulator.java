@@ -571,6 +571,11 @@ public class OpenEhrPopulator {
         }
         final String fhirType = value != null ? value.fhirType() : null;
         if ("dateTime".equals(fhirType) || "instant".equals(fhirType)) {
+            final String withOffset = getOffsetPreservingDateTimeString(value);
+            if (withOffset != null) {
+                addToConstructingFlat(path, withOffset, flat);
+                return true;
+            }
             final java.util.Date date = getDateValue(value);
             if (date != null) {
                 addToConstructingFlat(path, openFhirMapperUtils.dateTimeToString(date), flat);
@@ -615,14 +620,18 @@ public class OpenEhrPopulator {
             final java.util.Date start = getPeriodStart(value);
             final java.util.Date end = getPeriodEnd(value);
             if (start != null) {
+                final String startWithOffset = getOffsetPreservingDateTimeString(getPeriodStartElement(value));
                 addToConstructingFlat(path + "/lower|value",
-                                      openFhirMapperUtils.dateTimeToString(start), flat);
+                                      startWithOffset != null ? startWithOffset
+                                                              : openFhirMapperUtils.dateTimeToString(start), flat);
 //                addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_DATE_TIME, flat);
 //                addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
             }
             if (end != null) {
+                final String endWithOffset = getOffsetPreservingDateTimeString(getPeriodEndElement(value));
                 addToConstructingFlat(path + "/upper|value",
-                                      openFhirMapperUtils.dateTimeToString(end), flat);
+                                      endWithOffset != null ? endWithOffset
+                                                            : openFhirMapperUtils.dateTimeToString(end), flat);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_DATE_TIME, flat);
                 //               addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
             }
@@ -1138,6 +1147,11 @@ public class OpenEhrPopulator {
     private boolean handleDateTimeEvent(final String path, final IBase value, final boolean isMultipleTypes,
                                         final JsonObject flat) {
         if (value != null && "dateTime".equals(value.fhirType())) {
+            final String withOffset = getOffsetPreservingDateTimeString(value);
+            if (withOffset != null) {
+                addToConstructingFlat(path + "/time", withOffset, flat);
+                return true;
+            }
             final java.util.Date date = getDateValue(value);
             if (date != null) {
                 addToConstructingFlat(path + "/time", openFhirMapperUtils.dateTimeToString(date), flat);
@@ -1217,9 +1231,14 @@ public class OpenEhrPopulator {
             handleDvCodedText(openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false, constructingFlat,
                               terminology);
         } else if (fhirValue != null && "dateTime".equals(fhirValue.fhirType())) {
-            final java.util.Date date = getDateValue(fhirValue);
-            if (date != null) {
-                addToConstructingFlat(openEhrPath, openFhirMapperUtils.dateTimeToString(date), constructingFlat);
+            final String withOffset = getOffsetPreservingDateTimeString(fhirValue);
+            if (withOffset != null) {
+                addToConstructingFlat(openEhrPath, withOffset, constructingFlat);
+            } else {
+                final java.util.Date date = getDateValue(fhirValue);
+                if (date != null) {
+                    addToConstructingFlat(openEhrPath, openFhirMapperUtils.dateTimeToString(date), constructingFlat);
+                }
             }
         } else if (fhirValue != null && "Annotation".equals(fhirValue.fhirType())) {
             addToConstructingFlat(openEhrPath, translate(getAnnotationText(fhirValue), null, terminology),
@@ -1667,6 +1686,80 @@ public class OpenEhrPopulator {
                 return new String[]{display, null, null};
             }
             return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
+        }
+        return null;
+    }
+
+    /**
+     * The date/time exactly as the FHIR value spells it, when it carries a timezone offset.
+     * <p>
+     * openEHR's DV_DATE_TIME keeps the offset it was authored with, and so does the FHIR
+     * {@code dateTime}. Going through {@link #getDateValue(IBase)} loses it twice over:
+     * {@code java.util.Date} is a bare instant with no zone, and the formatters in
+     * {@link OpenFhirMapperUtils} then re-render it in the server's default zone (their format string
+     * has no offset field at all). The value came back both stripped of its offset and shifted to
+     * whatever zone the server happened to run in. Reading the FHIR value's own lexical form keeps
+     * the offset as written — {@code Z} stays {@code Z}, {@code +00:00} stays {@code +00:00} — and
+     * the original wall-clock reading with it.
+     * <p>
+     * Returns {@code null} when the value has no offset (or is not a date/time at all), which is the
+     * signal to fall back to the {@code Date}-based formatting. A source that genuinely carried no
+     * offset must not have one invented for it.
+     */
+    private static String getOffsetPreservingDateTimeString(final IBase value) {
+        final String asString;
+        final java.util.TimeZone timeZone;
+        if (value instanceof org.hl7.fhir.r4.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else if (value instanceof org.hl7.fhir.dstu3.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else if (value instanceof org.hl7.fhir.r4b.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else if (value instanceof org.hl7.fhir.r5.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else {
+            return null;
+        }
+        return timeZone == null ? null : asString;
+    }
+
+    /**
+     * The Period's {@code start}/{@code end} as the elements themselves rather than bare
+     * {@code Date}s, so {@link #getOffsetPreservingDateTimeString(IBase)} can read the offset off
+     * them. {@code Period.getStart()} returns a {@code java.util.Date} and has already lost it.
+     */
+    private static IBase getPeriodStartElement(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Period p) {
+            return p.getStartElement();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) {
+            return p.getStartElement();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) {
+            return p.getStartElement();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Period p) {
+            return p.getStartElement();
+        }
+        return null;
+    }
+
+    private static IBase getPeriodEndElement(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Period p) {
+            return p.getEndElement();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) {
+            return p.getEndElement();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) {
+            return p.getEndElement();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Period p) {
+            return p.getEndElement();
         }
         return null;
     }

@@ -59,10 +59,10 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Allergies and Intolerances</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Substance</th><th>Clinical Status</th><th>Verification Status</th><th>Type</th><th>Category</th><th>Criticality</th><th>Reactions</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Substance (code): prefer text, fall back to first coding display --><td><span>Caries prophylactic agents</span></td>  <!-- Clinical status --><td><span>active</span><br/></td>  <!-- Verification status --><td><span>unconfirmed</span><br/></td>  <!-- Type (allergy | intolerance) --><td></td>  <!-- Category (food | medication | environment | biologic) --><td><span>food</span><br/></td>  <!-- Criticality --><td></td>  <!-- Reactions: substance + manifestations + severity --><td><span>Penicillin V</span>: <span>Bronchospasm</span><br/></td>  <!-- Notes --><td><span>a comment</span><br/></td></tr></tbody></table></div>", flatJson.get("eps_patient_summary/eps_allergies/container/fhir_narrative/narrative").getAsString());
         Assert.assertEquals("generated", flatJson.get("eps_patient_summary/eps_allergies/container/fhir_narrative/status").getAsString());
 
-        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Problem List</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Condition</th><th>Clinical Status</th><th>Verification Status</th><th>Severity</th><th>Onset</th><th>Abatement</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Condition code: prefer text, fall back to first coding display --><td><span>Clinical finding (finding)</span></td>  <!-- Clinical status: first coding code --><td><span>active</span><br/><span>resolved</span><br/><span>remission</span><br/><span>recurrence</span><br/></td>  <!-- Verification status: first coding code --><td><span>unconfirmed</span><br/></td>  <!-- Severity: first coding display --><td><span>Mild</span><br/></td>  <!-- Onset --><td><span>2022-02-03T04:05:06+01:00</span></td>  <!-- Abatement --><td><span>2022-02-03T04:05:06+01:00</span></td>  <!-- Notes --><td><span>Lorem ipsum</span><br/></td></tr></tbody></table></div>", flatJson.get("eps_patient_summary/eps_problems/container/fhir_narrative/narrative").getAsString());
+        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Problem List</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Condition</th><th>Clinical Status</th><th>Verification Status</th><th>Severity</th><th>Onset</th><th>Abatement</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Condition code: prefer text, fall back to first coding display --><td><span>Clinical finding (finding)</span></td>  <!-- Clinical status: first coding code --><td><span>active</span><br/><span>resolved</span><br/><span>remission</span><br/><span>recurrence</span><br/></td>  <!-- Verification status: first coding code --><td><span>unconfirmed</span><br/></td>  <!-- Severity: first coding display --><td><span>Mild</span><br/></td>  <!-- Onset --><td><span>2022-02-03T04:05:06</span></td>  <!-- Abatement --><td><span>2022-02-03T04:05:06</span></td>  <!-- Notes --><td><span>Lorem ipsum</span><br/></td></tr></tbody></table></div>", flatJson.get("eps_patient_summary/eps_problems/container/fhir_narrative/narrative").getAsString());
         Assert.assertEquals("generated", flatJson.get("eps_patient_summary/eps_problems/container/fhir_narrative/status").getAsString());
 
-        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Procedures</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Procedure</th><th>Status</th><th>Body Site</th><th>Performed</th><th>Outcome</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Procedure code: prefer text, fall back to first coding display --><td><span>Appendectomy</span></td>  <!-- Status --><td></td>  <!-- Body site --><td><span>McBurney point area</span></td>  <!-- Performed --><td><span>2021-06-15T08:30:00+02:00</span></td>  <!-- Outcome: prefer text, fall back to codings --><td><span>Procedure successful</span></td>  <!-- Notes --><td><span>Patient tolerated procedure well</span><br/></td></tr></tbody></table></div>", flatJson.get("eps_patient_summary/eps_history_of_procedures/container/fhir_narrative/narrative").getAsString());
+        Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Procedures</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Procedure</th><th>Status</th><th>Body Site</th><th>Performed</th><th>Outcome</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Procedure code: prefer text, fall back to first coding display --><td><span>Appendectomy</span></td>  <!-- Status --><td></td>  <!-- Body site --><td><span>McBurney point area</span></td>  <!-- Performed --><td><span>2021-06-15T08:30:00</span></td>  <!-- Outcome: prefer text, fall back to codings --><td><span>Procedure successful</span></td>  <!-- Notes --><td><span>Patient tolerated procedure well</span><br/></td></tr></tbody></table></div>", flatJson.get("eps_patient_summary/eps_history_of_procedures/container/fhir_narrative/narrative").getAsString());
         Assert.assertEquals("generated", flatJson.get("eps_patient_summary/eps_history_of_procedures/container/fhir_narrative/status").getAsString());
 
         Assert.assertEquals("<div xmlns=\"http://www.w3.org/1999/xhtml\"><h5>Medical Devices</h5><table class=\"hapiPropertyTable\"><thead><tr><th>Device</th><th>Status</th><th>Body Site</th><th>Timing</th><th>Notes</th></tr></thead><tbody><tr>  <!-- Device: resolve reference and prefer deviceName, fall back to type codings --><td><span>Ceramic hip implant</span></td>  <!-- Status --><td></td>  <!-- Body site --><td><span>Left hip</span></td>  <!-- Timing --><td><span></span></td>  <!-- Notes --><td></td></tr></tbody></table></div>", flatJson.get("eps_patient_summary/eps_medical_devices/container/fhir_narrative/narrative").getAsString());
@@ -156,7 +156,7 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("low", allergy.getCriticalityElement().getValueAsString());
 
         // onsetDate
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", allergy.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", allergy.getOnsetDateTimeType().getValueAsString());
 
         // description / comment
         Assert.assertEquals("a comment", allergy.getNoteFirstRep().getText());
@@ -168,7 +168,7 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("4386001", reaction.getManifestationFirstRep().getCodingFirstRep().getCode());
         Assert.assertEquals("Bronchospasm", reaction.getManifestationFirstRep().getCodingFirstRep().getDisplay());
         Assert.assertEquals("http://www.snomed.org", reaction.getManifestationFirstRep().getCodingFirstRep().getSystem());
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", reaction.getOnsetElement().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", reaction.getOnsetElement().getValueAsString());
         Assert.assertEquals("mild", reaction.getSeverityElement().getValueAsString());
         Assert.assertEquals("Penicillin V", reaction.getSubstance().getText());
         Assert.assertEquals("Generalised urticaria within 30 minutes", reaction.getDescription());
@@ -220,10 +220,10 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("Clinical finding (finding)", condition.getCode().getCodingFirstRep().getDisplay());
 
         // onsetDate
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getOnsetDateTimeType().getValueAsString());
 
         // endDate (abatement)
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getAbatementDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getAbatementDateTimeType().getValueAsString());
 
         // severity
         final Coding severityCoding = condition.getSeverity().getCodingFirstRep();
@@ -307,7 +307,7 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("Appendectomy", procedure.getCode().getText());
 
         // performed date/time (action time)
-        Assert.assertEquals("2021-06-15T08:30:00+02:00", procedure.getPerformedDateTimeType().getValueAsString());
+        Assert.assertEquals("2021-06-15T08:30:00", procedure.getPerformedDateTimeType().getValueAsString());
 
         // reason
         Assert.assertFalse("Expected at least one reason", procedure.getReasonCode().isEmpty());
@@ -387,8 +387,8 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("active", dus.getStatusElement().getCode());
 
         // timing period
-        Assert.assertEquals("2019-03-10T09:00:00+01:00", dus.getTimingPeriod().getStartElement().getValueAsString());
-        Assert.assertEquals("2023-02-03T04:05:06+01:00", dus.getTimingPeriod().getEndElement().getValueAsString());
+        Assert.assertEquals("2019-03-10T09:00:00", dus.getTimingPeriod().getStartElement().getValueAsString());
+        Assert.assertEquals("2023-02-03T04:05:06", dus.getTimingPeriod().getEndElement().getValueAsString());
 
         // bodySite
         Assert.assertEquals("Left hip", dus.getBodySite().getText());
@@ -400,8 +400,8 @@ public class EpsPatientSummaryBidirectionalTest extends GenericTest {
         Assert.assertEquals("Ceramic hip implant", device.getDeviceNameFirstRep().getName());
         Assert.assertEquals("Orthopaedic implant", device.getType().getText());
         Assert.assertEquals("Zimmer Biomet", device.getManufacturer());
-        Assert.assertEquals("2025-02-03T04:05:06+01:00", device.getManufactureDateElement().getValueAsString());
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", device.getExpirationDateElement().getValueAsString());
+        Assert.assertEquals("2025-02-03T04:05:06", device.getManufactureDateElement().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", device.getExpirationDateElement().getValueAsString());
         Assert.assertEquals("LOT-HIP-2018", device.getLotNumber());
         Assert.assertEquals("HIP-SN-987654", device.getSerialNumber());
         Assert.assertEquals("Continuum-AC", device.getModelNumber());
