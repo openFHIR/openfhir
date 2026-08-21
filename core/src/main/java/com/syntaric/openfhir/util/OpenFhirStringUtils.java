@@ -84,12 +84,30 @@ public class OpenFhirStringUtils {
         return adjustCastingToClassName(castString);
     }
 
+    /**
+     * FHIR primitive types, as they appear in a FHIR Path cast expression, i.e. `value.as(Integer)`. The corresponding
+     * HAPI model classes are all named after the primitive type with a `Type` suffix, i.e. `IntegerType`.
+     * <p>
+     * Complex types (`Quantity`, `CodeableConcept`, `Period`, ...) are deliberately not part of this set as their HAPI
+     * model classes carry no such suffix and are already named exactly like the cast type.
+     */
+    private static final Set<String> FHIR_PRIMITIVE_TYPES = Set.of(
+            "Base64Binary", "Boolean", "Canonical", "Code", "Date", "DateTime", "Decimal", "Id", "Instant", "Integer",
+            "Markdown", "Oid", "PositiveInt", "String", "Time", "UnsignedInt", "Uri", "Url", "Uuid");
+
+    /**
+     * Adjusts the type a FHIR Path is casting to, to the name of the HAPI model class implementing it. For primitive
+     * types this means appending a `Type` suffix (`Integer` -> `IntegerType`), for complex types the cast type already
+     * matches the class name and is returned unchanged (`Quantity` -> `Quantity`).
+     *
+     * @param castingTo type as extracted from the `as(...)` expression
+     * @return name of the corresponding HAPI model class, without the package
+     */
     private String adjustCastingToClassName(final String castingTo) {
-        final Map<String, String> map = Map.of("Boolean", "BooleanType",
-                "DateTime", "DateTimeType",
-                "Time", "TimeType",
-                "String", "StringType");
-        return map.getOrDefault(castingTo, castingTo);
+        if (castingTo == null || castingTo.endsWith("Type")) {
+            return castingTo;
+        }
+        return FHIR_PRIMITIVE_TYPES.contains(castingTo) ? castingTo + "Type" : castingTo;
     }
 
     private String getByRegex(final String path,
@@ -244,7 +262,8 @@ public class OpenFhirStringUtils {
     public List<String> getAllEntriesThatMatchIgnoringPipe(final String path, final JsonObject compositionFlatPath) {
         final List<String> match = new ArrayList<>();
         for (final Map.Entry<String, JsonElement> flatEntry : compositionFlatPath.entrySet()) {
-            if (flatEntry.getKey().split("\\|")[0].equals(path.split("\\|")[0])) {
+//            if (flatEntry.getKey().split("\\|")[0].equals(path.split("\\|")[0])) {
+            if (flatEntry.getKey().split("\\|")[0].startsWith(path.split("\\|")[0])) {
                 match.add(flatEntry.getValue().getAsString());
             }
         }

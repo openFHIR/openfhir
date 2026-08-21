@@ -20,6 +20,8 @@ import java.util.*;
 
 import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_TYPE_CLUSTER;
 import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_TYPE_NONE;
+import static com.syntaric.openfhir.mapping.helpers.parser.QuantityParser.PROPORTION_DENOMINATOR_EXTENSION;
+import static com.syntaric.openfhir.mapping.helpers.parser.QuantityParser.PROPORTION_KIND_EXTENSION;
 import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
 
 /**
@@ -464,7 +466,14 @@ public class OpenEhrPopulator {
                 addToConstructingFlat(path, translate(v, null, terminology), flat);
                 return true;
             }
-        } else if (isQuantity(value)) {
+        } else if (isQuantity(value) || isDuration(value)) {
+            // A FHIR Duration carries its unit in the UCUM code. Writing the bare magnitude would
+            // lose it: "30" cannot say whether it meant 30 minutes or 30 seconds.
+            final String iso = quantityToIso8601Duration(value);
+            if (iso != null) {
+                addToConstructingFlat(path, iso, flat);
+                return true;
+            }
             final java.math.BigDecimal qValue = getQuantityValue(value);
             if (qValue != null) {
                 addToConstructingFlat(path, qValue.toPlainString(), flat);
@@ -475,6 +484,54 @@ public class OpenEhrPopulator {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Renders a FHIR {@code Duration} (a {@link org.hl7.fhir.r4.model.Quantity} carrying a UCUM time
+     * code) as the ISO 8601 string an openEHR {@code DV_DURATION} expects. This is the inverse of the
+     * conversion {@code FhirInstancePopulator} applies on the way out.
+     *
+     * <p>Only the UCUM time codes of FHIR's {@code CommonUCUMCodesForDuration} are accepted; a
+     * Quantity carrying any other code is not a duration and yields null so the caller can fall back.
+     * A zero value is a duration in its own right and renders as {@code PT0S}, rather than being
+     * treated as an absent value.
+     *
+     * @return the ISO 8601 duration, or null if this Quantity does not carry a UCUM time code
+     */
+    private static String quantityToIso8601Duration(final IBase value) {
+        final java.math.BigDecimal magnitude = getQuantityValue(value);
+        if (magnitude == null) {
+            return null;
+        }
+        // The unit is only trusted as a fallback: code is the coded form, unit is a display string.
+        final String rawCode = StringUtils.isNotBlank(getQuantityCode(value))
+                ? getQuantityCode(value)
+                : getQuantityUnit(value);
+        if (StringUtils.isBlank(rawCode)) {
+            return null;
+        }
+        final String code = rawCode.trim();
+        // Sub-second precision has no integer ISO component, so fractional values are carried on the
+        // seconds field, which ISO 8601 allows to be fractional.
+        final boolean whole = magnitude.stripTrailingZeros().scale() <= 0;
+        return switch (code) {
+            case "s" -> "PT" + magnitude.stripTrailingZeros().toPlainString() + "S";
+            case "min" -> whole
+                    ? "PT" + magnitude.toBigInteger() + "M"
+                    : "PT" + magnitude.multiply(java.math.BigDecimal.valueOf(60))
+                            .stripTrailingZeros().toPlainString() + "S";
+            case "h" -> whole
+                    ? "PT" + magnitude.toBigInteger() + "H"
+                    : "PT" + magnitude.multiply(java.math.BigDecimal.valueOf(3600))
+                            .stripTrailingZeros().toPlainString() + "S";
+            case "d" -> whole ? "P" + magnitude.toBigInteger() + "D" : null;
+            case "wk" -> whole ? "P" + magnitude.toBigInteger() + "W" : null;
+            // Months and years are not fixed-length, so a fractional one cannot be expanded into
+            // smaller components without inventing a month length.
+            case "mo" -> whole ? "P" + magnitude.toBigInteger() + "M" : null;
+            case "a" -> whole ? "P" + magnitude.toBigInteger() + "Y" : null;
+            default -> null;
+        };
     }
 
     private boolean handleDvOrdinal(String path, final IBase value, final boolean isMultipleTypes,
@@ -520,25 +577,120 @@ public class OpenEhrPopulator {
         return false;
     }
 
+    /**
+     * FHIR carries no equivalent of a DV_PROPORTION's {@code |type}: a {@code Quantity} has a value,
+     * a unit and a code, and nothing that names the <em>kind</em> of proportion. That is not an edge
+     * case on this leg — it is every case, and emphatically so when the source is a FHIR device,
+     * which will never supply one. So {@code |type} is derived here from the parts that do arrive.
+     * <p>
+     * PROPORTION_KIND is a validity contract, not a label, and the denominator decides which member
+     * of it the data actually satisfies:
+     * <ul>
+     *   <li>{@code 100} → {@code 2} (percent) — required denominator for a percent</li>
+     *   <li>{@code 1}   → {@code 1} (unitary) — required denominator for a unitary</li>
+     *   <li>otherwise, both parts integral → {@code 4} (integer fraction)</li>
+     *   <li>otherwise → {@code 0} (ratio), the kind that constrains least</li>
+     * </ul>
+     * Never {@code 3} (fraction): a fraction is an integral proportion conventionally read as
+     * "n out of d" parts, and nothing in a bare Quantity distinguishes that reading from the
+     * integer fraction at {@code 4}. Choosing the weaker claim keeps the output valid.
+     * <p>
+     * {@code |type} is written only alongside a denominator. Previously it was hardcoded to
+     * {@code 2}, which asserted "percent" even when the code was not {@code %} and no denominator
+     * had been written at all — an invalid DV_PROPORTION a strict server is entitled to reject.
+     */
     private boolean handleDvProportion(String path, final IBase value, final boolean isMultipleTypes,
                                        final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE;
         }
         if (isQuantity(value)) {
-            if ("%".equals(getQuantityCode(value))) {
-                addToConstructingFlatDouble(path + "|denominator", 100.0, flat);
-            }
             final java.math.BigDecimal qValue = getQuantityValue(value);
             if (qValue != null) {
                 addToConstructingFlatDouble(path + "|numerator", qValue.doubleValue(), flat);
             }
-            addToConstructingFlat(path + "|type", "2", flat); // hardcoded?
+            final java.math.BigDecimal denominator = proportionDenominator(value);
+            if (denominator != null) {
+                addToConstructingFlatDouble(path + "|denominator", denominator.doubleValue(), flat);
+                final String declaredKind = extensionValue(value, PROPORTION_KIND_EXTENSION);
+                addToConstructingFlat(path + "|type",
+                                      StringUtils.isNotBlank(declaredKind)
+                                              ? declaredKind
+                                              : proportionKind(qValue, denominator),
+                                      flat);
+            }
             return true;
         } else {
             log.warn("openEhrType is DV_PROPORTION but extracted value is not Quantity; is {}", value.getClass());
         }
         return false;
+    }
+
+    /**
+     * The denominator implied by a Quantity's unit. A percent is the only proportion a FHIR Quantity
+     * states outright, via the UCUM code {@code %}; {@code null} means the Quantity does not describe
+     * a proportion at all, in which case no denominator and no {@code |type} are written.
+     */
+    private static java.math.BigDecimal proportionDenominator(final IBase value) {
+        if ("%".equals(getQuantityCode(value)) || "%".equals(getQuantityUnit(value))) {
+            return java.math.BigDecimal.valueOf(100);
+        }
+        final String carried = extensionValue(value, PROPORTION_DENOMINATOR_EXTENSION);
+        if (StringUtils.isNotBlank(carried)) {
+            try {
+                return new java.math.BigDecimal(carried);
+            } catch (NumberFormatException e) {
+                log.warn("DV_PROPORTION denominator extension is not a number; is {}", carried);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * The primitive value of the named extension on a Quantity, across FHIR versions. Used for the
+     * DV_PROPORTION parts FHIR has no field for; {@code null} when absent, which is the normal case
+     * for a Quantity that did not originate from openFHIR.
+     */
+    private static String extensionValue(final IBase value, final String url) {
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) {
+            final org.hl7.fhir.r4.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            final org.hl7.fhir.dstu3.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            final org.hl7.fhir.r4b.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) {
+            final org.hl7.fhir.r5.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        return null;
+    }
+
+    /**
+     * The PROPORTION_KIND the given parts satisfy. See {@link #handleDvProportion} for why a
+     * fraction ({@code 3}) is never inferred.
+     */
+    private static String proportionKind(final java.math.BigDecimal numerator,
+                                         final java.math.BigDecimal denominator) {
+        if (denominator.compareTo(java.math.BigDecimal.valueOf(100)) == 0) {
+            return "2";
+        }
+        if (denominator.compareTo(java.math.BigDecimal.ONE) == 0) {
+            return "1";
+        }
+        if (isIntegral(numerator) && isIntegral(denominator)) {
+            return "4";
+        }
+        return "0";
+    }
+
+    private static boolean isIntegral(final java.math.BigDecimal value) {
+        return value != null && value.stripTrailingZeros().scale() <= 0;
     }
 
     private boolean handleDvCount(String path, final IBase value, final boolean isMultipleTypes,
@@ -1219,9 +1371,14 @@ public class OpenEhrPopulator {
             openEhrPath = openEhrPath + "/" + FhirConnectConst.getLeafTypeForRmType(openehrType);
         }
 
-        if (isQuantity(fhirValue)) {
+        if (isQuantity(fhirValue) || isDuration(fhirValue)) {
+            // A Duration reaching a text node keeps its unit: "PT30M" reads back as a duration,
+            // whereas the bare magnitude "30" no longer says what it measured.
+            final String isoDuration = isDuration(fhirValue) ? quantityToIso8601Duration(fhirValue) : null;
             final java.math.BigDecimal qValue = getQuantityValue(fhirValue);
-            if (qValue != null) {
+            if (isoDuration != null) {
+                addToConstructingFlat(openEhrPath, isoDuration, constructingFlat);
+            } else if (qValue != null) {
                 addToConstructingFlat(openEhrPath, qValue.toPlainString(), constructingFlat);
             }
         } else if (fhirValue instanceof IBaseCoding extractedCoding) {
@@ -1372,6 +1529,16 @@ public class OpenEhrPopulator {
 
     private static boolean isQuantity(final IBase value) {
         return value != null && "Quantity".equals(value.fhirType());
+    }
+
+    /**
+     * A FHIR Duration is a Quantity specialisation but reports its own {@code fhirType()}, so it does
+     * not satisfy {@link #isQuantity}. The two are kept apart deliberately: a Duration carries a UCUM
+     * time code and belongs in a DV_DURATION, not in the {@code |magnitude}/{@code |unit} pair a
+     * DV_QUANTITY would write.
+     */
+    private static boolean isDuration(final IBase value) {
+        return value != null && "Duration".equals(value.fhirType());
     }
 
     private static java.math.BigDecimal getQuantityValue(final IBase value) {

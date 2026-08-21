@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- toFHIR: a `DV_DURATION` can now populate a FHIR `Duration`, converting the ISO 8601 string to a value
+  plus a UCUM time code
+
+### Fixed
+- toOpenEHR: a FHIR `Duration` no longer loses its unit on the way into a `DV_DURATION` or a `DV_TEXT`
+
 ### Changed
 - **date/time values now keep their source's timezone offset in both directions, and no longer gain
   one that was not there.** Offsets are preserved exactly as written: `Z` stays `Z`, `+00:00` stays
@@ -29,6 +36,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   placeholder systems on the way out for parts that carry no system of their own; the return leg
   re-emitted them as `system::value` instead of stripping them, as it already did for `|issuer`. A
   system that genuinely came from the source FHIR is unaffected.
+- openehrCondition targetAttribute now correctly evaluates empty/not empty even when pin pointing a non-ending path
+- when openehrCondition targetAttribute references recurring element, this is now correctly evaluated in condition
+- toFHIR: FHIR Path casts to primitive types are now properly evaluated (as Integer -> IntegerType, etc.)
+- a fhir path with no cast at all no longer throws a `NullPointerException` when its cast type is looked up.
+- toOpenEHR: a `DV_PROPORTION`'s `|type` is no longer hardcoded to `2` (percent). FHIR has no field naming the
+  kind of proportion, so it is derived from the denominator: 100 gives `2`, 1 gives `1`, an otherwise integral
+  pair gives `4`, anything else `0`. A fraction (`3`) is never inferred, as a bare `Quantity` cannot distinguish
+  it from an integer fraction. `|type` is now written only where a `|denominator` was, so a non-percent
+  `Quantity` no longer claims to be a percent with no denominator at all — an invalid `DV_PROPORTION` a strict
+  server may reject. A percent is recognised from either the UCUM code or the unit, so a device sending a bare
+  `97 %` maps correctly with nothing else to go on.
+- toFHIR: a `DV_PROPORTION` that is not a percent no longer loses its denominator. Only a percent has a faithful
+  FHIR representation (UCUM `%`); every other kind was reduced to its numerator, so a 3/4 ratio arrived as a bare
+  `3`. The denominator is now carried on a `proportion-denominator` extension and the openEHR `|type` on a
+  `proportion-kind` extension, which is what lets kinds the denominator alone cannot re-derive survive a round
+  trip. The return leg prefers a carried `|type` over deriving one.
 
 ## [2.2.5] - 2026-08-17
 ### Added

@@ -4,8 +4,10 @@ import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r4.model.DecimalType;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Quantity;
+import org.hl7.fhir.r4.model.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,17 @@ import java.util.List;
 
 @Component
 public class QuantityParser {
+
+    /**
+     * Carries a DV_PROPORTION denominator that FHIR has no field for. A percent needs no extension:
+     * its denominator is implied by the UCUM code {@code %}.
+     */
+    public static final String PROPORTION_DENOMINATOR_EXTENSION =
+            "http://openfhir.org/StructureDefinition/proportion-denominator";
+
+    /** Carries the openEHR PROPORTION_KIND ordinal, which no FHIR field expresses. */
+    public static final String PROPORTION_KIND_EXTENSION =
+            "http://openfhir.org/StructureDefinition/proportion-kind";
 
     private final FhirValueReaders fhirValueReaders;
 
@@ -29,6 +42,19 @@ public class QuantityParser {
         return new DataWithIndex(new IntegerType(raw), lastIndex, path, FhirConnectConst.DV_COUNT);
     }
 
+    /**
+     * A DV_PROPORTION becomes a FHIR {@code Quantity} holding the numerator.
+     * <p>
+     * Only a percent has a faithful FHIR representation: denominator 100 maps to the UCUM code
+     * {@code %}, and the numerator then reads correctly as-is. Every other kind of proportion has a
+     * denominator FHIR cannot express, so it is preserved on an extension rather than dropped —
+     * without it the numerator alone is meaningless (a 3/4 ratio would arrive as a bare "3").
+     * <p>
+     * The openEHR {@code |type} is recorded on the same extension. It is a PROPORTION_KIND
+     * constraint rather than a label, and the reverse leg can only re-derive it from the
+     * denominator, which cannot distinguish a fraction from an integer fraction — so carrying it
+     * explicitly is what lets those kinds survive a round trip.
+     */
     public DataWithIndex proportion(List<String> joinedValues,
                                     JsonObject valueHolder,
                                     Integer lastIndex,
@@ -36,6 +62,7 @@ public class QuantityParser {
 
         String numeratorPath = path + "|numerator";
         String denominatorPath = path + "|denominator";
+        String typePath = path + "|type";
 
         String numeratorValue = fhirValueReaders.get(valueHolder, numeratorPath);
         String denominatorValue = fhirValueReaders.get(valueHolder, denominatorPath);
@@ -45,18 +72,32 @@ public class QuantityParser {
 
         Quantity q = new Quantity();
 
-        String denom = fhirValueReaders.get(valueHolder, denominatorPath);
-        if ("100.0".equals(denom)) {
+        Object denomVal = fhirValueReaders.number(denominatorValue);
+        boolean isPercent = denomVal instanceof Long l && l == 100L
+                            || denomVal instanceof Double d && d == 100.0d;
+        if (isPercent) {
             q.setCode("%");
             q.setUnit("percent");
             q.setSystem("http://unitsofmeasure.org");
+        } else if (denomVal != null) {
+            q.addExtension(PROPORTION_DENOMINATOR_EXTENSION, toDecimal(denomVal));
         }
 
-        Object numVal = fhirValueReaders.number(fhirValueReaders.get(valueHolder, numeratorPath));
+        String typeValue = fhirValueReaders.get(valueHolder, typePath);
+        if (StringUtils.isNotBlank(typeValue)) {
+            q.addExtension(PROPORTION_KIND_EXTENSION, new StringType(typeValue));
+        }
+
+        Object numVal = fhirValueReaders.number(numeratorValue);
         if (numVal instanceof Long l) q.setValue(l);
         if (numVal instanceof Double d) q.setValue(d);
 
         return new DataWithIndex(q, lastIndex, path, FhirConnectConst.DV_PROPORTION);
+    }
+
+    private static DecimalType toDecimal(Object number) {
+        if (number instanceof Long l) return new DecimalType(l);
+        return new DecimalType((Double) number);
     }
 
     public DataWithIndex quantity(List<String> joinedValues,
