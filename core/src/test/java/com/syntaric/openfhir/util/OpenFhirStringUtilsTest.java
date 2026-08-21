@@ -186,6 +186,71 @@ public class OpenFhirStringUtilsTest {
                 "stationärer_versorgungsfall/aufnahmedaten/abc/cde", flatJsonObject).isEmpty());
     }
 
+    /**
+     * Pins how this matcher behaves when the flat entry carries a repetition index that the lookup
+     * path does not.
+     * <p>
+     * An {@code openehrCondition} with {@code operator: "not empty"} resolves its targetAttribute to
+     * an index-free flat path (for example {@code medication_safety/safety_override}) and looks it up
+     * against the real composition, where a {@code 0..*} node is written with an index
+     * ({@code medication_safety/safety_override:0/override_reason:0}). Because the comparison is a
+     * {@code startsWith}, the index-free prefix DOES match — so a "not empty" condition on a
+     * repeating node is not, on its own, unable to see that node.
+     * <p>
+     * The second half of the test pins the other direction: a lookup path that itself carries an
+     * index only matches an entry with the same index, which is what makes an index-free
+     * targetAttribute the right thing for the condition evaluator to construct.
+     */
+    @Test
+    public void getAllEntriesThatMatchIgnoringPipe_repeatingNodes() {
+        final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
+
+        final List<String> flatEntries = Arrays.asList(
+                // 0..* cluster, indexed, with a 0..* leaf inside it
+                "prescription/medication_order:0/order:0/medication_safety/safety_override:0/override_reason:0",
+                "prescription/medication_order:0/order:0/medication_safety/safety_override:0/overriden_safety_advice",
+                // 0..1 cluster, not indexed
+                "prescription/medication_order:0/order:0/medication_safety/total_daily_effective_dose/purpose",
+                // unrelated sibling that must never match
+                "prescription/medication_order:0/order:0/medication_safety/exceptional_safety_override"
+        );
+
+        final JsonObject flatJsonObject = new JsonObject();
+        flatEntries.forEach(fe -> flatJsonObject.add(fe, new JsonPrimitive(fe)));
+
+        // An index-free prefix matches an indexed entry: startsWith sees safety_override:0/... as
+        // starting with safety_override.
+        Assert.assertEquals(
+                2,
+                openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
+                        "prescription/medication_order:0/order:0/medication_safety/safety_override",
+                        flatJsonObject).size());
+
+        // The same holds for a non-repeating cluster.
+        Assert.assertEquals(
+                1,
+                openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
+                        "prescription/medication_order:0/order:0/medication_safety/total_daily_effective_dose",
+                        flatJsonObject).size());
+
+        // An explicitly indexed lookup path matches only that occurrence.
+        Assert.assertEquals(
+                2,
+                openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
+                        "prescription/medication_order:0/order:0/medication_safety/safety_override:0",
+                        flatJsonObject).size());
+        Assert.assertTrue(
+                openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
+                        "prescription/medication_order:0/order:0/medication_safety/safety_override:1",
+                        flatJsonObject).isEmpty());
+
+        // A path that does not exist at all matches nothing.
+        Assert.assertTrue(
+                openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
+                        "prescription/medication_order:0/order:0/medication_safety/no_such_node",
+                        flatJsonObject).isEmpty());
+    }
+
     @Test
     public void getFhirPathWithConditions() {
         final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
@@ -517,5 +582,43 @@ public class OpenFhirStringUtilsTest {
         Assert.assertEquals(
                 "Condition.code.coding.where(system.toString() = 'http://fhir.de/CodeSystem/bfarm/icd-10-gm')).extension.where(url.toString().contains('http://fhir.de/StructureDefinition/icd-10-gm-mehrfachcodierungs-kennzeichen'))",
                 s);
+    }
+
+    @Test
+    public void getCastType_primitivesGetTypeSuffix() {
+        final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
+
+        // primitives whose HAPI model class carries a `Type` suffix
+        Assert.assertEquals("IntegerType", openFhirStringUtils.getCastType("Observation.value.as(Integer)"));
+        Assert.assertEquals("DecimalType", openFhirStringUtils.getCastType("Observation.value.as(Decimal)"));
+        Assert.assertEquals("DateType", openFhirStringUtils.getCastType("Patient.deceased.as(Date)"));
+        Assert.assertEquals("UriType", openFhirStringUtils.getCastType("Observation.value.as(Uri)"));
+        Assert.assertEquals("CodeType", openFhirStringUtils.getCastType("Observation.value.as(Code)"));
+        Assert.assertEquals("PositiveIntType", openFhirStringUtils.getCastType("Observation.value.as(PositiveInt)"));
+        Assert.assertEquals("Base64BinaryType", openFhirStringUtils.getCastType("Observation.value.as(Base64Binary)"));
+
+        // previously the only mapped ones, must keep working
+        Assert.assertEquals("BooleanType", openFhirStringUtils.getCastType("Patient.deceased.as(Boolean)"));
+        Assert.assertEquals("DateTimeType", openFhirStringUtils.getCastType("Patient.deceased.as(DateTime)"));
+        Assert.assertEquals("TimeType", openFhirStringUtils.getCastType("Observation.value.as(Time)"));
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Observation.value.as(String)"));
+    }
+
+    @Test
+    public void getCastType_complexTypesAreLeftUnchanged() {
+        final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
+
+        // complex types are already named exactly like their HAPI model class, no suffix may be added
+        Assert.assertEquals("Quantity", openFhirStringUtils.getCastType("Observation.value.as(Quantity)"));
+        Assert.assertEquals("CodeableConcept",
+                openFhirStringUtils.getCastType("Observation.value.as(CodeableConcept)"));
+        Assert.assertEquals("Period", openFhirStringUtils.getCastType("Observation.effective.as(Period)"));
+        Assert.assertEquals("Ratio", openFhirStringUtils.getCastType("Observation.value.as(Ratio)"));
+
+        // an already suffixed cast type must not be suffixed twice
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Observation.value.as(StringType)"));
+
+        // no cast in the path at all
+        Assert.assertNull(openFhirStringUtils.getCastType("Observation.value"));
     }
 }
