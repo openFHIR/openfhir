@@ -23,8 +23,8 @@ import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
+import com.syntaric.openfhir.util.FhirConditionEvaluator;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
-import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
@@ -32,7 +32,6 @@ import org.ehrbase.openehr.sdk.serialisation.jsonencoding.CanonicalJson;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
 import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +54,7 @@ public class OpenFhirEngine {
     private final OpenEhrTemplateUtils templateUtils;
     private final FlatJsonUnmarshaller flatJsonUnmarshaller;
     private final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext;
-    private final OpenFhirStringUtils openFhirStringUtils;
+    private final FhirConditionEvaluator fhirConditionEvaluator;
     private final Gson gson;
     private final MappingMetricsLogger metricsLogger;
 
@@ -69,7 +68,7 @@ public class OpenFhirEngine {
                           final OpenEhrTemplateUtils templateUtils,
                           final FlatJsonUnmarshaller flatJsonUnmarshaller,
                           final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext,
-                          final OpenFhirStringUtils openFhirStringUtils,
+                          final FhirConditionEvaluator fhirConditionEvaluator,
                           final Gson gson,
                           final MappingMetricsLogger metricsLogger) {
         this.fhirToOpenEhr = fhirToOpenEhr;
@@ -81,7 +80,7 @@ public class OpenFhirEngine {
         this.templateUtils = templateUtils;
         this.flatJsonUnmarshaller = flatJsonUnmarshaller;
         this.prodOpenFhirMappingContext = prodOpenFhirMappingContext;
-        this.openFhirStringUtils = openFhirStringUtils;
+        this.fhirConditionEvaluator = fhirConditionEvaluator;
         this.gson = gson;
         this.metricsLogger = metricsLogger;
     }
@@ -112,25 +111,13 @@ public class OpenFhirEngine {
                 continue;
             }
             for (Condition condition : conditions) {
-                final String fhirPathWithCondition = openFhirStringUtils.amendFhirPath(FhirConnectConst.FHIR_RESOURCE_FC,
-                        Arrays.asList(condition),
-                        resourceType);
-                if (StringUtils.isEmpty(fhirPathWithCondition) || fhirPathWithCondition.equals(resourceType)) {
-                    log.warn("No fhirpath defined for resource type, context relevant for all?");
-                    fallbackContext = context; // assign it to the variable in case there really is no other suitable one.. in which case, this will be returned (or the last occurrence of such a context mapper 'for all'
-                } else {
-                    final IFhirPath fhirPath = fhirContextRegistry.getDefaultFhirPath();
-                    final Optional<Base> evaluated = fhirPath.evaluateFirst(resource, fhirPathWithCondition, Base.class);
-                    // if is present and is of type boolean, it also needs to be true
-                    // if is present and is not of type boolean, then the mere presence means the mapper is for this resource
-                    if (evaluated.isPresent() && ((!(evaluated.get() instanceof BooleanType)
-                            || ((BooleanType) evaluated.get()).getValue()))) {
-                        // mapper matches this Resource, it can handle it
-                        log.info(
-                                "Found a relevant context ({}) for this input fhir Resource. If there are more relevant other than this one, others will be ignored as this was the first one found.",
-                                context.getId());
-                        return context;
-                    }
+                final IFhirPath fhirPath = fhirContextRegistry.getDefaultFhirPath();
+                if (fhirConditionEvaluator.resourcePassesCondition(condition, resource, fhirPath, Base.class)) {
+                    // mapper matches this Resource, it can handle it
+                    log.info(
+                            "Found a relevant context ({}) for this input fhir Resource. If there are more relevant other than this one, others will be ignored as this was the first one found.",
+                            context.getId());
+                    return context;
                 }
             }
 
@@ -149,22 +136,22 @@ public class OpenFhirEngine {
         final Condition condition = new Condition();
         if ("Bundle".equals(resourceType)) {
             condition.setTargetRoot("Bundle");
-            condition.setTargetAttribute("entry.resource.meta.profile");
+            condition.setTargetAttributes(List.of("entry.resource.meta.profile"));
         } else {
             condition.setTargetRoot(resourceType);
-            condition.setTargetAttribute("meta.profile");
+            condition.setTargetAttributes(List.of("meta.profile"));
         }
         condition.setOperator("one of");
-        condition.setCriteria(profileUrl);
+        condition.setCriterias(List.of(profileUrl));
         toTry.add(condition);
 
         if ("Bundle".equals(resourceType)) {
             // add another condition to evaluate that checks Bundle.meta.profile
             final Condition condition2 = new Condition();
             condition2.setTargetRoot("Bundle");
-            condition2.setTargetAttribute("meta.profile");
+            condition2.setTargetAttributes(List.of("meta.profile"));
             condition2.setOperator("one of");
-            condition2.setCriteria(profileUrl);
+            condition2.setCriterias(List.of(profileUrl));
             toTry.add(condition2);
         }
 

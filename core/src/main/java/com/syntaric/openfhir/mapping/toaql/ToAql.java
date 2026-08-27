@@ -320,7 +320,10 @@ public class ToAql {
         }
 
         for (final Condition fhirCondition : fhirConditions) {
-            final String conditionPath = String.format("%s.%s", resourceType, fhirCondition.getTargetAttribute());
+            // multiple targetAttributes are OR-implied: the condition is relevant if ANY attribute's path matches
+            final List<String> conditionPaths = fhirCondition.getTargetAttributes().stream()
+                    .map(targetAttribute -> String.format("%s.%s", resourceType, targetAttribute))
+                    .toList();
 
             boolean relevantQueryParamPresent = false;
             for (final FhirQueryParam param : queryParams) {
@@ -331,8 +334,8 @@ public class ToAql {
                 final Set<String> fhirPathsForQueryName = Set.of(
                         fhirPathForQueryName.split("\\|"));// because it can be many
 
-                if (fhirPathsForQueryName.stream().noneMatch(
-                        conditionPath::startsWith)) { // not sure if starsWith is ok here, but fhirPath on i.e. Observation.code.coding.code is actually Observation.code
+                if (conditionPaths.stream().noneMatch(conditionPath -> fhirPathsForQueryName.stream().anyMatch(
+                        conditionPath::startsWith))) { // not sure if starsWith is ok here, but fhirPath on i.e. Observation.code.coding.code is actually Observation.code
                     // if ONE OF says this mapping is only relevant for a specific condition
                     // yet that queryParam is not present, it means it's not relevant for the AQL translation
                     if (CONDITION_OPERATOR_ONE_OF.equals(fhirCondition.getOperator())) {

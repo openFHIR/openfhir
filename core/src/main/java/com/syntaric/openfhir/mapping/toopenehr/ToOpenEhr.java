@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.nedap.archie.rm.composition.Composition;
 import com.syntaric.openfhir.OpenFhirMappingContext;
-import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec.Version;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.Condition;
@@ -12,8 +11,8 @@ import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.util.FhirConditionEvaluator;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
-import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.umarshal.FlatJsonUnmarshaller;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -46,7 +45,7 @@ public class ToOpenEhr {
     private final Gson gson;
     private final ToOpenEhrMappingEngine toOpenEhrMappingEngine;
     private final FhirContextRegistry fhirContextRegistry;
-    private final OpenFhirStringUtils openFhirStringUtils;
+    private final FhirConditionEvaluator fhirConditionEvaluator;
     private final MappingMetricsLogger metricsLogger;
 
     @Autowired
@@ -57,7 +56,7 @@ public class ToOpenEhr {
                      final Gson gson,
                      final ToOpenEhrMappingEngine toOpenEhrMappingEngine,
                      final FhirContextRegistry fhirContextRegistry,
-                     final OpenFhirStringUtils openFhirStringUtils,
+                     final FhirConditionEvaluator fhirConditionEvaluator,
                      final MappingMetricsLogger metricsLogger) {
         this.prePostProcessor = prePostProcessor;
         this.flatJsonUnmarshaller = flatJsonUnmarshaller;
@@ -66,7 +65,7 @@ public class ToOpenEhr {
         this.gson = gson;
         this.toOpenEhrMappingEngine = toOpenEhrMappingEngine;
         this.fhirContextRegistry = fhirContextRegistry;
-        this.openFhirStringUtils = openFhirStringUtils;
+        this.fhirConditionEvaluator = fhirConditionEvaluator;
         this.metricsLogger = metricsLogger;
     }
 
@@ -223,44 +222,35 @@ public class ToOpenEhr {
                 return Collections.singletonList(toEvaluateOn);
             }
         }
-        final String limitingCriteriaBasedOnCoverCondition = getLimitingCriteria(preprocessorFhirConditions,
-                                                                                 aMapperFromStartingArchetype.getGeneratingResourceType(),
-                                                                                 fhirVersion);
 
-        // apply limiting factor
-        final List<IAnyResource> relevantDataPoints = fhirPath.evaluate(toEvaluateOn,
-                                                                        limitingCriteriaBasedOnCoverCondition,
+        final String mainResource = aMapperFromStartingArchetype.getGeneratingResourceType();
+        final String startingResourcePath = fhirVersion == Version.STU3
+                ? String.format("Bundle.entry.resource.where($this is %s)", mainResource)
+                : String.format("Bundle.entry.resource.ofType(%s)", mainResource);
+
+        // apply limiting factor; for R4/R4B the preprocessor condition is deliberately NOT applied when
+        // selecting starting resources — it is enforced per-resource by fhirPreconditionPasses instead.
+        // STU3 keeps filtering here, as it always has.
+        List<IAnyResource> relevantDataPoints = fhirPath.evaluate(toEvaluateOn, startingResourcePath,
                 IAnyResource.class);
+        if (fhirVersion == Version.STU3) {
+            relevantDataPoints = relevantDataPoints.stream()
+                    .filter(resource -> preprocessorFhirConditions.stream()
+                            .allMatch(condition -> fhirConditionEvaluator.resourcePassesCondition(condition, resource,
+                                    fhirPath, org.hl7.fhir.dstu3.model.Base.class)))
+                    .toList();
+        }
 
         if (relevantDataPoints.isEmpty()) {
             log.warn("No relevant resources found for {}",
-                     limitingCriteriaBasedOnCoverCondition);
+                     startingResourcePath);
             return null;
         } else {
             log.info("Evaluation of {} returned {} entries that will be used for mapping.",
-                     limitingCriteriaBasedOnCoverCondition,
+                     startingResourcePath,
                      relevantDataPoints.size());
             return relevantDataPoints;
         }
-    }
-
-
-    /**
-     * Creates limiting criteria based on the FhirConnect FhirConfig Condition element.
-     */
-    private String getLimitingCriteria(final List<Condition> preConditions,
-                                       final String mainResource,
-                                       final Spec.Version fhirVersion) {
-        final String fhirPath = fhirVersion == Version.STU3 ? "Bundle.entry.resource.where($this is %s).where(%s)" : "Bundle.entry.resource.ofType(%s)";
-        if (preConditions == null || preConditions.isEmpty()) {
-            return String.format(fhirPath, mainResource);
-        }
-        final String existingFhirPath = openFhirStringUtils.amendFhirPath(FhirConnectConst.FHIR_RESOURCE_FC,
-                                                                          preConditions,
-                                                                          mainResource);
-        final String withoutResourceType = existingFhirPath.replace(mainResource + ".", "");
-        return String.format(fhirPath, mainResource,
-                             withoutResourceType);
     }
 
     private IBaseBundle prepareBundle(final IAnyResource startingResource, final Spec.Version fhirVersion) {

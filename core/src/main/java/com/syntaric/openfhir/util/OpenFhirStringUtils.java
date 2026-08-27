@@ -1,14 +1,9 @@
 package com.syntaric.openfhir.util;
 
-import static com.syntaric.openfhir.fc.FhirConnectConst.CONDITION_OPERATOR_EMPTY;
-import static com.syntaric.openfhir.fc.FhirConnectConst.CONDITION_OPERATOR_NOT_EMPTY;
-import static com.syntaric.openfhir.fc.FhirConnectConst.FHIR_ROOT_FC;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
-import com.syntaric.openfhir.fc.schema.model.Condition;
-import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
@@ -173,63 +167,6 @@ public class OpenFhirStringUtils {
     }
 
     /**
-     * FHIR path amended in a way that condition becomes a part of it
-     *
-     * @param originalFhirPath original fhir path without conditions as it exists within a model mapper
-     * @param conditions       conditions defined within a model mapper
-     * @param resource         fhir resource being used as a base
-     * @return fhir path with condition elemenets included in the fhir path itself
-     * deprecated: use getFhirPathWithConditions instead! this method should be removed as soon as possible to
-     * clear up
-     * the code base and remove redundant ones
-     */
-    @Deprecated
-    public String amendFhirPath(final String originalFhirPath, final List<Condition> conditions,
-                                final String resource) {
-        String fhirPath = originalFhirPath.replace(FhirConnectConst.FHIR_RESOURCE_FC, resource);
-        if (fhirPath.contains(FhirConnectConst.FHIR_ROOT_FC)) {
-            fhirPath = fhirPath.replace("." + FhirConnectConst.FHIR_ROOT_FC, "")
-                    .replace(FhirConnectConst.FHIR_ROOT_FC, "");
-        }
-        if (conditions == null || conditions.isEmpty() || conditions.stream().allMatch(Objects::isNull)) {
-            return fhirPath;
-        }
-        final StringJoiner stringJoiner = new StringJoiner(" and ");
-        for (Condition condition : conditions) {
-            if (condition == null) {
-                continue;
-            }
-            final String targetAttribute = condition.getTargetAttribute();
-
-            if (condition.getTargetRoot().startsWith(FhirConnectConst.FHIR_RESOURCE_FC)) {
-                condition.setTargetRoot(condition.getTargetRoot().replace(FhirConnectConst.FHIR_RESOURCE_FC, resource));
-            }
-            // add condition in there within the fhirpath itself
-            final String base;
-            if (condition.getTargetRoot().startsWith(fhirPath)) {
-                base = condition.getTargetRoot();
-            } else {
-                base = fhirPath;
-            }
-            boolean negate = FhirConnectConst.CONDITION_OPERATOR_NOT_OF.equals(condition.getOperator());
-
-            StringJoiner orJoiner = new StringJoiner(negate ? " and " : " or ");
-            for (final String criteria : condition.getCriterias()) {
-                final String criteriaString = getStringFromCriteria(criteria).getCode();
-                orJoiner.add(base
-                        .replace(condition.getTargetRoot(),
-                                condition.getTargetRoot() + ".where(('" + criteriaString + "' in " + targetAttribute
-                                        + (negate ? ")=false" : ")") + ")")
-                        .replace(FhirConnectConst.FHIR_RESOURCE_FC, resource));
-            }
-
-            stringJoiner.add(orJoiner.toString());
-
-        }
-        return stringJoiner.toString();
-    }
-
-    /**
      * Gets all entries from the flat path that match simplified openehr path with regex pattern
      *
      * @param withRegex           simplified openehr path with regex pattern
@@ -284,12 +221,8 @@ public class OpenFhirStringUtils {
     }
 
     public String extractWhereCondition(final String path) {
-        return extractWhereCondition(path, false);
-    }
-
-    public String extractWhereCondition(final String path, final boolean last) {
         String start = "where(";  // We start after 'where('
-        int startIndex = last ? path.lastIndexOf(start) : path.indexOf(start);
+        int startIndex = path.indexOf(start);
 
         if (startIndex == -1) {
             return null; // No match found
@@ -322,193 +255,6 @@ public class OpenFhirStringUtils {
         // Return the matched string
         return path.substring(startIndex, endIndex + 1); // Include the closing parenthesis
 
-    }
-
-    public String constructFhirPathNoConditions(final String originalFhirPath,
-                                                final String parentPath) {
-        // only make sure parent's where path is added to the child
-        if (StringUtils.isEmpty(parentPath)) {
-            return originalFhirPath;
-        }
-        final String parentsWhereCondition = extractWhereCondition(parentPath);
-        if (StringUtils.isEmpty(parentsWhereCondition)) {
-            return originalFhirPath;
-        } else {
-            // find the correct place within children's path to add parent's where
-            if (originalFhirPath.contains(parentPath)) {
-                // all is done already
-                return originalFhirPath;
-            } else {
-                return setParentsWherePathToTheCorrectPlace(originalFhirPath, parentPath);
-            }
-        }
-    }
-
-    public String constructFhirPathWithConditions(final String originalFhirPath,
-                                                  final String parentPath,
-                                                  final Condition condition,
-                                                  final String resource) {
-        // append parent's where path first
-        String withParentsWhereInPlace;
-        final String remainingItems;
-        final String actualConditionTargetRoot = condition.getTargetRoot()
-                .replace(FhirConnectConst.FHIR_RESOURCE_FC, resource)
-                .replace(FHIR_ROOT_FC, "");
-        if (originalFhirPath.startsWith(actualConditionTargetRoot)) {
-            // then we use target root as the base path
-            withParentsWhereInPlace = setParentsWherePathToTheCorrectPlace(actualConditionTargetRoot, parentPath);
-            final String addedWhere = parentPath == null ? "" : extractWhereCondition(parentPath, true);
-            final String remainingFromCondition = actualConditionTargetRoot.replace(
-                    withParentsWhereInPlace.replace("." + addedWhere, ""), "");
-            if (!withParentsWhereInPlace.equals(remainingFromCondition)) {
-                withParentsWhereInPlace += remainingFromCondition;
-            }
-            remainingItems = originalFhirPath.replace(FHIR_ROOT_FC, "").replace("BackboneElement", "")
-                    .replace(actualConditionTargetRoot, "");
-        } else {
-            withParentsWhereInPlace = StringUtils.isEmpty(originalFhirPath) ? actualConditionTargetRoot : setParentsWherePathToTheCorrectPlace(originalFhirPath, parentPath);
-            remainingItems = "";
-        }
-
-        boolean negate = FhirConnectConst.CONDITION_OPERATOR_NOT_OF.equals(condition.getOperator());
-        boolean typeOperator = FhirConnectConst.CONDITION_OPERATOR_TYPE.equals(condition.getOperator());
-
-        if (actualConditionTargetRoot.startsWith(resource) && withParentsWhereInPlace.equals(originalFhirPath)) {
-            // find the right place first
-            final String commonPath = setParentsWherePathToTheCorrectPlace(originalFhirPath,
-                    actualConditionTargetRoot); // path right before the condition should start
-            final String remainingToEndUpInWhere = StringUtils.isEmpty(commonPath) ? actualConditionTargetRoot : actualConditionTargetRoot
-                                                                                                                 .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT + ".", "")
-                                                                                                                 .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "")
-                                                                                                                 .replace(commonPath + ".", "")
-                                                                                                                 .replace(commonPath, "");
-            String remainingToAdd =
-                    StringUtils.isBlank(remainingToEndUpInWhere) ? "" : (remainingToEndUpInWhere + ".");
-            if (remainingToAdd.startsWith(".")) {
-                remainingToAdd = remainingToAdd.substring(1);
-            }
-            final StringJoiner criteriaJoiner1 = new StringJoiner(negate ? " and " : " or ");
-            for (final String criteria : condition.getCriterias()) {
-                if (typeOperator) {
-                    criteriaJoiner1.add(remainingToAdd + condition.getTargetAttribute() + ".toString().contains('"
-                            + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
-                } else {
-                    criteriaJoiner1.add("('" + getStringFromCriteria(criteria).getCode() + "' in " + remainingToAdd + condition.getTargetAttribute()
-                            + (negate ? ")=false" : ")"));
-                }
-            }
-            final String whereClause = ".where(" + criteriaJoiner1 + ")";
-            final String remainingItemsFromParent = originalFhirPath.replace(commonPath, "");
-            return commonPath + whereClause + remainingItemsFromParent;
-        } else {
-            // then do your own where path
-            final StringJoiner criteriaJoiner2 = new StringJoiner(negate ? " and " : " or ");
-            for (final String criteria : condition.getCriterias()) {
-                if (typeOperator) {
-                    criteriaJoiner2.add(condition.getTargetAttribute() + ".toString().contains('"
-                            + getStringFromCriteria(criteria).getCode() + "')" + (negate ? "=false" : ""));
-                } else {
-                    criteriaJoiner2.add("('" + getStringFromCriteria(criteria).getCode() + "' in " +  condition.getTargetAttribute()
-                            + (negate ? ")=false" : ")"));
-                }
-            }
-            final String whereClause = ".where(" + criteriaJoiner2 + ")";
-            // then suffix with whatever is left from the children's path
-            final String finalOne = withParentsWhereInPlace + whereClause + (StringUtils.isBlank(remainingItems) ? ""
-                    : (remainingItems.startsWith(".") ? remainingItems : ("." + remainingItems)));
-            return finalOne.startsWith("$fhirRoot.") ? finalOne.replace("$fhirRoot.", "") : finalOne;
-        }
-    }
-
-    /**
-     * Return originalFhirPath amended with the actual condition .where elements. This method will construct a fhir
-     * path from Condition and add that to the original fhir path
-     *
-     * @param originalFhirPath original fhir path that will be amended with conditions
-     * @param condition        condition we'll use when constructing a .where clause
-     * @param resource         resource type
-     * @param parentPath       parent fhir path, if one exists
-     * @return fhir path amended with the .where clause as constructed from the given Condition
-     */
-    public String getFhirPathWithConditions(String originalFhirPath,
-                                            final Condition condition,
-                                            String resource,
-                                            final String parentPath) {
-        originalFhirPath = originalFhirPath.replace(FhirConnectConst.FHIR_RESOURCE_FC, resource)
-                .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, resource)
-                .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "");
-        resource = resource.replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "");
-        if (condition != null
-                && condition.getTargetAttribute() == null
-                && condition.getTargetAttributes() != null
-                && !condition.getTargetAttributes().isEmpty()) {
-            // fallback until it's entirely deprecated
-            condition.setTargetAttribute(condition.getTargetAttributes().get(0));
-        }
-        if (condition == null
-                || condition.getTargetAttribute() == null
-                || condition.getOperator().equals(CONDITION_OPERATOR_NOT_EMPTY)
-                || condition.getOperator().equals(CONDITION_OPERATOR_EMPTY)) {
-            // only make sure parent's where path is added to the child
-            return constructFhirPathNoConditions(originalFhirPath, parentPath);
-        } else {
-            if (originalFhirPath.equals(FhirConnectConst.FHIR_ROOT_FC)) {
-                return amendFhirPath("$fhirRoot", List.of(condition), resource)
-                        .replace(FhirConnectConst.FHIR_ROOT_FC + ".", "");
-            }
-            return constructFhirPathWithConditions(originalFhirPath, parentPath, condition, resource);
-        }
-    }
-
-    public String setParentsWherePathToTheCorrectPlace(final String child,
-                                                       final String parent) {
-        if (StringUtils.isEmpty(parent)) {
-            return child;
-        }
-        StringJoiner childPathJoiner = new StringJoiner(".");
-        final String[] parents = parent.split("\\.");
-        final String[] children = child.split("\\.");
-
-        int parentSubstringCount = 0;
-        int parentIndex = 0;
-        for (int i = 0; i < children.length; i++) {
-            final String childPath = children[i];
-            if (parentIndex >= parents.length || childPath.equals(parents[parentIndex])) {
-                childPathJoiner.add(childPath);
-                if (parentIndex < parents.length) {
-                    parentSubstringCount += parents[parentIndex].length();
-                }
-                parentIndex++;
-            } else {
-                final String string = parents[parentIndex];
-                if (string.startsWith(WHERE)) {
-                    // a where follows
-                    final String substringForRelevantWhere = parent.substring(Arrays.stream(parents)
-                            .limit(parentIndex)
-                            .mapToInt(String::length)
-                            .sum());
-                    final String firstWhereCondition = extractWhereCondition(substringForRelevantWhere);
-                    childPathJoiner.add(firstWhereCondition);
-                    childPathJoiner.add(childPath);
-                    parentIndex += (int) (firstWhereCondition.chars().filter(ch -> ch == '.').count() + 2);
-                } else {
-                    childPathJoiner.add(childPath);
-                }
-            }
-        }
-
-        // if all that's left is a where at the end of parent's path, this where needs to be added too
-        final String constructedChildPath = childPathJoiner.toString();
-        if (parent.startsWith(constructedChildPath)) {
-            final String onlyWhere = parent.replace(constructedChildPath, "");
-            final String extractedWhere = extractWhereCondition(onlyWhere);
-            if (extractedWhere != null && (extractedWhere.equals(onlyWhere) || ("." + extractedWhere).equals(
-                    onlyWhere))) {
-                return constructedChildPath + onlyWhere;
-            }
-        }
-
-        return constructedChildPath;
     }
 
     public List<String> splitFhirPathTopLevel(final String path) {

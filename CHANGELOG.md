@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Changed
+- **fhirConditions are no longer compiled into the FHIRPath string** (`Observation.component.where(...)`-style
+  splicing). Plain mapping paths are evaluated as-is and conditions are applied programmatically
+- `Condition` is now plural-only: the deprecated singular `targetAttribute`/`criteria` fields were removed from
+  the model. YAML/JSON mappings using the singular keys keep working — they are normalized into
+  `targetAttributes`/`criterias` at deserialization time.
+- all `targetAttributes` of a fhirCondition are now evaluated with the OR-implied semantics the schema documents
+  (previously only the first attribute was baked into the where clause), and a `type` condition compares against
+  all `criterias` (previously only the first)
+
 ### Added
 - toFHIR: a `DV_DURATION` can now populate a FHIR `Duration`, converting the ISO 8601 string to a value
   plus a UCUM time code
