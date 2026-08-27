@@ -8,15 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
-### Changed
-- **fhirConditions are no longer compiled into the FHIRPath string** (`Observation.component.where(...)`-style
-  splicing). Plain mapping paths are evaluated as-is and conditions are applied programmatically
-- `Condition` is now plural-only: the deprecated singular `targetAttribute`/`criteria` fields were removed from
-  the model. YAML/JSON mappings using the singular keys keep working — they are normalized into
-  `targetAttributes`/`criterias` at deserialization time.
-- all `targetAttributes` of a fhirCondition are now evaluated with the OR-implied semantics the schema documents
-  (previously only the first attribute was baked into the where clause), and a `type` condition compares against
-  all `criterias` (previously only the first)
+### Security
+- dependency bumps resolving all 12 HIGH CVEs from the Trivy scan (issue #182), but taken to the newest
+  currently available versions:
+  - Spring Boot 3.3.2 → 3.5.16 (pulls Tomcat 10.1.55 — CVE-2025-48988/-48989/-55752; Spring Framework
+    6.2.19 — CVE-2025-22235/-41249, CVE-2024-38816/-38819; json-smart 2.5.2 — CVE-2024-57699)
+  - HAPI FHIR 7.2.1 → 8.12.0 (pulls org.hl7.fhir.core 6.9.12 — CVE-2024-45294/-51132/-52007)
+  - ucum 1.0.9 → 1.0.10 (CVE-2024-55887 was already fixed at 1.0.9; taken to latest)
+  - archie 3.11.0 → 3.13.0 and springdoc 2.1.0 → 2.8.17, required for compatibility with the above
+  - jackson-bom pinned to 2.19.4: jackson-databind 2.20+ removed the deprecated
+    `PropertyNamingStrategy` constants Archie still uses (2.19.4 is the pairing the ehrbase SDK
+    line itself ships with archie 3.13)
+- HAPI 8 adaptations: `Narrative.div` instantiation resolves the field's own `XhtmlNode` type again
+  (HAPI 8 annotates the child with the un-settable `XhtmlType` pseudo-type), and expected narrative
+  fixtures updated for HAPI 8's XHTML composer serializing empty elements as `<td/>`/`<span/>`
 
 ### Added
 - toFHIR: a `DV_DURATION` can now populate a FHIR `Duration`, converting the ISO 8601 string to a value
@@ -24,22 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 - toOpenEHR: a FHIR `Duration` no longer loses its unit on the way into a `DV_DURATION` or a `DV_TEXT`
-
-### Changed
-- **date/time values now keep their source's timezone offset in both directions, and no longer gain
-  one that was not there.** Offsets are preserved exactly as written: `Z` stays `Z`, `+00:00` stays
-  `+00:00`, `+01:00` keeps its wall-clock reading.
-- `BootstrapService` extension points widened so a distribution can add file types of its own to the bootstrap
-  scan instead of running a parallel one: `classify`, `apply`, `resolveExisting`, `saveLedgerEntry` and
-  `relativePath` are now `protected`, and `FileType` is public. A subclass can override `classify` to recognise a
-  new suffix and `apply` to route that one type elsewhere, delegating every other type to `super` and inheriting
-  the directory walk, hash comparison, ledger and summary unchanged. No behaviour change here — no bodies moved,
-  and with no subclass on the classpath nothing dispatches differently.
-- `FileType` gained a `CONCEPTMAP` constant, so the ledger's `entityType` and the `BootstrapSummary` breakdown
-  share one vocabulary across distributions. It is inert in this project: `classify` never returns it, and the
-  `upsert` arm it forces is unreachable.
-
-### Fixed
 - toOpenEHR: a `DV_IDENTIFIER`'s `|type` and `|assigner` no longer come back with a placeholder system
   prepended, so a `|type` of `Prescription number` no longer returns as
   `http://openehr.org/identifier/type::Prescription number`. `IdentifierParser` invents those
@@ -62,6 +51,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   `3`. The denominator is now carried on a `proportion-denominator` extension and the openEHR `|type` on a
   `proportion-kind` extension, which is what lets kinds the denominator alone cannot re-derive survive a round
   trip. The return leg prefers a carried `|type` over deriving one.
+
+### Changed
+- **fhirConditions are no longer compiled into the FHIRPath string** (`Observation.component.where(...)`-style
+  splicing). Plain mapping paths are evaluated as-is and conditions are applied programmatically
+- `Condition` is now plural-only: the deprecated singular `targetAttribute`/`criteria` fields were removed from
+  the model. YAML/JSON mappings using the singular keys keep working — they are normalized into
+  `targetAttributes`/`criterias` at deserialization time.
+- all `targetAttributes` of a fhirCondition are now evaluated with the OR-implied semantics the schema documents
+  (previously only the first attribute was baked into the where clause), and a `type` condition compares against
+  all `criterias` (previously only the first)
+- **date/time values now keep their source's timezone offset in both directions, and no longer gain
+  one that was not there.** Offsets are preserved exactly as written: `Z` stays `Z`, `+00:00` stays
+  `+00:00`, `+01:00` keeps its wall-clock reading.
+- `BootstrapService` extension points widened so a distribution can add file types of its own to the bootstrap
+  scan instead of running a parallel one: `classify`, `apply`, `resolveExisting`, `saveLedgerEntry` and
+  `relativePath` are now `protected`, and `FileType` is public. A subclass can override `classify` to recognise a
+  new suffix and `apply` to route that one type elsewhere, delegating every other type to `super` and inheriting
+  the directory walk, hash comparison, ledger and summary unchanged. No behaviour change here — no bodies moved,
+  and with no subclass on the classpath nothing dispatches differently.
+- `FileType` gained a `CONCEPTMAP` constant, so the ledger's `entityType` and the `BootstrapSummary` breakdown
+  share one vocabulary across distributions. It is inert in this project: `classify` never returns it, and the
+  `upsert` arm it forces is unreachable.
+
 
 ## [2.2.5] - 2026-08-17
 ### Added

@@ -187,6 +187,13 @@ public class FhirInstanceCreatorUtility {
 
         final Class<? extends IElement>[] types = childAnnotation.type();
 
+        if (org.hl7.fhir.utilities.xhtml.XhtmlNode.class == field.getType()) {
+            // Narrative.div is declared as XhtmlNode but (since HAPI 8) annotated with the
+            // XhtmlType pseudo-type, which cannot be set on the field — instantiate the field's
+            // own type, as the empty annotation used to make us do
+            return org.hl7.fhir.utilities.xhtml.XhtmlNode.class;
+        }
+
         if (types.length == 0) {
             // backboneelement
             if (field.getGenericType() instanceof ParameterizedType) {
