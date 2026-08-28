@@ -392,6 +392,36 @@ public class FhirConditionEvaluatorTest {
     }
 
     // -----------------------------------------------------------------------
+    // Conditions without targetAttributes never filter path evaluation
+    // -----------------------------------------------------------------------
+
+    /**
+     * A bare "type" condition (targetRoot + criteria, NO targetAttributes — e.g.
+     * {@code {targetRoot: $resource.value, operator: type, criteria: CodeableConcept}}) only
+     * feeds the separate fhirTypePasses gate; it must not be treated as path-filtering and must
+     * not disturb plain path evaluation.
+     */
+    @Test
+    public void conditionWithoutTargetAttributes_isNotPathFilteringAndDoesNotFilter() {
+        final Condition bareTypeCondition = new Condition();
+        bareTypeCondition.setTargetRoot("Observation.value");
+        bareTypeCondition.setOperator("type");
+        bareTypeCondition.setCriterias(List.of("CodeableConcept"));
+
+        Assert.assertFalse(FhirConditionEvaluator.isPathFilteringCondition(bareTypeCondition));
+        Assert.assertFalse(FhirConditionEvaluator.hasPathFilteringConditions(List.of(bareTypeCondition)));
+
+        // even if evaluation is invoked with such a condition, results stay unfiltered
+        final Observation observation = new Observation();
+        observation.setValue(new CodeableConcept().addCoding(new Coding().setCode("some-code")));
+        final MappingHelper helper = helper("Observation.value", bareTypeCondition);
+
+        final List<? extends IBase> results = evaluator.evaluateWithConditions(helper, "value",
+                observation, fhirPath, Base.class);
+        Assert.assertEquals(1, results.size());
+    }
+
+    // -----------------------------------------------------------------------
     // mappedPathEndAttributePrefix — the legacy path-end placement
     //
     // The old string splicing appended the where() clause to the END of the mapped path whenever

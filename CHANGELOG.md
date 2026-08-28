@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - all `targetAttributes` of a fhirCondition are now evaluated with the OR-implied semantics the schema documents
   (previously only the first attribute was baked into the where clause), and a `type` condition compares against
   all `criterias` (previously only the first)
+- a fhirCondition without `targetAttributes` (e.g. a bare `type` condition carrying only targetRoot and
+  criteria) is never treated as path-filtering — it only feeds the type gate
 - **date/time values now keep their source's timezone offset in both directions, and no longer gain
   one that was not there.** Offsets are preserved exactly as written: `Z` stays `Z`, `+00:00` stays
   `+00:00`, `+01:00` keeps its wall-clock reading.

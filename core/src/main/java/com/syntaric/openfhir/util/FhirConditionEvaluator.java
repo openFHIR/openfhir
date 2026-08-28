@@ -41,10 +41,14 @@ public class FhirConditionEvaluator {
     /**
      * True for operators that filter which elements a fhir path evaluation yields ("one of",
      * "not of", "type"); false for presence gates ("empty", "not empty") that are evaluated
-     * elsewhere.
+     * elsewhere. A condition without targetAttributes never filters path evaluation — such
+     * conditions (e.g. a bare "type" condition) only feed the separate type gate, and the legacy
+     * string splicing bailed out to the plain path for them as well.
      */
     public static boolean isPathFilteringCondition(final Condition condition) {
-        if (condition == null) {
+        if (condition == null
+                || condition.getTargetAttributes() == null
+                || condition.getTargetAttributes().isEmpty()) {
             return false;
         }
         final String operator = condition.getOperator();
