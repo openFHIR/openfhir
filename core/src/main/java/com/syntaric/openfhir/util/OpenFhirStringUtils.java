@@ -22,11 +22,8 @@ import org.hl7.fhir.r4.model.Coding;
 import org.springframework.stereotype.Component;
 
 @Component
-@Deprecated // todo: "Should be refactord and revised"
 public class OpenFhirStringUtils {
 
-    private final String TYPE_PATTERN = "\\[TYPE:[^]]+]";
-    private final String ALL_INDEXES = ":(\\d+)";
     public static final String RESOLVE = "resolve()";
     public static final String WHERE = "where";
     public static final String RECURRING_SYNTAX = "[n]";
