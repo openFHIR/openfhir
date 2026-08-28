@@ -352,8 +352,11 @@ public class BootstrapService {
                                    final String tenant) {
         final Date now = new Date();
         final BootstrapEntity entry = BootstrapEntity.builder()
-                // reuse the row id on update so the entry is updated, not duplicated
-                .id(existing == null ? UUID.randomUUID().toString() : existing.getId())
+                // reuse the row id on update so the entry is updated, not duplicated; new rows get
+                // their id from the store (Mongo ObjectId / @UuidGenerator on postgres) — assigning
+                // one up front turns the JPA save into a merge of a detached entity, which
+                // Hibernate 6.6+ refuses to resurrect (StaleObjectStateException)
+                .id(existing == null ? null : existing.getId())
                 .file(fileName)
                 .path(relativePath)
                 .contentHash(hash)

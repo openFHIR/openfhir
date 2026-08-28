@@ -8,7 +8,6 @@ import com.syntaric.openfhir.db.repository.FhirConnectModelRepository;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.FhirConnectModel;
-import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.rest.RequestValidationException;
@@ -256,6 +255,11 @@ public class FhirConnectService {
         contextRepository.deleteAllTenant(openFhirUser.getAuthContext().getTenant());
     }
 
+    /**
+     * Singular condition fields ({@code targetAttribute}/{@code criteria}) are normalized into the
+     * plural lists at deserialization time by {@link Condition}'s JsonSetter aliases; only the
+     * preprocessor-level singular {@code fhirCondition} still needs normalizing here.
+     */
     private void normalizeSingularFields(final FhirConnectModel model) {
         final Preprocessor preprocessor = model.getPreprocessor();
         if (preprocessor != null) {
@@ -263,38 +267,6 @@ public class FhirConnectService {
                 preprocessor.setFhirConditions(List.of(preprocessor.getFhirCondition()));
                 preprocessor.setFhirCondition(null);
             }
-            if (preprocessor.getFhirConditions() != null) {
-                preprocessor.getFhirConditions().forEach(this::normalizeCondition);
-            }
-            if (preprocessor.getOpenehrCondition() != null) {
-                normalizeCondition(preprocessor.getOpenehrCondition());
-            }
-        }
-        if (model.getMappings() != null) {
-            model.getMappings().forEach(this::normalizeMappingSingularFields);
-        }
-    }
-
-    private void normalizeMappingSingularFields(final Mapping mapping) {
-        if (mapping.getFhirCondition() != null) {
-            normalizeCondition(mapping.getFhirCondition());
-        }
-        if (mapping.getOpenehrCondition() != null) {
-            normalizeCondition(mapping.getOpenehrCondition());
-        }
-        if (mapping.getFollowedBy() != null && mapping.getFollowedBy().getMappings() != null) {
-            mapping.getFollowedBy().getMappings().forEach(this::normalizeMappingSingularFields);
-        }
-    }
-
-    private void normalizeCondition(final Condition condition) {
-        if (condition.getTargetAttribute() != null && condition.getTargetAttributes() == null) {
-            condition.setTargetAttributes(List.of(condition.getTargetAttribute()));
-            condition.setTargetAttribute(null);
-        }
-        if (condition.getCriteria() != null && condition.getCriterias() == null) {
-            condition.setCriterias(List.of(condition.getCriteria()));
-            condition.setCriteria(null);
         }
     }
 }

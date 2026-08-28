@@ -39,9 +39,9 @@ public class Issue88OpenEhrConditionEvaluatorTest {
     private Condition conditionFor(final String criteria) {
         final Condition condition = new Condition()
                 .withTargetRoot("$archetype/items[at0001]")
-                .withTargetAttribute("defining_code/code_string")
+                .withTargetAttributes(List.of("defining_code/code_string"))
                 .withOperator("one of")
-                .withCriteria(criteria);
+                .withCriterias(criteria);
         condition.setTargetRootFlatPath(ROOT_FLAT);
         condition.getTargetAttributesFlatPath().add("|code");
         return condition;
@@ -74,9 +74,9 @@ public class Issue88OpenEhrConditionEvaluatorTest {
     public void unresolvedConditionRootDoesNotThrow() {
         final Condition unresolved = new Condition()
                 .withTargetRoot("$archetype/items[at0001]")
-                .withTargetAttribute("defining_code/code_string")
+                .withTargetAttributes(List.of("defining_code/code_string"))
                 .withOperator("one of")
-                .withCriteria("at0002");
+                .withCriterias("at0002");
         // targetRootFlatPath deliberately left unset, as happens when webTemplate is null
 
         final JsonObject narrowed = evaluator.splitByOpenEhrCondition(flat(), unresolved);

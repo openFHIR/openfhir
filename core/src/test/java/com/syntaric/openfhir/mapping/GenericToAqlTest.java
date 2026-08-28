@@ -48,7 +48,7 @@ public abstract class GenericToAqlTest extends GenericTest {
     public void prepare() {
         final HelpersCreator helpersCreator1 = new HelpersCreator(repo, new AqlToFlatPathConverter(
                 openFhirStringUtils,
-                openFhirMapperUtils), openFhirStringUtils);
+                openFhirMapperUtils));
         toAql = new ToAql(fhirConnectManager, openFhirMapperUtils, repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
                 new OpenEhrTemplateUtils(), null, optManager);
     }

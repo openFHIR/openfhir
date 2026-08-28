@@ -12,6 +12,7 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
+import com.syntaric.openfhir.util.FhirConditionEvaluator;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
@@ -20,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IBaseEnumeration;
 import org.hl7.fhir.instance.model.api.IBaseReference;
+import org.hl7.fhir.instance.model.api.IPrimitiveType;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.PrimitiveType;
@@ -45,6 +47,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
     final private ToOpenEhrNullFlavour toOpenEhrNullFlavour;
     final private CustomMappingRegistry customMappingRegistry;
     final private MappingMetricsLogger metricsLogger;
+    final private FhirConditionEvaluator fhirConditionEvaluator;
 
     @Autowired
     public ToOpenEhrMappingEngine(final FhirContextRegistry fhirContextRegistry,
@@ -53,7 +56,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                   final OpenFhirMapperUtils openFhirMapperUtils,
                                   final ToOpenEhrNullFlavour toOpenEhrNullFlavour,
                                   final CustomMappingRegistry customMappingRegistry,
-                                  final MappingMetricsLogger metricsLogger) {
+                                  final MappingMetricsLogger metricsLogger,
+                                  final FhirConditionEvaluator fhirConditionEvaluator) {
         super(fhirContextRegistry);
         this.fhirContextRegistry = fhirContextRegistry;
         this.stringUtils = stringUtils;
@@ -62,6 +66,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         this.toOpenEhrNullFlavour = toOpenEhrNullFlavour;
         this.customMappingRegistry = customMappingRegistry;
         this.metricsLogger = metricsLogger;
+        this.fhirConditionEvaluator = fhirConditionEvaluator;
     }
 
     public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
@@ -170,20 +175,42 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         return passes;
     }
 
-    boolean fhirPreconditionPasses(final List<Condition> condition,
+    /**
+     * Preprocessor condition gate: every criteria of every condition must be contained (raw,
+     * substring semantics) in the value of ANY of the condition's targetAttributes, evaluated
+     * relative to the resource itself. Negation is driven by the first condition's operator only —
+     * quirks deliberately preserved from the deprecated string-built variant.
+     */
+    boolean fhirPreconditionPasses(final List<Condition> conditions,
                                    final IBase resource,
                                    final IFhirPath versionedFhirPath,
                                    final Class<? extends IBase> baseClass) {
-        if (condition == null) {
+        if (conditions == null || conditions.isEmpty()) {
             return true;
         }
-        final String limitingCriteriaBasedOnCoverCondition = getLimitingCriteria(condition);
-        boolean negate = FhirConnectConst.CONDITION_OPERATOR_NOT_OF.equals(condition.get(0).getOperator());
+        final boolean negate = FhirConnectConst.CONDITION_OPERATOR_NOT_OF.equals(conditions.get(0).getOperator());
 
-        // apply limiting factor
-        final boolean exists = versionedFhirPath.evaluateFirst(resource, limitingCriteriaBasedOnCoverCondition,
-                baseClass).isPresent();
-        return negate != exists;
+        boolean matches = true;
+        for (final Condition precondition : conditions) {
+            for (final String criteria : precondition.getCriterias()) {
+                final boolean criteriaContained = precondition.getTargetAttributes().stream()
+                        .anyMatch(targetAttribute -> versionedFhirPath
+                                .evaluate(resource, targetAttribute, baseClass).stream()
+                                .anyMatch(value -> attributeValueAsString(value).contains(criteria)));
+                if (!criteriaContained) {
+                    matches = false;
+                    break;
+                }
+            }
+            if (!matches) {
+                break;
+            }
+        }
+        return negate != matches;
+    }
+
+    private String attributeValueAsString(final IBase value) {
+        return value instanceof IPrimitiveType<?> primitive ? primitive.getValueAsString() : value.toString();
     }
 
     @SuppressWarnings("unchecked")
@@ -193,20 +220,6 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         } catch (final ClassNotFoundException e) {
             return org.hl7.fhir.r4.model.Base.class;
         }
-    }
-
-    private String getLimitingCriteria(final List<Condition> preConditions) {
-        final StringJoiner andJoiner = new StringJoiner(" and ");
-        for (final Condition preCondition : preConditions) {
-            final StringJoiner orJoiner = new StringJoiner(" and ");
-            for (final String criteria : preCondition.getCriterias()) {
-                orJoiner.add(String.format("where((%s).toString().contains('%s'))",
-                        preCondition.getTargetAttribute(),
-                        criteria));
-            }
-            andJoiner.add(orJoiner.toString());
-        }
-        return andJoiner.toString();
     }
 
     /**
@@ -260,8 +273,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                       final Spec.Version fhirVersion) {
         final MappingTimer mappingTimer = MappingTimer.start();
 
-        final String fhirPath =
-                StringUtils.isEmpty(helper.getFhirWithCondition()) ? helper.getFhir() : helper.getFhirWithCondition();
+        final String fhirPath = helper.getFhir();
 
         final IBase toResolveOn = getToResolveOn(iteratingBase, helper);
 
@@ -318,6 +330,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             return resolveAsParentRoot(helper, fhirPath, toResolveOn, versionedFhirPath, baseClass);
         }
 
+        if (FhirConditionEvaluator.hasPathFilteringConditions(helper.getFhirConditions())) {
+            return fhirConditionEvaluator.evaluateWithConditions(helper, fhirPath, toResolveOn, versionedFhirPath,
+                    baseClass);
+        }
+
         return evaluateFhirPath(fhirPath, toResolveOn, versionedFhirPath, baseClass);
     }
 
@@ -326,17 +343,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                             final IFhirPath versionedFhirPath,
                                             final Class<? extends IBase> baseClass) {
         log.debug("Taking Base itself as fhirPath is {}", fhirPath);
-        if (helper.getFhirConditions() == null || StringUtils.isEmpty(fhirPath)) {
+        if (helper.getFhirConditions() == null) {
             return Collections.singletonList(toResolveOn);
         }
-        // condition present — verify it still passes before accepting the parent root
-        final Optional<? extends IBase> conditionPasses;
-        if (toResolveOn.fhirType().equalsIgnoreCase(fhirPath.split("\\.")[0])) {
-            conditionPasses = versionedFhirPath.evaluateFirst(toResolveOn, fhirPath.substring(fhirPath.indexOf(".") + 1), baseClass);
-        } else {
-            conditionPasses = versionedFhirPath.evaluateFirst(toResolveOn, fhirPath, baseClass);
-        }
-        return conditionPasses.isPresent()
+        // conditions present — verify they still pass before accepting the parent root
+        return fhirConditionEvaluator.parentRootPassesConditions(helper, toResolveOn, versionedFhirPath, baseClass)
                 ? Collections.singletonList(toResolveOn)
                 : Collections.emptyList();
     }

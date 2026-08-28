@@ -1,14 +1,23 @@
 package com.syntaric.openfhir.mapping.toopenehr;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import ca.uhn.fhir.context.FhirContext;
+import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import java.util.List;
+import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Observation;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.NoOpPrePostOpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
+import com.syntaric.openfhir.util.FhirConditionEvaluator;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import org.hl7.fhir.r4.hapi.fluentpath.FhirPathR4;
 import ca.uhn.fhir.fhirpath.IFhirPath;
@@ -32,7 +41,8 @@ public class ToOpenEhrMappingEngineTest {
                 mapperUtils, new ToOpenEhrNullFlavour(stringUtils,
                                                       null),
                 new CustomMappingRegistry(),
-                (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
+                (section, context, elapsedMs) -> { /* no-op metrics in tests */ },
+                new FhirConditionEvaluator(stringUtils));
     }
 
     // -------------------------------------------------------------------------
@@ -148,6 +158,98 @@ public class ToOpenEhrMappingEngineTest {
                 "growth_chart/body_mass_index/any_event[n]");
         assertEquals("growth_chart/body_mass_index/any_event:2",
                      engine.setIndexAccordingToHierarchy(h, 2));
+    }
+
+    // -------------------------------------------------------------------------
+    // fhirPreconditionPasses
+    // -------------------------------------------------------------------------
+
+    private final IFhirPath fhirPath = new FhirPathR4(FhirContext.forR4());
+
+    private static Condition precondition(final List<String> targetAttributes, final String operator,
+                                          final List<String> criterias) {
+        final Condition condition = new Condition();
+        condition.setTargetRoot("$resource");
+        condition.setTargetAttributes(targetAttributes);
+        condition.setOperator(operator);
+        condition.setCriterias(criterias);
+        return condition;
+    }
+
+    private static Observation codedObservation(final String... codes) {
+        final Observation observation = new Observation();
+        final CodeableConcept code = new CodeableConcept();
+        for (final String c : codes) {
+            code.addCoding(new Coding().setCode(c));
+        }
+        observation.setCode(code);
+        return observation;
+    }
+
+    @Test
+    public void preconditionPasses_containsSemantics() {
+        final Observation observation = codedObservation("prefix-85354-9-suffix");
+
+        // criteria matches as a SUBSTRING of the attribute value, not by equality
+        assertTrue(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "one of", List.of("85354-9"))),
+                observation, fhirPath, Base.class));
+
+        assertFalse(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "one of", List.of("9999-9"))),
+                observation, fhirPath, Base.class));
+    }
+
+    @Test
+    public void preconditionPasses_negateTakenFromFirstCondition() {
+        final Observation observation = codedObservation("85354-9");
+
+        // "not of" on the first condition negates the (matching) result
+        assertFalse(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "not of", List.of("85354-9"))),
+                observation, fhirPath, Base.class));
+
+        assertTrue(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "not of", List.of("9999-9"))),
+                observation, fhirPath, Base.class));
+    }
+
+    @Test
+    public void preconditionPasses_multiConditionAnd() {
+        final Observation observation = codedObservation("85354-9");
+        observation.setStatus(Observation.ObservationStatus.FINAL);
+
+        assertTrue(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "one of", List.of("85354-9")),
+                        precondition(List.of("status"), "one of", List.of("final"))),
+                observation, fhirPath, Base.class));
+
+        // second condition fails -> whole precondition fails (AND across conditions)
+        assertFalse(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "one of", List.of("85354-9")),
+                        precondition(List.of("status"), "one of", List.of("amended"))),
+                observation, fhirPath, Base.class));
+
+        // AND also holds across criterias of a single condition
+        assertFalse(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("code.coding.code"), "one of", List.of("85354-9", "9999-9"))),
+                observation, fhirPath, Base.class));
+    }
+
+    @Test
+    public void preconditionPasses_missingAttribute() {
+        final Observation observation = codedObservation("85354-9");
+
+        // attribute resolves to no value -> criteria cannot be contained -> fails
+        assertFalse(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("interpretation.coding.code"), "one of", List.of("85354-9"))),
+                observation, fhirPath, Base.class));
+
+        // multiple targetAttributes are OR-implied: passes when ANY attribute contains the criteria
+        assertTrue(engine.fhirPreconditionPasses(
+                List.of(precondition(List.of("interpretation.coding.code", "code.coding.code"), "one of",
+                        List.of("85354-9"))),
+                observation, fhirPath, Base.class));
     }
 
     // -------------------------------------------------------------------------

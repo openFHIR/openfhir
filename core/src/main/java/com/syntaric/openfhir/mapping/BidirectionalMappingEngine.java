@@ -95,11 +95,11 @@ public class BidirectionalMappingEngine {
                 final IBase resolvedInstance = getReferencedResource(instance, fhirPathExpr, fhirPath);
                 final String afterResolve = fhirPathExpr.split("\\.resolve\\(\\)")[1].substring(1);
                 return resolvesFhirTypeName(resolvedInstance, afterResolve + "[0].type().name", fhirPath)
-                        .map(name -> name.equals(fhirCondition.getCriteria()))
+                        .map(name -> fhirCondition.getCriterias().stream().anyMatch(name::equals))
                         .orElse(true);
             } else {
                 return resolvesFhirTypeName(instance, fhirPathExpr + "[0].type().name", fhirPath)
-                        .map(name -> name.equals(fhirCondition.getCriteria()))
+                        .map(name -> fhirCondition.getCriterias().stream().anyMatch(name::equals))
                         .orElse(true);
             }
         });

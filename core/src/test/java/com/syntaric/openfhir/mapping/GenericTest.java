@@ -106,7 +106,7 @@ public abstract class GenericTest {
 
         helpersCreator = new HelpersCreator(repo, new AqlToFlatPathConverter(
                 openFhirStringUtils,
-                openFhirMapperUtils), openFhirStringUtils);
+                openFhirMapperUtils));
         openEhrFlatPathDataExtractor = new OpenEhrFlatPathDataExtractor(
                 openFhirStringUtils,
                 new ValueToFHIRParser(
@@ -161,9 +161,10 @@ public abstract class GenericTest {
                         new ToOpenEhrNullFlavour(openFhirStringUtils,
                                 openEhrPopulator),
                         new CustomMappingRegistry(),
-                        (section, context, elapsedMs) -> { /* no-op metrics in tests */ }),
+                        (section, context, elapsedMs) -> { /* no-op metrics in tests */ },
+                        new FhirConditionEvaluator(openFhirStringUtils)),
                 fhirContextRegistry,
-                openFhirStringUtils,
+                new FhirConditionEvaluator(openFhirStringUtils),
                 (section, context, elapsedMs) -> { /* no-op metrics in tests */ });
 
 
