@@ -1,6 +1,8 @@
 package com.syntaric.openfhir;
 
 import com.syntaric.openfhir.mapping.tofhir.ToFhirPrePostProcessor;
+import com.syntaric.openfhir.operations.NoOpPatientResolver;
+import com.syntaric.openfhir.operations.PatientResolverInterface;
 import com.syntaric.openfhir.mapping.tofhir.ToFhirPrePostProcessorInterface;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrPrePostProcessor;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhrPrePostProcessorInterface;
@@ -54,5 +56,11 @@ public class OpenFhirDefaultsConfig {
     @ConditionalOnMissingBean(PrePostOpenEhrPopulatorInterface.class)
     public PrePostOpenEhrPopulatorInterface prePostOpenEhrPopulator() {
         return new NoOpPrePostOpenEhrPopulator();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(PatientResolverInterface.class)
+    public PatientResolverInterface patientResolver() {
+        return new NoOpPatientResolver();
     }
 }

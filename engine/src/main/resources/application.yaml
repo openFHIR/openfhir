@@ -11,6 +11,11 @@ spring:
 openfhir:
   db:
     type: mongo
+  provenance:
+    # agent.who of the Provenance the engine generates for $tofhir responses, used when the caller
+    # does not supply a context.who reference
+    device-reference: Device/openfhir-engine
+    device-display: openFHIR engine
   narrative:
   # Optional: classpath or file path to a custom HAPI narrative properties file.
   # The file maps FHIR resource types to Thymeleaf HTML templates for the generateNarrative mapping code.
