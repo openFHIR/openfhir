@@ -11,6 +11,7 @@ import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.util.FhirConditionEvaluator;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -81,12 +82,22 @@ public class ToOpenEhr {
      */
     public Composition fhirToCompositionRm(final FhirConnectContext context, final IAnyResource resource,
                                            final WebTemplate webTemplate) {
+        return fhirToCompositionRm(context, resource, webTemplate, new MappingIssueCollector());
+    }
+
+    /**
+     * Same as {@link #fhirToCompositionRm(FhirConnectContext, IAnyResource, WebTemplate)} but reporting
+     * skipped/unmappable elements into the given {@link MappingIssueCollector} instead of only logging them.
+     */
+    public Composition fhirToCompositionRm(final FhirConnectContext context, final IAnyResource resource,
+                                           final WebTemplate webTemplate,
+                                           final MappingIssueCollector issueCollector) {
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
         final MappingTimer compositionRmTimer = MappingTimer.start();
 
         // invoke the actual mapping logic
-        final JsonObject flattenedWithValues = fhirToFlatJsonObject(context, resource, webTemplate);
+        final JsonObject flattenedWithValues = fhirToFlatJsonObject(context, resource, webTemplate, issueCollector);
 
         // unmarshall flat path to a canonical json format
         final Composition composition = flatJsonUnmarshaller.unmarshal(gson.toJson(flattenedWithValues), webTemplate);
@@ -112,6 +123,17 @@ public class ToOpenEhr {
     public JsonObject fhirToFlatJsonObject(final FhirConnectContext context,
                                            final IAnyResource resource,
                                            final WebTemplate webTemplate) {
+        return fhirToFlatJsonObject(context, resource, webTemplate, new MappingIssueCollector());
+    }
+
+    /**
+     * Same as {@link #fhirToFlatJsonObject(FhirConnectContext, IAnyResource, WebTemplate)} but reporting
+     * skipped/unmappable elements into the given {@link MappingIssueCollector} instead of only logging them.
+     */
+    public JsonObject fhirToFlatJsonObject(final FhirConnectContext context,
+                                           final IAnyResource resource,
+                                           final WebTemplate webTemplate,
+                                           final MappingIssueCollector issueCollector) {
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
 
@@ -148,6 +170,9 @@ public class ToOpenEhr {
         if (startingResources == null) {
             log.error("No starting resources found for template: {}, archetype: {}", templateId,
                       context.getContext().getStart());
+            issueCollector.addWarning(String.format(
+                    "No starting resources found in the input for template '%s' (start archetype '%s') — nothing was mapped.",
+                    templateId, context.getContext().getStart()));
             // empty flat at this point, nothing mapped
             return finalFlat;
         }
@@ -166,7 +191,8 @@ public class ToOpenEhr {
                                                     startingResource,
                                                     true,
                                                     indexByHierarchyPath,
-                                                    fhirVersion);
+                                                    fhirVersion,
+                                                    issueCollector);
                 metricsLogger.record("fhirToFlatJsonObject.mapToOpenEhr",
                         "template=" + templateId + " resources=" + startingResources.size(), mapTimer.elapsedMs());
             }
@@ -183,12 +209,23 @@ public class ToOpenEhr {
                                                 startingResources.get(0),
                                                 true,
                                                 new HashMap<>(),
-                                                fhirVersion);
+                                                fhirVersion,
+                                                issueCollector);
             metricsLogger.record("fhirToFlatJsonObject.mapToOpenEhr",
                     "template=" + templateId + " resources=" + startingResources.size(), mapTimer.elapsedMs());
         }
 
         prePostProcessor.postProcess(finalFlat);
+
+        // _feeder_audit paths are bookkeeping the engine always adds — a result containing nothing else
+        // means no element of the input was actually mapped
+        final boolean nothingMapped = finalFlat.keySet().stream()
+                .allMatch(key -> key.contains("/_feeder_audit"));
+        if (nothingMapped) {
+            issueCollector.addWarning(String.format(
+                    "Mapping produced an empty result for template '%s': no element of the input FHIR resource could be mapped to the openEHR composition.",
+                    templateId));
+        }
 
         return finalFlat;
 

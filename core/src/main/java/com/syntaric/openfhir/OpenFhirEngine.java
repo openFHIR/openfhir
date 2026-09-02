@@ -22,6 +22,8 @@ import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.operations.MappingCallContext;
+import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.FhirConditionEvaluator;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
@@ -206,6 +208,15 @@ public class OpenFhirEngine {
      * if the caller will always know which template to use?
      */
     public String toOpenEhr(final String incomingFhirResource, final String incomingTemplateId, final Boolean flat) {
+        return toOpenEhr(incomingFhirResource, incomingTemplateId, flat, new MappingIssueCollector());
+    }
+
+    /**
+     * Same as {@link #toOpenEhr(String, String, Boolean)} but reporting skipped/unmappable elements into the
+     * given {@link MappingIssueCollector} instead of only logging them.
+     */
+    public String toOpenEhr(final String incomingFhirResource, final String incomingTemplateId, final Boolean flat,
+                            final MappingIssueCollector issueCollector) {
         // get context and operational template
         final FhirConnectContextEntity fhirConnectContext = getContextForFhir(incomingTemplateId,
                 incomingFhirResource);
@@ -229,13 +240,15 @@ public class OpenFhirEngine {
         if (flat != null && flat) {
             final JsonObject jsonObject = fhirToOpenEhr.fhirToFlatJsonObject(fhirConnectContext.getFhirConnectContext(),
                     resource,
-                    webTemplate);
+                    webTemplate,
+                    issueCollector);
             return gson.toJson(jsonObject);
         } else {
             final Composition composition = fhirToOpenEhr.fhirToCompositionRm(
                     fhirConnectContext.getFhirConnectContext(),
                     resource,
-                    webTemplate);
+                    webTemplate,
+                    issueCollector);
             return new CanonicalJson().marshal(composition);
         }
     }
@@ -262,6 +275,22 @@ public class OpenFhirEngine {
     }
 
     public String toFhir(final String openEhrCompositionJson, final String incomingTemplateId) {
+        final IBaseBundle fhir = toFhirBundle(openEhrCompositionJson, incomingTemplateId,
+                MappingCallContext.empty(), new MappingIssueCollector());
+        final Spec.Version fhirVersion = FhirContextRegistry.specVersionOf(fhir.getStructureFhirVersionEnum());
+        return fhirContextRegistry.getContext(fhirVersion).newJsonParser().encodeResourceToString(fhir);
+    }
+
+    /**
+     * Maps an openEHR payload (canonical Composition, ContentItem or flat json) to a live FHIR Bundle without
+     * encoding it, so callers (e.g. the {@code $tofhir} operation) can post-process the Bundle without a parse
+     * round-trip. Skipped/unmappable elements are reported into the given {@link MappingIssueCollector}.
+     *
+     * @param callContext caller-supplied call context (ehr_id, patient/who/onBehalfOf references, request id)
+     */
+    public IBaseBundle toFhirBundle(final String openEhrCompositionJson, final String incomingTemplateId,
+                                    final MappingCallContext callContext,
+                                    final MappingIssueCollector issueCollector) {
         final MappingTimer totalTimer = MappingTimer.start();
 
         // find the context mapper for the given template
@@ -288,26 +317,26 @@ public class OpenFhirEngine {
             final List<Composition> compositions = parseCompositions(openEhrCompositionJson);
             fhir = openEhrToFhir.compositionsToFhir(fhirConnectContext.getFhirConnectContext(),
                     compositions,
-                    webTemplate);
+                    webTemplate,
+                    issueCollector);
         } else if (incomingOpenEhrType == IncomingOpenEhrType.CONTENT_ITEM) {
             final List<ContentItem> contentItems = parseContentItem(openEhrCompositionJson);
             fhir = openEhrToFhir.contentItemsToFhir(fhirConnectContext.getFhirConnectContext(),
                     contentItems,
-                    webTemplate);
+                    webTemplate,
+                    issueCollector);
         } else {
             // flat
             final List<Composition> compositions = parseFlat(openEhrCompositionJson, webTemplate);
             fhir = openEhrToFhir.compositionsToFhir(fhirConnectContext.getFhirConnectContext(),
                     compositions,
-                    webTemplate);
+                    webTemplate,
+                    issueCollector);
         }
         metricsLogger.record("toFhir.mapping", "template=" + templateIdToUse + " type=" + incomingOpenEhrType,
                 mappingTimer.elapsedMs());
-
-        final Spec.Version fhirVersion = getFhirVersion(fhirConnectContext);
-        final String encoded = fhirContextRegistry.getContext(fhirVersion).newJsonParser().encodeResourceToString(fhir);
         metricsLogger.record("toFhir.total", "template=" + templateIdToUse, totalTimer.elapsedMs());
-        return encoded;
+        return fhir;
     }
 
     List<Composition> parseCompositions(final String marshalled) {
@@ -400,7 +429,7 @@ public class OpenFhirEngine {
         }
     }
 
-    private IncomingOpenEhrType deduceIncomingPayloadType(final String incomingOpenEhr) {
+    public IncomingOpenEhrType deduceIncomingPayloadType(final String incomingOpenEhr) {
         final JsonObject jsonObject;
         if (incomingOpenEhr.startsWith("[")) {
             // array

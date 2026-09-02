@@ -11,6 +11,7 @@ import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.util.OpenEhrTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.ehrbase.openehr.sdk.serialisation.flatencoding.std.marshal.FlatJsonMarshaller;
@@ -56,16 +57,34 @@ public class ToFhir {
     public IBaseBundle contentItemsToFhir(final FhirConnectContext context,
                                           final List<ContentItem> contentItems,
                                           final WebTemplate webTemplate) {
+        return contentItemsToFhir(context, contentItems, webTemplate, new MappingIssueCollector());
+    }
+
+    public IBaseBundle contentItemsToFhir(final FhirConnectContext context,
+                                          final List<ContentItem> contentItems,
+                                          final WebTemplate webTemplate,
+                                          final MappingIssueCollector issueCollector) {
         toFhirPrePostProcessor.preProcessContentItems(context, contentItems, webTemplate);
 
         final Composition composition = contentItemCompositionBuilder.buildComposition(contentItems,
                 webTemplate);
-        return compositionsToFhir(context, List.of(composition), webTemplate);
+        return compositionsToFhir(context, List.of(composition), webTemplate, issueCollector);
     }
 
     public IBaseBundle compositionsToFhir(final FhirConnectContext context,
                                           final List<Composition> compositions,
                                           final WebTemplate webTemplate) {
+        return compositionsToFhir(context, compositions, webTemplate, new MappingIssueCollector());
+    }
+
+    /**
+     * Same as {@link #compositionsToFhir(FhirConnectContext, List, WebTemplate)} but reporting skipped or
+     * unmappable elements into the given {@link MappingIssueCollector} instead of only logging them.
+     */
+    public IBaseBundle compositionsToFhir(final FhirConnectContext context,
+                                          final List<Composition> compositions,
+                                          final WebTemplate webTemplate,
+                                          final MappingIssueCollector issueCollector) {
         // create flat from composition
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(
                 context.getContext().getTemplate().getId());
@@ -95,7 +114,8 @@ public class ToFhir {
             metricsLogger.record("compositionsToFhir.constructHelpers", compositionContext, helpersTimer.elapsedMs());
 
             final MappingTimer mapTimer = MappingTimer.start();
-            final IBaseBundle creatingBundle = toFhirMappingEngine.mapToFhir(mappingHelpers, flatJsonObject, fhirVersion);
+            final IBaseBundle creatingBundle = toFhirMappingEngine.mapToFhir(mappingHelpers, flatJsonObject,
+                    fhirVersion, issueCollector);
             metricsLogger.record("compositionsToFhir.mapToFhir", compositionContext, mapTimer.elapsedMs());
 
             toFhirMappingEngine.mergeEntries(returningBundle, creatingBundle, fhirVersion);

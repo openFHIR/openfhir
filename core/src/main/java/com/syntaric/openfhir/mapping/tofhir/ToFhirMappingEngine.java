@@ -13,6 +13,7 @@ import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.OpenEhrFlatPathDataExtractor;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
+import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.*;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +84,13 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
                                  final JsonObject flatJsonObject,
                                  final Spec.Version fhirVersion) {
+        return mapToFhir(mappingHelpersByArchetype, flatJsonObject, fhirVersion, new MappingIssueCollector());
+    }
+
+    public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
+                                 final JsonObject flatJsonObject,
+                                 final Spec.Version fhirVersion,
+                                 final MappingIssueCollector issueCollector) {
         final String modelPackage = fhirVersion.modelPackage();
         final IBaseBundle returningBundle = getBundle(fhirVersion);
         mappingHelpersByArchetype.forEach((archetype, mappingHelpers) -> {
@@ -102,7 +110,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                 copiesToIterateOver.forEach(helper -> helper.setGeneratingFhirResource(generatedResource));
                 addBundleEntry(returningBundle, generatedResource, fhirVersion);
 
-                handleMappingIterations(copiesToIterateOver, jsonObject, fhirVersion);
+                handleMappingIterations(copiesToIterateOver, jsonObject, fhirVersion, issueCollector);
             }
 
             metricsLogger.record("mapToFhir.archetype", "archetype=" + archetype, archetypeTimer.elapsedMs());
@@ -169,6 +177,13 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     public void handleMappingIterations(final List<MappingHelper> helpers,
                                         final JsonObject jsonObject,
                                         final Spec.Version fhirVersion) {
+        handleMappingIterations(helpers, jsonObject, fhirVersion, new MappingIssueCollector());
+    }
+
+    public void handleMappingIterations(final List<MappingHelper> helpers,
+                                        final JsonObject jsonObject,
+                                        final Spec.Version fhirVersion,
+                                        final MappingIssueCollector issueCollector) {
         for (final MappingHelper mappingHelper : helpers) {
             final MappingTimer mappingTimer = MappingTimer.start();
 
@@ -178,13 +193,16 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             if (relevantJsonObject.entrySet().isEmpty()) {
                 log.warn("No relevant entries found for mapping name {}; skipping mapping.",
                         mappingHelper.getMappingName());
+                issueCollector.addWarning(String.format(
+                        "Skipped mapping '%s': no matching data found in the source composition.",
+                        mappingHelper.getMappingName()));
                 continue;
             }
 
             final List<DataWithIndex> extractedData;
             if (StringUtils.isNotEmpty(mappingHelper.getProgrammedMapping())) {
                 detectTypeForProgrammedMapping(mappingHelper, relevantJsonObject);
-                extractedData = invokeProgrammedMapping(mappingHelper, relevantJsonObject);
+                extractedData = invokeProgrammedMapping(mappingHelper, relevantJsonObject, issueCollector);
             } else {
                 extractedData = openEhrFlatPathDataExtractor.extract(mappingHelper,
                         relevantJsonObject);
@@ -251,10 +269,14 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     }
 
     private List<DataWithIndex> invokeProgrammedMapping(final MappingHelper mappingHelper,
-                                                        final JsonObject relevantJsonObject) {
+                                                        final JsonObject relevantJsonObject,
+                                                        final MappingIssueCollector issueCollector) {
         CustomMapping customMapping = customMappingRegistry.find(mappingHelper.getProgrammedMapping()).orElse(null);
         if (customMapping == null) {
             log.warn("No CustomMapping found for mapping code: {}", mappingHelper.getProgrammedMapping());
+            issueCollector.addWarning(String.format(
+                    "Element could not be mapped: no CustomMapping registered for mapping code '%s'.",
+                    mappingHelper.getProgrammedMapping()));
             return Collections.emptyList();
         } else {
             if (relevantJsonObject.isEmpty()) {

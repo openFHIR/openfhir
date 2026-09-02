@@ -24,6 +24,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   fixtures updated for HAPI 8's XHTML composer serializing empty elements as `<td/>`/`<span/>`
 
 ### Added
+- **FHIRconnect REST API operations** ([FHIRconnect-spec PR #93](https://github.com/SevKohler/FHIRconnect-spec/pull/93)):
+  new FHIR Operations-framework endpoints mounted at the server root, alongside the unchanged direct
+  `/openfhir/*` endpoints (see `docs/rest-api-operations.md`):
+  - `POST /$tofhir` — input is a FHIR (R4) `Parameters` resource (`composition` valueString,
+    `templateId`, nested `context` with `ehr_id`/`patient`/`who`/`onBehalfOf`); output is a Bundle that
+    always includes an engine-generated `Provenance` entry (targets cover every mapped entry,
+    `agent.who` from `context.who` or the configured engine device) and, when the mapping reported
+    gaps, an `OperationOutcome` entry
+  - `POST /$toopenehr` — input is the FHIR Bundle itself (no `Parameters` wrapper); `templateId` and
+    `format=canonical|flat` as query parameters; output is `Parameters{composition, outcome?}`
+  - query parameters can supply `templateId`, `format` and the short context fields, with the body
+    taking precedence on conflict; a flat composition without a `templateId` is rejected with a 400
+    `OperationOutcome` (`required`); all errors on the operations endpoints are `OperationOutcome`
+    responses (`application/fhir+json`)
+- subject population on `$tofhir`: empty (and only empty) top-level `subject`/`patient` Reference
+  children of mapped resources are filled from `context.patient`, falling back to the new pluggable
+  `PatientResolverInterface` (engine-side EHR-ID→patient resolution hook; NoOp by default)
+- partial-failure reporting: a `MappingIssueCollector` is threaded through the mapping engines
+  (additive, defaulting overloads) so skipped/unmappable elements are reported as `warning`/`incomplete`
+  issues instead of being silently dropped — surfaced as an `OperationOutcome` Bundle entry (`$tofhir`)
+  or the `outcome` parameter (`$toopenehr`)
+- `openfhir.provenance.device-reference` / `openfhir.provenance.device-display` configuration for the
+  default Provenance agent
+- the legacy `/openfhir/toopenehr` endpoint now also accepts `format=flat|canonical` (taking precedence
+  over the still-supported, deprecated `flat=` boolean), and the direct forms document the
+  `application/openehr+json` / `application/fhir+json` media types — responses are byte-for-byte
+  unchanged
 - toFHIR: a `DV_DURATION` can now populate a FHIR `Duration`, converting the ISO 8601 string to a value
   plus a UCUM time code
 
