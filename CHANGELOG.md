@@ -55,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   plus a UCUM time code
 
 ### Fixed
+- toFHIR: a `manual` block with multiple nested fhir paths sharing a prefix (e.g. `code.coding.code` +
+  `code.coding.system` from `$fhirRoot`) no longer overwrites itself leaving only the last value
 - toOpenEHR: a FHIR `Duration` no longer loses its unit on the way into a `DV_DURATION` or a `DV_TEXT`
 - toOpenEHR: a `DV_IDENTIFIER`'s `|type` and `|assigner` no longer come back with a placeholder system
   prepended, so a `|type` of `Prescription number` no longer returns as
