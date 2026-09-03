@@ -1,10 +1,13 @@
 name: Publish Maven packages
 on:
-  release:
-    types: [created]
+  # release tags: the checkout lands on the tag, so the released (non-SNAPSHOT)
+  # version is what gets deployed. A `release:` trigger would check out the
+  # default branch and publish a SNAPSHOT instead.
   push:
     branches:
       - develop
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
 jobs:
   publish:
     runs-on: ubuntu-latest

@@ -2,6 +2,8 @@ name: Changelog Check
 
 on:
   pull_request:
+    # labeled/unlabeled so applying 'no-changelog' re-runs (and passes) the check
+    types: [opened, synchronize, reopened, labeled, unlabeled]
 
 jobs:
   changelog:
@@ -9,11 +11,13 @@ jobs:
 
     steps:
       - name: Checkout repository
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'no-changelog') }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Check if changelog was modified
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'no-changelog') }}
         run: |
           # Get list of changed files
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
@@ -29,8 +33,3 @@ jobs:
             echo "Please add a changelog entry or apply the 'no-changelog' label."
             exit 1
           fi
-
-      - name: Skip check if label 'no-changelog' is present
-        if: contains(github.event.pull_request.labels.*.name, 'no-changelog')
-        run: |
-          echo "Skipping changelog requirement due to 'no-changelog' label."
