@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.0] - 2026-09-04
 ### Security
 - dependency bumps resolving all 12 HIGH CVEs from the Trivy scan (issue #182), but taken to the newest
   currently available versions:
