@@ -7,6 +7,7 @@ import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.BooleanType;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -18,6 +19,7 @@ import org.hl7.fhir.r4.model.TimeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class TemporalParser {
 
@@ -33,9 +35,34 @@ public class TemporalParser {
         if (raw == null && !path.contains("/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE)) {
             return dateTime(valueHolder, lastIndex, path + "/" + FhirConnectConst.LEAF_TYPE_DATE_TIME_VALUE);
         }
-        DateTimeType dt = new DateTimeType();
+        return new DataWithIndex(toDateTimeType(raw), lastIndex, path, FhirConnectConst.DV_DATE_TIME);
+    }
+
+    /**
+     * Builds a {@link DateTimeType} that keeps the timezone offset the openEHR value was authored
+     * with — or no offset at all, when the source had none.
+     * <p>
+     * openEHR's DV_DATE_TIME carries its own offset. Going via {@code setValue(java.util.Date)}
+     * threw it away twice over: the string was parsed in the server's default zone, and {@code Date}
+     * is a bare instant that cannot hold an offset — so a zone-less source silently acquired the
+     * host's offset, and a source with one had its wall clock shifted. Handing the lexical form
+     * straight to HAPI preserves the offset as written and the precision with it.
+     * <p>
+     * Falls back to the previous {@code Date}-based parse when the string is not a valid FHIR
+     * dateTime, so anything the old path accepted still maps rather than becoming a hard failure.
+     */
+    private DateTimeType toDateTimeType(final String raw) {
+        final DateTimeType dt = new DateTimeType();
+        if (StringUtils.isNotBlank(raw)) {
+            try {
+                dt.setValueAsString(raw.trim());
+                return dt;
+            } catch (final IllegalArgumentException e) {
+                log.debug("Not a lexical FHIR dateTime, falling back to date parsing: {}", raw);
+            }
+        }
         dt.setValue(fhirValueReaders.date(raw));
-        return new DataWithIndex(dt, lastIndex, path, FhirConnectConst.DV_DATE_TIME);
+        return dt;
     }
 
     public DataWithIndex time(JsonObject valueHolder, Integer lastIndex, String path) {
@@ -77,11 +104,11 @@ public class TemporalParser {
         Period period = new Period();
         boolean populated = false;
         if (lowerPath != null) {
-            period.setStart(fhirValueReaders.date(fhirValueReaders.get(valueHolder, lowerPath)));
+            period.setStartElement(toDateTimeType(fhirValueReaders.get(valueHolder, lowerPath)));
             populated = period.getStart() != null;
         }
         if (upperPath != null) {
-            period.setEnd(fhirValueReaders.date(fhirValueReaders.get(valueHolder, upperPath)));
+            period.setEndElement(toDateTimeType(fhirValueReaders.get(valueHolder, upperPath)));
             populated = populated || period.getEnd() != null;
         }
         if (!populated) {
@@ -164,12 +191,14 @@ public class TemporalParser {
         if (timePath == null) {
             return null;
         }
-        Date start = fhirValueReaders.date(fhirValueReaders.get(valueHolder, timePath));
+        final String rawStart = fhirValueReaders.get(valueHolder, timePath);
+        Date start = fhirValueReaders.date(rawStart);
         if (start == null) {
             return null;
         }
         Period period = new Period();
-        period.setStart(start);
+        final DateTimeType startElement = toDateTimeType(rawStart);
+        period.setStartElement(startElement);
 
         String widthPath = resolveEventPartPath(joinedValues, valueHolder, path, "/width");
         if (widthPath != null) {
@@ -178,7 +207,14 @@ public class TemporalParser {
                 try {
                     Duration duration = Duration.parse(width);
                     if (!duration.isNegative() && !duration.isZero()) {
-                        period.setEnd(Date.from(start.toInstant().plus(duration)));
+                        // The end is derived, not read, so it has no lexical form of its own; give it
+                        // the start's timezone (or lack of one) so both halves of the period read the
+                        // same way rather than the end silently picking up the server's offset.
+                        final DateTimeType endElement =
+                                new DateTimeType(Date.from(start.toInstant().plus(duration)));
+                        endElement.setTimeZone(startElement.getTimeZone());
+                        endElement.setPrecision(startElement.getPrecision());
+                        period.setEndElement(endElement);
                     }
                 } catch (Exception ignored) {
                     // invalid duration - leave end unset
@@ -196,13 +232,11 @@ public class TemporalParser {
         if (timePath == null) {
             return null;
         }
-        Date time = fhirValueReaders.date(fhirValueReaders.get(valueHolder, timePath));
-        if (time == null) {
+        final String rawTime = fhirValueReaders.get(valueHolder, timePath);
+        if (fhirValueReaders.date(rawTime) == null) {
             return null;
         }
-        DateTimeType dt = new DateTimeType();
-        dt.setValue(time);
-        return new DataWithIndex(dt, lastIndex, path, FhirConnectConst.DV_DATE_TIME);
+        return new DataWithIndex(toDateTimeType(rawTime), lastIndex, path, FhirConnectConst.DV_DATE_TIME);
     }
 
     public DataWithIndex eventByWidth(List<String> joinedValues,

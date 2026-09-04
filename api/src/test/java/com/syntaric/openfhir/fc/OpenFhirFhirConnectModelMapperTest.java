@@ -44,7 +44,7 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("$openehrRoot/terminology_id",
                             firstLevelDraftTerminology.getWith().getOpenehr());
         Assert.assertEquals("status", firstLevelDraftTerminology.getFhirCondition().getTargetRoot());
-        Assert.assertEquals("[draft]", firstLevelDraftTerminology.getFhirCondition().getCriteria());
+        Assert.assertEquals("[draft]", firstLevelDraftTerminology.getFhirCondition().getCriterias().get(0));
 
         final Mapping firstLevelDraftValue = firstLevelFollowedBy.get(1);
         Assert.assertEquals("firstLevelTest.draft", firstLevelDraftValue.getName());
@@ -52,7 +52,7 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("$openehrRoot",
                             firstLevelDraftValue.getWith().getOpenehr());
         Assert.assertEquals("status", firstLevelDraftValue.getFhirCondition().getTargetRoot());
-        Assert.assertEquals("[draft]", firstLevelDraftValue.getFhirCondition().getCriteria());
+        Assert.assertEquals("[draft]", firstLevelDraftValue.getFhirCondition().getCriterias().get(0));
 
         final Mapping firstLevelDraftCode = firstLevelFollowedBy.get(2);
         Assert.assertEquals("firstLevelTest.draft", firstLevelDraftCode.getName());
@@ -60,7 +60,7 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("$openehrRoot/defining_code",
                             firstLevelDraftCode.getWith().getOpenehr());
         Assert.assertEquals("status", firstLevelDraftCode.getFhirCondition().getTargetRoot());
-        Assert.assertEquals("[draft]", firstLevelDraftCode.getFhirCondition().getCriteria());
+        Assert.assertEquals("[draft]", firstLevelDraftCode.getFhirCondition().getCriterias().get(0));
 
         final Mapping firstLevelDraftFhir = firstLevelFollowedBy.get(3);
         Assert.assertEquals("firstLevelTest.draft", firstLevelDraftFhir.getName());
@@ -68,8 +68,8 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("status", firstLevelDraftFhir.getWith().getFhir());
         Assert.assertEquals("$openehrRoot",
                             firstLevelDraftFhir.getOpenehrCondition().getTargetRoot());
-        Assert.assertEquals("defining_code", firstLevelDraftFhir.getOpenehrCondition().getTargetAttribute());
-        Assert.assertEquals("[524]", firstLevelDraftFhir.getOpenehrCondition().getCriteria());
+        Assert.assertEquals("defining_code", firstLevelDraftFhir.getOpenehrCondition().getTargetAttributes().get(0));
+        Assert.assertEquals("[524]", firstLevelDraftFhir.getOpenehrCondition().getCriterias().get(0));
 
         // assert second level mappings
         final Mapping innerMapping = handled.getMappings().get(2);
@@ -98,7 +98,7 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("coding", secondLevelFirst.getFollowedBy().getMappings().get(0).getWith().getFhir());
         Assert.assertEquals("description[at0001]/items[at0002]", secondLevelFirst.getFollowedBy().getMappings().get(0).getWith().getOpenehr());
         Assert.assertEquals("CODING", secondLevelFirst.getFollowedBy().getMappings().get(0).getWith().getType());
-        Assert.assertEquals("[http://fhir.de/CodeSystem/bfarm/ops, http://snomed.info/sct]", secondLevelFirst.getFollowedBy().getMappings().get(0).getFhirCondition().getCriteria());
+        Assert.assertEquals("[http://fhir.de/CodeSystem/bfarm/ops, http://snomed.info/sct]", secondLevelFirst.getFollowedBy().getMappings().get(0).getFhirCondition().getCriterias().get(0));
 
         final Mapping thirdLevelMapping = secondLevelMapping.getFollowedBy().getMappings().get(1);
         Assert.assertEquals("thirdLevel", thirdLevelMapping.getName());
@@ -109,27 +109,27 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("thirdLevel.thirdLevelManualMappings", secondLevelTheOnesTerminology.getName());
         Assert.assertEquals("$openehrRoot/terminology_id", secondLevelTheOnesTerminology.getWith().getOpenehr());
         Assert.assertEquals("openehr", secondLevelTheOnesTerminology.getWith().getValue());
-        Assert.assertEquals("[active]", secondLevelTheOnesTerminology.getFhirCondition().getCriteria());
+        Assert.assertEquals("[active]", secondLevelTheOnesTerminology.getFhirCondition().getCriterias().get(0));
         Assert.assertEquals("status", secondLevelTheOnesTerminology.getFhirCondition().getTargetRoot());
-        Assert.assertEquals("value", secondLevelTheOnesTerminology.getFhirCondition().getTargetAttribute());
+        Assert.assertEquals("value", secondLevelTheOnesTerminology.getFhirCondition().getTargetAttributes().get(0));
         Assert.assertNull(secondLevelTheOnesTerminology.getOpenehrCondition());
 
         final Mapping secondLevelTheOnesValue = thirdLevelFollowedBy.get(1);
         Assert.assertEquals("thirdLevel.thirdLevelManualMappings", secondLevelTheOnesValue.getName());
         Assert.assertEquals("$openehrRoot", secondLevelTheOnesValue.getWith().getOpenehr());
         Assert.assertEquals("InitialX", secondLevelTheOnesValue.getWith().getValue());
-        Assert.assertEquals("[active]", secondLevelTheOnesValue.getFhirCondition().getCriteria());
+        Assert.assertEquals("[active]", secondLevelTheOnesValue.getFhirCondition().getCriterias().get(0));
         Assert.assertEquals("status", secondLevelTheOnesValue.getFhirCondition().getTargetRoot());
-        Assert.assertEquals("value", secondLevelTheOnesValue.getFhirCondition().getTargetAttribute());
+        Assert.assertEquals("value", secondLevelTheOnesValue.getFhirCondition().getTargetAttributes().get(0));
         Assert.assertNull(secondLevelTheOnesValue.getOpenehrCondition());
 
         final Mapping secondLevelTheOnesCode = thirdLevelFollowedBy.get(2);
         Assert.assertEquals("thirdLevel.thirdLevelManualMappings", secondLevelTheOnesCode.getName());
         Assert.assertEquals("$openehrRoot/defining_code", secondLevelTheOnesCode.getWith().getOpenehr());
         Assert.assertEquals("xxx", secondLevelTheOnesCode.getWith().getValue());
-        Assert.assertEquals("[active]", secondLevelTheOnesCode.getFhirCondition().getCriteria());
+        Assert.assertEquals("[active]", secondLevelTheOnesCode.getFhirCondition().getCriterias().get(0));
         Assert.assertEquals("status", secondLevelTheOnesCode.getFhirCondition().getTargetRoot());
-        Assert.assertEquals("value", secondLevelTheOnesCode.getFhirCondition().getTargetAttribute());
+        Assert.assertEquals("value", secondLevelTheOnesCode.getFhirCondition().getTargetAttributes().get(0));
         Assert.assertNull(secondLevelTheOnesCode.getOpenehrCondition());
 
         final Mapping secondLevelTheOnesFhir = thirdLevelFollowedBy.get(3);
@@ -137,7 +137,7 @@ public class OpenFhirFhirConnectModelMapperTest {
         Assert.assertEquals("status", secondLevelTheOnesFhir.getWith().getFhir());
         Assert.assertEquals("yyyy", secondLevelTheOnesFhir.getWith().getValue());
         Assert.assertEquals("third", secondLevelTheOnesFhir.getOpenehrCondition().getTargetRoot());
-        Assert.assertEquals("[999]", secondLevelTheOnesFhir.getOpenehrCondition().getCriteria());
+        Assert.assertEquals("[999]", secondLevelTheOnesFhir.getOpenehrCondition().getCriterias().get(0));
         Assert.assertNull(secondLevelTheOnesFhir.getFhirCondition());
     }
 
@@ -163,15 +163,15 @@ public class OpenFhirFhirConnectModelMapperTest {
         // --- firstLevelTest mapping (manual: draft) ---
         final Condition draftFhirCondition = new Condition()
                 .withTargetRoot("status")
-                .withTargetAttribute("value")
+                .withTargetAttributes(List.of("value"))
                 .withOperator("one of")
-                .withCriteria("[draft]");
+                .withCriterias("[draft]");
 
         final Condition draftOpenehrCondition = new Condition()
                 .withTargetRoot("$openehrRoot")
-                .withTargetAttribute("defining_code")
+                .withTargetAttributes(List.of("defining_code"))
                 .withOperator("one of")
-                .withCriteria("[524]");
+                .withCriterias("[524]");
 
         final Manual draftManual = new Manual();
         draftManual.setName("draft");
@@ -199,9 +199,9 @@ public class OpenFhirFhirConnectModelMapperTest {
         // secondLevel / name / Name
         final Condition nameFhirCondition = new Condition()
                 .withTargetRoot("coding")
-                .withTargetAttribute("system")
+                .withTargetAttributes(List.of("system"))
                 .withOperator("one of")
-                .withCriteria("[http://fhir.de/CodeSystem/bfarm/ops, http://snomed.info/sct]");
+                .withCriterias("[http://fhir.de/CodeSystem/bfarm/ops, http://snomed.info/sct]");
 
         final Mapping nameChild = new Mapping()
                 .withName("Name")
@@ -216,15 +216,15 @@ public class OpenFhirFhirConnectModelMapperTest {
         // secondLevel / thirdLevel (manual: thirdLevelManualMappings)
         final Condition thirdFhirCondition = new Condition()
                 .withTargetRoot("status")
-                .withTargetAttribute("value")
+                .withTargetAttributes(List.of("value"))
                 .withOperator("one of")
-                .withCriteria("[active]");
+                .withCriterias("[active]");
 
         final Condition thirdOpenehrCondition = new Condition()
                 .withTargetRoot("$openehrRoot")
-                .withTargetAttribute("defining_code")
+                .withTargetAttributes(List.of("defining_code"))
                 .withOperator("one of")
-                .withCriteria("[999]");
+                .withCriterias("[999]");
 
         final Manual thirdManual = new Manual();
         thirdManual.setName("thirdLevelManualMappings");

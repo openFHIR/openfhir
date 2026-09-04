@@ -20,6 +20,8 @@ import java.util.*;
 
 import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_TYPE_CLUSTER;
 import static com.syntaric.openfhir.fc.FhirConnectConst.OPENEHR_TYPE_NONE;
+import static com.syntaric.openfhir.mapping.helpers.parser.QuantityParser.PROPORTION_DENOMINATOR_EXTENSION;
+import static com.syntaric.openfhir.mapping.helpers.parser.QuantityParser.PROPORTION_KIND_EXTENSION;
 import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
 
 /**
@@ -41,6 +43,13 @@ public class OpenEhrPopulator {
             "http://terminology.hl7.org/CodeSystem/dataabsentreason"
     );
     private static final String NULL_FLAVOUR_TERMINOLOGY = "openehr";
+
+    /**
+     * Prefix of the placeholder systems {@code IdentifierParser} invents on the openEHR → FHIR leg
+     * for DV_IDENTIFIER parts that carry no system of their own. It marks "no real system", so it has
+     * to be stripped again on the way back rather than surfacing in the openEHR value.
+     */
+    private static final String OPENEHR_IDENTIFIER_SENTINEL_PREFIX = "http://openehr.org/identifier";
 
     private enum NullFlavourAttributes {
         UNKNOWN("unknown", "253"),
@@ -457,7 +466,14 @@ public class OpenEhrPopulator {
                 addToConstructingFlat(path, translate(v, null, terminology), flat);
                 return true;
             }
-        } else if (isQuantity(value)) {
+        } else if (isQuantity(value) || isDuration(value)) {
+            // A FHIR Duration carries its unit in the UCUM code. Writing the bare magnitude would
+            // lose it: "30" cannot say whether it meant 30 minutes or 30 seconds.
+            final String iso = quantityToIso8601Duration(value);
+            if (iso != null) {
+                addToConstructingFlat(path, iso, flat);
+                return true;
+            }
             final java.math.BigDecimal qValue = getQuantityValue(value);
             if (qValue != null) {
                 addToConstructingFlat(path, qValue.toPlainString(), flat);
@@ -468,6 +484,54 @@ public class OpenEhrPopulator {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Renders a FHIR {@code Duration} (a {@link org.hl7.fhir.r4.model.Quantity} carrying a UCUM time
+     * code) as the ISO 8601 string an openEHR {@code DV_DURATION} expects. This is the inverse of the
+     * conversion {@code FhirInstancePopulator} applies on the way out.
+     *
+     * <p>Only the UCUM time codes of FHIR's {@code CommonUCUMCodesForDuration} are accepted; a
+     * Quantity carrying any other code is not a duration and yields null so the caller can fall back.
+     * A zero value is a duration in its own right and renders as {@code PT0S}, rather than being
+     * treated as an absent value.
+     *
+     * @return the ISO 8601 duration, or null if this Quantity does not carry a UCUM time code
+     */
+    private static String quantityToIso8601Duration(final IBase value) {
+        final java.math.BigDecimal magnitude = getQuantityValue(value);
+        if (magnitude == null) {
+            return null;
+        }
+        // The unit is only trusted as a fallback: code is the coded form, unit is a display string.
+        final String rawCode = StringUtils.isNotBlank(getQuantityCode(value))
+                ? getQuantityCode(value)
+                : getQuantityUnit(value);
+        if (StringUtils.isBlank(rawCode)) {
+            return null;
+        }
+        final String code = rawCode.trim();
+        // Sub-second precision has no integer ISO component, so fractional values are carried on the
+        // seconds field, which ISO 8601 allows to be fractional.
+        final boolean whole = magnitude.stripTrailingZeros().scale() <= 0;
+        return switch (code) {
+            case "s" -> "PT" + magnitude.stripTrailingZeros().toPlainString() + "S";
+            case "min" -> whole
+                    ? "PT" + magnitude.toBigInteger() + "M"
+                    : "PT" + magnitude.multiply(java.math.BigDecimal.valueOf(60))
+                            .stripTrailingZeros().toPlainString() + "S";
+            case "h" -> whole
+                    ? "PT" + magnitude.toBigInteger() + "H"
+                    : "PT" + magnitude.multiply(java.math.BigDecimal.valueOf(3600))
+                            .stripTrailingZeros().toPlainString() + "S";
+            case "d" -> whole ? "P" + magnitude.toBigInteger() + "D" : null;
+            case "wk" -> whole ? "P" + magnitude.toBigInteger() + "W" : null;
+            // Months and years are not fixed-length, so a fractional one cannot be expanded into
+            // smaller components without inventing a month length.
+            case "mo" -> whole ? "P" + magnitude.toBigInteger() + "M" : null;
+            case "a" -> whole ? "P" + magnitude.toBigInteger() + "Y" : null;
+            default -> null;
+        };
     }
 
     private boolean handleDvOrdinal(String path, final IBase value, final boolean isMultipleTypes,
@@ -513,25 +577,120 @@ public class OpenEhrPopulator {
         return false;
     }
 
+    /**
+     * FHIR carries no equivalent of a DV_PROPORTION's {@code |type}: a {@code Quantity} has a value,
+     * a unit and a code, and nothing that names the <em>kind</em> of proportion. That is not an edge
+     * case on this leg — it is every case, and emphatically so when the source is a FHIR device,
+     * which will never supply one. So {@code |type} is derived here from the parts that do arrive.
+     * <p>
+     * PROPORTION_KIND is a validity contract, not a label, and the denominator decides which member
+     * of it the data actually satisfies:
+     * <ul>
+     *   <li>{@code 100} → {@code 2} (percent) — required denominator for a percent</li>
+     *   <li>{@code 1}   → {@code 1} (unitary) — required denominator for a unitary</li>
+     *   <li>otherwise, both parts integral → {@code 4} (integer fraction)</li>
+     *   <li>otherwise → {@code 0} (ratio), the kind that constrains least</li>
+     * </ul>
+     * Never {@code 3} (fraction): a fraction is an integral proportion conventionally read as
+     * "n out of d" parts, and nothing in a bare Quantity distinguishes that reading from the
+     * integer fraction at {@code 4}. Choosing the weaker claim keeps the output valid.
+     * <p>
+     * {@code |type} is written only alongside a denominator. Previously it was hardcoded to
+     * {@code 2}, which asserted "percent" even when the code was not {@code %} and no denominator
+     * had been written at all — an invalid DV_PROPORTION a strict server is entitled to reject.
+     */
     private boolean handleDvProportion(String path, final IBase value, final boolean isMultipleTypes,
                                        final JsonObject flat) {
         if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE)) {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_PROPORTION_VALUE;
         }
         if (isQuantity(value)) {
-            if ("%".equals(getQuantityCode(value))) {
-                addToConstructingFlatDouble(path + "|denominator", 100.0, flat);
-            }
             final java.math.BigDecimal qValue = getQuantityValue(value);
             if (qValue != null) {
                 addToConstructingFlatDouble(path + "|numerator", qValue.doubleValue(), flat);
             }
-            addToConstructingFlat(path + "|type", "2", flat); // hardcoded?
+            final java.math.BigDecimal denominator = proportionDenominator(value);
+            if (denominator != null) {
+                addToConstructingFlatDouble(path + "|denominator", denominator.doubleValue(), flat);
+                final String declaredKind = extensionValue(value, PROPORTION_KIND_EXTENSION);
+                addToConstructingFlat(path + "|type",
+                                      StringUtils.isNotBlank(declaredKind)
+                                              ? declaredKind
+                                              : proportionKind(qValue, denominator),
+                                      flat);
+            }
             return true;
         } else {
             log.warn("openEhrType is DV_PROPORTION but extracted value is not Quantity; is {}", value.getClass());
         }
         return false;
+    }
+
+    /**
+     * The denominator implied by a Quantity's unit. A percent is the only proportion a FHIR Quantity
+     * states outright, via the UCUM code {@code %}; {@code null} means the Quantity does not describe
+     * a proportion at all, in which case no denominator and no {@code |type} are written.
+     */
+    private static java.math.BigDecimal proportionDenominator(final IBase value) {
+        if ("%".equals(getQuantityCode(value)) || "%".equals(getQuantityUnit(value))) {
+            return java.math.BigDecimal.valueOf(100);
+        }
+        final String carried = extensionValue(value, PROPORTION_DENOMINATOR_EXTENSION);
+        if (StringUtils.isNotBlank(carried)) {
+            try {
+                return new java.math.BigDecimal(carried);
+            } catch (NumberFormatException e) {
+                log.warn("DV_PROPORTION denominator extension is not a number; is {}", carried);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * The primitive value of the named extension on a Quantity, across FHIR versions. Used for the
+     * DV_PROPORTION parts FHIR has no field for; {@code null} when absent, which is the normal case
+     * for a Quantity that did not originate from openFHIR.
+     */
+    private static String extensionValue(final IBase value, final String url) {
+        if (value instanceof org.hl7.fhir.r4.model.Quantity q) {
+            final org.hl7.fhir.r4.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Quantity q) {
+            final org.hl7.fhir.dstu3.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Quantity q) {
+            final org.hl7.fhir.r4b.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Quantity q) {
+            final org.hl7.fhir.r5.model.Extension e = q.getExtensionByUrl(url);
+            return e == null || e.getValue() == null ? null : e.getValue().primitiveValue();
+        }
+        return null;
+    }
+
+    /**
+     * The PROPORTION_KIND the given parts satisfy. See {@link #handleDvProportion} for why a
+     * fraction ({@code 3}) is never inferred.
+     */
+    private static String proportionKind(final java.math.BigDecimal numerator,
+                                         final java.math.BigDecimal denominator) {
+        if (denominator.compareTo(java.math.BigDecimal.valueOf(100)) == 0) {
+            return "2";
+        }
+        if (denominator.compareTo(java.math.BigDecimal.ONE) == 0) {
+            return "1";
+        }
+        if (isIntegral(numerator) && isIntegral(denominator)) {
+            return "4";
+        }
+        return "0";
+    }
+
+    private static boolean isIntegral(final java.math.BigDecimal value) {
+        return value != null && value.stripTrailingZeros().scale() <= 0;
     }
 
     private boolean handleDvCount(String path, final IBase value, final boolean isMultipleTypes,
@@ -564,6 +723,11 @@ public class OpenEhrPopulator {
         }
         final String fhirType = value != null ? value.fhirType() : null;
         if ("dateTime".equals(fhirType) || "instant".equals(fhirType)) {
+            final String withOffset = getOffsetPreservingDateTimeString(value);
+            if (withOffset != null) {
+                addToConstructingFlat(path, withOffset, flat);
+                return true;
+            }
             final java.util.Date date = getDateValue(value);
             if (date != null) {
                 addToConstructingFlat(path, openFhirMapperUtils.dateTimeToString(date), flat);
@@ -608,14 +772,18 @@ public class OpenEhrPopulator {
             final java.util.Date start = getPeriodStart(value);
             final java.util.Date end = getPeriodEnd(value);
             if (start != null) {
+                final String startWithOffset = getOffsetPreservingDateTimeString(getPeriodStartElement(value));
                 addToConstructingFlat(path + "/lower|value",
-                                      openFhirMapperUtils.dateTimeToString(start), flat);
+                                      startWithOffset != null ? startWithOffset
+                                                              : openFhirMapperUtils.dateTimeToString(start), flat);
 //                addToConstructingFlat(path + "/lower|_type", FhirConnectConst.DV_DATE_TIME, flat);
 //                addToConstructingFlat(path + "/lower_included", "true", flat); unsupported in flat
             }
             if (end != null) {
+                final String endWithOffset = getOffsetPreservingDateTimeString(getPeriodEndElement(value));
                 addToConstructingFlat(path + "/upper|value",
-                                      openFhirMapperUtils.dateTimeToString(end), flat);
+                                      endWithOffset != null ? endWithOffset
+                                                            : openFhirMapperUtils.dateTimeToString(end), flat);
 //                addToConstructingFlat(path + "/upper|_type", FhirConnectConst.DV_DATE_TIME, flat);
                 //               addToConstructingFlat(path + "/upper_included", "true", flat); unsupported in flat
             }
@@ -939,9 +1107,8 @@ public class OpenEhrPopulator {
         if (StringUtils.isBlank(system)) {
             return system;
         }
-        final String prefix = "http://openehr.org/identifier";
-        if (system.startsWith(prefix)) {
-            String trimmed = system.substring(prefix.length());
+        if (system.startsWith(OPENEHR_IDENTIFIER_SENTINEL_PREFIX)) {
+            String trimmed = system.substring(OPENEHR_IDENTIFIER_SENTINEL_PREFIX.length());
             while (trimmed.startsWith("/") || trimmed.startsWith("#")) {
                 trimmed = trimmed.substring(1);
             }
@@ -959,10 +1126,30 @@ public class OpenEhrPopulator {
         if (StringUtils.isBlank(code)) {
             return null;
         }
-        if (StringUtils.isNotBlank(coding.getSystem())) {
-            return coding.getSystem() + "::" + code;
+        final String system = stripIdentifierSentinelSystem(coding.getSystem());
+        if (StringUtils.isNotBlank(system)) {
+            return system + "::" + code;
         }
         return code;
+    }
+
+    /**
+     * Drops the {@code http://openehr.org/identifier/...} placeholder system that
+     * {@code IdentifierParser} invents on the openEHR → FHIR leg for a DV_IDENTIFIER {@code |type} or
+     * {@code |assigner} that carried no system of its own.
+     * <p>
+     * The placeholder means "there was no real system here", so re-emitting it as
+     * {@code system::value} would corrupt the value on the way back: {@code Prescription number}
+     * would return as {@code http://openehr.org/identifier/type::Prescription number}. This mirrors
+     * what {@link #normalizeIdentifierSystem(String)} already does for {@code |issuer}, which is why
+     * that field round-tripped correctly while these two did not. A genuine system set by the source
+     * FHIR is not affected and is still preserved.
+     */
+    private String stripIdentifierSentinelSystem(final String system) {
+        if (StringUtils.isBlank(system)) {
+            return system;
+        }
+        return system.startsWith(OPENEHR_IDENTIFIER_SENTINEL_PREFIX) ? null : system;
     }
 
     private String buildIdentifierAssignerString(final IBase value) {
@@ -981,8 +1168,9 @@ public class OpenEhrPopulator {
         if (StringUtils.isBlank(chosenValue)) {
             return null;
         }
-        if (StringUtils.isNotBlank(assignerIdSystem)) {
-            return assignerIdSystem + "::" + chosenValue;
+        final String system = stripIdentifierSentinelSystem(assignerIdSystem);
+        if (StringUtils.isNotBlank(system)) {
+            return system + "::" + chosenValue;
         }
         return chosenValue;
     }
@@ -1111,6 +1299,11 @@ public class OpenEhrPopulator {
     private boolean handleDateTimeEvent(final String path, final IBase value, final boolean isMultipleTypes,
                                         final JsonObject flat) {
         if (value != null && "dateTime".equals(value.fhirType())) {
+            final String withOffset = getOffsetPreservingDateTimeString(value);
+            if (withOffset != null) {
+                addToConstructingFlat(path + "/time", withOffset, flat);
+                return true;
+            }
             final java.util.Date date = getDateValue(value);
             if (date != null) {
                 addToConstructingFlat(path + "/time", openFhirMapperUtils.dateTimeToString(date), flat);
@@ -1178,9 +1371,14 @@ public class OpenEhrPopulator {
             openEhrPath = openEhrPath + "/" + FhirConnectConst.getLeafTypeForRmType(openehrType);
         }
 
-        if (isQuantity(fhirValue)) {
+        if (isQuantity(fhirValue) || isDuration(fhirValue)) {
+            // A Duration reaching a text node keeps its unit: "PT30M" reads back as a duration,
+            // whereas the bare magnitude "30" no longer says what it measured.
+            final String isoDuration = isDuration(fhirValue) ? quantityToIso8601Duration(fhirValue) : null;
             final java.math.BigDecimal qValue = getQuantityValue(fhirValue);
-            if (qValue != null) {
+            if (isoDuration != null) {
+                addToConstructingFlat(openEhrPath, isoDuration, constructingFlat);
+            } else if (qValue != null) {
                 addToConstructingFlat(openEhrPath, qValue.toPlainString(), constructingFlat);
             }
         } else if (fhirValue instanceof IBaseCoding extractedCoding) {
@@ -1190,9 +1388,14 @@ public class OpenEhrPopulator {
             handleDvCodedText(openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false, constructingFlat,
                               terminology);
         } else if (fhirValue != null && "dateTime".equals(fhirValue.fhirType())) {
-            final java.util.Date date = getDateValue(fhirValue);
-            if (date != null) {
-                addToConstructingFlat(openEhrPath, openFhirMapperUtils.dateTimeToString(date), constructingFlat);
+            final String withOffset = getOffsetPreservingDateTimeString(fhirValue);
+            if (withOffset != null) {
+                addToConstructingFlat(openEhrPath, withOffset, constructingFlat);
+            } else {
+                final java.util.Date date = getDateValue(fhirValue);
+                if (date != null) {
+                    addToConstructingFlat(openEhrPath, openFhirMapperUtils.dateTimeToString(date), constructingFlat);
+                }
             }
         } else if (fhirValue != null && "Annotation".equals(fhirValue.fhirType())) {
             addToConstructingFlat(openEhrPath, translate(getAnnotationText(fhirValue), null, terminology),
@@ -1326,6 +1529,16 @@ public class OpenEhrPopulator {
 
     private static boolean isQuantity(final IBase value) {
         return value != null && "Quantity".equals(value.fhirType());
+    }
+
+    /**
+     * A FHIR Duration is a Quantity specialisation but reports its own {@code fhirType()}, so it does
+     * not satisfy {@link #isQuantity}. The two are kept apart deliberately: a Duration carries a UCUM
+     * time code and belongs in a DV_DURATION, not in the {@code |magnitude}/{@code |unit} pair a
+     * DV_QUANTITY would write.
+     */
+    private static boolean isDuration(final IBase value) {
+        return value != null && "Duration".equals(value.fhirType());
     }
 
     private static java.math.BigDecimal getQuantityValue(final IBase value) {
@@ -1640,6 +1853,80 @@ public class OpenEhrPopulator {
                 return new String[]{display, null, null};
             }
             return new String[]{display, assigner.getIdentifier().getSystem(), assigner.getIdentifier().getValue()};
+        }
+        return null;
+    }
+
+    /**
+     * The date/time exactly as the FHIR value spells it, when it carries a timezone offset.
+     * <p>
+     * openEHR's DV_DATE_TIME keeps the offset it was authored with, and so does the FHIR
+     * {@code dateTime}. Going through {@link #getDateValue(IBase)} loses it twice over:
+     * {@code java.util.Date} is a bare instant with no zone, and the formatters in
+     * {@link OpenFhirMapperUtils} then re-render it in the server's default zone (their format string
+     * has no offset field at all). The value came back both stripped of its offset and shifted to
+     * whatever zone the server happened to run in. Reading the FHIR value's own lexical form keeps
+     * the offset as written — {@code Z} stays {@code Z}, {@code +00:00} stays {@code +00:00} — and
+     * the original wall-clock reading with it.
+     * <p>
+     * Returns {@code null} when the value has no offset (or is not a date/time at all), which is the
+     * signal to fall back to the {@code Date}-based formatting. A source that genuinely carried no
+     * offset must not have one invented for it.
+     */
+    private static String getOffsetPreservingDateTimeString(final IBase value) {
+        final String asString;
+        final java.util.TimeZone timeZone;
+        if (value instanceof org.hl7.fhir.r4.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else if (value instanceof org.hl7.fhir.dstu3.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else if (value instanceof org.hl7.fhir.r4b.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else if (value instanceof org.hl7.fhir.r5.model.BaseDateTimeType dt) {
+            asString = dt.getValueAsString();
+            timeZone = dt.getTimeZone();
+        } else {
+            return null;
+        }
+        return timeZone == null ? null : asString;
+    }
+
+    /**
+     * The Period's {@code start}/{@code end} as the elements themselves rather than bare
+     * {@code Date}s, so {@link #getOffsetPreservingDateTimeString(IBase)} can read the offset off
+     * them. {@code Period.getStart()} returns a {@code java.util.Date} and has already lost it.
+     */
+    private static IBase getPeriodStartElement(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Period p) {
+            return p.getStartElement();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) {
+            return p.getStartElement();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) {
+            return p.getStartElement();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Period p) {
+            return p.getStartElement();
+        }
+        return null;
+    }
+
+    private static IBase getPeriodEndElement(final IBase value) {
+        if (value instanceof org.hl7.fhir.r4.model.Period p) {
+            return p.getEndElement();
+        }
+        if (value instanceof org.hl7.fhir.dstu3.model.Period p) {
+            return p.getEndElement();
+        }
+        if (value instanceof org.hl7.fhir.r4b.model.Period p) {
+            return p.getEndElement();
+        }
+        if (value instanceof org.hl7.fhir.r5.model.Period p) {
+            return p.getEndElement();
         }
         return null;
     }

@@ -71,11 +71,11 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
                 .getAsString());
         Assert.assertEquals("cm", flat.get("growth_chart/head_circumference/any_event:0/head_circumference|unit")
                 .getAsString());
-        Assert.assertEquals("2020-10-07T01:00:00",
+        Assert.assertEquals(expectedTime(1),
                             flat.get("growth_chart/head_circumference/any_event:0/time").getAsString());
-        Assert.assertEquals("2020-10-07T02:00:00",
+        Assert.assertEquals(expectedTime(2),
                             flat.get("growth_chart/head_circumference/any_event:1/time").getAsString());
-        Assert.assertEquals("2020-10-07T03:00:00",
+        Assert.assertEquals(expectedTime(3),
                             flat.get("growth_chart/head_circumference/any_event:2/time").getAsString());
 
 
@@ -84,19 +84,19 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
                 .getAsString());
         Assert.assertEquals("kg/m2",
                             flat.get("growth_chart/body_mass_index/any_event:0/body_mass_index|unit").getAsString());
-        Assert.assertEquals("2020-10-07T00:00:00",
+        Assert.assertEquals(expectedTime(0),
                             flat.get("growth_chart/body_mass_index/any_event:0/time").getAsString());
         Assert.assertEquals("21.0", flat.get("growth_chart/body_mass_index/any_event:1/body_mass_index|magnitude")
                 .getAsString());
         Assert.assertEquals("kg/m2",
                             flat.get("growth_chart/body_mass_index/any_event:1/body_mass_index|unit").getAsString());
-        Assert.assertEquals("2020-10-07T01:00:00",
+        Assert.assertEquals(expectedTime(1),
                             flat.get("growth_chart/body_mass_index/any_event:1/time").getAsString());
         Assert.assertEquals("22.0", flat.get("growth_chart/body_mass_index/any_event:2/body_mass_index|magnitude")
                 .getAsString());
         Assert.assertEquals("kg/m2",
                             flat.get("growth_chart/body_mass_index/any_event:2/body_mass_index|unit").getAsString());
-        Assert.assertEquals("2020-10-07T02:00:00",
+        Assert.assertEquals(expectedTime(2),
                             flat.get("growth_chart/body_mass_index/any_event:2/time").getAsString());
 
         // ok
@@ -115,10 +115,10 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
         Assert.assertEquals("kg", flat.get("growth_chart/body_weight/any_event:0/weight|unit").getAsString());
         Assert.assertEquals("66.0", flat.get("growth_chart/body_weight/any_event:1/weight|magnitude").getAsString());
         Assert.assertEquals("kg", flat.get("growth_chart/body_weight/any_event:1/weight|unit").getAsString());
-        Assert.assertEquals("2020-10-07T01:00:00", flat.get("growth_chart/body_weight/any_event:1/time").getAsString());
+        Assert.assertEquals(expectedTime(1), flat.get("growth_chart/body_weight/any_event:1/time").getAsString());
         Assert.assertEquals("68.0", flat.get("growth_chart/body_weight/any_event:2/weight|magnitude").getAsString());
         Assert.assertEquals("kg", flat.get("growth_chart/body_weight/any_event:2/weight|unit").getAsString());
-        Assert.assertEquals("2020-10-07T03:00:00", flat.get("growth_chart/body_weight/any_event:2/time").getAsString());
+        Assert.assertEquals(expectedTime(3), flat.get("growth_chart/body_weight/any_event:2/time").getAsString());
         Assert.assertEquals("just too fat", flat.get("growth_chart/body_weight/any_event:2/comment").getAsString());
         Assert.assertNull(flat.get("growth_chart/body_weight/any_event:0/time"));
 
@@ -135,6 +135,21 @@ public class GrowthChartToOpenEhrTest extends GenericTest {
         Assert.assertEquals("performer",
                             flat.get("growth_chart/height_length/_other_participation:0|function")
                                     .getAsString());
+    }
+
+    /**
+     * The expected {@code time} for the observation built at {@code 2020-10-07T<hour>:00} local.
+     * <p>
+     * The bundle these assertions run against is built with
+     * {@code new DateTimeType(Date.from(localDateTime.atZone(ZoneId.systemDefault())...))}, which
+     * makes HAPI stamp the value with the host's offset. The source therefore genuinely carries one,
+     * and the mapping preserves it — so the expectation has to be derived the same way rather than
+     * hardcoded, or this test would only pass in the zone it was written in.
+     */
+    private String expectedTime(final int hour) {
+        return new DateTimeType(Date.from(LocalDateTime.of(2020, 10, 7, hour, 0)
+                                                  .atZone(ZoneId.systemDefault()).toInstant()))
+                .getValueAsString();
     }
 
     @Test

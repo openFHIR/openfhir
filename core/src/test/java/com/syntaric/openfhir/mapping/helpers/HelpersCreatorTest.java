@@ -20,7 +20,7 @@ public class HelpersCreatorTest {
 
     @Before
     public void setUp() {
-        helpersCreator = new HelpersCreator(null, null, new OpenFhirStringUtils());
+        helpersCreator = new HelpersCreator(null, null);
         parentHelper = new MappingHelper();
     }
 
@@ -1001,9 +1001,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition positionCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         positionCondition.setTargetRoot("$resource.extension");
-        positionCondition.setTargetAttribute("url");
+        positionCondition.setTargetAttributes(List.of("url"));
         positionCondition.setOperator("one of");
-        positionCondition.setCriteria("http://hl7.org/fhir/StructureDefinition/observation-bodyPosition");
+        positionCondition.setCriterias(List.of("http://hl7.org/fhir/StructureDefinition/observation-bodyPosition"));
         position.setFhirCondition(positionCondition);
 
         topLevelMappings.add(position);
@@ -1026,9 +1026,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition systolicCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         systolicCondition.setTargetRoot("$fhirRoot");
-        systolicCondition.setTargetAttribute("code.coding.code");
+        systolicCondition.setTargetAttributes(List.of("code.coding.code"));
         systolicCondition.setOperator("one of");
-        systolicCondition.setCriteria("8480-6");
+        systolicCondition.setCriterias(List.of("8480-6"));
         systolicParent.setFhirCondition(systolicCondition);
 
         FollowedBy followedBy = new FollowedBy();
@@ -1049,7 +1049,7 @@ public class HelpersCreatorTest {
         Assert.assertNotNull(positionHelper.getFhirConditions());
         Assert.assertEquals(1, positionHelper.getFhirConditions().size());
         Assert.assertEquals("Observation.extension", positionHelper.getFhirConditions().get(0).getTargetRoot());
-        Assert.assertEquals("url", positionHelper.getFhirConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("url", positionHelper.getFhirConditions().get(0).getTargetAttributes().get(0));
         Assert.assertEquals("one of", positionHelper.getFhirConditions().get(0).getOperator());
 
         // Mapping 2: componentParent with nested systolicParent
@@ -1061,8 +1061,8 @@ public class HelpersCreatorTest {
         Assert.assertNotNull(systolicParentHelper.getFhirConditions());
         Assert.assertEquals(1, systolicParentHelper.getFhirConditions().size());
         Assert.assertEquals("Observation.component", systolicParentHelper.getFhirConditions().get(0).getTargetRoot());
-        Assert.assertEquals("code.coding.code", systolicParentHelper.getFhirConditions().get(0).getTargetAttribute());
-        Assert.assertEquals("8480-6", systolicParentHelper.getFhirConditions().get(0).getCriteria());
+        Assert.assertEquals("code.coding.code", systolicParentHelper.getFhirConditions().get(0).getTargetAttributes().get(0));
+        Assert.assertEquals("8480-6", systolicParentHelper.getFhirConditions().get(0).getCriterias().get(0));
     }
 
     /**
@@ -1120,9 +1120,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition topLevelCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         topLevelCondition.setTargetRoot("$archetype/category");
-        topLevelCondition.setTargetAttribute("value");
+        topLevelCondition.setTargetAttributes(List.of("value"));
         topLevelCondition.setOperator("one of");
-        topLevelCondition.setCriteria("event");
+        topLevelCondition.setCriterias(List.of("event"));
         topLevel.setOpenehrCondition(topLevelCondition);
 
         topLevelMappings.add(topLevel);
@@ -1145,9 +1145,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition nestedCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         nestedCondition.setTargetRoot("$openehrRoot/items");
-        nestedCondition.setTargetAttribute("name|value");
+        nestedCondition.setTargetAttributes(List.of("name|value"));
         nestedCondition.setOperator("one of");
-        nestedCondition.setCriteria("vital-signs");
+        nestedCondition.setCriterias(List.of("vital-signs"));
         nested.setOpenehrCondition(nestedCondition);
 
         FollowedBy followedBy = new FollowedBy();
@@ -1169,7 +1169,7 @@ public class HelpersCreatorTest {
         Assert.assertEquals(1, topLevelHelper.getOpenEhrConditions().size());
         Assert.assertEquals("openEHR-EHR-COMPOSITION.encounter.v1/category",
                             topLevelHelper.getOpenEhrConditions().get(0).getTargetRoot());
-        Assert.assertEquals("value", topLevelHelper.getOpenEhrConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("value", topLevelHelper.getOpenEhrConditions().get(0).getTargetAttributes().get(0));
 
         // Nested: verify $openehrRoot is replaced in openehrCondition
         MappingHelper sectionParentHelper = result.get(1);
@@ -1178,7 +1178,7 @@ public class HelpersCreatorTest {
         Assert.assertEquals(1, nestedHelper.getOpenEhrConditions().size());
         Assert.assertEquals("openEHR-EHR-COMPOSITION.encounter.v1/content/items",
                             nestedHelper.getOpenEhrConditions().get(0).getTargetRoot());
-        Assert.assertEquals("name|value", nestedHelper.getOpenEhrConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("name|value", nestedHelper.getOpenEhrConditions().get(0).getTargetAttributes().get(0));
     }
 
     /**
@@ -1248,9 +1248,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition level1FhirCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         level1FhirCondition.setTargetRoot("$resource");
-        level1FhirCondition.setTargetAttribute("status");
+        level1FhirCondition.setTargetAttributes(List.of("status"));
         level1FhirCondition.setOperator("one of");
-        level1FhirCondition.setCriteria("final");
+        level1FhirCondition.setCriterias(List.of("final"));
         level1.setFhirCondition(level1FhirCondition);
 
         // === Level 2 ===
@@ -1263,7 +1263,7 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition level2OpenEhrCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         level2OpenEhrCondition.setTargetRoot("$openehrRoot/events");
-        level2OpenEhrCondition.setTargetAttribute("time");
+        level2OpenEhrCondition.setTargetAttributes(List.of("time"));
         level2OpenEhrCondition.setOperator("not empty");
         level2.setOpenehrCondition(level2OpenEhrCondition);
 
@@ -1277,16 +1277,16 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition level3FhirCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         level3FhirCondition.setTargetRoot("$fhirRoot.code");
-        level3FhirCondition.setTargetAttribute("coding.code");
+        level3FhirCondition.setTargetAttributes(List.of("coding.code"));
         level3FhirCondition.setOperator("one of");
-        level3FhirCondition.setCriteria("8310-5");
+        level3FhirCondition.setCriterias(List.of("8310-5"));
         level3.setFhirCondition(level3FhirCondition);
 
         com.syntaric.openfhir.fc.schema.model.Condition level3OpenEhrCondition = new com.syntaric.openfhir.fc.schema.model.Condition();
         level3OpenEhrCondition.setTargetRoot("$openehrRoot");
-        level3OpenEhrCondition.setTargetAttribute("name|value");
+        level3OpenEhrCondition.setTargetAttributes(List.of("name|value"));
         level3OpenEhrCondition.setOperator("one of");
-        level3OpenEhrCondition.setCriteria("Body temperature");
+        level3OpenEhrCondition.setCriterias(List.of("Body temperature"));
         level3.setOpenehrCondition(level3OpenEhrCondition);
 
         // Wire up hierarchy
@@ -1311,14 +1311,14 @@ public class HelpersCreatorTest {
         MappingHelper level1Helper = result.get(0);
         Assert.assertNotNull(level1Helper.getFhirConditions());
         Assert.assertEquals("Observation", level1Helper.getFhirConditions().get(0).getTargetRoot());
-        Assert.assertEquals("status", level1Helper.getFhirConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("status", level1Helper.getFhirConditions().get(0).getTargetAttributes().get(0));
 
         // Level 2: $openehrRoot in openehrCondition
         MappingHelper level2Helper = level1Helper.getChildren().get(0);
         Assert.assertNotNull(level2Helper.getOpenEhrConditions());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.vital_signs.v1/data[at0001]/events",
                             level2Helper.getOpenEhrConditions().get(0).getTargetRoot());
-        Assert.assertEquals("time", level2Helper.getOpenEhrConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("time", level2Helper.getOpenEhrConditions().get(0).getTargetAttributes().get(0));
 
         // Level 3: both fhirCondition and openehrCondition
         MappingHelper level3Helper = level2Helper.getChildren().get(0);
@@ -1326,14 +1326,14 @@ public class HelpersCreatorTest {
         // Level 3 FHIR condition with $fhirRoot.code
         Assert.assertNotNull(level3Helper.getFhirConditions());
         Assert.assertEquals("Observation.component.code", level3Helper.getFhirConditions().get(0).getTargetRoot());
-        Assert.assertEquals("coding.code", level3Helper.getFhirConditions().get(0).getTargetAttribute());
-        Assert.assertEquals("8310-5", level3Helper.getFhirConditions().get(0).getCriteria());
+        Assert.assertEquals("coding.code", level3Helper.getFhirConditions().get(0).getTargetAttributes().get(0));
+        Assert.assertEquals("8310-5", level3Helper.getFhirConditions().get(0).getCriterias().get(0));
 
         // Level 3 OpenEHR condition with $openehrRoot
         Assert.assertNotNull(level3Helper.getOpenEhrConditions());
         Assert.assertEquals("openEHR-EHR-OBSERVATION.vital_signs.v1/data[at0001]/events[at0002]",
                             level3Helper.getOpenEhrConditions().get(0).getTargetRoot());
-        Assert.assertEquals("name|value", level3Helper.getOpenEhrConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("name|value", level3Helper.getOpenEhrConditions().get(0).getTargetAttributes().get(0));
     }
 
     /**
@@ -1372,9 +1372,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition condition = new com.syntaric.openfhir.fc.schema.model.Condition();
         condition.setTargetRoot("$composition/content");
-        condition.setTargetAttribute("archetype_node_id");
+        condition.setTargetAttributes(List.of("archetype_node_id"));
         condition.setOperator("one of");
-        condition.setCriteria("openEHR-EHR-OBSERVATION.lab_test.v1");
+        condition.setCriterias(List.of("openEHR-EHR-OBSERVATION.lab_test.v1"));
         mapping.setOpenehrCondition(condition);
 
         List<Mapping> mappings = java.util.Arrays.asList(mapping);
@@ -1387,7 +1387,7 @@ public class HelpersCreatorTest {
         MappingHelper helper = result.get(0);
         Assert.assertNotNull(helper.getOpenEhrConditions());
         Assert.assertEquals("$composition/content", helper.getOpenEhrConditions().get(0).getTargetRoot());
-        Assert.assertEquals("archetype_node_id", helper.getOpenEhrConditions().get(0).getTargetAttribute());
+        Assert.assertEquals("archetype_node_id", helper.getOpenEhrConditions().get(0).getTargetAttributes().get(0));
     }
 
     /**
@@ -1439,9 +1439,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition condition1 = new com.syntaric.openfhir.fc.schema.model.Condition();
         condition1.setTargetRoot("$resource.component");
-        condition1.setTargetAttribute("code.coding.code");
+        condition1.setTargetAttributes(List.of("code.coding.code"));
         condition1.setOperator("one of");
-        condition1.setCriteria("789-8");
+        condition1.setCriterias(List.of("789-8"));
         sibling1.setFhirCondition(condition1);
 
         // Sibling 2
@@ -1454,9 +1454,9 @@ public class HelpersCreatorTest {
 
         com.syntaric.openfhir.fc.schema.model.Condition condition2 = new com.syntaric.openfhir.fc.schema.model.Condition();
         condition2.setTargetRoot("$resource.component");
-        condition2.setTargetAttribute("code.coding.code");
+        condition2.setTargetAttributes(List.of("code.coding.code"));
         condition2.setOperator("one of");
-        condition2.setCriteria("718-7");
+        condition2.setCriterias(List.of("718-7"));
         sibling2.setFhirCondition(condition2);
 
         mappings.add(sibling1);
@@ -1470,11 +1470,11 @@ public class HelpersCreatorTest {
 
         MappingHelper helper1 = result.get(0);
         Assert.assertEquals("Observation.component", helper1.getFhirConditions().get(0).getTargetRoot());
-        Assert.assertEquals("789-8", helper1.getFhirConditions().get(0).getCriteria());
+        Assert.assertEquals("789-8", helper1.getFhirConditions().get(0).getCriterias().get(0));
 
         MappingHelper helper2 = result.get(1);
         Assert.assertEquals("Observation.component", helper2.getFhirConditions().get(0).getTargetRoot());
-        Assert.assertEquals("718-7", helper2.getFhirConditions().get(0).getCriteria());
+        Assert.assertEquals("718-7", helper2.getFhirConditions().get(0).getCriterias().get(0));
     }
 
     // ==================== unidirectional Tests ====================
@@ -1599,5 +1599,111 @@ public class HelpersCreatorTest {
 
         Assert.assertEquals(1, result.size());
         Assert.assertNull(result.get(0).getUnidirectional());
+    }
+
+    // ==================== mappedPathEndAttributePrefix dispatch ====================
+    //
+    // The legacy condition-in-fhirPath string splicing decided WHERE to put the where() clause
+    // from the RAW (unamended) path and targetRoot. A condition whose raw targetRoot did not
+    // prefix the raw path had its where() appended to the END of the mapped path, so the
+    // condition attributes were evaluated on the mapped path's RESULTS — not on elements at the
+    // condition's targetRoot. HelpersCreator preserves this dispatch by stamping the amended
+    // condition with mappedPathEndAttributePrefix:
+    //   - null         → condition anchors at its (amended) targetRoot, the "normal" case
+    //   - ""           → condition applies to the mapped path's results, attributes used as-is
+    //   - "some.path"  → condition applies to the mapped path's results, attributes prefixed —
+    //                    when the prefix is unrelated to the results it never resolves, which
+    //                    (deliberately) makes "one of" never match and "not of" always pass
+    // See FhirConditionEvaluatorTest for what each value does at evaluation time.
+
+    private MappingHelper helperForConditionShape(final String fhir, final String conditionTargetRoot) {
+        final FhirConnectModel context = createFcModel("dispatch", "openEHR-EHR-OBSERVATION.test.v1");
+
+        final Mapping mapping = new Mapping();
+        mapping.setName("shape");
+        final With with = new With();
+        with.setFhir(fhir);
+        with.setOpenehr("$archetype/data[at0001]");
+        mapping.setWith(with);
+
+        final com.syntaric.openfhir.fc.schema.model.Condition condition =
+                new com.syntaric.openfhir.fc.schema.model.Condition();
+        condition.setTargetRoot(conditionTargetRoot);
+        condition.setTargetAttributes(List.of("url"));
+        condition.setOperator("one of");
+        condition.setCriterias(List.of("criteria"));
+        mapping.setFhirCondition(condition);
+
+        return helpersCreator.createHelpers(context, "Observation",
+                java.util.Arrays.asList(mapping), null, null).get(0);
+    }
+
+    /**
+     * targetRoot prefixes the mapped path — the classic mid-path condition
+     * (Observation.extension.where(url=...).value). The condition anchors at its targetRoot:
+     * no path-end prefix.
+     */
+    @Test
+    public void mappedPathEndPrefix_targetRootPrefixesPath_anchorsAtTargetRoot() {
+        final MappingHelper helper = helperForConditionShape("$resource.extension.value", "$resource.extension");
+        Assert.assertNull(helper.getFhirConditions().get(0).getMappedPathEndAttributePrefix());
+    }
+
+    /**
+     * Relative targetRoot equal to the relative path ("coding" narrowing "coding" itself) —
+     * still a raw-path prefix, so it anchors at the targetRoot.
+     */
+    @Test
+    public void mappedPathEndPrefix_relativeTargetRootEqualsPath_anchorsAtTargetRoot() {
+        final MappingHelper helper = helperForConditionShape("coding", "coding");
+        Assert.assertNull(helper.getFhirConditions().get(0).getMappedPathEndAttributePrefix());
+    }
+
+    /**
+     * A $fhirRoot-prefixed targetRoot that is (conceptually) a prefix of the $fhirRoot path —
+     * but the legacy dispatch stripped $fhirRoot from the targetRoot ONLY, so the raw-prefix
+     * check failed and the where() ended up at the path end. The KDS structured-name "prefix"
+     * mapping has exactly this shape; its condition attribute (url) can never resolve on the
+     * path's results (extension.value), which kept that condition permanently unmatched.
+     */
+    @Test
+    public void mappedPathEndPrefix_fhirRootTargetRoot_appliesToPathResults() {
+        final MappingHelper helper = helperForConditionShape("$fhirRoot.prefix.extension.value",
+                "$fhirRoot.prefix.extension");
+        Assert.assertEquals("", helper.getFhirConditions().get(0).getMappedPathEndAttributePrefix());
+    }
+
+    /**
+     * Relative targetRoot unrelated to the mapped path ("address" while mapping "$resource") —
+     * path-end placement with the attributes used as-is on the path's results.
+     */
+    @Test
+    public void mappedPathEndPrefix_unrelatedRelativeTargetRoot_appliesToPathResults() {
+        final MappingHelper helper = helperForConditionShape("$resource", "address");
+        Assert.assertEquals("", helper.getFhirConditions().get(0).getMappedPathEndAttributePrefix());
+    }
+
+    /**
+     * Resource-anchored targetRoot that EXTENDS the mapped path ($resource.address below a
+     * $resource mapping): the attributes get the extension ("address") as a prefix, so the
+     * condition still gates sensibly — "address.url" evaluated on the resource itself.
+     */
+    @Test
+    public void mappedPathEndPrefix_targetRootExtendsPath_prefixIsTheExtension() {
+        final MappingHelper helper = helperForConditionShape("$resource", "$resource.address");
+        Assert.assertEquals("address", helper.getFhirConditions().get(0).getMappedPathEndAttributePrefix());
+    }
+
+    /**
+     * Resource-anchored targetRoot UNRELATED to the mapped path ($resource while mapping
+     * "emptyReason"): the legacy splice prefixed the attributes with the whole resource-typed
+     * targetRoot, producing a path ("Observation.url") that never resolves on the mapped path's
+     * results. This is the shape that made the IPS/EPS emptyReason conditions degenerate —
+     * "not of" always passed, "one of" never did — and it is preserved as-is.
+     */
+    @Test
+    public void mappedPathEndPrefix_unrelatedResourceAnchoredTargetRoot_prefixNeverResolves() {
+        final MappingHelper helper = helperForConditionShape("emptyReason", "$resource");
+        Assert.assertEquals("Observation", helper.getFhirConditions().get(0).getMappedPathEndAttributePrefix());
     }
 }

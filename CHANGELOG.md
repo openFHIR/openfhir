@@ -8,6 +8,104 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Security
+- dependency bumps resolving all 12 HIGH CVEs from the Trivy scan (issue #182), but taken to the newest
+  currently available versions:
+  - Spring Boot 3.3.2 → 3.5.16 (pulls Tomcat 10.1.55 — CVE-2025-48988/-48989/-55752; Spring Framework
+    6.2.19 — CVE-2025-22235/-41249, CVE-2024-38816/-38819; json-smart 2.5.2 — CVE-2024-57699)
+  - HAPI FHIR 7.2.1 → 8.12.0 (pulls org.hl7.fhir.core 6.9.12 — CVE-2024-45294/-51132/-52007)
+  - ucum 1.0.9 → 1.0.10 (CVE-2024-55887 was already fixed at 1.0.9; taken to latest)
+  - archie 3.11.0 → 3.13.0 and springdoc 2.1.0 → 2.8.17, required for compatibility with the above
+  - jackson-bom pinned to 2.19.4: jackson-databind 2.20+ removed the deprecated
+    `PropertyNamingStrategy` constants Archie still uses (2.19.4 is the pairing the ehrbase SDK
+    line itself ships with archie 3.13)
+- HAPI 8 adaptations: `Narrative.div` instantiation resolves the field's own `XhtmlNode` type again
+  (HAPI 8 annotates the child with the un-settable `XhtmlType` pseudo-type), and expected narrative
+  fixtures updated for HAPI 8's XHTML composer serializing empty elements as `<td/>`/`<span/>`
+
+### Added
+- **FHIRconnect REST API operations** ([FHIRconnect-spec PR #93](https://github.com/SevKohler/FHIRconnect-spec/pull/93)):
+  new FHIR Operations-framework endpoints mounted at the server root, alongside the unchanged direct
+  `/openfhir/*` endpoints (see `docs/rest-api-operations.md`):
+  - `POST /$tofhir` — input is a FHIR (R4) `Parameters` resource (`composition` valueString,
+    `templateId`, nested `context` with `ehr_id`/`patient`/`who`/`onBehalfOf`); output is a Bundle that
+    always includes an engine-generated `Provenance` entry (targets cover every mapped entry,
+    `agent.who` from `context.who` or the configured engine device) and, when the mapping reported
+    gaps, an `OperationOutcome` entry
+  - `POST /$toopenehr` — input is the FHIR Bundle itself (no `Parameters` wrapper); `templateId` and
+    `format=canonical|flat` as query parameters; output is `Parameters{composition, outcome?}`
+  - query parameters can supply `templateId`, `format` and the short context fields, with the body
+    taking precedence on conflict; a flat composition without a `templateId` is rejected with a 400
+    `OperationOutcome` (`required`); all errors on the operations endpoints are `OperationOutcome`
+    responses (`application/fhir+json`)
+- subject population on `$tofhir`: empty (and only empty) top-level `subject`/`patient` Reference
+  children of mapped resources are filled from `context.patient`, falling back to the new pluggable
+  `PatientResolverInterface` (engine-side EHR-ID→patient resolution hook; NoOp by default)
+- partial-failure reporting: a `MappingIssueCollector` is threaded through the mapping engines
+  (additive, defaulting overloads) so skipped/unmappable elements are reported as `warning`/`incomplete`
+  issues instead of being silently dropped — surfaced as an `OperationOutcome` Bundle entry (`$tofhir`)
+  or the `outcome` parameter (`$toopenehr`)
+- `openfhir.provenance.device-reference` / `openfhir.provenance.device-display` configuration for the
+  default Provenance agent
+- the legacy `/openfhir/toopenehr` endpoint now also accepts `format=flat|canonical` (taking precedence
+  over the still-supported, deprecated `flat=` boolean), and the direct forms document the
+  `application/openehr+json` / `application/fhir+json` media types — responses are byte-for-byte
+  unchanged
+- toFHIR: a `DV_DURATION` can now populate a FHIR `Duration`, converting the ISO 8601 string to a value
+  plus a UCUM time code
+
+### Fixed
+- toFHIR: a `manual` block with multiple nested fhir paths sharing a prefix (e.g. `code.coding.code` +
+  `code.coding.system` from `$fhirRoot`) no longer overwrites itself leaving only the last value
+- toOpenEHR: a FHIR `Duration` no longer loses its unit on the way into a `DV_DURATION` or a `DV_TEXT`
+- toOpenEHR: a `DV_IDENTIFIER`'s `|type` and `|assigner` no longer come back with a placeholder system
+  prepended, so a `|type` of `Prescription number` no longer returns as
+  `http://openehr.org/identifier/type::Prescription number`. `IdentifierParser` invents those
+  placeholder systems on the way out for parts that carry no system of their own; the return leg
+  re-emitted them as `system::value` instead of stripping them, as it already did for `|issuer`. A
+  system that genuinely came from the source FHIR is unaffected.
+- openehrCondition targetAttribute now correctly evaluates empty/not empty even when pin pointing a non-ending path
+- when openehrCondition targetAttribute references recurring element, this is now correctly evaluated in condition
+- toFHIR: FHIR Path casts to primitive types are now properly evaluated (as Integer -> IntegerType, etc.)
+- a fhir path with no cast at all no longer throws a `NullPointerException` when its cast type is looked up.
+- toOpenEHR: a `DV_PROPORTION`'s `|type` is no longer hardcoded to `2` (percent). FHIR has no field naming the
+  kind of proportion, so it is derived from the denominator: 100 gives `2`, 1 gives `1`, an otherwise integral
+  pair gives `4`, anything else `0`. A fraction (`3`) is never inferred, as a bare `Quantity` cannot distinguish
+  it from an integer fraction. `|type` is now written only where a `|denominator` was, so a non-percent
+  `Quantity` no longer claims to be a percent with no denominator at all — an invalid `DV_PROPORTION` a strict
+  server may reject. A percent is recognised from either the UCUM code or the unit, so a device sending a bare
+  `97 %` maps correctly with nothing else to go on.
+- toFHIR: a `DV_PROPORTION` that is not a percent no longer loses its denominator. Only a percent has a faithful
+  FHIR representation (UCUM `%`); every other kind was reduced to its numerator, so a 3/4 ratio arrived as a bare
+  `3`. The denominator is now carried on a `proportion-denominator` extension and the openEHR `|type` on a
+  `proportion-kind` extension, which is what lets kinds the denominator alone cannot re-derive survive a round
+  trip. The return leg prefers a carried `|type` over deriving one.
+
+### Changed
+- **fhirConditions are no longer compiled into the FHIRPath string** (`Observation.component.where(...)`-style
+  splicing). Plain mapping paths are evaluated as-is and conditions are applied programmatically
+- `Condition` is now plural-only: the deprecated singular `targetAttribute`/`criteria` fields were removed from
+  the model. YAML/JSON mappings using the singular keys keep working — they are normalized into
+  `targetAttributes`/`criterias` at deserialization time.
+- all `targetAttributes` of a fhirCondition are now evaluated with the OR-implied semantics the schema documents
+  (previously only the first attribute was baked into the where clause), and a `type` condition compares against
+  all `criterias` (previously only the first)
+- a fhirCondition without `targetAttributes` (e.g. a bare `type` condition carrying only targetRoot and
+  criteria) is never treated as path-filtering — it only feeds the type gate
+- **date/time values now keep their source's timezone offset in both directions, and no longer gain
+  one that was not there.** Offsets are preserved exactly as written: `Z` stays `Z`, `+00:00` stays
+  `+00:00`, `+01:00` keeps its wall-clock reading.
+- `BootstrapService` extension points widened so a distribution can add file types of its own to the bootstrap
+  scan instead of running a parallel one: `classify`, `apply`, `resolveExisting`, `saveLedgerEntry` and
+  `relativePath` are now `protected`, and `FileType` is public. A subclass can override `classify` to recognise a
+  new suffix and `apply` to route that one type elsewhere, delegating every other type to `super` and inheriting
+  the directory walk, hash comparison, ledger and summary unchanged. No behaviour change here — no bodies moved,
+  and with no subclass on the classpath nothing dispatches differently.
+- `FileType` gained a `CONCEPTMAP` constant, so the ledger's `entityType` and the `BootstrapSummary` breakdown
+  share one vocabulary across distributions. It is inert in this project: `classify` never returns it, and the
+  `upsert` arm it forces is unreachable.
+
+
 ## [2.2.5] - 2026-08-17
 ### Added
 - KDS v1.0 mappings in unit tests

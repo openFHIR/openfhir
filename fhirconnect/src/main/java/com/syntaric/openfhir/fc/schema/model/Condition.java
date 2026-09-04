@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -36,9 +35,6 @@ public class Condition implements Serializable {
     @JsonProperty("targetAttributes")
     private List<String> targetAttributes; // if multiple, then OR is implied between them. If you want AND, you need to write multiple conditions
 
-    @JsonIgnore
-    private String targetAttribute; // if multiple, then OR is implied between them. If you want AND, you need to write multiple conditions
-
     /**
      * (Required)
      */
@@ -47,8 +43,6 @@ public class Condition implements Serializable {
     /**
      * (Required)
      */
-    @JsonIgnore
-    private String criteria;
     @JsonProperty("criterias")
     private List<String> criterias;
     @JsonProperty("identifying")
@@ -59,6 +53,20 @@ public class Condition implements Serializable {
     @Setter
     @JsonIgnore
     private String targetRootFlatPath;
+
+    /**
+     * Runtime-only (not serialized). Non-null when this FHIR condition's predicate applies to the
+     * results of the mapped fhir path itself rather than to elements at the condition's
+     * targetRoot; the value is the path prefix to prepend to each targetAttribute (empty string
+     * for none). This replicates the placement dispatch of the legacy condition-in-fhirPath
+     * string splicing, where such conditions had their where() clause appended to the end of the
+     * mapped path — including the degenerate shapes whose prefixed attribute path never resolves.
+     * Computed while amending conditions during helper creation.
+     */
+    @Getter
+    @Setter
+    @JsonIgnore
+    private String mappedPathEndAttributePrefix;
 
     @Setter
     @JsonIgnore
@@ -79,13 +87,12 @@ public class Condition implements Serializable {
         final Condition condition = new Condition();
         condition.setTargetRoot(targetRoot);
         condition.setTargetAttributes(targetAttributes);
-        condition.setTargetAttribute(targetAttribute);
         condition.setTargetRootFlatPath(targetRootFlatPath);
         condition.setTargetAttributesFlatPath(targetAttributesFlatPath);
         condition.setOperator(operator);
-        condition.setCriteria(criteria);
         condition.setCriterias(criterias);
         condition.setIdentifying(identifying == null ? null : new Boolean(identifying.booleanValue()));
+        condition.setMappedPathEndAttributePrefix(mappedPathEndAttributePrefix);
         return condition;
     }
 
@@ -111,14 +118,10 @@ public class Condition implements Serializable {
     }
 
     /**
-     * Will return all targetAttributes. If only the singular (targetAttribute) is populated,
-     * that one will be added to the list and returned as a list
+     * (Required)
      */
     @JsonProperty("targetAttributes")
     public List<String> getTargetAttributes() {
-        if(StringUtils.isNotBlank(targetAttribute)) {
-            return List.of(targetAttribute);
-        }
         return targetAttributes;
     }
 
@@ -136,23 +139,12 @@ public class Condition implements Serializable {
     }
 
     /**
-     * You should always us the one returning you an array and handle it accordingly.
-     * @return
+     * Backward compatibility for mappings still using the deprecated singular {@code targetAttribute}
+     * key: it is normalized into {@code targetAttributes} at deserialization time.
      */
-    @Deprecated
-    @JsonIgnore
-    public String getTargetAttribute() {
-        return targetAttribute;
-    }
-
     @JsonSetter("targetAttribute")
-    public void setTargetAttribute(String targetAttribute) {
-        this.targetAttribute = targetAttribute;
-    }
-
-    public Condition withTargetAttribute(String targetAttribute) {
-        this.targetAttribute = targetAttribute;
-        return this;
+    private void setSingularTargetAttribute(String targetAttribute) {
+        this.targetAttributes = new ArrayList<>(List.of(targetAttribute));
     }
 
     /**
@@ -176,32 +168,17 @@ public class Condition implements Serializable {
         return this;
     }
 
-    @JsonIgnore
-    public String getCriteria() {
-        if(criteria == null && criterias != null && !criterias.isEmpty()) {
-            // todo: this needs to be adjusted once we support more condition on more criterias
-            return criterias.get(0);
-        }
-        return criteria;
-    }
-
+    /**
+     * Backward compatibility for mappings still using the deprecated singular {@code criteria}
+     * key: it is normalized into {@code criterias} at deserialization time.
+     */
     @JsonSetter("criteria")
-    public void setCriteria(String criteria) {
-        this.criteria = criteria;
+    private void setSingularCriteria(String criteria) {
+        this.criterias = new ArrayList<>(List.of(criteria));
     }
-
-    public Condition withCriteria(String criteria) {
-        this.criteria = criteria;
-        return this;
-    }
-
-
 
     @JsonProperty("criterias")
     public List<String> getCriterias() {
-        if(StringUtils.isNotBlank(criteria)) {
-            return List.of(criteria);
-        }
         return criterias;
     }
 

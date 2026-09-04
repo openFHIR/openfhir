@@ -41,6 +41,22 @@ public class FhirContextRegistry {
     }
 
     /**
+     * Maps a HAPI structure version (as reported by {@code IBaseResource.getStructureFhirVersionEnum()}) to the
+     * engine's {@link Spec.Version}, defaulting to R4.
+     */
+    public static Spec.Version specVersionOf(final ca.uhn.fhir.context.FhirVersionEnum versionEnum) {
+        if (versionEnum == null) {
+            return Spec.Version.R4;
+        }
+        return switch (versionEnum) {
+            case DSTU3 -> Spec.Version.STU3;
+            case R4B -> Spec.Version.R4B;
+            case R5 -> Spec.Version.R5;
+            default -> Spec.Version.R4;
+        };
+    }
+
+    /**
      * Convenience method for callers that don't have a version — defaults to R4.
      */
     public IFhirPath getDefaultFhirPath() {

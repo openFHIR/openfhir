@@ -124,7 +124,7 @@ public class ToAqlPreconditionTest {
                                                                final List<String> criterias) {
         final Condition condition = new Condition();
         condition.setTargetRoot(targetRoot);
-        condition.setTargetAttribute(targetAttribute);
+        condition.setTargetAttributes(List.of(targetAttribute));
         condition.setOperator(operator);
         condition.setCriterias(criterias);
 

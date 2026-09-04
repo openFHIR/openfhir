@@ -41,7 +41,7 @@
           },
           {
             "url": "http://fhir.de/StructureDefinition/ProzedurDokumentationsdatum",
-            "valueDateTime": "2022-03-15T08:30:00+01:00"
+            "valueDateTime": "2022-03-15T09:30:00+02:00"
           }
         ],
         "status": "completed",
@@ -78,7 +78,7 @@
         "encounter": {
           "reference": "#1"
         },
-        "performedDateTime": "2022-03-15T08:30:00+01:00",
+        "performedDateTime": "2022-03-15T09:30:00+02:00",
         "bodySite": [
           {
             "coding": [

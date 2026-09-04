@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - develop
+    # only semver release tags publish a versioned image and move :latest
     tags:
-      - '*'
+      - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   docker:

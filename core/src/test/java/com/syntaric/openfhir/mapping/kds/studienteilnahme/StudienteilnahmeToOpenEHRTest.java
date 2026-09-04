@@ -78,11 +78,11 @@ public class StudienteilnahmeToOpenEHRTest extends KdsGenericTest {
 
         Assert.assertEquals("245", jsonObject.getAsJsonPrimitive(
                 "studienteilnahme/einwilligungserklärung/ism_transition/current_state|code").getAsString());
-        Assert.assertEquals("2024-08-22T10:30:00", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2024-08-22T08:30:00Z", jsonObject.getAsJsonPrimitive(
                 "studienteilnahme/context/start_time").getAsString());
-        Assert.assertEquals("2023-07-22T10:30:00", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2023-07-22T08:30:00Z", jsonObject.getAsJsonPrimitive(
                 "studienteilnahme/einwilligungserklärung/studienteilnahme/beginn_der_teilnahme").getAsString());
-        Assert.assertEquals("2024-08-22T10:30:00", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2024-08-22T08:30:00Z", jsonObject.getAsJsonPrimitive(
                 "studienteilnahme/einwilligungserklärung/studienteilnahme/ende_der_teilnahme").getAsString());
     }
 

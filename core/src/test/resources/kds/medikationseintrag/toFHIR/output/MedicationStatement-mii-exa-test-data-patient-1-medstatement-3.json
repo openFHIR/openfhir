@@ -109,7 +109,7 @@
         "effectivePeriod": {
           "start": "2024-02-20T09:55:00+01:00"
         },
-        "dateAsserted": "2024-02-20T00:00:00+01:00",
+        "dateAsserted": "2024-02-20T00:00:00",
         "dosage": [
           {
             "route": {

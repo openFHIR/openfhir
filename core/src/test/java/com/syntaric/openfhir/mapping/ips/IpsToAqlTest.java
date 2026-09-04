@@ -92,7 +92,7 @@ public class IpsToAqlTest {
 
         final HelpersCreator helpersCreator1 = new HelpersCreator(repo, new AqlToFlatPathConverter(
                 new OpenFhirStringUtils(),
-                new OpenFhirMapperUtils()), new OpenFhirStringUtils());
+                new OpenFhirMapperUtils()));
         toAql = new ToAql(fhirConnectManager, new OpenFhirMapperUtils(), repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
                 openEhrTemplateUtils, null, optManager);
     }

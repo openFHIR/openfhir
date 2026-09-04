@@ -29,7 +29,7 @@
             }
           ]
         },
-        "effectiveDateTime": "2023-11-15T00:00:00+01:00",
+        "effectiveDateTime": "2023-11-15T00:00:00",
         "valueCodeableConcept": {
           "coding": [
             {

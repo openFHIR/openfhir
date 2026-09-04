@@ -42,7 +42,7 @@ class FhirConnectModelMergerTest {
 
         final Mapping extension = new Mapping();
         extension.setExtension(ModelExtension.OVERWRITE);
-        extension.setFhirCondition(new Condition().withCriteria("random criteria"));
+        extension.setFhirCondition(new Condition().withCriterias("random criteria"));
         extension.setName("b");
 
         fhirConnectModelMerger.overwriteMapping(fhirConnectModel, extension);
@@ -50,7 +50,7 @@ class FhirConnectModelMergerTest {
         final List<Mapping> vanillaMappings = fhirConnectModel.getMappings();
         Assertions.assertEquals("random criteria",
                                 fhirConnectModelMerger.findMappingByName(vanillaMappings, "b").getFhirCondition()
-                                        .getCriteria());
+                                        .getCriterias().get(0));
         Assertions.assertNull(fhirConnectModelMerger.findMappingByName(vanillaMappings, "b").getWith());
     }
 
@@ -61,13 +61,13 @@ class FhirConnectModelMergerTest {
 
         final Mapping extension = new Mapping();
         extension.setExtension(ModelExtension.ADD);
-        extension.setFhirCondition(new Condition().withCriteria("random criteria"));
+        extension.setFhirCondition(new Condition().withCriterias("random criteria"));
 
         fhirConnectModelMerger.addMapping(fhirConnectModel, extension);
 
         final List<Mapping> vanillaMappings = fhirConnectModel.getMappings();
         Assertions.assertEquals("random criteria",
-                                vanillaMappings.get(vanillaMappings.size() - 1).getFhirCondition().getCriteria());
+                                vanillaMappings.get(vanillaMappings.size() - 1).getFhirCondition().getCriterias().get(0));
     }
 
     @Test
@@ -78,13 +78,13 @@ class FhirConnectModelMergerTest {
         final Mapping extension = new Mapping();
         extension.setExtension(ModelExtension.APPEND);
         extension.setAppendTo("a.b.c");
-        extension.setFhirCondition(new Condition().withCriteria("random criteria"));
+        extension.setFhirCondition(new Condition().withCriterias("random criteria"));
 
         fhirConnectModelMerger.appendMapping(fhirConnectModel, extension);
 
         Assertions.assertEquals("random criteria",
                                 fhirConnectModelMerger.findMapping(fhirConnectModel.getMappings(), "a.b.c")
-                                        .getFhirCondition().getCriteria());
+                                        .getFhirCondition().getCriterias().get(0));
     }
 
     @Test
@@ -95,13 +95,13 @@ class FhirConnectModelMergerTest {
         final Mapping extension = new Mapping();
         extension.setExtension(ModelExtension.APPEND);
         extension.setAppendTo("a.b.c");
-        extension.setOpenehrCondition(new Condition().withCriteria("random criteria"));
+        extension.setOpenehrCondition(new Condition().withCriterias("random criteria"));
 
         fhirConnectModelMerger.appendMapping(fhirConnectModel, extension);
 
         Assertions.assertEquals("random criteria",
                                 fhirConnectModelMerger.findMapping(fhirConnectModel.getMappings(), "a.b.c")
-                                        .getOpenehrCondition().getCriteria());
+                                        .getOpenehrCondition().getCriterias().get(0));
     }
 
     @Test
@@ -112,7 +112,7 @@ class FhirConnectModelMergerTest {
         final Mapping extension = new Mapping();
         extension.setExtension(ModelExtension.APPEND);
         extension.setAppendTo("a.x.c");
-        extension.setOpenehrCondition(new Condition().withCriteria("random criteria"));
+        extension.setOpenehrCondition(new Condition().withCriterias("random criteria"));
 
         fhirConnectModelMerger.appendMapping(fhirConnectModel, extension);
 
@@ -156,7 +156,7 @@ class FhirConnectModelMergerTest {
         firstLevelMapping.setName("a");
         final Mapping secondLevelMapping = new Mapping();
         secondLevelMapping.setName("b");
-        secondLevelMapping.setFhirCondition(new Condition().withCriteria("a=b"));
+        secondLevelMapping.setFhirCondition(new Condition().withCriterias("a=b"));
         secondLevelMapping.setWith(new With().withFhir("Fhir.Path"));
         final FollowedBy secondFollowedBy = new FollowedBy();
         secondFollowedBy.setMappings(List.of(new Mapping().withName("c")));

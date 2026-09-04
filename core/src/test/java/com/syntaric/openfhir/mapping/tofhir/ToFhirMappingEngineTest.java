@@ -110,11 +110,15 @@ public class ToFhirMappingEngineTest {
                                        final String criteria) {
         final Condition c = new Condition();
         c.setOperator(operator);
-        c.setCriteria(criteria);
+        if (criteria != null) {
+            c.setCriterias(List.of(criteria));
+        }
         // targetRoot drives narrowingCriteria — use the flat path directly since these tests
         // construct conditions as HelpersCreator would after flat-path resolution
         c.setTargetRoot(targetRootFlatPath);
-        c.setTargetAttribute(targetAttributeFlatPath);
+        if (targetAttributeFlatPath != null) {
+            c.setTargetAttributes(List.of(targetAttributeFlatPath));
+        }
         c.setTargetRootFlatPath(targetRootFlatPath);
         c.getTargetAttributesFlatPath().add(targetAttributeFlatPath);
         return c;
@@ -489,12 +493,11 @@ public class ToFhirMappingEngineTest {
 
         final Condition c = new Condition();
         c.setTargetRoot("diagnose/diagnose[n]/klinischer_status");
-        c.setTargetAttribute("diagnosestatus|code");
+        c.setTargetAttributes(List.of("diagnosestatus|code"));
         c.setOperator("one of");
         c.setCriterias(List.of("at0016", "at0018"));
         c.setTargetRootFlatPath("diagnose/diagnose[n]/klinischer_status");
         c.getTargetAttributesFlatPath().add("diagnosestatus|code");
-        // criterias: getCriteria() returns criterias.get(0) so engine sees "at0016" as the single criteria
 
         final JsonObject result = engine.getRelevantJsonObject(flat, null, helperWith(c));
 
@@ -538,7 +541,7 @@ public class ToFhirMappingEngineTest {
         final Condition c = new Condition();
         c.setTargetRoot("diagnose/diagnose[n]/klinischer_status");
         c.setOperator("one of");
-        c.setCriteria("at0016");
+        c.setCriterias(List.of("at0016"));
         c.setTargetAttributesFlatPath(List.of("diagnosestatus|code", "diagnosestatus|value"));
         c.setTargetRootFlatPath("diagnose/diagnose[n]/klinischer_status");
 
@@ -576,7 +579,7 @@ public class ToFhirMappingEngineTest {
         final Condition c = new Condition();
         c.setTargetRoot("diagnose/diagnose[n]/klinischer_status");
         c.setOperator("one of");
-        c.setCriteria("at0016");
+        c.setCriterias(List.of("at0016"));
         c.setTargetAttributesFlatPath(List.of("diagnosestatus|code", "diagnosestatus|value"));
         c.setTargetRootFlatPath("diagnose/diagnose[n]/klinischer_status");
 

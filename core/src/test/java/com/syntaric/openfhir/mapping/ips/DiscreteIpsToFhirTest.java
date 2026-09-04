@@ -141,7 +141,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("inactive", allergy.getClinicalStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("confirmed", allergy.getVerificationStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
-        Assert.assertEquals("2022-02-03T04:05:07+01:00", allergy.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:07", allergy.getOnsetDateTimeType().getValueAsString());
 
         final AllergyIntolerance.AllergyIntoleranceReactionComponent reaction = allergy.getReactionFirstRep();
         Assert.assertEquals("Lorem ipsum Specific Substance", reaction.getSubstance().getText());
@@ -155,7 +155,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("active", allergy.getClinicalStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("unconfirmed", allergy.getVerificationStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("low", allergy.getCriticalityElement().getValueAsString());
-        Assert.assertEquals("2021-05-10T08:00:01+02:00", allergy.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2021-05-10T08:00:01", allergy.getOnsetDateTimeType().getValueAsString());
 
         final AllergyIntolerance.AllergyIntoleranceReactionComponent reaction = allergy.getReactionFirstRep();
         Assert.assertEquals("Amoxicillin Substance", reaction.getSubstance().getText());
@@ -169,7 +169,7 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("active", allergy.getClinicalStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("refuted", allergy.getVerificationStatus().getCodingFirstRep().getCode());
         Assert.assertEquals("low", allergy.getCriticalityElement().getValueAsString());
-        Assert.assertEquals("2019-11-20T14:30:01+01:00", allergy.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2019-11-20T14:30:01", allergy.getOnsetDateTimeType().getValueAsString());
 
         final AllergyIntolerance.AllergyIntoleranceReactionComponent reaction = allergy.getReactionFirstRep();
         Assert.assertEquals("Acetylsalicylic Substance", reaction.getSubstance().getText());
@@ -204,8 +204,8 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("//fhir.hl7.org/ValueSet/$expand?url=http://hl7.org/fhir/uv/ips/ValueSet/problems-uv-ips",
                 condition.getCode().getCodingFirstRep().getSystem());
 
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getOnsetDateTimeType().getValueAsString());
-        Assert.assertEquals("2022-02-03T04:05:06+01:00", condition.getAbatementDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", condition.getAbatementDateTimeType().getValueAsString());
 
         condition.getStage().stream()
                 .filter(s -> "Lorem ipsum".equals(s.getType().getText()))
@@ -237,8 +237,8 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("http://snomed.info/sct", condition.getCode().getCodingFirstRep().getSystem());
         Assert.assertEquals("Chronic back pain", condition.getCode().getText());
 
-        Assert.assertEquals("2020-06-15T10:00:00+02:00", condition.getOnsetDateTimeType().getValueAsString());
-        Assert.assertEquals("2024-01-01T00:00:00+01:00", condition.getAbatementDateTimeType().getValueAsString());
+        Assert.assertEquals("2020-06-15T10:00:00", condition.getOnsetDateTimeType().getValueAsString());
+        Assert.assertEquals("2024-01-01T00:00:00", condition.getAbatementDateTimeType().getValueAsString());
 
         condition.getStage().stream()
                 .filter(s -> "MRI confirmed".equals(s.getType().getText()))

@@ -87,6 +87,10 @@ public class BootstrapServiceTest {
 
         when(bootstrapRepository.save(any())).thenAnswer(invocation -> {
             final BootstrapEntity entity = invocation.getArgument(0);
+            if (entity.getId() == null) {
+                // new rows get their id from the store; mimic that here
+                entity.setId(java.util.UUID.randomUUID().toString());
+            }
             saved.add(entity);
             return entity;
         });

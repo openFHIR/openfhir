@@ -51,8 +51,8 @@
         "medicationReference": {
           "reference": "#1"
         },
-        "effectiveDateTime": "2022-08-01T00:00:00+02:00",
-        "dateAsserted": "2022-08-01T00:00:00+02:00",
+        "effectiveDateTime": "2022-08-01T00:00:00",
+        "dateAsserted": "2022-08-01T00:00:00",
         "dosage": [
           {
             "route": {

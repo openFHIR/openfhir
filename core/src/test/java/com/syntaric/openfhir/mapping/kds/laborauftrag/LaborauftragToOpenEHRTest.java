@@ -207,7 +207,7 @@ public class LaborauftragToOpenEHRTest extends KdsGenericTest {
         Assert.assertEquals("SP-987654", jsonObject.getAsJsonPrimitive(
                         "leistungsanforderung/laborleistung/aktuelle_aktivität/probe:0/laborprobenidentifikator|id")
                 .getAsString());
-        Assert.assertEquals("2024-08-24T11:00:00", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2024-08-24T09:00:00Z", jsonObject.getAsJsonPrimitive(
                         "leistungsanforderung/laborleistung/aktuelle_aktivität/probe:0/zeitpunkt_der_probenentnahme/date_time_value")
                 .getAsString());
         Assert.assertEquals("example-practitioner", jsonObject.getAsJsonPrimitive(

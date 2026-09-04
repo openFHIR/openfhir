@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.syntaric.openfhir.fc.FhirConnectConst.*;
 
@@ -120,18 +122,119 @@ public class OpenFhirFhirConnectModelMapper {
         if (followedBy.getMappings() == null) {
             followedBy.setMappings(new ArrayList<>());
         }
-        for (final ManualEntry fhirManualEntry : manual.getFhir()) {
-            final Mapping fromManual = new Mapping();
-            fromManual.setUnidirectional(UNIDIRECTIONAL_TOFHIR);
-            fromManual.setName(mapping.getName() + "." + manual.getName());
-            fromManual.setWith(new With()
-                    .withValue(fhirManualEntry.getValue())
-                    .withOpenehr(mapping.getWith().getOpenehr())
-                    .withFhir(fhirManualEntry.getPath()));
-            fromManual.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
-            followedBy.getMappings().add(fromManual);
-        }
+        followedBy.getMappings().addAll(groupedFhirManualMappings(mapping, manual, manual.getFhir()));
         mapping.setFollowedBy(followedBy);
+    }
+
+    /**
+     * Expands a manual block's fhir entries into followedBy mappings. Entries whose paths share a
+     * dotted prefix (e.g. "code.coding.code" and "code.coding.system") are nested under a single
+     * synthetic mapping for that prefix, so the shared intermediate FHIR elements are instantiated
+     * once and every value lands on the same instance. A flat one-mapping-per-entry expansion would
+     * re-instantiate the prefix per entry, overwriting previously set values on single-valued
+     * elements (only the last entry would survive).
+     */
+    private List<Mapping> groupedFhirManualMappings(final Mapping mapping, final Manual manual,
+                                                    final List<ManualEntry> entries) {
+        final Map<String, List<ManualEntry>> groups = new LinkedHashMap<>();
+        for (final ManualEntry entry : entries) {
+            groups.computeIfAbsent(splitPathSegments(entry.getPath()).get(0), k -> new ArrayList<>()).add(entry);
+        }
+        final List<Mapping> generated = new ArrayList<>();
+        for (final List<ManualEntry> group : groups.values()) {
+            final List<String> commonPrefix = longestCommonPathPrefix(group);
+            final boolean allIdenticalPaths = group.stream()
+                    .allMatch(entry -> splitPathSegments(entry.getPath()).size() == commonPrefix.size());
+            if (group.size() == 1 || allIdenticalPaths) {
+                // nothing shared to preserve — or identical paths, where each entry is meant to
+                // create its own element (e.g. several codings) — keep the flat expansion
+                for (final ManualEntry entry : group) {
+                    generated.add(fhirManualLeaf(mapping, manual, entry.getPath(), entry.getValue()));
+                }
+            } else {
+                generated.add(fhirManualGroup(mapping, manual, group, commonPrefix));
+            }
+        }
+        return generated;
+    }
+
+    private Mapping fhirManualGroup(final Mapping mapping, final Manual manual,
+                                    final List<ManualEntry> group, final List<String> commonPrefix) {
+        final Mapping intermediate = new Mapping();
+        intermediate.setUnidirectional(UNIDIRECTIONAL_TOFHIR);
+        intermediate.setName(mapping.getName() + "." + manual.getName());
+        intermediate.setWith(new With()
+                .withType(OPENEHR_TYPE_NONE)
+                .withOpenehr(mapping.getWith().getOpenehr())
+                .withFhir(String.join(".", commonPrefix)));
+        intermediate.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
+
+        final List<ManualEntry> remainders = new ArrayList<>();
+        for (final ManualEntry entry : group) {
+            final List<String> segments = splitPathSegments(entry.getPath());
+            final String remainder = String.join(".", segments.subList(commonPrefix.size(), segments.size()));
+            final ManualEntry remainderEntry = entry.copy();
+            // an entry whose path IS the shared prefix sets its value on the shared element itself
+            remainderEntry.setPath(remainder.isEmpty() ? FHIR_ROOT_FC : remainder);
+            remainders.add(remainderEntry);
+        }
+        final FollowedBy inner = new FollowedBy();
+        inner.setMappings(groupedFhirManualMappings(mapping, manual, remainders));
+        intermediate.setFollowedBy(inner);
+        return intermediate;
+    }
+
+    private Mapping fhirManualLeaf(final Mapping mapping, final Manual manual,
+                                   final String path, final String value) {
+        final Mapping fromManual = new Mapping();
+        fromManual.setUnidirectional(UNIDIRECTIONAL_TOFHIR);
+        fromManual.setName(mapping.getName() + "." + manual.getName());
+        fromManual.setWith(new With()
+                .withValue(value)
+                .withOpenehr(mapping.getWith().getOpenehr())
+                .withFhir(path));
+        fromManual.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
+        return fromManual;
+    }
+
+    private List<String> longestCommonPathPrefix(final List<ManualEntry> group) {
+        List<String> prefix = null;
+        for (final ManualEntry entry : group) {
+            final List<String> segments = splitPathSegments(entry.getPath());
+            if (prefix == null) {
+                prefix = new ArrayList<>(segments);
+                continue;
+            }
+            int i = 0;
+            while (i < prefix.size() && i < segments.size() && prefix.get(i).equals(segments.get(i))) {
+                i++;
+            }
+            prefix = prefix.subList(0, i);
+        }
+        return prefix == null ? List.of() : prefix;
+    }
+
+    /**
+     * Splits a fhir path on dots, ignoring dots inside parentheses so segments like
+     * "as(Quantity)" or "where(system.value = 'x')" stay whole.
+     */
+    static List<String> splitPathSegments(final String path) {
+        final List<String> segments = new ArrayList<>();
+        int depth = 0;
+        int start = 0;
+        for (int i = 0; i < path.length(); i++) {
+            final char c = path.charAt(i);
+            if (c == '(') {
+                depth++;
+            } else if (c == ')') {
+                depth--;
+            } else if (c == '.' && depth == 0) {
+                segments.add(path.substring(start, i));
+                start = i + 1;
+            }
+        }
+        segments.add(path.substring(start));
+        return segments;
     }
 
     private void appendOpenEhrManualMappings(final Mapping mapping, final Manual manual) {

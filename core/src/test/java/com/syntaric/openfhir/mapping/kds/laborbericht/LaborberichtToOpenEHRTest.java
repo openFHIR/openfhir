@@ -179,12 +179,12 @@ public class LaborberichtToOpenEHRTest extends KdsGenericTest {
         Assert.assertEquals("Normal blood count",
                             jsonObject.getAsJsonPrimitive("laborbericht/laborbefund/any_event:0/conclusion")
                                     .getAsString());
-        Assert.assertEquals("2024-08-22T10:30:00",
+        Assert.assertEquals("2024-08-22T08:30:00Z",
                             jsonObject.getAsJsonPrimitive("laborbericht/laborbefund/any_event:0/time").getAsString());
         Assert.assertEquals("SP-987654", jsonObject.getAsJsonPrimitive(
                         "laborbericht/laborbefund/any_event:0/probenmaterial:0/external_identifier/identifier_value|id")
                 .getAsString());
-        Assert.assertEquals("2024-08-24T11:00:00", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2024-08-24T09:00:00Z", jsonObject.getAsJsonPrimitive(
                         "laborbericht/laborbefund/any_event:0/probenmaterial:0/collection_date_time/date_time_value")
                 .getAsString());
         Assert.assertEquals("1234567", jsonObject.getAsJsonPrimitive(
@@ -204,11 +204,11 @@ public class LaborberichtToOpenEHRTest extends KdsGenericTest {
                             jsonObject.getAsJsonPrimitive(
                                             "laborbericht/laborbefund/any_event:0/probenmaterial:0/comment")
                                     .getAsString());
-        Assert.assertEquals("2022-02-03T05:05:06", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2022-02-03T04:05:06Z", jsonObject.getAsJsonPrimitive(
                 "laborbericht/laborbefund/any_event:0/probenmaterial:0/date_time_received").getAsString());
         Assert.assertEquals("at0062", jsonObject.getAsJsonPrimitive(
                 "laborbericht/laborbefund/any_event:0/probenmaterial:0/adequacy_for_testing|code").getAsString());
-        Assert.assertEquals("2022-02-03T05:05:06", jsonObject.getAsJsonPrimitive(
+        Assert.assertEquals("2022-02-03T04:05:06Z", jsonObject.getAsJsonPrimitive(
                 "laborbericht/laborbefund/any_event:0/pro_laboranalyt:0/result_status_time").getAsString());
         Assert.assertEquals("7.4", jsonObject.getAsJsonPrimitive(
                         "laborbericht/laborbefund/any_event:0/pro_laboranalyt:0/messwert:0/quantity_value|magnitude")

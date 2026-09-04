@@ -37,6 +37,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FhirInstancePopulator {
 
+    private static final String UCUM_SYSTEM = "http://unitsofmeasure.org";
+
     private final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface;
     private final TerminologyTranslatorInterface terminologyTranslator;
 
@@ -195,7 +197,14 @@ public class FhirInstancePopulator {
 
     private void populateDateTime(Object toPopulate, DateTimeType data) {
         if (toPopulate instanceof DateTimeType) {
-            ((DateTimeType) toPopulate).setValue(data.getValue());
+            // Copy the lexical form rather than going through getValue(): a java.util.Date is a bare
+            // instant, so it cannot carry an offset, and re-rendering it lands the value in the
+            // server's default zone. That both dropped the offset the source was authored with and
+            // shifted the wall clock ('09:15+01:00' became '10:15+02:00' on a +02:00 host), so the
+            // same input mapped in two zones produced two different readings.
+            // Preserve the offset when the source has one, and do not invent one when it does not —
+            // setValueAsString keeps the offset exactly as written, and the precision with it.
+            ((DateTimeType) toPopulate).setValueAsString(data.getValueAsString());
         } else if (toPopulate instanceof InstantType) {
             ((InstantType) toPopulate).setValue(data.getValue());
         } else if (toPopulate instanceof DateType) {
@@ -326,6 +335,8 @@ public class FhirInstancePopulator {
             integerType.setValue(Integer.valueOf(data.getValue()));
         } else if (toPopulate instanceof BooleanType booleanType) {
             booleanType.setValue(Boolean.valueOf(data.getValue()));
+        } else if (toPopulate instanceof Duration duration) {
+            populateDurationFromIso8601(duration, data.getValue());
         } else if (toPopulate instanceof PrimitiveType<?> primitiveType) {
             ((PrimitiveType<String>) primitiveType).setValue(value);
         } else if (toPopulate instanceof XhtmlNode xhtmlNode) {
@@ -333,6 +344,145 @@ public class FhirInstancePopulator {
         } else {
             populateStringTypeCrossVersion(toPopulate, value, data.getValueAsString());
         }
+    }
+
+    /**
+     * Populates a FHIR {@link Duration} from an openEHR {@code DV_DURATION}, whose value is an
+     * ISO 8601 duration string (e.g. {@code PT0S}, {@code PT30M}, {@code P1Y}).
+     *
+     * <p>FHIR has no ISO 8601 duration primitive: {@code Duration} is a {@link Quantity} carrying a
+     * single value plus a UCUM time code (invariant {@code drt-1}). The conversion therefore has to
+     * pick one unit, which is only lossless when the source names exactly one component.
+     *
+     * <ul>
+     *   <li>Single-component durations keep their own unit ({@code PT30M} -> {@code 30 min}), so the
+     *       authored granularity survives a round trip.</li>
+     *   <li>Compound time-only durations are normalised to seconds ({@code PT1H30M} -> {@code 5400 s}),
+     *       which is exact because hours, minutes and seconds are fixed-length.</li>
+     *   <li>Year, month and week components are never converted into smaller units: a month is not a
+     *       fixed number of seconds, so {@code P1M} maps to {@code 1 mo} rather than an invented
+     *       day count. Compound durations mixing these with time components have no single honest
+     *       unit and are left unpopulated.</li>
+     * </ul>
+     *
+     * <p>A zero duration is a value, not an absence: {@code PT0S} populates {@code 0 s}. Guarding
+     * this with a truthiness check would silently drop the element, which is the usual way zero
+     * durations get lost.
+     */
+    private void populateDurationFromIso8601(final Duration toPopulate, final String isoDuration) {
+        final SingleUnit single = iso8601ToSingleUnit(isoDuration);
+        if (single == null) {
+            return;
+        }
+        toPopulate.setValue(single.value());
+        toPopulate.setUnit(single.code());
+        toPopulate.setCode(single.code());
+        toPopulate.setSystem(UCUM_SYSTEM);
+    }
+
+    /**
+     * Reduces an ISO 8601 duration to the single value/UCUM-code pair a FHIR Duration can hold, per the
+     * rules described on {@link #populateDurationFromIso8601}. Version-agnostic, so every FHIR version's
+     * Duration is populated from the same conversion.
+     *
+     * @return the value and UCUM code, or null if the duration has no single honest unit
+     */
+    private SingleUnit iso8601ToSingleUnit(final String isoDuration) {
+        if (StringUtils.isBlank(isoDuration)) {
+            return null;
+        }
+        final String iso = isoDuration.trim().toUpperCase();
+        final BigDecimal value;
+        final String code;
+        try {
+            if (iso.contains("T")) {
+                // Time-based, possibly with a leading date part (P1DT2H). java.time.Duration handles
+                // days here because it treats them as exactly 24h, which is the same assumption FHIR
+                // would force on us anyway once a single unit has to be chosen.
+                final java.time.Duration parsed = java.time.Duration.parse(iso);
+                final SingleUnit single = singleTimeUnit(iso, parsed);
+                value = single != null ? single.value() : toSeconds(parsed);
+                code = single != null ? single.code() : "s";
+            } else {
+                // Date-only: P1Y / P2M / P3W / P4D. Weeks, months and years are not reducible to
+                // seconds, so each keeps its own UCUM code and only single-component forms convert.
+                final java.time.Period parsed = java.time.Period.parse(iso);
+                final SingleUnit single = singleDateUnit(parsed, iso);
+                if (single == null) {
+                    log.warn("Cannot map compound ISO 8601 duration '{}' to a single UCUM unit; leaving Duration unset.",
+                            isoDuration);
+                    return null;
+                }
+                value = single.value();
+                code = single.code();
+            }
+        } catch (final java.time.format.DateTimeParseException e) {
+            log.warn("Could not parse '{}' as an ISO 8601 duration; leaving Duration unset.", isoDuration);
+            return null;
+        }
+        return new SingleUnit(value, code);
+    }
+
+    /**
+     * Returns the value/UCUM code when a time-based duration names exactly one component, else null.
+     * Fractional seconds are reported as seconds so sub-second precision is not truncated.
+     */
+    private SingleUnit singleTimeUnit(final String iso, final java.time.Duration parsed) {
+        if (iso.contains("D") || parsed.toDaysPart() > 0) {
+            return null;
+        }
+        final int hours = parsed.toHoursPart();
+        final int minutes = parsed.toMinutesPart();
+        final int seconds = parsed.toSecondsPart();
+        final int nanos = parsed.toNanosPart();
+        if (hours > 0 && minutes == 0 && seconds == 0 && nanos == 0) {
+            return new SingleUnit(BigDecimal.valueOf(hours), "h");
+        }
+        if (hours == 0 && minutes > 0 && seconds == 0 && nanos == 0) {
+            return new SingleUnit(BigDecimal.valueOf(minutes), "min");
+        }
+        if (hours == 0 && minutes == 0) {
+            // Covers PT0S, whose components are all zero and which must still populate as 0 s.
+            return new SingleUnit(toSeconds(parsed), "s");
+        }
+        return null;
+    }
+
+    /**
+     * Returns the value/UCUM code when a date-based duration names exactly one component, else null.
+     * {@code java.time.Period} stores weeks as days, so the week form is detected from the literal.
+     */
+    private SingleUnit singleDateUnit(final java.time.Period parsed, final String iso) {
+        if (parsed.isZero()) {
+            return new SingleUnit(BigDecimal.ZERO, iso.contains("W") ? "wk" : "d");
+        }
+        final int years = parsed.getYears();
+        final int months = parsed.getMonths();
+        final int days = parsed.getDays();
+        if (years != 0 && months == 0 && days == 0) {
+            return new SingleUnit(BigDecimal.valueOf(years), "a");
+        }
+        if (months != 0 && years == 0 && days == 0) {
+            return new SingleUnit(BigDecimal.valueOf(months), "mo");
+        }
+        if (days != 0 && years == 0 && months == 0) {
+            return iso.contains("W")
+                    ? new SingleUnit(BigDecimal.valueOf(days / 7L), "wk")
+                    : new SingleUnit(BigDecimal.valueOf(days), "d");
+        }
+        return null;
+    }
+
+    private BigDecimal toSeconds(final java.time.Duration parsed) {
+        return BigDecimal.valueOf(parsed.getSeconds())
+                .add(BigDecimal.valueOf(parsed.getNano(), 9))
+                .stripTrailingZeros();
+    }
+
+    /**
+     * A duration reduced to a single magnitude and its UCUM time code.
+     */
+    private record SingleUnit(BigDecimal value, String code) {
     }
 
     private void populateBooleanType(Object toPopulate, BooleanType data) {
@@ -642,6 +792,8 @@ public class FhirInstancePopulator {
                                                 final String valueAsString) {
         if (toPopulate instanceof IBaseEnumeration<?> e) {
             e.setValueAsString(value);
+        } else if (populateDurationCrossVersion(toPopulate, value)) {
+            return;
         } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateTimeType dt) {
             dt.setValueAsString(valueAsString);
         } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.CodeableConcept cc) {
@@ -681,6 +833,45 @@ public class FhirInstancePopulator {
         } else if (toPopulate instanceof XhtmlNode xhtmlNode) {
             xhtmlNode.setValueAsString(value);
         }
+    }
+
+    /**
+     * Applies the ISO 8601 -> value/UCUM-code conversion to an STU3, R4B or R5 {@code Duration}. The R4
+     * case is handled by {@link #populateDurationFromIso8601}; the conversion itself is shared, only the
+     * setters differ per version.
+     *
+     * @return true if the target was a Duration, whether or not the string could be converted
+     */
+    private boolean populateDurationCrossVersion(final Object toPopulate, final String isoDuration) {
+        final boolean isDuration = toPopulate instanceof org.hl7.fhir.dstu3.model.Duration
+                || toPopulate instanceof org.hl7.fhir.r4b.model.Duration
+                || toPopulate instanceof org.hl7.fhir.r5.model.Duration;
+        if (!isDuration) {
+            return false;
+        }
+        final SingleUnit single = iso8601ToSingleUnit(isoDuration);
+        if (single == null) {
+            // Already logged; the element stays unset rather than falling through to a string setter
+            // that would write the raw ISO value into a Quantity.
+            return true;
+        }
+        if (toPopulate instanceof org.hl7.fhir.dstu3.model.Duration d) {
+            d.setValue(single.value());
+            d.setUnit(single.code());
+            d.setCode(single.code());
+            d.setSystem(UCUM_SYSTEM);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.Duration d) {
+            d.setValue(single.value());
+            d.setUnit(single.code());
+            d.setCode(single.code());
+            d.setSystem(UCUM_SYSTEM);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.Duration d) {
+            d.setValue(single.value());
+            d.setUnit(single.code());
+            d.setCode(single.code());
+            d.setSystem(UCUM_SYSTEM);
+        }
+        return true;
     }
 
     private void populateBooleanTypeCrossVersion(final Object toPopulate, final Boolean value) {

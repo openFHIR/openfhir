@@ -243,7 +243,7 @@
         },
         "origin": {
           "_type": "DV_DATE_TIME",
-          "value": "2024-02-20T09:55:00"
+          "value": "2024-02-20T09:55:00+01:00"
         },
         "events": [
           {
@@ -254,7 +254,7 @@
             },
             "time": {
               "_type": "DV_DATE_TIME",
-              "value": "2024-02-20T09:55:00"
+              "value": "2024-02-20T09:55:00+01:00"
             },
             "data": {
               "_type": "ITEM_TREE",

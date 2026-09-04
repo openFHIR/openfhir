@@ -43,13 +43,17 @@ public class OpenFhirController {
     @PostMapping(value = "/openfhir/tofhir", produces = "application/json")
     @Operation(
             summary = "Maps incoming openEHR Composition to a FHIR Resource",
-            description = "Maps incoming openEHR Composition to a FHIR Resource according to FHIR Connect state of the engine",
+            description = "Maps incoming openEHR Composition to a FHIR Resource according to FHIR Connect state of the engine. "
+                    + "This is the direct-payload form of the FHIRconnect $tofhir operation: the body is the openEHR "
+                    + "Composition itself (media type application/openehr+json, application/json also accepted) and "
+                    + "the response is the mapped FHIR resource itself.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK")
             },
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "openEHR Composition in either flat or canonical format",
                     content = {
+                            @Content(mediaType = FhirMediaTypes.APPLICATION_OPENEHR_JSON_VALUE),
                             @Content(mediaType = "application/json")
                     }
             )
@@ -73,23 +77,30 @@ public class OpenFhirController {
      *                     no
      *                     templateId is provided, then out of all context mappers, the engine will try to find one that
      *                     matches the given incoming FHIR Resource (based on context mapper context.profileUrl)
-     * @param flat         if you want the mapped Composition to be provided in a flat format, default is false meaning
-     *                     it will
-     *                     be returned in a canonical format
+     * @param flat         deprecated in favour of {@code format}; if you want the mapped Composition to be provided
+     *                     in a flat format, default is false meaning it will be returned in a canonical format
+     * @param format       "flat" or "canonical" (per the FHIRconnect REST API spec); takes precedence over the
+     *                     deprecated {@code flat} parameter when both are provided
      * @param reqId        request id that will be logged
-     * @return openEHR Composition in either flat or canonical format, depending on "flat" argument (default is
-     * canonical)
+     * @return openEHR Composition in either flat or canonical format, depending on "format"/"flat" argument
+     * (default is canonical)
      */
     @PostMapping(value = "/openfhir/toopenehr", produces = "application/json")
     @Operation(
             summary = "Maps incoming FHIR Resource to openEHR Composition",
-            description = "Maps incoming FHIR Resource to openEHR Composition according to FHIR Connect state of the engine",
+            description = "Maps incoming FHIR Resource to openEHR Composition according to FHIR Connect state of the engine. "
+                    + "This is the direct-payload form of the FHIRconnect $toopenehr operation: the body is the FHIR "
+                    + "Resource itself (media type application/fhir+json, application/json also accepted) and the "
+                    + "response is the mapped openEHR Composition itself (application/openehr+json semantics). The "
+                    + "output format is controlled with format=flat|canonical (default canonical); the legacy 'flat' "
+                    + "boolean parameter is still accepted, with 'format' winning when both are set.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "openEHR Composition in either flat or canonical format")
             },
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "FHIR Resource",
                     content = {
+                            @Content(mediaType = FhirMediaTypes.APPLICATION_FHIR_JSON_VALUE),
                             @Content(mediaType = "application/json")
                     }
             )
@@ -97,9 +108,22 @@ public class OpenFhirController {
     ResponseEntity toOpenEhr(@RequestBody String fhirResource,
                              @RequestParam(required = false) String templateId,
                              @RequestParam(required = false) Boolean flat,
+                             @RequestParam(required = false) String format,
                              @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
-            final String openEhr = openFhirEngine.toOpenEhr(fhirResource, templateId, flat);
+            Boolean effectiveFlat = flat;
+            if (format != null && !format.isBlank()) {
+                if ("flat".equalsIgnoreCase(format)) {
+                    effectiveFlat = true;
+                } else if ("canonical".equalsIgnoreCase(format)) {
+                    effectiveFlat = false;
+                } else {
+                    return ResponseEntity.badRequest()
+                            .body(String.format("Invalid 'format' value '%s'; must be one of: canonical, flat.",
+                                    format));
+                }
+            }
+            final String openEhr = openFhirEngine.toOpenEhr(fhirResource, templateId, effectiveFlat);
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(openEhr);
         } catch (final Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -52,7 +52,7 @@
     },
     "end_time" : {
       "_type" : "DV_DATE_TIME",
-      "value" : "2024-02-16T10:50:00"
+      "value" : "2024-02-16T10:50:00+01:00"
     },
     "setting" : {
       "_type" : "DV_CODED_TEXT",
@@ -234,7 +234,7 @@
       },
       "origin" : {
         "_type" : "DV_DATE_TIME",
-        "value" : "2024-02-16T10:20:00"
+        "value" : "2024-02-16T10:20:00+01:00"
       },
       "events" : [ {
         "_type" : "INTERVAL_EVENT",
@@ -244,7 +244,7 @@
         },
         "time" : {
           "_type" : "DV_DATE_TIME",
-          "value" : "2024-02-16T10:20:00"
+          "value" : "2024-02-16T10:20:00+01:00"
         },
         "data" : {
           "_type" : "ITEM_TREE",

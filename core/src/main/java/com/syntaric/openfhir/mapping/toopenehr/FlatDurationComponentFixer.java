@@ -20,11 +20,13 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Repairs {@link DvDuration} values that the ehrbase SDK's flat-json unmarshaller decodes incorrectly.
  *
- * <p>A DV_DURATION can only be written to the flat format through the {@code |day}, {@code |hour},
- * {@code |minute} and {@code |second} component suffixes; the node rejects a plain ISO-8601 string.
- * {@code DvDurationRMUnmarshaller} in ehrbase SDK 2.19.0 however builds the value as
- * {@code ofHours(hour) + ofHours(minute) + ofHours(second)}, so every sub-hour component is inflated
- * to hours: a 30 minute infusion rate is decoded as {@code PT30H} instead of {@code PT30M}.
+ * <p>A DV_DURATION can be written to the flat format either as a plain ISO-8601 string or through the
+ * {@code |day}, {@code |hour}, {@code |minute} and {@code |second} component suffixes.
+ * {@code DvDurationRMUnmarshaller} in ehrbase SDK 2.19.0 reads the plain value first and only falls
+ * back to the components when none was given. The component path is the broken one: it builds the
+ * value as {@code ofHours(hour) + ofHours(minute) + ofHours(second)}, so every sub-hour component is
+ * inflated to hours and a 30 minute infusion rate decodes as {@code PT30H} instead of {@code PT30M}.
+ * Values written as a plain ISO string are unaffected and are left alone here.
  *
  * <p>Since the corruption is deterministic and the flat json we handed to the unmarshaller still holds
  * the intended components, the value can be recomputed exactly rather than guessed at. Only durations

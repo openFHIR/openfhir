@@ -61,7 +61,7 @@
     },
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-08-22T10:30:00"
+      "value": "2024-08-22T08:30:00Z"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -140,7 +140,7 @@
                 },
                 "value": {
                   "_type": "DV_DATE_TIME",
-                  "value": "2023-07-22T10:30:00"
+                  "value": "2023-07-22T08:30:00Z"
                 },
                 "archetype_node_id": "at0003"
               },
@@ -152,7 +152,7 @@
                 },
                 "value": {
                   "_type": "DV_DATE_TIME",
-                  "value": "2024-08-22T10:30:00"
+                  "value": "2024-08-22T08:30:00Z"
                 },
                 "archetype_node_id": "at0004"
               }

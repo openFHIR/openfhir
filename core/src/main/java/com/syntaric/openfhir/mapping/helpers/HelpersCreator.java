@@ -9,6 +9,7 @@ import static com.syntaric.openfhir.fc.FhirConnectConst.REFERENCE;
 import static com.syntaric.openfhir.fc.FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR;
 
 import com.syntaric.openfhir.OpenFhirMappingContext;
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.model.FhirConnectModel;
@@ -17,7 +18,6 @@ import com.syntaric.openfhir.fc.schema.model.FollowedBy;
 import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
-import com.syntaric.openfhir.util.OpenFhirStringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,15 +37,12 @@ public class HelpersCreator {
 
     final private OpenFhirMappingContext openFhirTemplateRepo;
     final private AqlToFlatPathConverter aqlToFlatPathConverter;
-    final private OpenFhirStringUtils openFhirStringUtils;
 
     @Autowired
     public HelpersCreator(final OpenFhirMappingContext openFhirTemplateRepo,
-                          final AqlToFlatPathConverter aqlToFlatPathConverter,
-                          final OpenFhirStringUtils openFhirStringUtils) {
+                          final AqlToFlatPathConverter aqlToFlatPathConverter) {
         this.openFhirTemplateRepo = openFhirTemplateRepo;
         this.aqlToFlatPathConverter = aqlToFlatPathConverter;
-        this.openFhirStringUtils = openFhirStringUtils;
     }
 
 
@@ -422,20 +419,9 @@ public class HelpersCreator {
                     coreResource, coreArchetype,
                     parentHelper, fullSlotPath, true,
                     fullFhirSlotPath, webTemplate);
+            amendedFhirCondition.setMappedPathEndAttributePrefix(
+                    mappedPathEndAttributePrefix(mapping.getFhirCondition(), mappingHelper));
             mappingHelper.setFhirConditions(List.of(amendedFhirCondition));
-
-            final String originalFhirPath =
-                    mappingHelper.getOriginalFhirPath() == null ? "" : mappingHelper.getOriginalFhirPath();
-            final String fhir = mappingHelper.getFhir();
-            final String fhirWithCondition = openFhirStringUtils.getFhirPathWithConditions(originalFhirPath,
-                    mapping.getFhirCondition(),
-                    mappingHelper.getGeneratingResourceType(),
-                    fhir == null
-                            ? originalFhirPath
-                            : originalFhirPath.replace(
-                            fhir, ""));
-            mappingHelper.setFhirWithCondition(
-                    fhirWithCondition.startsWith(".") ? fhirWithCondition.substring(1) : fhirWithCondition);
         }
 
         // Amend OpenEHR condition
@@ -446,6 +432,51 @@ public class HelpersCreator {
                     null, webTemplate);
             mappingHelper.setOpenEhrConditions(List.of(amendedOpenEhrCondition));
         }
+    }
+
+    /**
+     * Replicates the placement dispatch of the deprecated condition-in-fhirPath string splicing
+     * ({@code OpenFhirStringUtils.getFhirPathWithConditions}): a condition whose raw targetRoot
+     * did not prefix the raw mapped path had its where() clause appended to the END of the mapped
+     * path — its attributes were therefore evaluated on the mapped path's results, not on
+     * elements at the condition's targetRoot. When the raw targetRoot started with the resource
+     * type, the attributes were additionally prefixed with the targetRoot relativized against the
+     * raw path (which for unrelated roots produces a path that never resolves — a degeneracy that
+     * effectively disabled such conditions and is deliberately preserved).
+     *
+     * @return {@code null} when the condition anchors at its (amended) targetRoot; otherwise the
+     * attribute prefix to apply on the mapped path's results ("" for none)
+     */
+    private String mappedPathEndAttributePrefix(final Condition rawCondition,
+                                                final MappingHelper mappingHelper) {
+        final String resource = mappingHelper.getGeneratingResourceType() == null
+                ? ""
+                : mappingHelper.getGeneratingResourceType().replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, "");
+        final String rawPath = mappingHelper.getOriginalFhirPath() == null
+                ? ""
+                : mappingHelper.getOriginalFhirPath()
+                .replace(FHIR_RESOURCE_FC, resource)
+                .replace(FhirConnectConst.FHIR_BACKBONE_ELEMENT, resource);
+        if (rawPath.isEmpty() || rawPath.equals(FHIR_ROOT_FC)) {
+            // empty paths anchor the condition at its targetRoot; $fhirRoot paths at the parent root
+            return null;
+        }
+        final String rawTargetRoot = rawCondition.getTargetRoot()
+                .replace(FHIR_RESOURCE_FC, resource)
+                .replace(FHIR_ROOT_FC, "");
+        if (rawPath.startsWith(rawTargetRoot)) {
+            // targetRoot is a prefix of the mapped path — anchored at the targetRoot itself
+            return null;
+        }
+        if (rawTargetRoot.startsWith(resource)) {
+            // legacy "resource-anchored" splice: attributes prefixed with the targetRoot
+            // relativized against the raw path
+            if (rawTargetRoot.startsWith(rawPath + ".")) {
+                return rawTargetRoot.substring(rawPath.length() + 1);
+            }
+            return rawTargetRoot;
+        }
+        return "";
     }
 
     private Condition amendCondition(final Condition originalCondition,

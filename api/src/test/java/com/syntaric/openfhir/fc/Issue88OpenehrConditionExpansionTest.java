@@ -33,9 +33,9 @@ public class Issue88OpenehrConditionExpansionTest {
     private static Condition openehrCondition(final String criteria) {
         return new Condition()
                 .withTargetRoot("$openehrRoot")
-                .withTargetAttribute("defining_code/code_string")
+                .withTargetAttributes(List.of("defining_code/code_string"))
                 .withOperator("one of")
-                .withCriteria(criteria);
+                .withCriterias(criteria);
     }
 
     private static Manual branch(final String name, final String code, final String fhirValue) {

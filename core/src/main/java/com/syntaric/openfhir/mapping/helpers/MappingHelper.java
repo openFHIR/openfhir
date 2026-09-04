@@ -30,7 +30,6 @@ public class MappingHelper {
     private List<Condition> preprocessorFhirConditions;
 
     private String fhir;
-    private String fhirWithCondition;
     private String fullFhirPath;
 
     private String openEhr;
@@ -103,7 +102,6 @@ public class MappingHelper {
         clone.fhir = this.fhir;
         clone.hasSlot = this.hasSlot;
         clone.isFollowedBy = this.isFollowedBy;
-        clone.fhirWithCondition = this.fhirWithCondition;
         clone.fullFhirPath = this.fullFhirPath;
         clone.openEhr = this.openEhr;
         clone.programmedMapping = this.programmedMapping;

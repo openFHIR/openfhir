@@ -48,11 +48,11 @@
     "_type": "EVENT_CONTEXT",
     "start_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-03-07T10:30:00"
+      "value": "2024-03-07T10:30:00+01:00"
     },
     "end_time": {
       "_type": "DV_DATE_TIME",
-      "value": "2024-03-07T13:30:00"
+      "value": "2024-03-07T13:30:00+01:00"
     },
     "setting": {
       "_type": "DV_CODED_TEXT",
@@ -210,7 +210,7 @@
       },
       "time": {
         "_type": "DV_DATE_TIME",
-        "value": "2024-03-07T10:30:00"
+        "value": "2024-03-07T10:30:00+01:00"
       },
       "description": {
         "_type": "ITEM_TREE",

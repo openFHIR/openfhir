@@ -383,10 +383,10 @@ public class MedikamentenverabreichungenToFHIRTest extends KdsGenericTest {
 
         final MedicationAdministration medicationAdministration = administrations.get(0);
         if (medicationAdministration.getEffective() instanceof Period effectivePeriod) {
-            Assert.assertEquals("2022-02-03T04:05:06+01:00", effectivePeriod.getStartElement().getValueAsString());
-            Assert.assertEquals("2022-02-03T04:05:06+01:00", effectivePeriod.getEndElement().getValueAsString());
+            Assert.assertEquals("2022-02-03T04:05:06", effectivePeriod.getStartElement().getValueAsString());
+            Assert.assertEquals("2022-02-03T04:05:06", effectivePeriod.getEndElement().getValueAsString());
         } else {
-            Assert.assertEquals("2022-02-03T04:05:06+01:00",
+            Assert.assertEquals("2022-02-03T04:05:06",
                                 medicationAdministration.getEffectiveDateTimeType().getValueAsString());
         }
 

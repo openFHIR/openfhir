@@ -167,7 +167,8 @@ public class OpenEhrConditionEvaluator {
         for (final String groupPrefix : extractedValueKeys) {
             boolean anyAttributePresent = false;
             for (final String targetAttribute : openEhrCondition.getTargetAttributesFlatPath()) {
-                final String openEhrKey = String.format("%s/%s", groupPrefix, targetAttribute);
+                final String openEhrKey = String.format("%s/%s", groupPrefix, targetAttribute
+                        .replaceAll(OpenFhirStringUtils.RECURRING_SYNTAX_ESCAPED, ":0"));
                 final List<String> matchingEntries = openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
                         openEhrKey, fullFlatPath);
                 if (!matchingEntries.isEmpty()) {
@@ -219,7 +220,8 @@ public class OpenEhrConditionEvaluator {
                 if (StringUtils.isEmpty(targetAttribute)) {
                     openEhrKey = groupPrefix;
                 } else {
-                    openEhrKey = String.format("%s/%s", groupPrefix, targetAttribute);
+                    openEhrKey = String.format("%s/%s", groupPrefix, targetAttribute
+                            .replaceAll(OpenFhirStringUtils.RECURRING_SYNTAX_ESCAPED, ":0"));
                 }
                 final List<String> matchingEntries = openFhirStringUtils.getAllEntriesThatMatchIgnoringPipe(
                         openEhrKey, fullFlatPath);

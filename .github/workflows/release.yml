@@ -1,0 +1,205 @@
+name: Release
+
+# Cuts a release from develop: merges develop into main, rolls the changelog,
+# sets the release version, gates on build + unit/integration tests + the
+# newman smoke collection, and only then tags, pushes, creates the GitHub
+# Release and bumps develop to the next snapshot.
+#
+# Nothing is pushed until every gate has passed — a failure at any earlier
+# step leaves main, develop, tags and published artifacts untouched.
+#
+# See RELEASING.md for the runbook.
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Version to release, e.g. 3.0.0'
+        required: true
+      next_snapshot_version:
+        description: 'Next development version, e.g. 3.1.0-SNAPSHOT'
+        required: true
+      dry_run:
+        description: 'Run all gates but push nothing (no tag, no release, no develop bump)'
+        type: boolean
+        default: false
+
+concurrency: release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    env:
+      RELEASE_VERSION: ${{ inputs.release_version }}
+      NEXT_VERSION: ${{ inputs.next_snapshot_version }}
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          # PAT, not GITHUB_TOKEN: pushes made with GITHUB_TOKEN do not trigger
+          # other workflows, so docker.yml/publish.yml would never fire on the tag
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Validate inputs
+        run: |
+          if ! [[ "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "release_version must be X.Y.Z, got: $RELEASE_VERSION"; exit 1
+          fi
+          if ! [[ "$NEXT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT$ ]]; then
+            echo "next_snapshot_version must be X.Y.Z-SNAPSHOT, got: $NEXT_VERSION"; exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/$RELEASE_VERSION" >/dev/null; then
+            echo "Tag $RELEASE_VERSION already exists"; exit 1
+          fi
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge develop into main
+        run: |
+          if git merge --no-ff --no-edit origin/develop; then
+            exit 0
+          fi
+          CONFLICTS=$(git diff --name-only --diff-filter=U)
+          echo "Merge conflicts:"
+          echo "$CONFLICTS"
+          # Only pom version lines are allowed to conflict (main carries the
+          # released version, develop the snapshot). develop's side wins —
+          # versions:set overrides them right after anyway.
+          while IFS= read -r f; do
+            case "$f" in
+              pom.xml|*/pom.xml) ;;
+              *) echo "Unexpected conflict in $f — resolve manually on develop and re-run."; exit 1 ;;
+            esac
+          done <<< "$CONFLICTS"
+          echo "$CONFLICTS" | xargs git checkout --theirs --
+          echo "$CONFLICTS" | xargs git add --
+          git commit --no-edit
+
+      - name: Roll changelog
+        run: |
+          scripts/changelog-release.sh check-unreleased
+          scripts/changelog-release.sh roll "$RELEASE_VERSION"
+          scripts/changelog-release.sh extract "$RELEASE_VERSION" > "$RUNNER_TEMP/notes.md"
+          echo "--- release notes ---"
+          cat "$RUNNER_TEMP/notes.md"
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Set release version in poms
+        run: mvn -B versions:set -DnewVersion="$RELEASE_VERSION" -DgenerateBackupPoms=false
+
+      # ---- gates: everything below must pass before anything is pushed ----
+
+      - name: Build and run tests
+        env:
+          TZ: Europe/Ljubljana
+        run: mvn -B clean verify
+
+      - name: Install mongosh
+        run: |
+          wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+          sudo apt-get update -qq
+          sudo apt-get install -y mongodb-mongosh
+
+      - name: Initialise MongoDB
+        run: mongosh --file init-mongo.js
+
+      - name: Start application
+        run: |
+          java -jar engine/target/open-fhir-engine-*.jar \
+            --spring.data.mongodb.uri=mongodb://openfhir:openfhir@localhost:27017/openfhir \
+            > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Wait for application to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/health; then
+              echo "Application is ready"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+          echo "Application failed to start - startup log:"
+          cat app.log
+          exit 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run smoke collection
+        run: newman run tests/e2e/1_openFHIR_Test.postman_collection.json --reporters cli
+
+      - name: Stop application
+        if: always()
+        run: |
+          [ -f app.pid ] && kill "$(cat app.pid)" 2>/dev/null || true
+
+      # ---- gates passed: publish ----
+
+      - name: Commit and tag release
+        run: |
+          git commit -am "Release $RELEASE_VERSION"
+          git tag -a "$RELEASE_VERSION" -m "openFHIR $RELEASE_VERSION"
+
+      - name: Push main and tag
+        if: ${{ !inputs.dry_run }}
+        # triggers publish.yml (GitHub Packages) and docker.yml (Docker Hub) on the tag
+        run: git push origin main "refs/tags/$RELEASE_VERSION"
+
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if gh release view "$RELEASE_VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $RELEASE_VERSION already exists — skipping (re-run)"
+          else
+            gh release create "$RELEASE_VERSION" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$RELEASE_VERSION" \
+              --notes-file "$RUNNER_TEMP/notes.md"
+          fi
+
+      - name: Bump develop to next snapshot
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git checkout develop
+          # brings the release commit and rolled changelog back; keeps histories converged
+          git merge --no-edit main
+          mvn -B versions:set -DnewVersion="$NEXT_VERSION" -DgenerateBackupPoms=false
+          git commit -am "Start $NEXT_VERSION"
+          git push origin develop
+
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "DRY RUN — all gates passed for $RELEASE_VERSION."
+          echo "Nothing was pushed: no tag, no GitHub Release, no develop bump."
+          git log --oneline -5

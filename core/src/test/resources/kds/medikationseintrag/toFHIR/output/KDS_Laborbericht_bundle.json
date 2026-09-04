@@ -31,7 +31,7 @@
               ],
               "text": "Venous blood specimen"
             },
-            "receivedTime": "2022-02-03T05:05:06+01:00",
+            "receivedTime": "2022-02-03T05:05:06",
             "collection": {
               "collector": {
                 "identifier": {
@@ -39,7 +39,7 @@
                   "value": "1234567"
                 }
               },
-              "collectedDateTime": "2024-08-24T11:00:00+02:00",
+              "collectedDateTime": "2024-08-24T09:00:00Z",
               "method": {
                 "coding": [
                   {
@@ -152,7 +152,7 @@
             "text": "laboratory"
           }
         ],
-        "effectiveDateTime": "2024-08-22T10:30:00+02:00",
+        "effectiveDateTime": "2024-08-22T08:30:00Z",
         "issued": "2022-02-03T05:05:06.000+01:00",
         "specimen": [
           {
