@@ -33,7 +33,12 @@ Prerequisites:
 
 Steps:
 
-1. GitHub → **Actions** → **Release** → **Run workflow**, with e.g.:
+1. GitHub → **Actions** → **Release** → **Run workflow**:
+   - "Use workflow from": **`develop`**. This only selects which copy of
+     `release.yml` runs — the pipeline always checks out and releases `main`
+     (with develop merged in), whatever you pick here. Pick `develop` because
+     it always has the current version of the workflow; `main` only receives it
+     as a side effect of a release.
    - `release_version`: `3.0.0`
    - `next_snapshot_version`: `3.1.0-SNAPSHOT`
    - `dry_run`: `true` for a rehearsal (runs every gate, pushes nothing),
