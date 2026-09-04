@@ -52,6 +52,16 @@ Please check the [CHANGELOG](https://github.com/openfhir/openfhir/blob/develop/C
 
 Check out the documentation at https://open-fhir.com/documentation
 
+## Performance
+
+Performance is measured regularly, on every release, against the **[Enterprise version](https://open-fhir.com)**. The
+Enterprise version includes performance optimizations that this open-source version does not, so the numbers are not
+directly representative of what you will see here. They do, however, show that performance is not a limiting factor for
+production scenarios.
+
+- Executive summary: https://open-fhir.com/performance
+- Detailed JMeter results: https://open-fhir.com/performance-results
+
 ## Try openFHIR Online
 
 If you’d like to explore openFHIR without installing anything locally, you can use the public sandbox environment, which
