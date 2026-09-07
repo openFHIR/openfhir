@@ -252,7 +252,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         Observation observation = (Observation) diagnosticReport.getResultFirstRep().getResource();
 
         // - name: "issued"
-        Assert.assertEquals("2022-02-03T04:05:06.000+01:00", observation.getIssuedElement().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", observation.getIssuedElement().getValueAsString());
 
         //     - name: "analyteMeasurement"
         assertEquals(7.4, observation.getValueQuantity().getValue().doubleValue(), 0);
@@ -380,7 +380,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         Observation observation = (Observation) diagnosticReport.getResultFirstRep().getResource();
 
         // - name: "issued"
-        Assert.assertEquals("2022-02-03T04:05:06.000+01:00", observation.getIssuedElement().getValueAsString());
+        Assert.assertEquals("2022-02-03T04:05:06", observation.getIssuedElement().getValueAsString());
 
         //     - name: "analyteMeasurement"
         assertEquals(7.4, observation.getValueQuantity().getValue().doubleValue(), 0);
@@ -402,7 +402,7 @@ public class LaborberichtToFHIRTest extends KdsGenericTest {
         Observation observation1 = (Observation) diagnosticReport.getResult().get(1).getResource();
 
         // - name: "issued"
-        Assert.assertEquals("3022-02-03T04:05:06.000+01:00", observation1.getIssuedElement().getValueAsString());
+        Assert.assertEquals("3022-02-03T04:05:06", observation1.getIssuedElement().getValueAsString());
 
         //     - name: "analyteMeasurement"
         assertEquals(8.4, observation1.getValueQuantity().getValue().doubleValue(), 0);

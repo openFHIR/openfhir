@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.terminology.NoOpTerminologyTranslator;
 import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.InstantType;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -52,6 +53,32 @@ class DateTimeOffsetContractTest {
         });
     }
 
+    /**
+     * FHIR {@code instant} targets are subject to the same contract. These previously went through
+     * {@code java.util.Date} and came back re-rendered in the server's zone.
+     */
+    @Test
+    void toFhirInstant_preservesOffsetsExactlyAsWritten() {
+        assertSoftly(softly -> {
+            softly.assertThat(toFhirInstant("2026-08-17T09:15:00+01:00")).isEqualTo("2026-08-17T09:15:00+01:00");
+            softly.assertThat(toFhirInstant("2026-08-17T09:15:00Z")).isEqualTo("2026-08-17T09:15:00Z");
+            softly.assertThat(toFhirInstant("2026-08-17T09:15:00+00:00")).isEqualTo("2026-08-17T09:15:00+00:00");
+            softly.assertThat(toFhirInstant("2026-08-17T09:15:00-05:00")).isEqualTo("2026-08-17T09:15:00-05:00");
+            softly.assertThat(toFhirInstant("2026-08-17T09:15:00.123+01:00"))
+                    .isEqualTo("2026-08-17T09:15:00.123+01:00");
+        });
+    }
+
+    /** Sub-second precision must survive exactly as written, offset or not. */
+    @Test
+    void toFhir_preservesFractionalSecondsExactlyAsWritten() {
+        assertSoftly(softly -> {
+            softly.assertThat(toFhir("2026-08-17T09:15:00.123+01:00")).isEqualTo("2026-08-17T09:15:00.123+01:00");
+            softly.assertThat(toFhir("2026-08-17T09:15:00.5Z")).isEqualTo("2026-08-17T09:15:00.5Z");
+            softly.assertThat(toFhir("2026-08-17T09:15:00.123")).isEqualTo("2026-08-17T09:15:00.123");
+        });
+    }
+
     /** A date-only value has no time and therefore no offset; its precision must survive. */
     @Test
     void toFhir_leavesDateOnlyValuesAlone() {
@@ -93,6 +120,15 @@ class DateTimeOffsetContractTest {
         });
     }
 
+    @Test
+    void toOpenEhr_preservesFractionalSecondsExactlyAsWritten() {
+        assertSoftly(softly -> {
+            softly.assertThat(toOpenEhr("2026-08-17T09:15:00.123+01:00")).isEqualTo("2026-08-17T09:15:00.123+01:00");
+            softly.assertThat(toOpenEhr("2026-08-17T09:15:00.5Z")).isEqualTo("2026-08-17T09:15:00.5Z");
+            softly.assertThat(toOpenEhr("2026-08-17T09:15:00.123")).isEqualTo("2026-08-17T09:15:00.123");
+        });
+    }
+
     // ── round trip ─────────────────────────────────────────────────────────────
 
     /**
@@ -108,6 +144,9 @@ class DateTimeOffsetContractTest {
                     "2026-08-17T09:15:00+00:00",
                     "2026-08-17T09:15:00-05:00",
                     "2026-08-17T09:15:00",
+                    "2026-08-17T09:15:00.123+01:00",
+                    "2026-08-17T09:15:00.5Z",
+                    "2026-08-17T09:15:00.123",
             }) {
                 softly.assertThat(toOpenEhr(toFhir(value)))
                         .as("round trip of %s", value)
@@ -121,6 +160,14 @@ class DateTimeOffsetContractTest {
     /** openEHR flat value in, the FHIR dateTime's lexical form out. */
     private String toFhir(final String openEhrValue) {
         final DateTimeType target = new DateTimeType();
+        new FhirInstancePopulator(new NoOpPrePostFhirInstancePopulator(), new NoOpTerminologyTranslator())
+                .handleSpecificTypePopulation(target, new DateTimeType(openEhrValue), null);
+        return target.getValueAsString();
+    }
+
+    /** openEHR flat value in, the FHIR instant's lexical form out. */
+    private String toFhirInstant(final String openEhrValue) {
+        final InstantType target = new InstantType();
         new FhirInstancePopulator(new NoOpPrePostFhirInstancePopulator(), new NoOpTerminologyTranslator())
                 .handleSpecificTypePopulation(target, new DateTimeType(openEhrValue), null);
         return target.getValueAsString();

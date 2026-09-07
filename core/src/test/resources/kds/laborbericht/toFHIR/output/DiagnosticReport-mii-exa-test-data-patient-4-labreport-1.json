@@ -114,7 +114,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2020-09-17T09:00:00.000+02:00",
+            "issued": "2020-09-17T09:00:00+02:00",
             "valueQuantity": {
               "value": 8.2,
               "unit": "/nL",
@@ -172,7 +172,7 @@
               ],
               "text": "Creatinine [Mass/volume] in Serum or Plasma"
             },
-            "issued": "2020-09-17T09:00:00.000+02:00",
+            "issued": "2020-09-17T09:00:00+02:00",
             "valueQuantity": {
               "value": 0.9,
               "unit": "mg/dL",
@@ -230,7 +230,7 @@
               ],
               "text": "Cholesterol [Moles/volume] in Serum or Plasma"
             },
-            "issued": "2020-09-17T09:00:00.000+02:00",
+            "issued": "2020-09-17T09:00:00+02:00",
             "valueQuantity": {
               "value": 6.2,
               "unit": "mmol/L",
@@ -318,7 +318,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2020-09-17T07:15:00+02:00",
-        "issued": "2020-09-17T07:15:00.000+02:00",
+        "issued": "2020-09-17T07:15:00+02:00",
         "specimen": [
           {
             "reference": "#2"

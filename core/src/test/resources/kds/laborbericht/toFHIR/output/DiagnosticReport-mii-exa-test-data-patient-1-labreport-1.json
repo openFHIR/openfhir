@@ -99,7 +99,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2024-02-15T12:00:00.000+01:00",
+            "issued": "2024-02-15T12:00:00+01:00",
             "valueQuantity": {
               "value": 17.0,
               "unit": "/nL",
@@ -162,7 +162,7 @@
               ],
               "text": "Erythrocytes [#/volume] in Blood"
             },
-            "issued": "2024-02-15T12:00:00.000+01:00",
+            "issued": "2024-02-15T12:00:00+01:00",
             "valueQuantity": {
               "value": 5.0,
               "unit": "/pL",
@@ -225,7 +225,7 @@
               ],
               "text": "Hematocrit [Volume Fraction] of Blood by calculation"
             },
-            "issued": "2024-02-15T12:00:00.000+01:00",
+            "issued": "2024-02-15T12:00:00+01:00",
             "valueQuantity": {
               "value": 45.0,
               "unit": "%",
@@ -288,7 +288,7 @@
               ],
               "text": "Hemoglobin [Mass/volume] in Blood"
             },
-            "issued": "2024-02-15T12:00:00.000+01:00",
+            "issued": "2024-02-15T12:00:00+01:00",
             "valueQuantity": {
               "value": 45.0,
               "unit": "g/dL",
@@ -351,7 +351,7 @@
               ],
               "text": "Platelets [#/volume] in Blood"
             },
-            "issued": "2024-02-15T12:00:00.000+01:00",
+            "issued": "2024-02-15T12:00:00+01:00",
             "valueQuantity": {
               "value": 355.0,
               "unit": "/nL",
@@ -414,7 +414,7 @@
               ],
               "text": "Erythrocyte [DistWidth] in Red Blood Cells by Automated count"
             },
-            "issued": "2024-02-15T12:00:00.000+01:00"
+            "issued": "2024-02-15T12:00:00+01:00"
 //            "dataAbsentReason": {
 //              "coding": [
 //                {
@@ -468,7 +468,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2024-02-15T12:00:00+01:00",
-        "issued": "2024-02-15T12:00:00.000+01:00",
+        "issued": "2024-02-15T12:00:00+01:00",
         "specimen": [
           {
             "reference": "#2"
