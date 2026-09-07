@@ -36,6 +36,17 @@ public class Condition implements Serializable {
     private List<String> targetAttributes; // if multiple, then OR is implied between them. If you want AND, you need to write multiple conditions
 
     /**
+     * Legacy singular form. Kept (though never exposed over Jackson) because persisted documents
+     * written before the plural migration still carry it: Gson (the Postgres entity round trip) and
+     * Spring Data Mongo bind by field name and know nothing about the {@code @JsonSetter}
+     * normalization — without this field the old value is silently dropped and
+     * {@link #getTargetAttributes()} comes back {@code null}, NPE-ing helper creation.
+     * Normalized into {@link #targetAttributes} lazily by the getter.
+     */
+    @JsonIgnore
+    private String targetAttribute;
+
+    /**
      * (Required)
      */
     @JsonProperty("operator")
@@ -45,6 +56,10 @@ public class Condition implements Serializable {
      */
     @JsonProperty("criterias")
     private List<String> criterias;
+
+    /** Legacy singular form; see {@link #targetAttribute} for why it must remain bindable. */
+    @JsonIgnore
+    private String criteria;
     @JsonProperty("identifying")
     private Boolean identifying;
 
@@ -86,11 +101,11 @@ public class Condition implements Serializable {
     public Condition copy() {
         final Condition condition = new Condition();
         condition.setTargetRoot(targetRoot);
-        condition.setTargetAttributes(targetAttributes);
+        condition.setTargetAttributes(getTargetAttributes()); // via the getter: normalizes legacy singular
         condition.setTargetRootFlatPath(targetRootFlatPath);
         condition.setTargetAttributesFlatPath(targetAttributesFlatPath);
         condition.setOperator(operator);
-        condition.setCriterias(criterias);
+        condition.setCriterias(getCriterias()); // via the getter: normalizes legacy singular
         condition.setIdentifying(identifying == null ? null : new Boolean(identifying.booleanValue()));
         condition.setMappedPathEndAttributePrefix(mappedPathEndAttributePrefix);
         return condition;
@@ -119,9 +134,17 @@ public class Condition implements Serializable {
 
     /**
      * (Required)
+     * <p>
+     * Falls back to the legacy singular {@code targetAttribute} when the plural list is absent, so
+     * documents persisted before the plural migration (materialized by Gson or Spring Data, which
+     * bypass the Jackson-level normalization) keep their condition semantics instead of surfacing a
+     * {@code null} list.
      */
     @JsonProperty("targetAttributes")
     public List<String> getTargetAttributes() {
+        if ((targetAttributes == null || targetAttributes.isEmpty()) && targetAttribute != null) {
+            targetAttributes = new ArrayList<>(List.of(targetAttribute));
+        }
         return targetAttributes;
     }
 
@@ -177,8 +200,15 @@ public class Condition implements Serializable {
         this.criterias = new ArrayList<>(List.of(criteria));
     }
 
+    /**
+     * Falls back to the legacy singular {@code criteria} when the plural list is absent; see
+     * {@link #getTargetAttributes()}.
+     */
     @JsonProperty("criterias")
     public List<String> getCriterias() {
+        if ((criterias == null || criterias.isEmpty()) && criteria != null) {
+            criterias = new ArrayList<>(List.of(criteria));
+        }
         return criterias;
     }
 

@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   re-rendering it in the server's zone, matching the 3.0.0 `dateTime` fix
 - fractional seconds on zoneless date-times are no longer truncated in the FHIR → openEHR direction;
   sub-second precision now survives byte-identically in both directions (pinned by contract tests)
+- conditions from mappings persisted before the plural field migration (singular `targetAttribute` /
+  `criteria` keys) are normalized again: the persistence round trips (Gson, Spring Data) bypass the
+  Jackson-level normalization and dropped the values, which silently disabled the condition in
+  evaluation and threw an NPE during helper creation when such a model was loaded from the database
 
 ## [3.0.0] - 2026-09-04
 ### Security

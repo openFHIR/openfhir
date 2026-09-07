@@ -20,6 +20,7 @@ import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -507,7 +508,10 @@ public class HelpersCreator {
                         aqlToFlatPathConverter.convert(amendedTargetRoot, null, webTemplate);
                 amendedCondition.setTargetRootFlatPath(rootResult.flatPath());
 
-                final List<String> targetAttributes = amendedCondition.getTargetAttributes();
+                // may legitimately be null on an attribute-less condition; FhirConditionEvaluator
+                // treats that as a no-op condition, so amending must tolerate it too
+                final List<String> targetAttributes = amendedCondition.getTargetAttributes() == null
+                        ? Collections.<String>emptyList() : amendedCondition.getTargetAttributes();
                 for (final String targetAttribute : targetAttributes) {
                     if (!StringUtils.isNotBlank(targetAttribute)) {
                         continue;
