@@ -114,7 +114,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2022-03-14T09:30:00.000+01:00",
+            "issued": "2022-03-14T09:30:00+01:00",
             "valueQuantity": {
               "value": 9.1,
               "unit": "/nL",
@@ -172,7 +172,7 @@
               ],
               "text": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
             },
-            "issued": "2022-03-14T09:30:00.000+01:00",
+            "issued": "2022-03-14T09:30:00+01:00",
             "valueQuantity": {
               "value": 45.0,
               "unit": "U/L",
@@ -230,7 +230,7 @@
               ],
               "text": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma"
             },
-            "issued": "2022-03-14T09:30:00.000+01:00",
+            "issued": "2022-03-14T09:30:00+01:00",
             "valueQuantity": {
               "value": 38.0,
               "unit": "U/L",
@@ -318,7 +318,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2022-03-14T07:00:00+01:00",
-        "issued": "2022-03-14T07:00:00.000+01:00",
+        "issued": "2022-03-14T07:00:00+01:00",
         "specimen": [
           {
             "reference": "#2"

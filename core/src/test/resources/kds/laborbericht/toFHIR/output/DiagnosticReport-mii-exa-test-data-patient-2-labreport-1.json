@@ -78,7 +78,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2024-03-04T09:15:00.000+01:00",
+            "issued": "2024-03-04T09:15:00+01:00",
             "valueQuantity": {
               "value": 3.2,
               "unit": "/nL",
@@ -141,7 +141,7 @@
               ],
               "text": "Erythrocytes [#/volume] in Blood"
             },
-            "issued": "2024-03-04T09:15:00.000+01:00",
+            "issued": "2024-03-04T09:15:00+01:00",
             "valueQuantity": {
               "value": 3.8,
               "unit": "/pL",
@@ -199,7 +199,7 @@
               ],
               "text": "Hemoglobin [Mass/volume] in Blood"
             },
-            "issued": "2024-03-04T09:15:00.000+01:00",
+            "issued": "2024-03-04T09:15:00+01:00",
             "valueQuantity": {
               "value": 9.2,
               "unit": "g/dL",
@@ -257,7 +257,7 @@
               ],
               "text": "Platelets [#/volume] in Blood"
             },
-            "issued": "2024-03-04T09:15:00.000+01:00",
+            "issued": "2024-03-04T09:15:00+01:00",
             "valueQuantity": {
               "value": 120.0,
               "unit": "/nL",
@@ -345,7 +345,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2024-03-04T07:30:00+01:00",
-        "issued": "2024-03-04T07:30:00.000+01:00",
+        "issued": "2024-03-04T07:30:00+01:00",
         "specimen": [
           {
             "reference": "#2"

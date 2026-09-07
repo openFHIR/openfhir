@@ -124,7 +124,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2023-07-12T08:30:00.000+02:00",
+            "issued": "2023-07-12T08:30:00+02:00",
             "valueQuantity": {
               "value": 7.8,
               "unit": "/nL",
@@ -182,7 +182,7 @@
               ],
               "text": "Hemoglobin [Mass/volume] in Blood"
             },
-            "issued": "2023-07-12T08:30:00.000+02:00",
+            "issued": "2023-07-12T08:30:00+02:00",
             "valueQuantity": {
               "value": 11.8,
               "unit": "g/dL",
@@ -240,7 +240,7 @@
               ],
               "text": "Fasting glucose [Mass/volume] in Serum or Plasma"
             },
-            "issued": "2023-07-12T08:30:00.000+02:00",
+            "issued": "2023-07-12T08:30:00+02:00",
             "valueQuantity": {
               "value": 92.0,
               "unit": "mg/dL",
@@ -328,7 +328,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2023-07-12T06:45:00+02:00",
-        "issued": "2023-07-12T06:45:00.000+02:00",
+        "issued": "2023-07-12T06:45:00+02:00",
         "specimen": [
           {
             "reference": "#2"

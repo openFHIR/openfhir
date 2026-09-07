@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- `$toopenehr` now reports a `multiple-matches` OperationOutcome warning when a Bundle's entries
+  reference more than one subject (or carry more than one Patient entry), naming the conflicting
+  subjects; the mapping still completes — one Bundle maps to one Composition, so partitioning per
+  subject remains the caller's responsibility
+
+### Fixed
+- FHIR `instant` targets now preserve the source date/time's offset and lexical form instead of
+  re-rendering it in the server's zone, matching the 3.0.0 `dateTime` fix
+- fractional seconds on zoneless date-times are no longer truncated in the FHIR → openEHR direction;
+  sub-second precision now survives byte-identically in both directions (pinned by contract tests)
 
 ## [3.0.0] - 2026-09-04
 ### Security
