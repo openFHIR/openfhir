@@ -1869,29 +1869,45 @@ public class OpenEhrPopulator {
      * the offset as written — {@code Z} stays {@code Z}, {@code +00:00} stays {@code +00:00} — and
      * the original wall-clock reading with it.
      * <p>
-     * Returns {@code null} when the value has no offset (or is not a date/time at all), which is the
-     * signal to fall back to the {@code Date}-based formatting. A source that genuinely carried no
-     * offset must not have one invented for it.
+     * A zoneless value is also returned as written when it is at least second-precise: its lexical
+     * form is the same string the {@code Date}-based fallback would render — except that the fallback
+     * formatter has no fraction field, so sub-seconds ({@code 09:15:00.123}) silently truncated.
+     * A source that genuinely carried no offset must not have one invented for it, and reading the
+     * string as written cannot invent one.
+     * <p>
+     * Returns {@code null} when the value is not a date/time at all, or is zoneless at coarser than
+     * second precision (e.g. {@code 2026-08}), which is the signal to fall back to the
+     * {@code Date}-based formatting.
      */
     private static String getOffsetPreservingDateTimeString(final IBase value) {
         final String asString;
         final java.util.TimeZone timeZone;
+        final ca.uhn.fhir.model.api.TemporalPrecisionEnum precision;
         if (value instanceof org.hl7.fhir.r4.model.BaseDateTimeType dt) {
             asString = dt.getValueAsString();
             timeZone = dt.getTimeZone();
+            precision = dt.getPrecision();
         } else if (value instanceof org.hl7.fhir.dstu3.model.BaseDateTimeType dt) {
             asString = dt.getValueAsString();
             timeZone = dt.getTimeZone();
+            precision = dt.getPrecision();
         } else if (value instanceof org.hl7.fhir.r4b.model.BaseDateTimeType dt) {
             asString = dt.getValueAsString();
             timeZone = dt.getTimeZone();
+            precision = dt.getPrecision();
         } else if (value instanceof org.hl7.fhir.r5.model.BaseDateTimeType dt) {
             asString = dt.getValueAsString();
             timeZone = dt.getTimeZone();
+            precision = dt.getPrecision();
         } else {
             return null;
         }
-        return timeZone == null ? null : asString;
+        if (timeZone != null) {
+            return asString;
+        }
+        final boolean atLeastSecondPrecise = precision != null
+                && precision.ordinal() >= ca.uhn.fhir.model.api.TemporalPrecisionEnum.SECOND.ordinal();
+        return atLeastSecondPrecise ? asString : null;
     }
 
     /**

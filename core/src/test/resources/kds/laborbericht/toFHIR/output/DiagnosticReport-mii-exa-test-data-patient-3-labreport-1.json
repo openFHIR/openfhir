@@ -114,7 +114,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2022-04-05T10:30:00.000+02:00",
+            "issued": "2022-04-05T10:30:00+02:00",
             "valueQuantity": {
               "value": 12.5,
               "unit": "/nL",
@@ -172,7 +172,7 @@
               ],
               "text": "Alkaline phosphatase [Enzymatic activity/volume] in Serum or Plasma"
             },
-            "issued": "2022-04-05T10:30:00.000+02:00",
+            "issued": "2022-04-05T10:30:00+02:00",
             "valueQuantity": {
               "value": 156.0,
               "unit": "U/L",
@@ -230,7 +230,7 @@
               ],
               "text": "Bilirubin.total [Mass/volume] in Serum or Plasma"
             },
-            "issued": "2022-04-05T10:30:00.000+02:00",
+            "issued": "2022-04-05T10:30:00+02:00",
             "valueQuantity": {
               "value": 2.8,
               "unit": "mg/dL",
@@ -318,7 +318,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2022-04-05T08:00:00+02:00",
-        "issued": "2022-04-05T08:00:00.000+02:00",
+        "issued": "2022-04-05T08:00:00+02:00",
         "specimen": [
           {
             "reference": "#2"

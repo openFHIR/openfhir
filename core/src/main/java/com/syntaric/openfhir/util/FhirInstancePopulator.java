@@ -206,8 +206,13 @@ public class FhirInstancePopulator {
             // setValueAsString keeps the offset exactly as written, and the precision with it.
             ((DateTimeType) toPopulate).setValueAsString(data.getValueAsString());
         } else if (toPopulate instanceof InstantType) {
-            ((InstantType) toPopulate).setValue(data.getValue());
+            // same contract as DateTimeType above: keep the lexical form so the source's offset
+            // (and sub-second precision) survives instead of being re-rendered in the server zone
+            ((InstantType) toPopulate).setValueAsString(data.getValueAsString());
         } else if (toPopulate instanceof DateType) {
+            // date-only, no offset to lose; going through java.util.Date can in theory shift the
+            // day across midnight when source and server zones differ, but a DateType source has
+            // no time component to shift on
             ((DateType) toPopulate).setValue(data.getValue());
         } else {
             populateDateTimeCrossVersion(toPopulate, data.getValue(), data.getValueAsString());

@@ -114,7 +114,7 @@
               ],
               "text": "Leukocytes [#/volume] in Blood"
             },
-            "issued": "2023-11-12T08:15:00.000+01:00",
+            "issued": "2023-11-12T08:15:00+01:00",
             "valueQuantity": {
               "value": 13.8,
               "unit": "/nL",
@@ -172,7 +172,7 @@
               ],
               "text": "Troponin T.cardiac [Mass/volume] in Serum or Plasma"
             },
-            "issued": "2023-11-12T08:15:00.000+01:00",
+            "issued": "2023-11-12T08:15:00+01:00",
             "valueQuantity": {
               "value": 2.8,
               "unit": "ng/mL",
@@ -235,7 +235,7 @@
               ],
               "text": "Creatine kinase [Enzymatic activity/volume] in Serum or Plasma"
             },
-            "issued": "2023-11-12T08:15:00.000+01:00",
+            "issued": "2023-11-12T08:15:00+01:00",
             "valueQuantity": {
               "value": 85.0,
               "unit": "U/L",
@@ -323,7 +323,7 @@
           "reference": "#1"
         },
         "effectiveDateTime": "2023-11-12T06:30:00+01:00",
-        "issued": "2023-11-12T06:30:00.000+01:00",
+        "issued": "2023-11-12T06:30:00+01:00",
         "specimen": [
           {
             "reference": "#2"

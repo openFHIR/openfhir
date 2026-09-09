@@ -139,6 +139,12 @@ public class ToOpenEhr {
 
         prePostProcessor.preProcess(context, resource);
 
+        if (resource instanceof Bundle bundle) {
+            // one Bundle → one Composition → one EHR/subject; a mixed-subject Bundle cannot be
+            // partitioned here (subject is EHR context, external to the Composition), so warn — never block
+            MixedSubjectBundleGuard.check(bundle, issueCollector);
+        }
+
         /**
          * get start archetype
          * then find Resource that matches that archetype
