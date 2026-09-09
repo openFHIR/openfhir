@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.1] - 2026-09-09
 ### Added
 - `$toopenehr` now reports a `multiple-matches` OperationOutcome warning when a Bundle's entries
   reference more than one subject (or carry more than one Patient entry), naming the conflicting
