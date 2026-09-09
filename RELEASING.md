@@ -48,9 +48,6 @@ Steps:
    - Docker Hub has `openfhir/openfhir:3.0.0` and `:latest` points at it
    - The GitHub Release exists with the changelog notes
    - `develop` is on `3.1.0-SNAPSHOT`
-3. **Releasing enterprise too? Wait for the "Publish Maven packages" run on the
-   tag to finish first** — the enterprise release gate checks that the released
-   OSS artifact exists in GitHub Packages.
 
 ## Failure model
 
