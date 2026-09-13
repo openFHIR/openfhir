@@ -10,6 +10,8 @@ import com.syntaric.openfhir.operations.OperationRequestParser;
 import com.syntaric.openfhir.operations.ProvenanceGenerator;
 import com.syntaric.openfhir.operations.SubjectReferencePopulator;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
+import com.syntaric.openfhir.util.InvalidTemplateException;
+import com.syntaric.openfhir.util.TemplateNotFoundException;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.OperationOutcome;
@@ -342,5 +344,91 @@ public class FhirOperationsControllerTest {
                 .findFirst().orElse(null);
         Assert.assertNotNull(outcome);
         Assert.assertEquals("skipped an element", outcome.getIssueFirstRep().getDiagnostics());
+    }
+
+    /**
+     * Issue #119: a Context mapper referencing a template that was never uploaded used to escape as a raw
+     * NullPointerException from the SDK's OPTParser, yielding a 500 with an internal message.
+     */
+    @Test
+    public void toFhirMissingOperationalTemplateIsBadRequestNamingTheTemplate() throws Exception {
+        stubPayloadTypeDetection();
+        Mockito.when(openFhirEngine.toFhirBundle(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(MappingCallContext.class), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenThrow(new TemplateNotFoundException("Growth chart1"));
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$tofhir")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(toFhirBody(CANONICAL_COMPOSITION, "Growth chart1", null)))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse();
+
+        final OperationOutcome outcome = parse(OperationOutcome.class, response.getContentAsString());
+        Assert.assertEquals(OperationOutcome.IssueType.NOTFOUND, outcome.getIssueFirstRep().getCode());
+        Assert.assertTrue("diagnostics should name the missing template, was: "
+                        + outcome.getIssueFirstRep().getDiagnostics(),
+                outcome.getIssueFirstRep().getDiagnostics().contains("Growth chart1"));
+    }
+
+    @Test
+    public void toOpenEhrMissingOperationalTemplateIsBadRequest() throws Exception {
+        Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenThrow(new TemplateNotFoundException("KDS_Laborbericht"));
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(encode(new Observation()))
+                        .param("templateId", "KDS_Laborbericht"))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse();
+
+        final OperationOutcome outcome = parse(OperationOutcome.class, response.getContentAsString());
+        Assert.assertEquals(OperationOutcome.IssueType.NOTFOUND, outcome.getIssueFirstRep().getCode());
+    }
+
+    /**
+     * A stored-but-unparseable template is a server fault, so it stays a 500 — but with a message that names
+     * the template instead of an SDK stack detail.
+     */
+    @Test
+    public void unparseableOperationalTemplateIsInternalServerError() throws Exception {
+        stubPayloadTypeDetection();
+        Mockito.when(openFhirEngine.toFhirBundle(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(MappingCallContext.class), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenThrow(new InvalidTemplateException("Growth chart", new RuntimeException("bad xml")));
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$tofhir")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(toFhirBody(CANONICAL_COMPOSITION, "Growth chart", null)))
+                .andExpect(status().isInternalServerError())
+                .andReturn().getResponse();
+
+        final OperationOutcome outcome = parse(OperationOutcome.class, response.getContentAsString());
+        Assert.assertTrue(outcome.getIssueFirstRep().getDiagnostics().contains("Growth chart"));
+    }
+
+    /**
+     * Unexpected failures must not echo internal exception text (class names, offsets) back to the caller.
+     */
+    @Test
+    public void unexpectedFailureDoesNotLeakInternalExceptionText() throws Exception {
+        stubPayloadTypeDetection();
+        Mockito.when(openFhirEngine.toFhirBundle(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(MappingCallContext.class), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenThrow(new NullPointerException(
+                        "Cannot invoke \"org.openehr.schemas.v1.OPERATIONALTEMPLATE.getLanguage()\" because it is null"));
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$tofhir")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(toFhirBody(CANONICAL_COMPOSITION, "Growth chart", null)))
+                .andExpect(status().isInternalServerError())
+                .andReturn().getResponse();
+
+        final OperationOutcome outcome = parse(OperationOutcome.class, response.getContentAsString());
+        final String diagnostics = outcome.getIssueFirstRep().getDiagnostics();
+        Assert.assertFalse("internal exception text leaked: " + diagnostics,
+                diagnostics.contains("OPERATIONALTEMPLATE"));
+        Assert.assertEquals(OperationOutcome.IssueType.EXCEPTION, outcome.getIssueFirstRep().getCode());
     }
 }

@@ -101,6 +101,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                     final Spec.Version fhirVersion,
                                     final MappingIssueCollector issueCollector) {
 
+        if (mappingHelpers == null || mappingHelpers.isEmpty()) {
+            // nothing to walk for this archetype; callers treat an unchanged flat as "nothing mapped"
+            return finalFlat;
+        }
+
         final String openEhrHierarchySplitFlatPath = mappingHelpers.get(0).getOpenEhrHierarchySplitFlatPath();
         int relevantIndex = indexByHierarchyPath.getOrDefault(openEhrHierarchySplitFlatPath, 0);
         final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
@@ -274,8 +279,10 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         }
 
         // Case 3 – path is inside the hierarchy: index the last [n] of the split-path
-        // segment, then collapse any outer [n] markers to :0
-        final String indexed = stringUtils.replaceLastIndexOf(splitPath, RECURRING_SYNTAX, ":" + i);
+        // segment, then collapse any outer [n] markers to :0. A split path without any [n] is a
+        // non-repeating hierarchy node (or one whose AQL didn't fully resolve against the template),
+        // so there is no occurrence to index and it is used as-is.
+        final String indexed = replaceLastRecurring(splitPath, i);
         return indexed.replaceAll(RECURRING_SYNTAX_ESCAPED, ":0");
     }
 

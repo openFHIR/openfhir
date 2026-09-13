@@ -170,10 +170,20 @@ public class ToOpenEhr {
         // apply limiting criteria and find the starting point within the Bundle
         final List<MappingHelper> mappingHelpersOfMainArchetype = mappersOfMainArchetype.get(
                 context.getContext().getStart());
+        if (mappingHelpersOfMainArchetype == null || mappingHelpersOfMainArchetype.isEmpty()) {
+            log.error("No model mapper found for the start archetype {} of template {}",
+                      context.getContext().getStart(), templateId);
+            issueCollector.addWarning(String.format(
+                    "No model mapper was found for the start archetype '%s' of template '%s' — nothing was mapped.",
+                    context.getContext().getStart(), templateId));
+            return finalFlat;
+        }
         final MappingHelper aMapper = mappingHelpersOfMainArchetype.get(0);
 
         final List<IAnyResource> startingResources = findStartingResource(aMapper, resource, fhirVersion);
-        if (startingResources == null) {
+        // an empty result means the input carries none of the resource type this template starts from (e.g. a
+        // lab Composition needs a DiagnosticReport) — that is unmappable input, not a crash condition
+        if (startingResources == null || startingResources.isEmpty()) {
             log.error("No starting resources found for template: {}, archetype: {}", templateId,
                       context.getContext().getStart());
             issueCollector.addWarning(String.format(
