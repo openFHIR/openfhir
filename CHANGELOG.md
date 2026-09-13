@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 ### Fixed
+- a bare resource posted to `$toopenehr` (not wrapped in a Bundle) now maps as documented when its type
+  matches the one the start archetype's model mapper generates, instead of returning an empty
+  Composition (issue #118); previously this only worked for mappers without a
+  `preprocessor.fhirCondition` — mappers that declared one evaluated a Bundle-rooted path that matched
+  nothing in a bare resource. A bare resource of a type the mapper does not generate is reported as
+  nothing-mapped rather than silently mapped as if it were the expected type. The Newman e2e
+  collection now posts the same Observation both bare and wrapped in a Bundle and asserts the two map
+  identically.
 - unhandled runtime exceptions on the mapping endpoints are now diagnosable responses (issue #119):
   - a template referenced by a Context mapper but never uploaded returns 400 naming the template,
     instead of a 500 `NullPointerException` from the SDK's OPT parser; the existing

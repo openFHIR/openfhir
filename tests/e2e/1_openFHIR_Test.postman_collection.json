@@ -1945,6 +1945,239 @@
    ]
   },
   {
+   "name": "Bare resource mapping (issue #118)",
+   "item": [
+    {
+     "name": "Point the context at a leaf start archetype",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "exec": [
+         "// OBSERVATION.body_weight.v2 generates Observation and declares a preprocessor.fhirCondition - the combination issue #118 is about.",
+         "pm.test(\"Context mapper start archetype is now OBSERVATION.body_weight.v2\", function () {",
+         "    pm.response.to.have.status(200);",
+         "    const response = pm.response.json();",
+         "    pm.expect(response.context.start).to.eql('OBSERVATION.body_weight.v2');",
+         "});"
+        ],
+        "type": "text/javascript"
+       }
+      }
+     ],
+     "request": {
+      "method": "PUT",
+      "header": [],
+      "body": {
+       "mode": "raw",
+       "raw": "grammar: FHIRConnect/v0.0.1\ntype: context\nmetadata:\n  name: \"Growth chart\"\n  version: 0.0.1a\nspec:\n  system: FHIR\n  version: R4\n\ncontext:\n  profile:\n    url: \"\"\n  template:\n    id: \"Growth chart\"\n  archetypes:\n    - \"OBSERVATION.body_weight.v2\"\n    - \"OBSERVATION.height.v2\"\n    - \"OBSERVATION.body_mass_index.v2\"\n    - \"OBSERVATION.head_circumference.v1\"\n    - \"openEHR-EHR-COMPOSITION.growth_chart.v0\"\n  start: \"OBSERVATION.body_weight.v2\"",
+       "options": {
+        "raw": {
+         "language": "text"
+        }
+       }
+      },
+      "url": {
+       "raw": "http://localhost:8080/fc/context/{{context_id}}",
+       "protocol": "http",
+       "host": [
+        "localhost"
+       ],
+       "port": "8080",
+       "path": [
+        "fc",
+        "context",
+        "{{context_id}}"
+       ]
+      }
+     },
+     "response": []
+    },
+    {
+     "name": "$toopenehr Observation wrapped in a Bundle",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "exec": [
+         "// Baseline for the bare-resource test that follows: the same Observation, inside a Bundle.",
+         "pm.test(\"Observation in a Bundle maps to a populated composition\", function () {",
+         "    pm.response.to.have.status(200);",
+         "    const response = pm.response.json();",
+         "    pm.expect(response.resourceType).to.eq(\"Parameters\");",
+         "    const composition = response.parameter.find(p => p.name === \"composition\");",
+         "    pm.expect(composition, \"no composition parameter in response\").to.not.be.undefined;",
+         "    const flat = JSON.parse(composition.valueString);",
+         "    pm.environment.set(\"issue118_bundle_flat\", JSON.stringify(flat));",
+         "    pm.expect(Object.keys(flat).length, \"the Bundle form mapped nothing\").to.be.above(0);",
+         "    pm.expect(flat[\"growth_chart/body_weight/any_event:0/weight|magnitude\"]).to.eql(71.5);",
+         "});"
+        ],
+        "type": "text/javascript"
+       }
+      }
+     ],
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/fhir+json"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n    \"resourceType\": \"Bundle\",\n    \"entry\": [\n        {\n            \"resource\": {\n                \"resourceType\": \"Observation\",\n                \"category\": [\n                    {\n                        \"coding\": [\n                            {\n                                \"code\": \"weight\"\n                            }\n                        ]\n                    }\n                ],\n                \"code\": {\n                    \"coding\": [\n                        {\n                            \"code\": \"29463-7\"\n                        }\n                    ]\n                },\n                \"effectiveDateTime\": \"2022-02-04T04:05:06+00:00\",\n                \"valueQuantity\": {\n                    \"value\": 71.5,\n                    \"unit\": \"kg\"\n                },\n                \"note\": [\n                    {\n                        \"text\": \"issue 118 bare resource\"\n                    }\n                ]\n            }\n        }\n    ]\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      },
+      "url": {
+       "raw": "http://localhost:8080/$toopenehr?templateId=Growth%20chart&format=flat",
+       "protocol": "http",
+       "host": [
+        "localhost"
+       ],
+       "port": "8080",
+       "path": [
+        "$toopenehr"
+       ],
+       "query": [
+        {
+         "key": "templateId",
+         "value": "Growth%20chart"
+        },
+        {
+         "key": "format",
+         "value": "flat"
+        }
+       ]
+      }
+     },
+     "response": []
+    },
+    {
+     "name": "$toopenehr bare Observation, not wrapped in a Bundle (issue #118)",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "exec": [
+         "// Issue #118: a bare resource whose type matches the one the start archetype generates must map",
+         "// exactly as it does inside a Bundle. It used to yield an empty composition, because this mapper",
+         "// declares a preprocessor.fhirCondition and that path evaluated a Bundle-rooted FHIRPath.",
+         "pm.test(\"Bare Observation maps the same as the Bundle form\", function () {",
+         "    pm.response.to.have.status(200);",
+         "    const response = pm.response.json();",
+         "    pm.expect(response.resourceType).to.eq(\"Parameters\");",
+         "    const composition = response.parameter.find(p => p.name === \"composition\");",
+         "    pm.expect(composition, \"no composition parameter in response\").to.not.be.undefined;",
+         "    const flat = JSON.parse(composition.valueString);",
+         "    pm.environment.set(\"issue118_bare_flat\", JSON.stringify(flat));",
+         "    pm.expect(Object.keys(flat).length, \"the bare resource mapped nothing\").to.be.above(0);",
+         "    pm.expect(flat[\"growth_chart/body_weight/any_event:0/weight|magnitude\"]).to.eql(71.5);",
+         "",
+         "    const fromBundle = pm.environment.get(\"issue118_bundle_flat\");",
+         "    pm.expect(fromBundle, \"the Bundle request must run first\").to.not.be.undefined;",
+         "    pm.expect(flat).to.eql(JSON.parse(fromBundle));",
+         "});"
+        ],
+        "type": "text/javascript"
+       }
+      }
+     ],
+     "request": {
+      "method": "POST",
+      "header": [
+       {
+        "key": "Content-Type",
+        "value": "application/fhir+json"
+       }
+      ],
+      "body": {
+       "mode": "raw",
+       "raw": "{\n    \"resourceType\": \"Observation\",\n    \"category\": [\n        {\n            \"coding\": [\n                {\n                    \"code\": \"weight\"\n                }\n            ]\n        }\n    ],\n    \"code\": {\n        \"coding\": [\n            {\n                \"code\": \"29463-7\"\n            }\n        ]\n    },\n    \"effectiveDateTime\": \"2022-02-04T04:05:06+00:00\",\n    \"valueQuantity\": {\n        \"value\": 71.5,\n        \"unit\": \"kg\"\n    },\n    \"note\": [\n        {\n            \"text\": \"issue 118 bare resource\"\n        }\n    ]\n}",
+       "options": {
+        "raw": {
+         "language": "json"
+        }
+       }
+      },
+      "url": {
+       "raw": "http://localhost:8080/$toopenehr?templateId=Growth%20chart&format=flat",
+       "protocol": "http",
+       "host": [
+        "localhost"
+       ],
+       "port": "8080",
+       "path": [
+        "$toopenehr"
+       ],
+       "query": [
+        {
+         "key": "templateId",
+         "value": "Growth%20chart"
+        },
+        {
+         "key": "format",
+         "value": "flat"
+        }
+       ]
+      }
+     },
+     "response": []
+    },
+    {
+     "name": "Restore the Composition start archetype",
+     "event": [
+      {
+       "listen": "test",
+       "script": {
+        "exec": [
+         "// Leave the engine state as the rest of the collection expects it.",
+         "pm.test(\"Context mapper start archetype is now openEHR-EHR-COMPOSITION.growth_chart.v0\", function () {",
+         "    pm.response.to.have.status(200);",
+         "    const response = pm.response.json();",
+         "    pm.expect(response.context.start).to.eql('openEHR-EHR-COMPOSITION.growth_chart.v0');",
+         "});"
+        ],
+        "type": "text/javascript"
+       }
+      }
+     ],
+     "request": {
+      "method": "PUT",
+      "header": [],
+      "body": {
+       "mode": "raw",
+       "raw": "grammar: FHIRConnect/v0.0.1\ntype: context\nmetadata:\n  name: \"Growth chart\"\n  version: 0.0.1a\nspec:\n  system: FHIR\n  version: R4\n\ncontext:\n  profile:\n    url: \"\"\n  template:\n    id: \"Growth chart\"\n  archetypes:\n    - \"OBSERVATION.body_weight.v2\"\n    - \"OBSERVATION.height.v2\"\n    - \"OBSERVATION.body_mass_index.v2\"\n    - \"OBSERVATION.head_circumference.v1\"\n    - \"openEHR-EHR-COMPOSITION.growth_chart.v0\"\n  start: \"openEHR-EHR-COMPOSITION.growth_chart.v0\"",
+       "options": {
+        "raw": {
+         "language": "text"
+        }
+       }
+      },
+      "url": {
+       "raw": "http://localhost:8080/fc/context/{{context_id}}",
+       "protocol": "http",
+       "host": [
+        "localhost"
+       ],
+       "port": "8080",
+       "path": [
+        "fc",
+        "context",
+        "{{context_id}}"
+       ]
+      }
+     },
+     "response": []
+    }
+   ]
+  },
+  {
    "name": "Purge Copy",
    "item": [
     {

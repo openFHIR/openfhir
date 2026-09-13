@@ -277,6 +277,17 @@ public class ToOpenEhr {
         }
 
         final String mainResource = aMapperFromStartingArchetype.getGeneratingResourceType();
+
+        // A bare resource is the starting point in its own right — the Bundle-rooted path below would find
+        // nothing in it. The branch above already accepts bare input this way; mappers that declare a
+        // preprocessor condition must not behave differently, or an input matching the mapper's own
+        // structureDefinition silently maps to an empty Composition.
+        if (!(toEvaluateOn instanceof IBaseBundle)) {
+            return matchesGeneratingResourceType(toEvaluateOn, mainResource)
+                    ? Collections.singletonList(toEvaluateOn)
+                    : null;
+        }
+
         final String startingResourcePath = fhirVersion == Version.STU3
                 ? String.format("Bundle.entry.resource.where($this is %s)", mainResource)
                 : String.format("Bundle.entry.resource.ofType(%s)", mainResource);
@@ -304,6 +315,18 @@ public class ToOpenEhr {
                      relevantDataPoints.size());
             return relevantDataPoints;
         }
+    }
+
+    /**
+     * Whether a bare (non-Bundle) input is of the resource type the start archetype's model mapper generates.
+     * A mapper generating "Bundle" takes any input, mirroring the Bundle branch of
+     * {@link #findStartingResource}.
+     */
+    private boolean matchesGeneratingResourceType(final IAnyResource resource, final String generatingResourceType) {
+        if (generatingResourceType == null || "Bundle".equals(generatingResourceType)) {
+            return true;
+        }
+        return generatingResourceType.equals(resource.fhirType());
     }
 
     private IBaseBundle prepareBundle(final IAnyResource startingResource, final Spec.Version fhirVersion) {
