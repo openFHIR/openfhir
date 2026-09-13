@@ -233,7 +233,7 @@ public class OpenFhirEngine {
         final Spec.Version fhirVersion = getFhirVersion(fhirConnectContext);
         final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getContext(fhirVersion));
 
-        final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateIdToUse)));
+        final WebTemplate webTemplate = resolveWebTemplate(templateIdToUse);
 
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext());
 
@@ -306,7 +306,7 @@ public class OpenFhirEngine {
                 .getId(); // fhirConnectContext can not be null because prerequisites are validated above
 
         final MappingTimer cacheTimer = MappingTimer.start();
-        final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateIdToUse)));
+        final WebTemplate webTemplate = resolveWebTemplate(templateIdToUse);
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext());
         metricsLogger.record("toFhir.initCache", "template=" + templateIdToUse, cacheTimer.elapsedMs());
 
@@ -405,13 +405,24 @@ public class OpenFhirEngine {
             log.error(format);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, format);
         }
-        final WebTemplate webTemplate = templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(OpenFhirMappingContext.normalizeTemplateId(templateId)));
-        if (webTemplate == null) {
-            log.error("Web template couldn't be created from an operation template {}.", templateId);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.format(
-                    "Could not create WebTemplate from this OPT '%s'. Please validate the template or contact OpenFHIR support team.",
-                    templateId));
+        // throws TemplateNotFoundException / InvalidTemplateException, both surfaced as diagnosable responses
+        resolveWebTemplate(templateId);
+    }
+
+    /**
+     * Looks the operational template up for the given (not yet normalized) template id and parses it into a
+     * WebTemplate.
+     *
+     * @throws com.syntaric.openfhir.util.TemplateNotFoundException if no such template is uploaded
+     * @throws com.syntaric.openfhir.util.InvalidTemplateException  if the stored template can't be parsed
+     */
+    private WebTemplate resolveWebTemplate(final String templateId) {
+        if (StringUtils.isBlank(templateId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "No template id could be determined for this request. Set the 'templateId' query parameter or reference a template from the Context mapper.");
         }
+        final String normalized = OpenFhirMappingContext.normalizeTemplateId(templateId);
+        return templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(normalized), templateId);
     }
 
     public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {

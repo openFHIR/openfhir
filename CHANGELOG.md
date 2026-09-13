@@ -8,6 +8,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Fixed
+- unhandled runtime exceptions on the mapping endpoints are now diagnosable responses (issue #119):
+  - a template referenced by a Context mapper but never uploaded returns 400 naming the template,
+    instead of a 500 `NullPointerException` from the SDK's OPT parser; the existing
+    `webTemplate == null` guard was unreachable, because the parser dereferences its argument in its
+    constructor
+  - a stored operational template that no longer parses is reported separately, as a 500 naming it
+  - input containing none of the resource type the template starts from (e.g. a lab report mapping
+    given an `Observation` but no `DiagnosticReport`) is reported as a warning with an empty result,
+    instead of `Index 0 out of bounds for length 0`
+  - a non-repeating hierarchy node no longer fails with `Range [0, -1) out of bounds`;
+    `replaceLastIndexOf` leaves the string untouched when the target is absent, and a hierarchy path
+    that doesn't resolve against the uploaded template is now warned about at helper-construction time
+  - a model mapping without the optional `with.fhir` no longer throws an NPE in the `$tofhir`
+    direction, matching the guard the `$toopenehr` direction already had
+  - unexpected errors no longer echo internal exception text back to the caller; the response carries
+    a reference id and the detail stays in the log
 
 ## [3.0.1] - 2026-09-09
 ### Added

@@ -287,4 +287,24 @@ public class OpenFhirStringUtilsTest {
         // no cast in the path at all
         Assert.assertNull(openFhirStringUtils.getCastType("Observation.value"));
     }
+
+    /**
+     * Issue #119: a split path with no [n] marker made lastIndexOf return -1, which substring turned into
+     * "Range [0, -1) out of bounds for length 24".
+     */
+    @Test
+    public void replaceLastIndexOfLeavesStringAloneWhenTargetIsAbsent() {
+        final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
+
+        Assert.assertEquals("laborbericht/laborbefund",
+                openFhirStringUtils.replaceLastIndexOf("laborbericht/laborbefund", "[n]", ":0"));
+    }
+
+    @Test
+    public void replaceLastIndexOfReplacesOnlyTheLastOccurrence() {
+        final OpenFhirStringUtils openFhirStringUtils = new OpenFhirStringUtils();
+
+        Assert.assertEquals("a[n]/b:3",
+                openFhirStringUtils.replaceLastIndexOf("a[n]/b[n]", "[n]", ":3"));
+    }
 }

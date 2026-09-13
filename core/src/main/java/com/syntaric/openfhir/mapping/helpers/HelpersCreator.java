@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -297,8 +298,21 @@ public class HelpersCreator {
                         .getArchetype(),
                 fallback, parentHelper, fullSlotPath);
 
-        return aqlToFlatPathConverter.convert(resolvedOpenEhrPath, null, webTemplate)
-                .flatPath();
+        final AqlToFlatPathConverter.Result result = aqlToFlatPathConverter.convert(resolvedOpenEhrPath, null,
+                webTemplate);
+        // An unresolved path is only a problem when it also lost its repeating marker: the split path has then
+        // collapsed to a non-repeating node, and repeating entries under it silently share an index. A path that
+        // kept its [n] resolved well enough (e.g. a hierarchy that is just $archetype), so it stays quiet.
+        if (!result.valid() && result.flatPath() != null
+                && !result.flatPath().contains(OpenFhirStringUtils.RECURRING_SYNTAX)) {
+            log.warn(
+                    "Hierarchy path '{}' of model mapper '{}' could not be fully resolved against the template; "
+                            + "resolved to '{}'. Check that the model mapper matches the uploaded operational template.",
+                    resolvedOpenEhrPath,
+                    fhirConnectModel.getMetadata() == null ? null : fhirConnectModel.getMetadata().getName(),
+                    result.flatPath());
+        }
+        return result.flatPath();
     }
 
     private Condition handlePreprocessorOpenEhrCondition(final FhirConnectModel fhirConnectModel,
