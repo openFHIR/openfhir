@@ -16,6 +16,13 @@ openfhir:
     # does not supply a context.who reference
     device-reference: Device/openfhir-engine
     device-display: openFHIR engine
+  operations:
+    # What the $tofhir / $toopenehr OperationOutcome reports (env: OPENFHIR_OPERATIONS_OUTCOME_VERBOSITY):
+    #   all    - errors (failed mappings) and warnings (skipped/unmappable elements); the default
+    #   errors - only failed mappings, keeps the response small on inputs that skip many elements
+    #   none   - no OperationOutcome at all
+    # Issues below the level are never collected; the engine log is not affected.
+    outcome-verbosity: all
   narrative:
   # Optional: classpath or file path to a custom HAPI narrative properties file.
   # The file maps FHIR resource types to Thymeleaf HTML templates for the generateNarrative mapping code.

@@ -6,6 +6,7 @@ import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.BidirectionalMappingEngine;
+import com.syntaric.openfhir.mapping.MappingContext;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
@@ -14,6 +15,8 @@ import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.FhirConditionEvaluator;
+import com.syntaric.openfhir.util.FhirPathEvaluationException;
+import com.syntaric.openfhir.util.MappingExecutionException;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
@@ -70,6 +73,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         this.fhirConditionEvaluator = fhirConditionEvaluator;
     }
 
+    /**
+     * Same as {@link #mapToOpenEhr(List, JsonObject, IBase, boolean, Map, Spec.Version, MappingIssueCollector)}
+     * with a {@link MappingIssueCollector#failFast() fail-fast} collector: nobody reads the issues back, so the
+     * first failed mapping is thrown as a {@link MappingExecutionException}.
+     */
     public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
                                    final JsonObject finalFlat,
                                    final IBase dataPoint,
@@ -77,7 +85,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                    final Map<String, Integer> indexByHierarchyPath,
                                    final Spec.Version fhirVersion) {
         return mapToOpenEhr(mappingHelpers, finalFlat, dataPoint, firstWalkOverModelMapping, indexByHierarchyPath,
-                fhirVersion, new MappingIssueCollector());
+                fhirVersion, MappingIssueCollector.failFast());
     }
 
     public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
@@ -119,32 +127,43 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
         boolean somethingWasAdded = false;
         for (final MappingHelper helper : mappingHelpers) {
-            if (!shouldProcessMapping(helper, UNIDIRECTIONAL_TOOPENEHR, fhirVersion)) {
-                continue;
-            }
             if (helper.getFullOpenEhrFlatPath() == null) {
                 continue;
             }
+            final int previousFinalFlatSize = finalFlat.size();
 
-            if (!fhirEmptyNotEmptyPasses(helper, helper.getFhirConditions(), versionedFhirPath, baseClass)) {
-                continue;
+            // A runtime failure inside this mapping is reported with its context and the loop moves on (or, with a
+            // fail-fast collector, thrown); the clone carries the hierarchy-indexed flat path, so it is the better
+            // context once it exists.
+            MappingHelper clonedHelper = null;
+            try {
+                if (!shouldProcessMapping(helper, UNIDIRECTIONAL_TOOPENEHR, fhirVersion)) {
+                    continue;
+                }
+                if (!fhirEmptyNotEmptyPasses(helper, helper.getFhirConditions(), versionedFhirPath, baseClass)) {
+                    continue;
+                }
+
+                clonedHelper = helper.cloneWithFhirResourceAndRootIntact();
+
+                final String path = setIndexAccordingToHierarchy(clonedHelper, relevantIndex);
+
+                final String replaced = stringUtils.replacePattern(clonedHelper.getFullOpenEhrFlatPath(), path);
+                clonedHelper.setFullOpenEhrFlatPath(replaced);
+
+                fixAllChildrenRecurringElements(clonedHelper, path);
+
+                doMapping(clonedHelper, finalFlat, dataPoint, indexByHierarchyPath, baseClass, fhirVersion,
+                        issueCollector);
+            } catch (final MappingExecutionException e) {
+                // a nested loop already reported this with the innermost (most specific) context
+                throw e;
+            } catch (final RuntimeException e) {
+                reportMappingFailure(e, clonedHelper != null ? clonedHelper : helper, UNIDIRECTIONAL_TOOPENEHR,
+                        issueCollector);
+            } finally {
+                somethingWasAdded = somethingWasAdded || (finalFlat.size() > previousFinalFlatSize);
             }
-
-            final MappingHelper clonedHelper = helper.cloneWithFhirResourceAndRootIntact();
-
-            final String path = setIndexAccordingToHierarchy(clonedHelper, relevantIndex);
-
-            final String replaced = stringUtils.replacePattern(clonedHelper.getFullOpenEhrFlatPath(), path);
-            clonedHelper.setFullOpenEhrFlatPath(replaced);
-
-            fixAllChildrenRecurringElements(clonedHelper, path);
-
-            int previousFinalFlatSize = finalFlat.size();
-
-            doMapping(clonedHelper, finalFlat, dataPoint, indexByHierarchyPath, baseClass, fhirVersion,
-                    issueCollector);
-
-            somethingWasAdded = somethingWasAdded || (finalFlat.size() > previousFinalFlatSize);
         }
 
         metricsLogger.record("mapToOpenEhr.helpers", openEhrHierarchySplitFlatPath, helpersTimer.elapsedMs());
@@ -299,34 +318,41 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                       final Spec.Version fhirVersion,
                       final MappingIssueCollector issueCollector) {
         final MappingTimer mappingTimer = MappingTimer.start();
+        try {
+            final String fhirPath = helper.getFhir();
 
-        final String fhirPath = helper.getFhir();
+            final IBase toResolveOn = getToResolveOn(iteratingBase, helper);
 
-        final IBase toResolveOn = getToResolveOn(iteratingBase, helper);
+            final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
 
-        final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
+            final List<? extends IBase> results;
+            try {
+                results = resolveFhirResults(helper, fhirPath, toResolveOn, versionedFhirPath, baseClass);
+            } catch (final FhirPathEvaluationException e) {
+                // the expression in the mapper cannot be evaluated against this input: skip the mapping, but tell
+                // the caller which mapping and expression, since that is what the mapper author needs to fix it
+                final MappingContext context = MappingContext.of(helper, UNIDIRECTIONAL_TOOPENEHR);
+                log.warn("Skipped {}: {}", context.describe(), e.getMessage(), e);
+                issueCollector.addWarning(String.format("Skipped %s: %s", context.describe(), e.getMessage()));
+                return false;
+            }
+            if (results == null) {
+                return false; // nothing resolvable for this mapping (see resolveReference)
+            }
 
-        final List<? extends IBase> results = resolveFhirResults(helper, fhirPath, toResolveOn, versionedFhirPath, baseClass);
-        if (results == null) {
+            if (helper.getProgrammedMapping() == null
+                    && (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results))) {
+                return handleMissingResults(helper, flatComposition, toResolveOn, fhirPath, versionedFhirPath,
+                        baseClass);
+            }
+            populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath,
+                    indexByHierarchyPath, versionedFhirPath, baseClass, fhirVersion, issueCollector);
+            return true;
+        } finally {
             metricsLogger.record("doMapping",
                     "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
                     mappingTimer.elapsedMs());
-            return false; // evaluation error already logged
         }
-
-        final boolean result;
-        if (helper.getProgrammedMapping() == null && (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results))) {
-            result = handleMissingResults(helper, flatComposition, toResolveOn, fhirPath, versionedFhirPath, baseClass);
-        } else {
-            populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath, indexByHierarchyPath,
-                    versionedFhirPath, baseClass, fhirVersion, issueCollector);
-            result = true;
-        }
-
-        metricsLogger.record("doMapping",
-                "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
-                mappingTimer.elapsedMs());
-        return result;
     }
 
     private IBase getToResolveOn(final IBase iteratingBase,
@@ -339,7 +365,9 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     /**
      * Resolves FHIR results for the given path and base resource.
-     * Returns {@code null} when a path evaluation error occurs (already logged).
+     *
+     * @throws FhirPathEvaluationException when the mapping's FHIRPath expression cannot be evaluated
+     * @return the resolved elements, or {@code null} when a reference mapping has nothing to resolve against
      */
     private List<? extends IBase> resolveFhirResults(final MappingHelper helper, final String fhirPath,
                                                      final IBase toResolveOn,
@@ -397,10 +425,10 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     fhirPathToUse.replace(".as(Enumeration)", ""),
                     // casting to enumeration only works when doing toFhir, else it complains it's not a valid fhir type
                     baseClass);
-        } catch (final Exception e) {
-            // if resolve() can't find the referenced resource, fail gracefully
-            log.error("Error trying to evaluate path {}", fhirPath);
-            return null;
+        } catch (final RuntimeException e) {
+            // e.g. a malformed expression, or resolve() unable to find the referenced resource; the mapping loop
+            // turns this into a warning that names the mapping and the expression
+            throw new FhirPathEvaluationException(fhirPath, e);
         }
     }
 
@@ -442,10 +470,12 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     final String openEhrPathToPopulateTo =
                             openFhirMapperUtils.removeAqlSuffix(thePath, deducedRmType)
                                     + clonedHelper.getFlatPathPipeSuffix();
-                    populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo, flatComposition, deducedRmType);
+                    populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo, flatComposition,
+                            deducedRmType, issueCollector);
                 } else if (StringUtils.isNotEmpty(clonedHelper.getProgrammedMapping())) {
                     // still invoke the programmed one
-                    populateValue(helper, clonedHelper, result, thePath, thePath, flatComposition, null);
+                    populateValue(helper, clonedHelper, result, thePath, thePath, flatComposition, null,
+                            issueCollector);
                 }
             }
 
@@ -455,7 +485,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
         if(results.isEmpty() && helper.getProgrammedMapping() != null) {
             // we still want programmed mapping to happen and within there you can decide what to do
-            invokeProgrammedMapping(helper, flatComposition, null);
+            invokeProgrammedMapping(helper, flatComposition, null, issueCollector);
         }
     }
 
@@ -540,7 +570,8 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     private void populateValue(final MappingHelper helper, final MappingHelper clonedHelper, final IBase result,
                                final String thePath, final String openEhrPathToPopulateTo,
-                               final JsonObject flatComposition, final String rmType) {
+                               final JsonObject flatComposition, final String rmType,
+                               final MappingIssueCollector issueCollector) {
 
         long possibleRmTypes = helper.getPossibleRmTypes().size();
         boolean isMultipleTypes = possibleRmTypes > 1 && !isOnlyText(helper.getPossibleRmTypes());
@@ -552,7 +583,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     rmType, isMultipleTypes, flatComposition, helper.getTerminology(),
                     helper.getAvailableCodings());
         } else if (StringUtils.isNotEmpty(helper.getProgrammedMapping())) {
-            invokeProgrammedMapping(helper, flatComposition, result);
+            invokeProgrammedMapping(helper, flatComposition, result, issueCollector);
         } else {
             final boolean handledEventTime = applyEventTypeMappingIfNeeded(helper, result, thePath, flatComposition);
             if (!handledEventTime) {
@@ -598,48 +629,49 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                 clonedHelper.isHasSlot(), indexByHierarchyPath, baseClass, fhirVersion, issueCollector);
     }
 
+    /**
+     * Runs the mapping code registered for the helper. A failure inside the custom mapping is reported through
+     * {@link #reportMappingFailure} (recorded as an {@code error} issue, or thrown when the collector is
+     * fail-fast) instead of being swallowed; a mapping code that declines to apply, or one that is not registered,
+     * is reported as a warning.
+     */
     private void invokeProgrammedMapping(final MappingHelper mappingHelper,
                                          final JsonObject flatComposition,
-                                         final IBase result) {
-        log.info("Using mapping code: {}", mappingHelper.getProgrammedMapping());
+                                         final IBase result,
+                                         final MappingIssueCollector issueCollector) {
+        final String mappingCode = mappingHelper.getProgrammedMapping();
+        log.info("Using mapping code: {}", mappingCode);
 
+        final CustomMapping customMapping = customMappingRegistry.find(mappingCode).orElse(null);
+        if (customMapping == null) {
+            log.warn("No CustomMapping found for mapping code: {}", mappingCode);
+            issueCollector.addWarning(String.format(
+                    "Element could not be mapped: no CustomMapping registered for mapping code '%s' (%s).",
+                    mappingCode, MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOOPENEHR).describe()));
+            return;
+        }
+
+        final boolean success;
         try {
-            boolean success = false;
-            CustomMapping customMapping = customMappingRegistry.find(mappingHelper.getProgrammedMapping()).orElse(null);
-            if (customMapping != null) {
-                success = customMapping.applyFhirToOpenEhrMapping(
-                        mappingHelper,
-                        result,
-                        mappingHelper.getPossibleRmTypes(),
-                        flatComposition,
-                        openEhrPopulator,
-                        openFhirMapperUtils,
-                        stringUtils
-                );
-            } else {
-                // fallback to plugin extensions if present
-//                PluginManager pluginManager = SpringContext.getBean(PluginManager.class);
-//                List<FormatConverter> converters = pluginManager.getExtensions(FormatConverter.class);
-//                if (converters.isEmpty()) {
-//                    log.warn("No CustomMapping or FormatConverter found for mapping code: {}",
-//                             helper.getMappingCode());
-//                } else {
-//                    FormatConverter converter = converters.get(0);
-//                    success = converter.applyFhirToOpenEhrMapping(
-//                            helper.getMappingCode(),
-//                            thePath,
-//                            result,
-//                            helper.getOpenEhrType(),
-//                            flatComposition
-//                    );
-//                }
-            }
+            success = customMapping.applyFhirToOpenEhrMapping(
+                    mappingHelper,
+                    result,
+                    mappingHelper.getPossibleRmTypes(),
+                    flatComposition,
+                    openEhrPopulator,
+                    openFhirMapperUtils,
+                    stringUtils
+            );
+        } catch (final RuntimeException e) {
+            reportMappingFailure(e, mappingHelper, UNIDIRECTIONAL_TOOPENEHR, issueCollector);
+            return;
+        }
 
-            if (!success) {
-                log.warn("Mapping failed for code: {}", mappingHelper.getProgrammedMapping());
-            }
-        } catch (Exception e) {
-            log.error("Error applying mapping: {}", e.getMessage(), e);
+        if (!success) {
+            log.warn("Mapping failed for code: {}", mappingCode);
+            issueCollector.addWarning(String.format(
+                    "Mapping code '%s' did not map anything for %s.",
+                    mappingCode, MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOOPENEHR).describe()));
         }
     }
 

@@ -5,6 +5,7 @@ import com.syntaric.openfhir.operations.OperationOutcomeFactory;
 import com.syntaric.openfhir.operations.OperationRequestException;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.InvalidTemplateException;
+import com.syntaric.openfhir.util.MappingExecutionException;
 import com.syntaric.openfhir.util.TemplateNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.OperationOutcome;
@@ -73,6 +74,19 @@ public class FhirOperationExceptionHandler {
         log.error("Stored operational template {} could not be parsed", e.getTemplateId(), e);
         return respond(HttpStatus.INTERNAL_SERVER_ERROR,
                 operationOutcomeFactory.error(OperationOutcome.IssueType.EXCEPTION, e.getMessage()));
+    }
+
+    /**
+     * A single mapping failed and the engine was asked to fail fast (issue #120). The message already names the
+     * model mapper, archetype, mapping and paths; the cause decides the status: a caller-correctable cause is a
+     * 400 with the cause's text, an engine fault is a 500 whose diagnostics carry the reference id under which
+     * the engine logged the stack at the point of failure — so it is not logged again here.
+     */
+    @ExceptionHandler(MappingExecutionException.class)
+    public ResponseEntity<String> handleMappingExecutionException(final MappingExecutionException e) {
+        final HttpStatus status = e.isCallerError() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR;
+        return respond(status,
+                operationOutcomeFactory.error(OperationOutcome.IssueType.fromCode(e.issueCode()), e.getMessage()));
     }
 
     /**
