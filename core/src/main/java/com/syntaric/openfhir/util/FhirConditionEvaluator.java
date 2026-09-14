@@ -71,8 +71,9 @@ public class FhirConditionEvaluator {
      * via the remaining T segments plus each targetAttribute), and the rest of the plain path is
      * then evaluated on the surviving elements.
      *
-     * @return the filtered evaluation results, or {@code null} when evaluation fails (already
-     * logged) — the same contract as plain path evaluation
+     * @return the filtered evaluation results
+     * @throws FhirPathEvaluationException when the path or a condition cannot be evaluated — the
+     * same contract as plain path evaluation
      */
     public List<? extends IBase> evaluateWithConditions(final MappingHelper helper,
                                                         final String plainFhirPath,
@@ -141,9 +142,8 @@ public class FhirConditionEvaluator {
                 }
             }
             return results;
-        } catch (final Exception e) {
-            log.error("Error trying to evaluate path {} with fhirConditions", plainFhirPath);
-            return null;
+        } catch (final RuntimeException e) {
+            throw new FhirPathEvaluationException(plainFhirPath, e);
         }
     }
 

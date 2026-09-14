@@ -376,19 +376,24 @@ public class FhirConditionEvaluatorTest {
     }
 
     // -----------------------------------------------------------------------
-    // Error path: invalid attribute path must not throw — same catch-log-null contract as
-    // plain path evaluation
+    // Error path: an invalid attribute path surfaces as a FhirPathEvaluationException naming
+    // the mapping's path — same contract as plain path evaluation (issue #120)
     // -----------------------------------------------------------------------
 
     @Test
-    public void invalidAttributePath_returnsNullInsteadOfThrowing() {
+    public void invalidAttributePath_throwsFhirPathEvaluationExceptionNamingThePath() {
         final MappingHelper helper = helper("Observation.component.value",
                 condition("Observation.component", List.of("code..coding"), "one of", List.of("9999-9")));
 
-        final List<? extends IBase> results = evaluator.evaluateWithConditions(helper, "component.value",
-                twoComponentObservation(), fhirPath, Base.class);
-
-        Assert.assertNull(results);
+        try {
+            evaluator.evaluateWithConditions(helper, "component.value", twoComponentObservation(), fhirPath,
+                    Base.class);
+            Assert.fail("expected FhirPathEvaluationException");
+        } catch (final FhirPathEvaluationException e) {
+            Assert.assertEquals("component.value", e.getFhirPath());
+            Assert.assertNotNull(e.getCause());
+            Assert.assertTrue(e.getMessage(), e.getMessage().contains("component.value"));
+        }
     }
 
     // -----------------------------------------------------------------------

@@ -8,6 +8,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- a runtime failure inside a single mapping no longer fails the whole `$tofhir` / `$toopenehr` request
+  as an opaque 500 (issue #120): it is reported as an `OperationOutcome` issue of severity `error`
+  naming the model mapper, archetype, mapping and the openEHR/FHIR paths being processed, the
+  remaining mappings still run and the partial result is returned. The issue `code` tells the two
+  cases apart: `processing` / `structure` when the cause is caller-correctable (the message is
+  echoed, as before), `exception` for an engine fault, where the diagnostics carry a reference id and
+  the exception detail stays in the engine log (logged once, with the stack, at the point of failure)
+- `openfhir.operations.outcome-verbosity` (env `OPENFHIR_OPERATIONS_OUTCOME_VERBOSITY`) controls what the
+  `$tofhir` / `$toopenehr` `OperationOutcome` carries: `all` (default, errors and warnings), `errors`
+  (failed mappings only) or `none` (no `OperationOutcome` at all). Issues below the level are never
+  collected, so the response stays small for inputs that skip many elements; the engine log is
+  unaffected
+
+### Changed
+- callers that do not pass an issue collector (the legacy `/openfhir/*` endpoints, direct engine use)
+  fail fast on the first failed mapping with a `MappingExecutionException` carrying the same
+  descriptive message; the legacy endpoints return it as their usual 400 text body
+- `$toopenehr` failures inside custom mapping code (`mappingCode`) are no longer swallowed and only
+  logged; they are reported like any other mapping failure, and a mapping code that is not
+  registered or declines to map is reported as a warning
+- `$tofhir` nested (`followedBy` / `reference` / `slotArchetype`) mappings now report their warnings;
+  they used to be collected into a throwaway collector and lost
+- a FHIRPath expression in a model mapping that cannot be evaluated in the `$toopenehr` direction
+  (unknown function, malformed condition path, unresolvable `resolve()`) is reported as a `warning`
+  / `incomplete` issue naming the mapping, the expression and the FHIRPath engine's message, instead
+  of only a log line; the mapping is skipped as before
+- the `$toopenehr` "matched the mapping criteria but nothing could be mapped" warning is now raised
+  only when a mapping found no data at its FHIR path or its data produced no openEHR value, and it
+  names those mappings with their FHIR paths, the model mapper and archetype, and quotes the FHIR
+  JSON of the element they were evaluated on (truncated at 2000 characters). It is no longer raised
+  for an element a mapping was never meant to match: a slot or reference mapping whose target
+  mapper's preprocessor condition, resource type or filtering condition rejected it, or a manual
+  FHIR-value mapping that has nothing to write towards openEHR. A Bundle fanned out over several
+  slot mappings therefore no longer yields one warning per slot per entry, and a nested miss is
+  reported once, by the innermost walk, instead of once per level. The "no CustomMapping
+  registered" warning names its mapping
+- the Newman e2e collection exercises the mappings through `$tofhir` / `$toopenehr` instead of the
+  legacy `/openfhir/tofhir` / `/openfhir/toopenehr` endpoints, and covers the per-mapping error and
+  FHIRPath-warning issues above
+
 ### Fixed
 - a bare resource posted to `$toopenehr` (not wrapped in a Bundle) now maps as documented when its type
   matches the one the start archetype's model mapper generates, instead of returning an empty

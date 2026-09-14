@@ -7,10 +7,16 @@ import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.operations.NoOpPatientResolver;
 import com.syntaric.openfhir.operations.OperationOutcomeFactory;
 import com.syntaric.openfhir.operations.OperationRequestParser;
+import com.syntaric.openfhir.operations.OutcomeVerbosity;
 import com.syntaric.openfhir.operations.ProvenanceGenerator;
 import com.syntaric.openfhir.operations.SubjectReferencePopulator;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
+import ca.uhn.fhir.parser.DataFormatException;
+import com.syntaric.openfhir.fc.FhirConnectConst;
+import com.syntaric.openfhir.mapping.MappingContext;
+import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.util.InvalidTemplateException;
+import com.syntaric.openfhir.util.MappingExecutionException;
 import com.syntaric.openfhir.util.TemplateNotFoundException;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
@@ -43,13 +49,18 @@ public class FhirOperationsControllerTest {
 
     @Before
     public void setUp() {
+        setUp(OutcomeVerbosity.ALL);
+    }
+
+    private void setUp(final OutcomeVerbosity verbosity) {
         openFhirEngine = Mockito.mock(OpenFhirEngine.class);
         final OperationOutcomeFactory outcomeFactory = new OperationOutcomeFactory();
         final FhirOperationsService service = new FhirOperationsService(openFhirEngine,
                 new SubjectReferencePopulator(new NoOpPatientResolver()),
                 new ProvenanceGenerator("Device/openfhir-engine", "openFHIR engine"),
                 outcomeFactory,
-                fhirContextRegistry);
+                fhirContextRegistry,
+                verbosity);
         final FhirOperationsController controller = new FhirOperationsController(service,
                 new OperationRequestParser(fhirContextRegistry));
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
@@ -430,5 +441,238 @@ public class FhirOperationsControllerTest {
         Assert.assertFalse("internal exception text leaked: " + diagnostics,
                 diagnostics.contains("OPERATIONALTEMPLATE"));
         Assert.assertEquals(OperationOutcome.IssueType.EXCEPTION, outcome.getIssueFirstRep().getCode());
+    }
+
+    // -----------------------------------------------------------------------
+    // Issue #120: per-mapping failures
+    // -----------------------------------------------------------------------
+
+    private static final String NPE_TEXT =
+            "Cannot invoke \"org.openehr.schemas.v1.OPERATIONALTEMPLATE.getLanguage()\" because it is null";
+
+    private static MappingExecutionException mappingFailure(final String direction, final Throwable cause) {
+        final MappingHelper helper = new MappingHelper();
+        helper.setModelMetadataName("Body weight");
+        helper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
+        helper.setMappingName("weight");
+        helper.setOriginalOpenEhrPath("$archetype/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
+        helper.setOriginalFhirPath("$resource.value");
+        return new MappingExecutionException(MappingContext.of(helper, direction), cause);
+    }
+
+    private static void assertErrorIssueNamesTheMapping(final OperationOutcome.OperationOutcomeIssueComponent issue) {
+        Assert.assertEquals(OperationOutcome.IssueSeverity.ERROR, issue.getSeverity());
+        Assert.assertEquals(OperationOutcome.IssueType.EXCEPTION, issue.getCode());
+        final String diagnostics = issue.getDiagnostics();
+        Assert.assertTrue(diagnostics, diagnostics.contains("mapping 'weight' of model mapper 'Body weight'"));
+        Assert.assertTrue(diagnostics, diagnostics.contains("reference "));
+        Assert.assertFalse("internal exception text leaked: " + diagnostics, diagnostics.contains("OPERATIONALTEMPLATE"));
+    }
+
+    /**
+     * A mapping that failed at runtime is an {@code error} issue on a 200 response alongside the partial result.
+     */
+    @Test
+    public void toFhirCollectedMappingErrorIsReturnedAs200WithErrorIssue() throws Exception {
+        stubPayloadTypeDetection();
+        Mockito.when(openFhirEngine.toFhirBundle(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(MappingCallContext.class), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenAnswer(invocation -> {
+                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    collector.addError(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOFHIR,
+                            new NullPointerException(NPE_TEXT)));
+                    final Bundle bundle = new Bundle();
+                    bundle.addEntry().setResource(new Observation());
+                    return bundle;
+                });
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$tofhir")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(toFhirBody(CANONICAL_COMPOSITION, "Growth chart", null)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        final Bundle bundle = parse(Bundle.class, response.getContentAsString());
+        Assert.assertTrue(bundle.getEntry().stream().anyMatch(e -> e.getResource() instanceof Observation));
+        final OperationOutcome outcome = bundle.getEntry().stream()
+                .filter(e -> e.getResource() instanceof OperationOutcome)
+                .map(e -> (OperationOutcome) e.getResource())
+                .findFirst().orElse(null);
+        Assert.assertNotNull(outcome);
+        assertErrorIssueNamesTheMapping(outcome.getIssueFirstRep());
+    }
+
+    @Test
+    public void toOpenEhrCollectedMappingErrorIsReturnedAs200WithErrorIssue() throws Exception {
+        Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenAnswer(invocation -> {
+                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    collector.addError(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR,
+                            new NullPointerException(NPE_TEXT)));
+                    return "{\"partial\": true}";
+                });
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content("{\"resourceType\": \"Bundle\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        final Parameters parameters = parse(Parameters.class, response.getContentAsString());
+        Assert.assertEquals("{\"partial\": true}", parameters.getParameter().stream()
+                .filter(p -> "composition".equals(p.getName())).findFirst().orElseThrow().getValue().primitiveValue());
+        final Parameters.ParametersParameterComponent outcomeParam = parameters.getParameter().stream()
+                .filter(p -> "outcome".equals(p.getName())).findFirst().orElse(null);
+        Assert.assertNotNull(outcomeParam);
+        assertErrorIssueNamesTheMapping(((OperationOutcome) outcomeParam.getResource()).getIssueFirstRep());
+    }
+
+    /**
+     * A fail-fast caller: an engine fault is a 500 whose diagnostics name the mapping and the reference id but
+     * not the internal exception text.
+     */
+    @Test
+    public void thrownMappingFailureWithEngineFaultIs500NamingTheMapping() throws Exception {
+        stubPayloadTypeDetection();
+        Mockito.when(openFhirEngine.toFhirBundle(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(MappingCallContext.class), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenThrow(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOFHIR, new NullPointerException(NPE_TEXT)));
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$tofhir")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(toFhirBody(CANONICAL_COMPOSITION, "Growth chart", null)))
+                .andExpect(status().isInternalServerError())
+                .andReturn().getResponse();
+
+        final OperationOutcome outcome = parse(OperationOutcome.class, response.getContentAsString());
+        assertErrorIssueNamesTheMapping(outcome.getIssueFirstRep());
+    }
+
+    /**
+     * A fail-fast caller: a caller-correctable cause (here HAPI refusing an unparseable value) is a 400 with the
+     * cause's text, since that is what the caller needs to fix their input.
+     */
+    @Test
+    public void thrownMappingFailureWithCallerErrorIs400WithCauseText() throws Exception {
+        Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenThrow(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR,
+                        new DataFormatException("Invalid date/time format: \"2024-13-45\"")));
+
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content("{\"resourceType\": \"Bundle\"}"))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse();
+
+        final OperationOutcome outcome = parse(OperationOutcome.class, response.getContentAsString());
+        Assert.assertEquals(OperationOutcome.IssueType.STRUCTURE, outcome.getIssueFirstRep().getCode());
+        final String diagnostics = outcome.getIssueFirstRep().getDiagnostics();
+        Assert.assertTrue(diagnostics, diagnostics.contains("mapping 'weight' of model mapper 'Body weight'"));
+        Assert.assertTrue(diagnostics, diagnostics.contains("Invalid date/time format: \"2024-13-45\""));
+    }
+
+    // -----------------------------------------------------------------------
+    // openfhir.operations.outcome-verbosity
+    // -----------------------------------------------------------------------
+
+    /**
+     * The engine reports one warning and one error into whatever collector it is given.
+     */
+    private void mockEngineReportingWarningAndError() {
+        stubPayloadTypeDetection();
+        Mockito.when(openFhirEngine.toFhirBundle(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.any(MappingCallContext.class), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenAnswer(invocation -> {
+                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    collector.addWarning("skipped an element");
+                    collector.addError(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOFHIR,
+                            new NullPointerException(NPE_TEXT)));
+                    final Bundle bundle = new Bundle();
+                    bundle.addEntry().setResource(new Observation());
+                    return bundle;
+                });
+        Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenAnswer(invocation -> {
+                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    collector.addWarning("skipped an element");
+                    collector.addError(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR,
+                            new NullPointerException(NPE_TEXT)));
+                    return "{}";
+                });
+    }
+
+    private OperationOutcome toFhirOutcome() throws Exception {
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$tofhir")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content(toFhirBody(CANONICAL_COMPOSITION, "Growth chart", null)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        return parse(Bundle.class, response.getContentAsString()).getEntry().stream()
+                .filter(e -> e.getResource() instanceof OperationOutcome)
+                .map(e -> (OperationOutcome) e.getResource())
+                .findFirst().orElse(null);
+    }
+
+    private OperationOutcome toOpenEhrOutcome() throws Exception {
+        final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .content("{\"resourceType\": \"Bundle\"}"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        return parse(Parameters.class, response.getContentAsString()).getParameter().stream()
+                .filter(p -> "outcome".equals(p.getName()))
+                .map(p -> (OperationOutcome) p.getResource())
+                .findFirst().orElse(null);
+    }
+
+    @Test
+    public void verbosityAllReportsWarningsAndErrors() throws Exception {
+        mockEngineReportingWarningAndError();
+
+        for (final OperationOutcome outcome : new OperationOutcome[]{toFhirOutcome(), toOpenEhrOutcome()}) {
+            Assert.assertNotNull(outcome);
+            Assert.assertEquals(2, outcome.getIssue().size());
+            Assert.assertEquals(OperationOutcome.IssueSeverity.WARNING, outcome.getIssue().get(0).getSeverity());
+            Assert.assertEquals(OperationOutcome.IssueSeverity.ERROR, outcome.getIssue().get(1).getSeverity());
+        }
+    }
+
+    @Test
+    public void verbosityErrorsDropsWarnings() throws Exception {
+        setUp(OutcomeVerbosity.ERRORS);
+        mockEngineReportingWarningAndError();
+
+        for (final OperationOutcome outcome : new OperationOutcome[]{toFhirOutcome(), toOpenEhrOutcome()}) {
+            Assert.assertNotNull(outcome);
+            Assert.assertEquals(1, outcome.getIssue().size());
+            Assert.assertEquals(OperationOutcome.IssueSeverity.ERROR, outcome.getIssueFirstRep().getSeverity());
+        }
+    }
+
+    @Test
+    public void verbosityNoneOmitsTheOperationOutcome() throws Exception {
+        setUp(OutcomeVerbosity.NONE);
+        mockEngineReportingWarningAndError();
+
+        Assert.assertNull(toFhirOutcome());
+        Assert.assertNull(toOpenEhrOutcome());
+    }
+
+    @Test
+    public void verbosityIsParsedCaseInsensitivelyWithAllAsDefault() {
+        Assert.assertEquals(OutcomeVerbosity.ERRORS, OutcomeVerbosity.fromConfig("Errors"));
+        Assert.assertEquals(OutcomeVerbosity.NONE, OutcomeVerbosity.fromConfig(" none "));
+        Assert.assertEquals(OutcomeVerbosity.ALL, OutcomeVerbosity.fromConfig(""));
+        Assert.assertEquals(OutcomeVerbosity.ALL, OutcomeVerbosity.fromConfig(null));
+        try {
+            OutcomeVerbosity.fromConfig("verbose");
+            Assert.fail("expected IllegalArgumentException");
+        } catch (final IllegalArgumentException e) {
+            Assert.assertTrue(e.getMessage(), e.getMessage().contains("openfhir.operations.outcome-verbosity"));
+            Assert.assertTrue(e.getMessage(), e.getMessage().contains("[none, errors, all]"));
+        }
     }
 }

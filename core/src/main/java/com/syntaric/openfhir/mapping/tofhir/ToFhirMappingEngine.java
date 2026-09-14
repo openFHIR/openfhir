@@ -6,6 +6,7 @@ import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.BidirectionalMappingEngine;
+import com.syntaric.openfhir.mapping.MappingContext;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
@@ -81,10 +82,15 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         this.toFhirNullFlavour = toFhirNullFlavour;
     }
 
+    /**
+     * Same as {@link #mapToFhir(Map, JsonObject, Spec.Version, MappingIssueCollector)} with a
+     * {@link MappingIssueCollector#failFast() fail-fast} collector: nobody reads the issues back, so the first
+     * failed mapping is thrown as a {@link com.syntaric.openfhir.util.MappingExecutionException}.
+     */
     public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
                                  final JsonObject flatJsonObject,
                                  final Spec.Version fhirVersion) {
-        return mapToFhir(mappingHelpersByArchetype, flatJsonObject, fhirVersion, new MappingIssueCollector());
+        return mapToFhir(mappingHelpersByArchetype, flatJsonObject, fhirVersion, MappingIssueCollector.failFast());
     }
 
     public IBaseBundle mapToFhir(final Map<String, List<MappingHelper>> mappingHelpersByArchetype,
@@ -174,55 +180,69 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         }
     }
 
-    public void handleMappingIterations(final List<MappingHelper> helpers,
-                                        final JsonObject jsonObject,
-                                        final Spec.Version fhirVersion) {
-        handleMappingIterations(helpers, jsonObject, fhirVersion, new MappingIssueCollector());
-    }
-
+    /**
+     * Walks the given helpers against one slice of flat openEHR data. A runtime failure inside one mapping is
+     * reported through {@link #reportMappingFailure} — recorded as an {@code error} issue naming the mapping, or
+     * thrown as a {@link MappingExecutionException} when the collector is fail-fast — and the loop moves on to the
+     * next helper, so one broken mapping does not lose the rest of the resource.
+     */
     public void handleMappingIterations(final List<MappingHelper> helpers,
                                         final JsonObject jsonObject,
                                         final Spec.Version fhirVersion,
                                         final MappingIssueCollector issueCollector) {
         for (final MappingHelper mappingHelper : helpers) {
             final MappingTimer mappingTimer = MappingTimer.start();
-
-            final JsonObject relevantJsonObject = getRelevantJsonObject(jsonObject,
-                    mappingHelper.getPreprocessorOpenEhrCondition(),
-                    mappingHelper);
-            if (relevantJsonObject.entrySet().isEmpty()) {
-                log.warn("No relevant entries found for mapping name {}; skipping mapping.",
-                        mappingHelper.getMappingName());
-                issueCollector.addWarning(String.format(
-                        "Skipped mapping '%s': no matching data found in the source composition.",
-                        mappingHelper.getMappingName()));
-                continue;
+            try {
+                handleMappingIteration(mappingHelper, jsonObject, fhirVersion, issueCollector);
+            } catch (final MappingExecutionException e) {
+                // a nested loop already reported this with the innermost (most specific) context
+                throw e;
+            } catch (final RuntimeException e) {
+                reportMappingFailure(e, mappingHelper, UNIDIRECTIONAL_TOFHIR, issueCollector);
+            } finally {
+                metricsLogger.record("mapping.iteration",
+                        "mapping=" + mappingHelper.getMappingName() + " model=" + mappingHelper.getModelMetadataName(),
+                        mappingTimer.elapsedMs());
             }
+        }
+    }
 
-            final List<DataWithIndex> extractedData;
-            if (StringUtils.isNotEmpty(mappingHelper.getProgrammedMapping())) {
-                detectTypeForProgrammedMapping(mappingHelper, relevantJsonObject);
-                extractedData = invokeProgrammedMapping(mappingHelper, relevantJsonObject, issueCollector);
-            } else {
-                extractedData = openEhrFlatPathDataExtractor.extract(mappingHelper,
-                        relevantJsonObject);
-            }
+    private void handleMappingIteration(final MappingHelper mappingHelper,
+                                        final JsonObject jsonObject,
+                                        final Spec.Version fhirVersion,
+                                        final MappingIssueCollector issueCollector) {
+        final JsonObject relevantJsonObject = getRelevantJsonObject(jsonObject,
+                mappingHelper.getPreprocessorOpenEhrCondition(),
+                mappingHelper);
+        if (relevantJsonObject.entrySet().isEmpty()) {
+            log.warn("No relevant entries found for mapping name {}; skipping mapping.",
+                    mappingHelper.getMappingName());
+            issueCollector.addWarning(String.format(
+                    "Skipped %s: no matching data found in the source composition.",
+                    MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOFHIR).describe()));
+            return;
+        }
 
-            if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR, fhirVersion)) {
-                continue;
-            }
+        final List<DataWithIndex> extractedData;
+        if (StringUtils.isNotEmpty(mappingHelper.getProgrammedMapping())) {
+            detectTypeForProgrammedMapping(mappingHelper, relevantJsonObject);
+            extractedData = invokeProgrammedMapping(mappingHelper, relevantJsonObject, issueCollector);
+        } else {
+            extractedData = openEhrFlatPathDataExtractor.extract(mappingHelper,
+                    relevantJsonObject);
+        }
 
-            if (isChildrenOnlyIteration(mappingHelper, extractedData)) {
-                handleChildrenOnlyIteration(mappingHelper, relevantJsonObject, fhirVersion);
-            } else if (mappingHelper.getManualFhirValue() != null) {
-                handleHardcodedIteration(mappingHelper, fhirVersion.modelPackage());
-            } else {
-                handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject, fhirVersion);
-            }
+        if (!shouldProcessMapping(mappingHelper, UNIDIRECTIONAL_TOFHIR, fhirVersion)) {
+            return;
+        }
 
-            metricsLogger.record("mapping.iteration",
-                    "mapping=" + mappingHelper.getMappingName() + " model=" + mappingHelper.getModelMetadataName(),
-                    mappingTimer.elapsedMs());
+        if (isChildrenOnlyIteration(mappingHelper, extractedData)) {
+            handleChildrenOnlyIteration(mappingHelper, relevantJsonObject, fhirVersion, issueCollector);
+        } else if (mappingHelper.getManualFhirValue() != null) {
+            handleHardcodedIteration(mappingHelper, fhirVersion.modelPackage());
+        } else {
+            handleExtractedDataIteration(mappingHelper, extractedData, relevantJsonObject, fhirVersion,
+                    issueCollector);
         }
     }
 
@@ -275,8 +295,9 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         if (customMapping == null) {
             log.warn("No CustomMapping found for mapping code: {}", mappingHelper.getProgrammedMapping());
             issueCollector.addWarning(String.format(
-                    "Element could not be mapped: no CustomMapping registered for mapping code '%s'.",
-                    mappingHelper.getProgrammedMapping()));
+                    "Element could not be mapped: no CustomMapping registered for mapping code '%s' (%s).",
+                    mappingHelper.getProgrammedMapping(),
+                    MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOFHIR).describe()));
             return Collections.emptyList();
         } else {
             if (relevantJsonObject.isEmpty()) {
@@ -333,7 +354,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
      */
     private void handleChildrenOnlyIteration(final MappingHelper mappingHelper,
                                              final JsonObject relevantJsonObject,
-                                             final Spec.Version fhirVersion) {
+                                             final Spec.Version fhirVersion,
+                                             final MappingIssueCollector issueCollector) {
         final String fullOpenEhrFlatPath = mappingHelper.getFullOpenEhrFlatPath();
         final List<JsonObject> jsonObjects = splitByHierarchy(relevantJsonObject, fullOpenEhrFlatPath);
         for (final JsonObject object : jsonObjects) {
@@ -345,7 +367,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             if (mappingHelper.getManualFhirValue() != null) {
                 handleHardcodedMapping(mappingHelper, newRoot);
             }
-            propagateToChildrenAndRecurse(mappingHelper, newRoot, object, fhirVersion);
+            propagateToChildrenAndRecurse(mappingHelper, newRoot, object, fhirVersion, issueCollector);
         }
     }
 
@@ -397,7 +419,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     private void handleExtractedDataIteration(final MappingHelper mappingHelper,
                                               final List<DataWithIndex> extractedData,
                                               final JsonObject relevantJsonObject,
-                                              final Spec.Version fhirVersion) {
+                                              final Spec.Version fhirVersion,
+                                              final MappingIssueCollector issueCollector) {
         final List<DataWithIndex> modifiableList = new ArrayList<>(extractedData);
         sortByLastIndex(modifiableList);
 
@@ -411,12 +434,13 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             populateExtractedDataPoint(mappingHelper, instantiated, extractedDataPoint);
             toFhirNullFlavour.handleNullFlavour(mappingHelper, instantiated, List.of(extractedDataPoint),
                     relevantJsonObject, fhirVersion.modelPackage());
-            propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, fhirVersion);
+            propagateToChildrenAndRecurse(mappingHelper, instantiated, relevantJsonObject, fhirVersion,
+                    issueCollector);
         }
 
         if (modifiableList.isEmpty() && !mappingHelper.getChildren().isEmpty()) {
             propagateToChildrenAndRecurse(mappingHelper, mappingHelper.getGeneratingFhirRoot(), relevantJsonObject,
-                    fhirVersion);
+                    fhirVersion, issueCollector);
         }
     }
 
@@ -448,7 +472,8 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
     private void propagateToChildrenAndRecurse(final MappingHelper mappingHelper,
                                                final Object newRoot,
                                                final JsonObject jsonObject,
-                                               final Spec.Version fhirVersion) {
+                                               final Spec.Version fhirVersion,
+                                               final MappingIssueCollector issueCollector) {
         if (mappingHelper.getChildren().isEmpty()) {
             return;
         }
@@ -459,7 +484,7 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
             child.setGeneratingFhirRoot(newRoot);
             child.setGeneratingFhirResource(mappingHelper.getGeneratingFhirResource());
         });
-        handleMappingIterations(mappingHelper.getChildren(), jsonObject, fhirVersion);
+        handleMappingIterations(mappingHelper.getChildren(), jsonObject, fhirVersion, issueCollector);
     }
 
     /**

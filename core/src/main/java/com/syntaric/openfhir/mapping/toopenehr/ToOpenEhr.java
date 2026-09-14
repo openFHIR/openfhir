@@ -82,7 +82,7 @@ public class ToOpenEhr {
      */
     public Composition fhirToCompositionRm(final FhirConnectContext context, final IAnyResource resource,
                                            final WebTemplate webTemplate) {
-        return fhirToCompositionRm(context, resource, webTemplate, new MappingIssueCollector());
+        return fhirToCompositionRm(context, resource, webTemplate, MappingIssueCollector.failFast());
     }
 
     /**
@@ -123,7 +123,7 @@ public class ToOpenEhr {
     public JsonObject fhirToFlatJsonObject(final FhirConnectContext context,
                                            final IAnyResource resource,
                                            final WebTemplate webTemplate) {
-        return fhirToFlatJsonObject(context, resource, webTemplate, new MappingIssueCollector());
+        return fhirToFlatJsonObject(context, resource, webTemplate, MappingIssueCollector.failFast());
     }
 
     /**

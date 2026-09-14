@@ -10,6 +10,8 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.StringType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -22,6 +24,10 @@ import java.util.UUID;
  * The operation envelope (Parameters/Bundle/OperationOutcome/Provenance) is pinned to FHIR R4 — the FHIRconnect
  * IG is R4. Context mappings targeting other FHIR versions still work for the plain mapping payload, but the
  * R4-only post-processing passes (Provenance, subject population, warnings entry) are skipped for them.
+ * <p>
+ * What ends up in the OperationOutcome is governed by {@code openfhir.operations.outcome-verbosity}
+ * ({@link OutcomeVerbosity}): {@code all} (default), {@code errors} or {@code none}. Issues below the level are
+ * never collected, so the payload does not grow with them; the engine log is unaffected.
  */
 @Service
 @Slf4j
@@ -32,17 +38,36 @@ public class FhirOperationsService {
     private final ProvenanceGenerator provenanceGenerator;
     private final OperationOutcomeFactory operationOutcomeFactory;
     private final FhirContextRegistry fhirContextRegistry;
+    private final OutcomeVerbosity outcomeVerbosity;
+
+    @Autowired
+    public FhirOperationsService(final OpenFhirEngine openFhirEngine,
+                                 final SubjectReferencePopulator subjectReferencePopulator,
+                                 final ProvenanceGenerator provenanceGenerator,
+                                 final OperationOutcomeFactory operationOutcomeFactory,
+                                 final FhirContextRegistry fhirContextRegistry,
+                                 @Value("${" + OutcomeVerbosity.PROPERTY + ":all}") final String outcomeVerbosity) {
+        this(openFhirEngine, subjectReferencePopulator, provenanceGenerator, operationOutcomeFactory,
+                fhirContextRegistry, OutcomeVerbosity.fromConfig(outcomeVerbosity));
+    }
 
     public FhirOperationsService(final OpenFhirEngine openFhirEngine,
                                  final SubjectReferencePopulator subjectReferencePopulator,
                                  final ProvenanceGenerator provenanceGenerator,
                                  final OperationOutcomeFactory operationOutcomeFactory,
-                                 final FhirContextRegistry fhirContextRegistry) {
+                                 final FhirContextRegistry fhirContextRegistry,
+                                 final OutcomeVerbosity outcomeVerbosity) {
         this.openFhirEngine = openFhirEngine;
         this.subjectReferencePopulator = subjectReferencePopulator;
         this.provenanceGenerator = provenanceGenerator;
         this.operationOutcomeFactory = operationOutcomeFactory;
         this.fhirContextRegistry = fhirContextRegistry;
+        this.outcomeVerbosity = outcomeVerbosity == null ? OutcomeVerbosity.ALL : outcomeVerbosity;
+        log.info("OperationOutcome verbosity for $tofhir/$toopenehr: {}", this.outcomeVerbosity);
+    }
+
+    public OutcomeVerbosity getOutcomeVerbosity() {
+        return outcomeVerbosity;
     }
 
     /**
@@ -53,7 +78,7 @@ public class FhirOperationsService {
     public String toFhir(final ToFhirOperationRequest request) {
         validateToFhirRequest(request);
 
-        final MappingIssueCollector issueCollector = new MappingIssueCollector();
+        final MappingIssueCollector issueCollector = new MappingIssueCollector(outcomeVerbosity);
         final IBaseBundle mapped = openFhirEngine.toFhirBundle(request.getComposition(), request.getTemplateId(),
                 request.getCallContext(), issueCollector);
 
@@ -87,7 +112,7 @@ public class FhirOperationsService {
         }
         final boolean flat = OperationRequestParser.FORMAT_FLAT.equalsIgnoreCase(format);
 
-        final MappingIssueCollector issueCollector = new MappingIssueCollector();
+        final MappingIssueCollector issueCollector = new MappingIssueCollector(outcomeVerbosity);
         final String composition = openFhirEngine.toOpenEhr(fhirResource, templateId, flat, issueCollector);
 
         final Parameters response = new Parameters();

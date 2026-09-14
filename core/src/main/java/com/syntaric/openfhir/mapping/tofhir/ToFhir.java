@@ -57,7 +57,7 @@ public class ToFhir {
     public IBaseBundle contentItemsToFhir(final FhirConnectContext context,
                                           final List<ContentItem> contentItems,
                                           final WebTemplate webTemplate) {
-        return contentItemsToFhir(context, contentItems, webTemplate, new MappingIssueCollector());
+        return contentItemsToFhir(context, contentItems, webTemplate, MappingIssueCollector.failFast());
     }
 
     public IBaseBundle contentItemsToFhir(final FhirConnectContext context,
@@ -74,7 +74,7 @@ public class ToFhir {
     public IBaseBundle compositionsToFhir(final FhirConnectContext context,
                                           final List<Composition> compositions,
                                           final WebTemplate webTemplate) {
-        return compositionsToFhir(context, compositions, webTemplate, new MappingIssueCollector());
+        return compositionsToFhir(context, compositions, webTemplate, MappingIssueCollector.failFast());
     }
 
     /**

@@ -6,6 +6,7 @@ import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.BidirectionalMappingEngine;
+import com.syntaric.openfhir.mapping.MappingContext;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
@@ -14,6 +15,8 @@ import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.util.FhirConditionEvaluator;
+import com.syntaric.openfhir.util.FhirPathEvaluationException;
+import com.syntaric.openfhir.util.MappingExecutionException;
 import com.syntaric.openfhir.util.OpenEhrPopulator;
 import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
@@ -32,6 +35,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 import static com.syntaric.openfhir.fc.FhirConnectConst.*;
 import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
@@ -70,6 +74,11 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         this.fhirConditionEvaluator = fhirConditionEvaluator;
     }
 
+    /**
+     * Same as {@link #mapToOpenEhr(List, JsonObject, IBase, boolean, Map, Spec.Version, MappingIssueCollector)}
+     * with a {@link MappingIssueCollector#failFast() fail-fast} collector: nobody reads the issues back, so the
+     * first failed mapping is thrown as a {@link MappingExecutionException}.
+     */
     public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
                                    final JsonObject finalFlat,
                                    final IBase dataPoint,
@@ -77,7 +86,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                    final Map<String, Integer> indexByHierarchyPath,
                                    final Spec.Version fhirVersion) {
         return mapToOpenEhr(mappingHelpers, finalFlat, dataPoint, firstWalkOverModelMapping, indexByHierarchyPath,
-                fhirVersion, new MappingIssueCollector());
+                fhirVersion, MappingIssueCollector.failFast());
     }
 
     public JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
@@ -88,22 +97,36 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                    final Spec.Version fhirVersion,
                                    final MappingIssueCollector issueCollector) {
         final Class<? extends IBase> baseClass = resolveBaseClass(fhirVersion);
-        return mapToOpenEhr(mappingHelpers, finalFlat, dataPoint, firstWalkOverModelMapping, indexByHierarchyPath,
+        walk(mappingHelpers, finalFlat, dataPoint, firstWalkOverModelMapping, indexByHierarchyPath,
                 baseClass, fhirVersion, issueCollector);
+        return finalFlat;
     }
 
-    private JsonObject mapToOpenEhr(final List<MappingHelper> mappingHelpers,
-                                    final JsonObject finalFlat,
-                                    final IBase dataPoint,
-                                    final boolean firstWalkOverModelMapping,
-                                    final Map<String, Integer> indexByHierarchyPath,
-                                    final Class<? extends IBase> baseClass,
-                                    final Spec.Version fhirVersion,
-                                    final MappingIssueCollector issueCollector) {
+    /**
+     * Walks one list of mappings (all of the same model mapper) against one FHIR element.
+     *
+     * <p>Every mapping ends in a {@link MappingOutcome}. When nothing was written by this walk and at least one
+     * mapping ended in {@link MappingOutcome#NO_DATA} or {@link MappingOutcome#NOTHING_WRITTEN}, one warning is
+     * recorded naming those mappings, their FHIR paths and the element they were evaluated on. Mappings a gate
+     * rejected, mappings with nothing to write in this direction and problems already reported as their own issue
+     * stay silent — that is how a Bundle fanned out over slot mappings does not produce a warning per slot that
+     * was never meant to match.
+     *
+     * @return {@link MappingOutcome#MAPPED} when this walk wrote something, otherwise
+     * {@link MappingOutcome#NOT_APPLICABLE}: anything worth reporting has been reported here, so the parent walk
+     * has nothing to add for this element
+     */
+    private MappingOutcome walk(final List<MappingHelper> mappingHelpers,
+                                final JsonObject finalFlat,
+                                final IBase dataPoint,
+                                final boolean firstWalkOverModelMapping,
+                                final Map<String, Integer> indexByHierarchyPath,
+                                final Class<? extends IBase> baseClass,
+                                final Spec.Version fhirVersion,
+                                final MappingIssueCollector issueCollector) {
 
         if (mappingHelpers == null || mappingHelpers.isEmpty()) {
-            // nothing to walk for this archetype; callers treat an unchanged flat as "nothing mapped"
-            return finalFlat;
+            return MappingOutcome.NOT_APPLICABLE;
         }
 
         final String openEhrHierarchySplitFlatPath = mappingHelpers.get(0).getOpenEhrHierarchySplitFlatPath();
@@ -112,59 +135,149 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
         if (firstWalkOverModelMapping && !fhirPreconditionPasses(mappingHelpers.get(0).getPreprocessorFhirConditions(),
                 dataPoint, versionedFhirPath, baseClass)) {
-            return finalFlat;
+            return MappingOutcome.NOT_APPLICABLE;
         }
 
         final MappingTimer helpersTimer = MappingTimer.start();
 
         boolean somethingWasAdded = false;
+        final Map<MappingHelper, MappingOutcome> unmapped = new LinkedHashMap<>();
         for (final MappingHelper helper : mappingHelpers) {
-            if (!shouldProcessMapping(helper, UNIDIRECTIONAL_TOOPENEHR, fhirVersion)) {
-                continue;
-            }
             if (helper.getFullOpenEhrFlatPath() == null) {
                 continue;
             }
+            final int previousFinalFlatSize = finalFlat.size();
 
-            if (!fhirEmptyNotEmptyPasses(helper, helper.getFhirConditions(), versionedFhirPath, baseClass)) {
-                continue;
+            // A runtime failure inside this mapping is reported with its context and the loop moves on (or, with a
+            // fail-fast collector, thrown); the clone carries the hierarchy-indexed flat path, so it is the better
+            // context once it exists.
+            MappingHelper clonedHelper = null;
+            MappingOutcome outcome = MappingOutcome.NOT_APPLICABLE;
+            try {
+                if (!shouldProcessMapping(helper, UNIDIRECTIONAL_TOOPENEHR, fhirVersion)) {
+                    continue;
+                }
+                if (!fhirEmptyNotEmptyPasses(helper, helper.getFhirConditions(), versionedFhirPath, baseClass)) {
+                    continue;
+                }
+
+                clonedHelper = helper.cloneWithFhirResourceAndRootIntact();
+
+                final String path = setIndexAccordingToHierarchy(clonedHelper, relevantIndex);
+
+                final String replaced = stringUtils.replacePattern(clonedHelper.getFullOpenEhrFlatPath(), path);
+                clonedHelper.setFullOpenEhrFlatPath(replaced);
+
+                fixAllChildrenRecurringElements(clonedHelper, path);
+
+                outcome = doMapping(clonedHelper, finalFlat, dataPoint, indexByHierarchyPath, baseClass, fhirVersion,
+                        issueCollector);
+            } catch (final MappingExecutionException e) {
+                // a nested loop already reported this with the innermost (most specific) context
+                throw e;
+            } catch (final RuntimeException e) {
+                reportMappingFailure(e, clonedHelper != null ? clonedHelper : helper, UNIDIRECTIONAL_TOOPENEHR,
+                        issueCollector);
+                outcome = MappingOutcome.NOT_APPLICABLE; // reported as an error issue, nothing to add
+            } finally {
+                if (finalFlat.size() > previousFinalFlatSize) {
+                    somethingWasAdded = true;
+                    outcome = MappingOutcome.MAPPED;
+                }
             }
-
-            final MappingHelper clonedHelper = helper.cloneWithFhirResourceAndRootIntact();
-
-            final String path = setIndexAccordingToHierarchy(clonedHelper, relevantIndex);
-
-            final String replaced = stringUtils.replacePattern(clonedHelper.getFullOpenEhrFlatPath(), path);
-            clonedHelper.setFullOpenEhrFlatPath(replaced);
-
-            fixAllChildrenRecurringElements(clonedHelper, path);
-
-            int previousFinalFlatSize = finalFlat.size();
-
-            doMapping(clonedHelper, finalFlat, dataPoint, indexByHierarchyPath, baseClass, fhirVersion,
-                    issueCollector);
-
-            somethingWasAdded = somethingWasAdded || (finalFlat.size() > previousFinalFlatSize);
+            if (outcome.needsAttention() && !hasNothingToWriteToOpenEhr(helper)) {
+                unmapped.put(helper, outcome);
+            }
         }
 
         metricsLogger.record("mapToOpenEhr.helpers", openEhrHierarchySplitFlatPath, helpersTimer.elapsedMs());
 
-        if (somethingWasAdded && firstWalkOverModelMapping) {
-            indexByHierarchyPath.put(openEhrHierarchySplitFlatPath, relevantIndex + 1);
-        } else {
-            log.warn(
-                    "Even though a Resource matched criteria, nothing was added to the openEHR composition from it: {}",
-                    dataPoint.fhirType());
+        if (somethingWasAdded) {
+            if (firstWalkOverModelMapping) {
+                indexByHierarchyPath.put(openEhrHierarchySplitFlatPath, relevantIndex + 1);
+            }
+            return MappingOutcome.MAPPED;
         }
-        if (!somethingWasAdded) {
-            issueCollector.addWarning(String.format(
-                    "A %s resource matched the mapping criteria but nothing could be mapped from it to the openEHR composition.",
-                    dataPoint.fhirType()));
+        if (unmapped.isEmpty()) {
+            log.debug("None of the mappings of model mapper {} applied to the {} element; nothing to report.",
+                    mappingHelpers.get(0).getModelMetadataName(), dataPoint.fhirType());
+            return MappingOutcome.NOT_APPLICABLE;
         }
-
-        return finalFlat;
+        final String diagnostics = describeNothingMapped(dataPoint, mappingHelpers.get(0), unmapped, fhirVersion);
+        log.warn(diagnostics);
+        issueCollector.addWarning(diagnostics);
+        return MappingOutcome.NOT_APPLICABLE;
     }
 
+    /**
+     * A mapping that only carries a manual FHIR value (and neither a manual openEHR value nor mapping code) is a
+     * constant emitted towards FHIR; in this direction it has nothing to write, so its miss is not a finding.
+     */
+    private static boolean hasNothingToWriteToOpenEhr(final MappingHelper helper) {
+        return helper.getManualFhirValue() != null
+                && StringUtils.isEmpty(helper.getManualOpenEhrValue())
+                && StringUtils.isEmpty(helper.getProgrammedMapping());
+    }
+
+    /**
+     * One warning per walk that ended without a value: names the model mapper, the mappings that found no data or
+     * produced no value (each with its FHIR path) and the element they were evaluated on, so the reader can tell a
+     * mapper bug from an element that simply holds nothing for those mappings.
+     */
+    private String describeNothingMapped(final IBase dataPoint, final MappingHelper first,
+                                         final Map<MappingHelper, MappingOutcome> unmapped,
+                                         final Spec.Version fhirVersion) {
+        final String noData = mappingsWithOutcome(unmapped, MappingOutcome.NO_DATA);
+        final String nothingWritten = mappingsWithOutcome(unmapped, MappingOutcome.NOTHING_WRITTEN);
+        final StringBuilder reasons = new StringBuilder();
+        if (!noData.isEmpty()) {
+            reasons.append("Mappings that found no data at their FHIR path: ").append(noData);
+        }
+        if (!nothingWritten.isEmpty()) {
+            if (reasons.length() > 0) {
+                reasons.append("; ");
+            }
+            reasons.append("mappings whose data produced no openEHR value: ").append(nothingWritten);
+        }
+        return String.format(
+                "A %s resource matched the mapping criteria but nothing could be mapped from it to the openEHR composition by model mapper '%s' (archetype '%s'). %s; evaluated on: %s",
+                dataPoint.fhirType(), first.getModelMetadataName(), first.getArchetype(), reasons,
+                describeDataPoint(dataPoint, fhirVersion));
+    }
+
+    private static String mappingsWithOutcome(final Map<MappingHelper, MappingOutcome> unmapped,
+                                              final MappingOutcome outcome) {
+        return unmapped.entrySet().stream()
+                .filter(entry -> entry.getValue() == outcome)
+                .map(entry -> MappingContext.of(entry.getKey(), UNIDIRECTIONAL_TOOPENEHR))
+                .map(context -> String.format("'%s' (FHIR '%s')", context.mappingName(), context.fhirPath()))
+                .collect(Collectors.joining(", "));
+    }
+
+
+    /**
+     * Upper bound on the JSON of an evaluated element quoted in a warning, so one large resource cannot blow up
+     * the OperationOutcome.
+     */
+    static final int DATA_POINT_JSON_MAX_LENGTH = 2000;
+
+    /**
+     * The element the mappings were evaluated on, as FHIR JSON (a resource or a plain element such as a
+     * {@code Coding}), truncated to {@link #DATA_POINT_JSON_MAX_LENGTH}. Falls back to the FHIR type when the
+     * element cannot be encoded, since this only decorates a warning.
+     */
+    private String describeDataPoint(final IBase dataPoint, final Spec.Version fhirVersion) {
+        try {
+            final String json = fhirContextRegistry.getContext(fhirVersion).newJsonParser().encodeToString(dataPoint);
+            if (json.length() <= DATA_POINT_JSON_MAX_LENGTH) {
+                return json;
+            }
+            return json.substring(0, DATA_POINT_JSON_MAX_LENGTH) + "… (truncated, " + json.length() + " characters)";
+        } catch (final RuntimeException e) {
+            log.debug("Could not encode {} for the nothing-mapped warning", dataPoint.fhirType(), e);
+            return "<" + dataPoint.fhirType() + ">";
+        }
+    }
 
     private boolean fhirEmptyNotEmptyPasses(final MappingHelper mappingHelper,
                                             final List<Condition> fhirConditions,
@@ -293,40 +406,59 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         return stringUtils.replaceLastIndexOf(path, RECURRING_SYNTAX, ":" + i);
     }
 
-    boolean doMapping(final MappingHelper helper, final JsonObject flatComposition, final IBase iteratingBase,
-                      final Map<String, Integer> indexByHierarchyPath,
-                      final Class<? extends IBase> baseClass,
-                      final Spec.Version fhirVersion,
-                      final MappingIssueCollector issueCollector) {
+    /**
+     * Executes one mapping against one element.
+     *
+     * @return how it ended; a problem that is reported here as its own issue (an unevaluable FHIRPath) comes back
+     * as {@link MappingOutcome#NOT_APPLICABLE} so the walk does not report it a second time
+     */
+    MappingOutcome doMapping(final MappingHelper helper, final JsonObject flatComposition, final IBase iteratingBase,
+                             final Map<String, Integer> indexByHierarchyPath,
+                             final Class<? extends IBase> baseClass,
+                             final Spec.Version fhirVersion,
+                             final MappingIssueCollector issueCollector) {
         final MappingTimer mappingTimer = MappingTimer.start();
+        try {
+            final String fhirPath = helper.getFhir();
 
-        final String fhirPath = helper.getFhir();
+            final IBase toResolveOn = getToResolveOn(iteratingBase, helper);
 
-        final IBase toResolveOn = getToResolveOn(iteratingBase, helper);
+            final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
 
-        final IFhirPath versionedFhirPath = fhirContextRegistry.getFhirPath(fhirVersion);
+            final List<? extends IBase> results;
+            try {
+                results = resolveFhirResults(helper, fhirPath, toResolveOn, versionedFhirPath, baseClass);
+            } catch (final FhirPathEvaluationException e) {
+                // the expression in the mapper cannot be evaluated against this input: skip the mapping, but tell
+                // the caller which mapping and expression, since that is what the mapper author needs to fix it
+                final MappingContext context = MappingContext.of(helper, UNIDIRECTIONAL_TOOPENEHR);
+                log.warn("Skipped {}: {}", context.describe(), e.getMessage(), e);
+                issueCollector.addWarning(String.format("Skipped %s: %s", context.describe(), e.getMessage()));
+                return MappingOutcome.NOT_APPLICABLE;
+            }
+            if (results == null) {
+                return MappingOutcome.NOT_APPLICABLE; // nothing resolvable for this mapping (see resolveReference)
+            }
 
-        final List<? extends IBase> results = resolveFhirResults(helper, fhirPath, toResolveOn, versionedFhirPath, baseClass);
-        if (results == null) {
+            if (helper.getProgrammedMapping() == null
+                    && (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results))) {
+                if (handleMissingResults(helper, flatComposition, toResolveOn, fhirPath, versionedFhirPath,
+                        baseClass)) {
+                    return MappingOutcome.MAPPED;
+                }
+                // a reference mapping filters by resource type and a condition filters by content: an empty result
+                // there is the gate saying "not this element", not data that is missing
+                final boolean gated = isReferenceMapping(helper)
+                        || (helper.getFhirConditions() != null && !helper.getFhirConditions().isEmpty());
+                return gated ? MappingOutcome.NOT_APPLICABLE : MappingOutcome.NO_DATA;
+            }
+            return populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath,
+                    indexByHierarchyPath, versionedFhirPath, baseClass, fhirVersion, issueCollector);
+        } finally {
             metricsLogger.record("doMapping",
                     "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
                     mappingTimer.elapsedMs());
-            return false; // evaluation error already logged
         }
-
-        final boolean result;
-        if (helper.getProgrammedMapping() == null && (results.isEmpty() || resultsRepresentMissingPrimitiveValues(results))) {
-            result = handleMissingResults(helper, flatComposition, toResolveOn, fhirPath, versionedFhirPath, baseClass);
-        } else {
-            populateOpenEhrForEachResult(helper, flatComposition, toResolveOn, results, fhirPath, indexByHierarchyPath,
-                    versionedFhirPath, baseClass, fhirVersion, issueCollector);
-            result = true;
-        }
-
-        metricsLogger.record("doMapping",
-                "mapping=" + helper.getMappingName() + " model=" + helper.getModelMetadataName(),
-                mappingTimer.elapsedMs());
-        return result;
     }
 
     private IBase getToResolveOn(final IBase iteratingBase,
@@ -339,15 +471,15 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
     /**
      * Resolves FHIR results for the given path and base resource.
-     * Returns {@code null} when a path evaluation error occurs (already logged).
+     *
+     * @throws FhirPathEvaluationException when the mapping's FHIRPath expression cannot be evaluated
+     * @return the resolved elements, or {@code null} when a reference mapping has nothing to resolve against
      */
     private List<? extends IBase> resolveFhirResults(final MappingHelper helper, final String fhirPath,
                                                      final IBase toResolveOn,
                                                      final IFhirPath versionedFhirPath,
                                                      final Class<? extends IBase> baseClass) {
-        final boolean isReference = helper.getOriginalOpenEhrPath() != null && helper.getOriginalOpenEhrPath().startsWith(FhirConnectConst.REFERENCE);
-
-        if (isReference) {
+        if (isReferenceMapping(helper)) {
             return resolveReference(toResolveOn, helper, versionedFhirPath, baseClass);
         }
 
@@ -363,6 +495,19 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         }
 
         return evaluateFhirPath(fhirPath, toResolveOn, versionedFhirPath, baseClass);
+    }
+
+    /**
+     * A mapping whose job is to reach the elements its children map: a slot archetype link, a {@code $reference}
+     * mapping, or any mapping with children.
+     */
+    private static boolean isStructural(final MappingHelper helper) {
+        return helper.isHasSlot() || isReferenceMapping(helper) || !helper.getChildren().isEmpty();
+    }
+
+    private static boolean isReferenceMapping(final MappingHelper helper) {
+        return helper.getOriginalOpenEhrPath() != null
+                && helper.getOriginalOpenEhrPath().startsWith(FhirConnectConst.REFERENCE);
     }
 
     private List<IBase> resolveAsParentRoot(final MappingHelper helper, final String fhirPath,
@@ -397,10 +542,10 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     fhirPathToUse.replace(".as(Enumeration)", ""),
                     // casting to enumeration only works when doing toFhir, else it complains it's not a valid fhir type
                     baseClass);
-        } catch (final Exception e) {
-            // if resolve() can't find the referenced resource, fail gracefully
-            log.error("Error trying to evaluate path {}", fhirPath);
-            return null;
+        } catch (final RuntimeException e) {
+            // e.g. a malformed expression, or resolve() unable to find the referenced resource; the mapping loop
+            // turns this into a warning that names the mapping and the expression
+            throw new FhirPathEvaluationException(fhirPath, e);
         }
     }
 
@@ -417,15 +562,22 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         return false;
     }
 
-    private void populateOpenEhrForEachResult(final MappingHelper helper, final JsonObject flatComposition,
-                                              final IBase toResolveOn, final List<? extends IBase> results,
-                                              final String fhirPath,
-                                              final Map<String, Integer> indexByHierarchyPath,
-                                              final IFhirPath versionedFhirPath,
-                                              final Class<? extends IBase> baseClass,
-                                              final Spec.Version fhirVersion,
-                                              final MappingIssueCollector issueCollector) {
+    /**
+     * Writes the helper's value for each resolved element and recurses into its children.
+     *
+     * @return the best outcome over all results: the helper's own value write, or — for a helper that carries no
+     * value of its own (a structural {@code $fhirRoot} / reference / slot mapping) — what its children did
+     */
+    private MappingOutcome populateOpenEhrForEachResult(final MappingHelper helper, final JsonObject flatComposition,
+                                                        final IBase toResolveOn, final List<? extends IBase> results,
+                                                        final String fhirPath,
+                                                        final Map<String, Integer> indexByHierarchyPath,
+                                                        final IFhirPath versionedFhirPath,
+                                                        final Class<? extends IBase> baseClass,
+                                                        final Spec.Version fhirVersion,
+                                                        final MappingIssueCollector issueCollector) {
         final String fullOpenEhrFlatPath = helper.getFullOpenEhrFlatPath();
+        MappingOutcome outcome = MappingOutcome.NOT_APPLICABLE;
         for (int i = 0; i < results.size(); i++) {
             final MappingHelper clonedHelper = helper.cloneWithFhirResourceAndRootIntact();
             final IBase result = results.get(i);
@@ -435,6 +587,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
 
             fixAllChildrenRecurringElements(clonedHelper, thePath);
 
+            MappingOutcome valueOutcome = MappingOutcome.NOT_APPLICABLE;
             if (!OPENEHR_TYPE_NONE.equals(clonedHelper.getHardcodedType())) {
                 final List<String> possibleRmTypes = clonedHelper.getPossibleRmTypes();
                 if (possibleRmTypes != null && !possibleRmTypes.isEmpty()) {
@@ -442,21 +595,30 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     final String openEhrPathToPopulateTo =
                             openFhirMapperUtils.removeAqlSuffix(thePath, deducedRmType)
                                     + clonedHelper.getFlatPathPipeSuffix();
-                    populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo, flatComposition, deducedRmType);
+                    valueOutcome = populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo,
+                            flatComposition, deducedRmType, issueCollector);
                 } else if (StringUtils.isNotEmpty(clonedHelper.getProgrammedMapping())) {
                     // still invoke the programmed one
-                    populateValue(helper, clonedHelper, result, thePath, thePath, flatComposition, null);
+                    valueOutcome = populateValue(helper, clonedHelper, result, thePath, thePath, flatComposition,
+                            null, issueCollector);
                 }
             }
 
-            recurseIntoChildren(clonedHelper, result, helper, flatComposition, indexByHierarchyPath,
-                    baseClass, fhirVersion, issueCollector);
+            if (valueOutcome == MappingOutcome.NOTHING_WRITTEN && isStructural(clonedHelper)) {
+                // a slot, reference or parent mapping exists to hand the element to its children; that its own
+                // value write produces nothing is by design, so only what the children did counts
+                valueOutcome = MappingOutcome.NOT_APPLICABLE;
+            }
+            final MappingOutcome childOutcome = recurseIntoChildren(clonedHelper, result, helper, flatComposition,
+                    indexByHierarchyPath, baseClass, fhirVersion, issueCollector);
+            outcome = outcome.best(valueOutcome).best(childOutcome);
         }
 
         if(results.isEmpty() && helper.getProgrammedMapping() != null) {
             // we still want programmed mapping to happen and within there you can decide what to do
-            invokeProgrammedMapping(helper, flatComposition, null);
+            outcome = outcome.best(invokeProgrammedMapping(helper, flatComposition, null, issueCollector));
         }
+        return outcome;
     }
 
     private String deduceRmType(final IBase result, final List<String> possibleRmTypes) {
@@ -538,12 +700,19 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         return stringUtils.replaceLastIndexOf(fullOpenEhrFlatPath, RECURRING_SYNTAX, ":" + i);
     }
 
-    private void populateValue(final MappingHelper helper, final MappingHelper clonedHelper, final IBase result,
-                               final String thePath, final String openEhrPathToPopulateTo,
-                               final JsonObject flatComposition, final String rmType) {
+    /**
+     * @return {@link MappingOutcome#MAPPED} when a flat entry was written, {@link MappingOutcome#NOTHING_WRITTEN}
+     * when the populator produced nothing from the resolved data, or what the mapping code reported
+     */
+    private MappingOutcome populateValue(final MappingHelper helper, final MappingHelper clonedHelper,
+                                         final IBase result,
+                                         final String thePath, final String openEhrPathToPopulateTo,
+                                         final JsonObject flatComposition, final String rmType,
+                                         final MappingIssueCollector issueCollector) {
 
         long possibleRmTypes = helper.getPossibleRmTypes().size();
         boolean isMultipleTypes = possibleRmTypes > 1 && !isOnlyText(helper.getPossibleRmTypes());
+        final int before = flatComposition.size();
         if (StringUtils.isNotEmpty(clonedHelper.getManualOpenEhrValue())) {
             log.debug("Hardcoding value {} to path: {}", clonedHelper.getManualOpenEhrValue(), openEhrPathToPopulateTo);
             // is it ok we use string type here? could it be something else? probably it could be..
@@ -552,7 +721,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                     rmType, isMultipleTypes, flatComposition, helper.getTerminology(),
                     helper.getAvailableCodings());
         } else if (StringUtils.isNotEmpty(helper.getProgrammedMapping())) {
-            invokeProgrammedMapping(helper, flatComposition, result);
+            return invokeProgrammedMapping(helper, flatComposition, result, issueCollector);
         } else {
             final boolean handledEventTime = applyEventTypeMappingIfNeeded(helper, result, thePath, flatComposition);
             if (!handledEventTime) {
@@ -561,6 +730,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                         flatComposition, helper.getTerminology(), helper.getAvailableCodings());
             }
         }
+        return flatComposition.size() > before ? MappingOutcome.MAPPED : MappingOutcome.NOTHING_WRITTEN;
     }
 
     private boolean isOnlyText(final List<String> possibleRmTypes) {
@@ -570,14 +740,18 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         return false;
     }
 
-    private void recurseIntoChildren(final MappingHelper clonedHelper, final IBase result,
-                                     final MappingHelper parentHelper, final JsonObject flatComposition,
-                                     final Map<String, Integer> indexByHierarchyPath,
-                                     final Class<? extends IBase> baseClass,
-                                     final Spec.Version fhirVersion,
-                                     final MappingIssueCollector issueCollector) {
+    /**
+     * @return what the children's walk did; {@link MappingOutcome#NOT_APPLICABLE} when there are no children or
+     * the slot's resource type gate rejects the element
+     */
+    private MappingOutcome recurseIntoChildren(final MappingHelper clonedHelper, final IBase result,
+                                               final MappingHelper parentHelper, final JsonObject flatComposition,
+                                               final Map<String, Integer> indexByHierarchyPath,
+                                               final Class<? extends IBase> baseClass,
+                                               final Spec.Version fhirVersion,
+                                               final MappingIssueCollector issueCollector) {
         if (clonedHelper.getChildren().isEmpty()) {
-            return;
+            return MappingOutcome.NOT_APPLICABLE;
         }
         clonedHelper.getChildren().forEach(c -> {
             c.setGeneratingFhirRoot(result);
@@ -592,55 +766,62 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         final String generatingResourceType = clonedHelper.getChildren().get(clonedHelper.getChildren().size() - 1).getGeneratingResourceType();
         final boolean isBackboneElement = "BackboneElement".equals(generatingResourceType);
         if (!isBackboneElement && clonedHelper.isHasSlot() && !result.fhirType().equalsIgnoreCase(generatingResourceType)) {
-            return;
+            return MappingOutcome.NOT_APPLICABLE;
         }
-        mapToOpenEhr(clonedHelper.getChildren(), flatComposition, result,
+        return walk(clonedHelper.getChildren(), flatComposition, result,
                 clonedHelper.isHasSlot(), indexByHierarchyPath, baseClass, fhirVersion, issueCollector);
     }
 
-    private void invokeProgrammedMapping(final MappingHelper mappingHelper,
-                                         final JsonObject flatComposition,
-                                         final IBase result) {
-        log.info("Using mapping code: {}", mappingHelper.getProgrammedMapping());
+    /**
+     * Runs the mapping code registered for the helper. A failure inside the custom mapping is reported through
+     * {@link #reportMappingFailure} (recorded as an {@code error} issue, or thrown when the collector is
+     * fail-fast) instead of being swallowed; a mapping code that declines to apply, or one that is not registered,
+     * is reported as a warning.
+     *
+     * @return {@link MappingOutcome#MAPPED} or {@link MappingOutcome#NOTHING_WRITTEN} when the code claimed
+     * success, {@link MappingOutcome#NOT_APPLICABLE} when the problem was reported here already
+     */
+    private MappingOutcome invokeProgrammedMapping(final MappingHelper mappingHelper,
+                                                   final JsonObject flatComposition,
+                                                   final IBase result,
+                                                   final MappingIssueCollector issueCollector) {
+        final String mappingCode = mappingHelper.getProgrammedMapping();
+        log.info("Using mapping code: {}", mappingCode);
 
-        try {
-            boolean success = false;
-            CustomMapping customMapping = customMappingRegistry.find(mappingHelper.getProgrammedMapping()).orElse(null);
-            if (customMapping != null) {
-                success = customMapping.applyFhirToOpenEhrMapping(
-                        mappingHelper,
-                        result,
-                        mappingHelper.getPossibleRmTypes(),
-                        flatComposition,
-                        openEhrPopulator,
-                        openFhirMapperUtils,
-                        stringUtils
-                );
-            } else {
-                // fallback to plugin extensions if present
-//                PluginManager pluginManager = SpringContext.getBean(PluginManager.class);
-//                List<FormatConverter> converters = pluginManager.getExtensions(FormatConverter.class);
-//                if (converters.isEmpty()) {
-//                    log.warn("No CustomMapping or FormatConverter found for mapping code: {}",
-//                             helper.getMappingCode());
-//                } else {
-//                    FormatConverter converter = converters.get(0);
-//                    success = converter.applyFhirToOpenEhrMapping(
-//                            helper.getMappingCode(),
-//                            thePath,
-//                            result,
-//                            helper.getOpenEhrType(),
-//                            flatComposition
-//                    );
-//                }
-            }
-
-            if (!success) {
-                log.warn("Mapping failed for code: {}", mappingHelper.getProgrammedMapping());
-            }
-        } catch (Exception e) {
-            log.error("Error applying mapping: {}", e.getMessage(), e);
+        final CustomMapping customMapping = customMappingRegistry.find(mappingCode).orElse(null);
+        if (customMapping == null) {
+            log.warn("No CustomMapping found for mapping code: {}", mappingCode);
+            issueCollector.addWarning(String.format(
+                    "Element could not be mapped: no CustomMapping registered for mapping code '%s' (%s).",
+                    mappingCode, MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOOPENEHR).describe()));
+            return MappingOutcome.NOT_APPLICABLE;
         }
+
+        final int before = flatComposition.size();
+        final boolean success;
+        try {
+            success = customMapping.applyFhirToOpenEhrMapping(
+                    mappingHelper,
+                    result,
+                    mappingHelper.getPossibleRmTypes(),
+                    flatComposition,
+                    openEhrPopulator,
+                    openFhirMapperUtils,
+                    stringUtils
+            );
+        } catch (final RuntimeException e) {
+            reportMappingFailure(e, mappingHelper, UNIDIRECTIONAL_TOOPENEHR, issueCollector);
+            return MappingOutcome.NOT_APPLICABLE;
+        }
+
+        if (!success) {
+            log.warn("Mapping failed for code: {}", mappingCode);
+            issueCollector.addWarning(String.format(
+                    "Mapping code '%s' did not map anything for %s.",
+                    mappingCode, MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOOPENEHR).describe()));
+            return MappingOutcome.NOT_APPLICABLE;
+        }
+        return flatComposition.size() > before ? MappingOutcome.MAPPED : MappingOutcome.NOTHING_WRITTEN;
     }
 
     private boolean applyEventTypeMappingIfNeeded(final MappingHelper helper,

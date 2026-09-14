@@ -208,7 +208,7 @@ public class OpenFhirEngine {
      * if the caller will always know which template to use?
      */
     public String toOpenEhr(final String incomingFhirResource, final String incomingTemplateId, final Boolean flat) {
-        return toOpenEhr(incomingFhirResource, incomingTemplateId, flat, new MappingIssueCollector());
+        return toOpenEhr(incomingFhirResource, incomingTemplateId, flat, MappingIssueCollector.failFast());
     }
 
     /**
@@ -276,7 +276,7 @@ public class OpenFhirEngine {
 
     public String toFhir(final String openEhrCompositionJson, final String incomingTemplateId) {
         final IBaseBundle fhir = toFhirBundle(openEhrCompositionJson, incomingTemplateId,
-                MappingCallContext.empty(), new MappingIssueCollector());
+                MappingCallContext.empty(), MappingIssueCollector.failFast());
         final Spec.Version fhirVersion = FhirContextRegistry.specVersionOf(fhir.getStructureFhirVersionEnum());
         return fhirContextRegistry.getContext(fhirVersion).newJsonParser().encodeResourceToString(fhir);
     }
