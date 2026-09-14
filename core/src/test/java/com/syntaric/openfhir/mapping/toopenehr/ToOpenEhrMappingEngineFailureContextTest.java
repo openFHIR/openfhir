@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,11 @@ public class ToOpenEhrMappingEngineFailureContextTest {
             final MappingHelper helper = invocation.getArgument(0);
             if (BROKEN.equals(helper.getMappingName())) {
                 throw new NullPointerException(NPE_TEXT);
+            }
+            if (helper.getManualFhirValue() != null || helper.isHasSlot()) {
+                // like the real populator: a manual FHIR constant, or a slot link handed a whole resource, has no
+                // openEHR value of its own to write
+                return null;
             }
             final String path = invocation.getArgument(1);
             final JsonObject flat = invocation.getArgument(5);
@@ -169,6 +175,171 @@ public class ToOpenEhrMappingEngineFailureContextTest {
                 ArgumentMatchers.argThat(h -> "healthy".equals(h.getMappingName())),
                 ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.anyBoolean(),
                 ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any());
+    }
+
+    /**
+     * The "nothing mapped" warning must say which model mapper and which mappings were tried, otherwise it cannot
+     * be traced back to the mapper.
+     */
+    @Test
+    public void nothingMappedWarningNamesTheModelMapperAndTheMappingsTried() {
+        final Observation resource = observation();
+        final MappingHelper first = hardcodedHelper("first", resource);
+        first.setManualOpenEhrValue(null);
+        first.setFhir("note.text"); // nothing at this path in the resource
+        final MappingHelper second = hardcodedHelper("second", resource);
+        second.setManualOpenEhrValue(null);
+        second.setFhir("note.text");
+
+        final MappingIssueCollector collector = new MappingIssueCollector();
+        run(List.of(first, second), resource, collector);
+
+        final List<MappingIssueCollector.MappingIssue> warnings = warnings(collector);
+        Assert.assertEquals(warnings.toString(), 1, warnings.size());
+        final String diagnostics = warnings.get(0).diagnostics();
+        Assert.assertTrue(diagnostics, diagnostics.contains("A Observation resource matched"));
+        Assert.assertTrue(diagnostics, diagnostics.contains("model mapper 'Body weight'"));
+        Assert.assertTrue(diagnostics, diagnostics.contains("archetype 'openEHR-EHR-OBSERVATION.body_weight.v2'"));
+        // each mapping with the FHIR path it evaluated (the mapper's own wording), then the element it ran against
+        Assert.assertTrue(diagnostics, diagnostics.contains(
+                "Mappings that found no data at their FHIR path: 'first' (FHIR '$resource'), 'second' (FHIR '$resource')"));
+        Assert.assertTrue(diagnostics, diagnostics.contains("evaluated on: {\"resourceType\":\"Observation\""));
+        Assert.assertTrue(diagnostics, diagnostics.contains("\"valueQuantity\":{\"value\":70}"));
+    }
+
+    /**
+     * A nested walk evaluates on a plain element rather than a resource; it is quoted as JSON too, and a large one
+     * is truncated so the response stays bounded.
+     */
+    @Test
+    public void nothingMappedWarningQuotesPlainElementsAndTruncatesLargeOnes() {
+        final Observation resource = observation();
+        final MappingHelper helper = hardcodedHelper("codingMapping", resource);
+        helper.setManualOpenEhrValue(null);
+        helper.setFhir("display.unknown");
+        final Coding coding = new Coding("http://loinc.org", "8287-5", "Head circumference");
+
+        final MappingIssueCollector collector = new MappingIssueCollector();
+        final JsonObject flat = new JsonObject();
+        engine.mapToOpenEhr(List.of(helper), flat, coding, false, new HashMap<>(), Spec.Version.R4, collector);
+
+        Assert.assertEquals(1, warnings(collector).size());
+        final String diagnostics = warnings(collector).get(0).diagnostics();
+        Assert.assertTrue(diagnostics, diagnostics.contains("A Coding resource matched"));
+        Assert.assertTrue(diagnostics, diagnostics.contains(
+                "evaluated on: {\"system\":\"http://loinc.org\",\"code\":\"8287-5\",\"display\":\"Head circumference\"}"));
+
+        final Coding huge = new Coding("http://loinc.org", "8287-5", "x".repeat(5000));
+        final MappingIssueCollector truncating = new MappingIssueCollector();
+        engine.mapToOpenEhr(List.of(helper), new JsonObject(), huge, false, new HashMap<>(), Spec.Version.R4, truncating);
+        final String truncated = warnings(truncating).get(0).diagnostics();
+        Assert.assertTrue(truncated, truncated.contains("(truncated, "));
+        Assert.assertTrue(truncated, truncated.length() < 3000);
+    }
+
+    private static Condition categoryPrecondition(final String code) {
+        final Condition condition = new Condition();
+        condition.setOperator(FhirConnectConst.CONDITION_OPERATOR_ONE_OF);
+        condition.setTargetRoot("$resource");
+        condition.setTargetAttributes(List.of("category.coding.code"));
+        condition.setCriterias(List.of(code));
+        return condition;
+    }
+
+    /**
+     * A slot parent whose child model mapper is guarded by a preprocessor condition, the shape a Bundle is fanned
+     * out over: one slot per archetype, each meant to match only its own resources. The parent keeps its RM types,
+     * so its own (always empty) value write is attempted, as it is for a real slot link.
+     */
+    private static MappingHelper slotParentWithChild(final Observation resource, final MappingHelper child) {
+        final MappingHelper parent = hardcodedHelper("parent", resource);
+        parent.setManualOpenEhrValue(null);
+        parent.setHasSlot(true);
+        child.setGeneratingResourceType("Observation");
+        parent.setChildren(new ArrayList<>(List.of(child)));
+        return parent;
+    }
+
+    /**
+     * The fan-out case: the child mapper's preprocessor condition rejects this element. That is the gate doing its
+     * job, so neither the child walk nor the parent walk may warn.
+     */
+    @Test
+    public void slotRejectedByPreconditionIsNotAFinding() {
+        final Observation resource = observation(); // no category, so the "height" precondition rejects it
+        final MappingHelper child = hardcodedHelper("child", resource);
+        child.setManualOpenEhrValue(null);
+        child.setFhir("note.text");
+        child.setPreprocessorFhirConditions(List.of(categoryPrecondition("height")));
+
+        final MappingIssueCollector collector = new MappingIssueCollector();
+        run(List.of(slotParentWithChild(resource, child)), resource, collector);
+
+        Assert.assertTrue(collector.getIssues().toString(), collector.isEmpty());
+    }
+
+    /**
+     * The same shape, but the precondition passes and the child genuinely finds no data: exactly one warning, from
+     * the child's walk, naming the child — the parent walk does not repeat it.
+     */
+    @Test
+    public void nestedNoDataIsReportedOnceNamingTheChild() {
+        final Observation resource = observation();
+        resource.addCategory(new CodeableConcept().addCoding(new Coding(null, "height", null)));
+        final MappingHelper child = hardcodedHelper("child", resource);
+        child.setManualOpenEhrValue(null);
+        child.setFhir("note.text");
+        child.setPreprocessorFhirConditions(List.of(categoryPrecondition("height")));
+
+        final MappingIssueCollector collector = new MappingIssueCollector();
+        run(List.of(slotParentWithChild(resource, child)), resource, collector);
+
+        Assert.assertEquals(collector.getIssues().toString(), 1, collector.getIssues().size());
+        final String diagnostics = collector.getIssues().get(0).diagnostics();
+        Assert.assertTrue(diagnostics, diagnostics.contains("found no data at their FHIR path: 'child' (FHIR '$resource')"));
+        Assert.assertFalse(diagnostics, diagnostics.contains("'parent'"));
+    }
+
+    /**
+     * A mapping that only carries a manual FHIR value is a constant emitted towards FHIR; in this direction it has
+     * nothing to write, so its miss is not a finding either.
+     */
+    @Test
+    public void manualFhirValueOnlyMappingIsNotAFinding() {
+        final Observation resource = observation();
+        final MappingHelper fhirOnly = hardcodedHelper("category.hciCategory", resource);
+        fhirOnly.setManualOpenEhrValue(null);
+        fhirOnly.setManualFhirValue("head_circumference"); // the populator mock writes nothing for these
+
+        final MappingIssueCollector collector = new MappingIssueCollector();
+        run(List.of(fhirOnly), resource, collector);
+
+        Assert.assertTrue(collector.getIssues().toString(), collector.isEmpty());
+    }
+
+    /**
+     * An empty result behind a path-filtering condition is the condition saying "not this element", not missing
+     * data.
+     */
+    @Test
+    public void emptyResultBehindAConditionIsNotAFinding() {
+        final Observation resource = observation();
+        final MappingHelper conditioned = hardcodedHelper("stateOfDress", resource);
+        conditioned.setManualOpenEhrValue(null);
+        conditioned.setOriginalFhirPath("$resource.component.value");
+        conditioned.setFullFhirPath("Observation.component.value");
+        conditioned.setFhir("component.value");
+        final Condition condition = new Condition();
+        condition.setOperator(FhirConnectConst.CONDITION_OPERATOR_ONE_OF);
+        condition.setTargetRoot("Observation.component");
+        condition.setTargetAttributes(List.of("code.coding.code"));
+        condition.setCriterias(List.of("9999-9"));
+        conditioned.setFhirConditions(List.of(condition));
+
+        final MappingIssueCollector collector = new MappingIssueCollector();
+        run(List.of(conditioned), resource, collector);
+
+        Assert.assertTrue(collector.getIssues().toString(), collector.isEmpty());
     }
 
     /**

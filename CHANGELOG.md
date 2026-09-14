@@ -35,6 +35,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   (unknown function, malformed condition path, unresolvable `resolve()`) is reported as a `warning`
   / `incomplete` issue naming the mapping, the expression and the FHIRPath engine's message, instead
   of only a log line; the mapping is skipped as before
+- the `$toopenehr` "matched the mapping criteria but nothing could be mapped" warning is now raised
+  only when a mapping found no data at its FHIR path or its data produced no openEHR value, and it
+  names those mappings with their FHIR paths, the model mapper and archetype, and quotes the FHIR
+  JSON of the element they were evaluated on (truncated at 2000 characters). It is no longer raised
+  for an element a mapping was never meant to match: a slot or reference mapping whose target
+  mapper's preprocessor condition, resource type or filtering condition rejected it, or a manual
+  FHIR-value mapping that has nothing to write towards openEHR. A Bundle fanned out over several
+  slot mappings therefore no longer yields one warning per slot per entry, and a nested miss is
+  reported once, by the innermost walk, instead of once per level. The "no CustomMapping
+  registered" warning names its mapping
 - the Newman e2e collection exercises the mappings through `$tofhir` / `$toopenehr` instead of the
   legacy `/openfhir/tofhir` / `/openfhir/toopenehr` endpoints, and covers the per-mapping error and
   FHIRPath-warning issues above

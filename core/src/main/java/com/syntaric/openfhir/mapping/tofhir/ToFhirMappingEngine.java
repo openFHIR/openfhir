@@ -295,8 +295,9 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
         if (customMapping == null) {
             log.warn("No CustomMapping found for mapping code: {}", mappingHelper.getProgrammedMapping());
             issueCollector.addWarning(String.format(
-                    "Element could not be mapped: no CustomMapping registered for mapping code '%s'.",
-                    mappingHelper.getProgrammedMapping()));
+                    "Element could not be mapped: no CustomMapping registered for mapping code '%s' (%s).",
+                    mappingHelper.getProgrammedMapping(),
+                    MappingContext.of(mappingHelper, UNIDIRECTIONAL_TOFHIR).describe()));
             return Collections.emptyList();
         } else {
             if (relevantJsonObject.isEmpty()) {

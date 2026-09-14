@@ -1757,6 +1757,8 @@
          "    pm.expect(composition).to.not.be.undefined;",
          "    const flat = JSON.parse(composition.valueString);",
          "    pm.expect(flat[\"growth_chart/head_circumference/any_event:0/head_circumference|magnitude\"]).to.eq(52.0);",
+         "    // every entry is placed by exactly one slot mapper; the slots that do not apply to it are not a finding",
+         "    pm.expect(response.parameter.find(p => p.name === \"outcome\"), \"no OperationOutcome expected for a fully mappable Bundle\").to.be.undefined;",
          "});"
         ],
         "type": "text/javascript",
