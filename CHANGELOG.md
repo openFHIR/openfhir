@@ -74,6 +74,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
     direction, matching the guard the `$toopenehr` direction already had
   - unexpected errors no longer echo internal exception text back to the caller; the response carries
     a reference id and the detail stays in the log
+- an `openehrCondition` can now narrow on an attribute of an RM data value (`DV_*`) that the flat format
+  represents as a pipe attribute, written as the RM path the same way a `DV_CODED_TEXT` is narrowed on
+  `defining_code/code_string`. This covers `DV_IDENTIFIER` (`targetAttribute: "type"`, `"issuer"`,
+  `"id"`, `"assigner"`), `DV_QUANTITY` and the other quantified types (`"magnitude"`, `"units"`,
+  `"precision"`, `"numerator"`, `"denominator"`), `CODE_PHRASE` (`"code_string"`, `"terminology_id"`),
+  `DV_TEXT` (`"formatting"`, `"language"`, `"encoding"`), `DV_ORDINAL` (`"ordinal"`, `"symbol"`) and
+  the encapsulated types (`"formalism"`, `"media_type"`, `"size"`, `"charset"`, `"uri"`).
+  Conditions already written in the flat pipe syntax keep working.
 
 ## [3.0.1] - 2026-09-09
 ### Added
