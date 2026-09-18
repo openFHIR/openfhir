@@ -494,14 +494,14 @@ public class HelpersCreator {
         return "";
     }
 
-    private Condition amendCondition(final Condition originalCondition,
-                                     final String coreResource,
-                                     final String coreArchetype,
-                                     final MappingHelper parentHelper,
-                                     final String fullSlotPath,
-                                     final boolean isFhirCondition,
-                                     final String fullFhirSlotPath,
-                                     final WebTemplate webTemplate) {
+    Condition amendCondition(final Condition originalCondition,
+                             final String coreResource,
+                             final String coreArchetype,
+                             final MappingHelper parentHelper,
+                             final String fullSlotPath,
+                             final boolean isFhirCondition,
+                             final String fullFhirSlotPath,
+                             final WebTemplate webTemplate) {
         final Condition amendedCondition = originalCondition.copy();
 
         final String amendedTargetRoot;
@@ -528,6 +528,14 @@ public class HelpersCreator {
                         ? Collections.<String>emptyList() : amendedCondition.getTargetAttributes();
                 for (final String targetAttribute : targetAttributes) {
                     if (!StringUtils.isNotBlank(targetAttribute)) {
+                        continue;
+                    }
+                    if (targetAttribute.startsWith("|")) {
+                        // Already a flat-format pipe attribute (|type, |issuer, |id of a DV_IDENTIFIER, ...).
+                        // The AQL converter has no template node for it and would silently drop it, leaving the
+                        // attribute flat path equal to the root; pass it through so the evaluator sees the
+                        // pipe attribute it expects.
+                        amendedCondition.getTargetAttributesFlatPath().add(targetAttribute);
                         continue;
                     }
                     final String combined = amendedTargetRoot + "/" + targetAttribute;
