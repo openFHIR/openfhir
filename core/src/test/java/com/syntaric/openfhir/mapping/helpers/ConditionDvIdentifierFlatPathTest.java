@@ -15,13 +15,15 @@ import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.openehr.schemas.v1.TemplateDocument;
 
 /**
- * An openehrCondition addressing a part of a DV_IDENTIFIER ({@code |type}, {@code |issuer}, {@code |id})
- * must keep that pipe attribute as the attribute flat path.
+ * An openehrCondition addressing a part of a DV_IDENTIFIER must resolve to the pipe attribute that part
+ * has in the flat format.
  * <p>
- * Those parts have no node of their own in the web template, so the AQL converter silently drops the
- * {@code |type} segment and returns the root flat path. Stripping {@code rootFlatPath + "/"} off that then
- * does nothing, and the evaluator used to receive a full flat path where it expected {@code |type} —
- * which made it exclude every identifier occurrence.
+ * Conditions address openEHR with RM paths, so the parts are written {@code type} / {@code issuer} /
+ * {@code id} (or {@code value/type}), the same way a DV_CODED_TEXT is narrowed on
+ * {@code defining_code/code_string}. They have no node of their own in the web template, so the AQL
+ * converter silently drops the segment and returns the parent's flat path. Stripping
+ * {@code rootFlatPath + "/"} off that then does nothing, and the evaluator used to receive a full flat
+ * path where it expected {@code |type} — which made it exclude every identifier occurrence.
  */
 public class ConditionDvIdentifierFlatPathTest {
 
@@ -63,24 +65,29 @@ public class ConditionDvIdentifierFlatPathTest {
     }
 
     /**
-     * Documents the converter behaviour the fix works around: {@code |type} has no template node, so the
-     * converter returns the root flat path unchanged.
+     * Documents the converter behaviour the fix works around: the RM attributes of a DV_IDENTIFIER have
+     * no template node, so the converter returns the parent's flat path unchanged.
      */
     @Test
-    public void converterCannotResolvePipeAttributesOfADvIdentifier() {
+    public void converterCannotResolveRmAttributesOfADvIdentifier() {
         final AqlToFlatPathConverter.Result rootResult = converter.convert(IDENTIFIER_ROOT, null, webTemplate);
-        final AqlToFlatPathConverter.Result attrResult =
-                converter.convert(IDENTIFIER_ROOT + "/|type", null, webTemplate);
 
         Assert.assertEquals(EXPECTED_ROOT_FLAT, rootResult.flatPath());
-        Assert.assertEquals("the converter drops the |type segment — hence the pass-through in amendCondition",
-                            rootResult.flatPath(), attrResult.flatPath());
+        for (final String rmAttribute : List.of("type", "issuer", "id", "assigner")) {
+            Assert.assertEquals("the converter drops the " + rmAttribute
+                                        + " segment — hence the rewrite in amendCondition",
+                                rootResult.flatPath(),
+                                converter.convert(IDENTIFIER_ROOT + "/" + rmAttribute, null, webTemplate).flatPath());
+        }
     }
 
-    /** {@code |type} must survive amending as the attribute flat path, not be replaced by the root path. */
+    /**
+     * The RM attribute {@code type} must resolve to the {@code |type} pipe attribute, the same way
+     * {@code defining_code/code_string} resolves to {@code |code}.
+     */
     @Test
-    public void typePartIsKeptAsAttributeFlatPath() {
-        final Condition amended = amend(conditionOn("|type"));
+    public void typePartResolvesToPipeAttribute() {
+        final Condition amended = amend(conditionOn("type"));
 
         Assert.assertEquals(EXPECTED_ROOT_FLAT, amended.getTargetRootFlatPath());
         Assert.assertEquals(List.of("|type"), amended.getTargetAttributesFlatPath());
@@ -88,17 +95,32 @@ public class ConditionDvIdentifierFlatPathTest {
 
     /** The other DV_IDENTIFIER parts behave the same way. */
     @Test
-    public void issuerAndIdPartsAreKeptAsAttributeFlatPaths() {
-        Assert.assertEquals(List.of("|issuer"), amend(conditionOn("|issuer")).getTargetAttributesFlatPath());
-        Assert.assertEquals(List.of("|id"), amend(conditionOn("|id")).getTargetAttributesFlatPath());
+    public void issuerIdAndAssignerPartsResolveToPipeAttributes() {
+        Assert.assertEquals(List.of("|issuer"), amend(conditionOn("issuer")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|id"), amend(conditionOn("id")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|assigner"), amend(conditionOn("assigner")).getTargetAttributesFlatPath());
     }
 
-    /** Several pipe parts on one condition are all passed through, preserving order. */
+    /** Spelling the part out through the ELEMENT's value attribute resolves identically. */
     @Test
-    public void multiplePipeAttributesAreAllKept() {
+    public void partAddressedThroughTheValueAttributeResolvesToTheSamePipeAttribute() {
+        Assert.assertEquals(List.of("|type"), amend(conditionOn("value/type")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|issuer"), amend(conditionOn("value/issuer")).getTargetAttributesFlatPath());
+    }
+
+    /** The flat pipe spelling stays accepted, for mappings that already use it. */
+    @Test
+    public void flatPipeSpellingIsStillAccepted() {
+        Assert.assertEquals(List.of("|type"), amend(conditionOn("|type")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|issuer"), amend(conditionOn("|issuer")).getTargetAttributesFlatPath());
+    }
+
+    /** Several parts on one condition are all resolved, preserving order. */
+    @Test
+    public void multiplePartsAreAllResolved() {
         final Condition condition = new Condition()
                 .withTargetRoot(IDENTIFIER_ROOT)
-                .withTargetAttributes(List.of("|type", "|issuer"))
+                .withTargetAttributes(List.of("type", "issuer"))
                 .withOperator("one of")
                 .withCriterias("urn:oid:1.2.752.29.4.19");
 

@@ -74,13 +74,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
     direction, matching the guard the `$toopenehr` direction already had
   - unexpected errors no longer echo internal exception text back to the caller; the response carries
     a reference id and the detail stays in the log
-- an `openehrCondition` can now narrow on a part of a `DV_IDENTIFIER` (`targetAttribute: "|type"`,
-  `"|issuer"`, `"|id"`). Such a condition used to exclude every occurrence of the targeted element, so
-  a cluster holding several identifiers could not be narrowed down to one of them — for example
-  selecting only the HSA id out of a care unit that also carries an organisation number. These parts
-  have no node of their own in the operational template, so resolving them against it yielded the
-  element's own path instead of the pipe attribute; pipe attributes are now passed through to the
-  condition evaluator unchanged.
+- an `openehrCondition` can now narrow on a part of a `DV_IDENTIFIER` (`targetAttribute: "type"`,
+  `"issuer"`, `"id"`, `"assigner"`, or spelled out through the element's value as `"value/type"`),
+  the same way a `DV_CODED_TEXT` is narrowed on `defining_code/code_string`. Such a condition used to
+  exclude every occurrence of the targeted element, so a cluster holding several identifiers could not
+  be narrowed down to one of them — for example selecting only the HSA id out of a care unit that also
+  carries an organisation number. These parts have no node of their own in the operational template, so
+  resolving them against it yielded the element's own path; they are now mapped to the pipe attribute
+  the flat format uses (`|type`). Conditions already written in the flat pipe syntax keep working.
 
 ## [3.0.1] - 2026-09-09
 ### Added

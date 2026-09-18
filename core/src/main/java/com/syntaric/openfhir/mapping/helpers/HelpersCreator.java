@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
@@ -494,6 +495,52 @@ public class HelpersCreator {
         return "";
     }
 
+    /**
+     * RM attributes of a leaf data value that have no node of their own in the operational template and
+     * are therefore represented as a pipe attribute in the flat format, e.g. the {@code type} of a
+     * DV_IDENTIFIER is {@code |type}.
+     *
+     * <p>{@code DV_CODED_TEXT.defining_code/code_string} is deliberately absent: it is rewritten to
+     * {@code |code} further down, after the converter has resolved it.
+     */
+    private static final Set<String> LEAF_RM_ATTRIBUTES = Set.of(
+            // DV_IDENTIFIER
+            "id", "type", "issuer", "assigner",
+            // DV_TEXT and friends
+            "formatting",
+            // DV_QUANTITY / DV_ORDINAL and other quantified types
+            "magnitude", "units", "precision", "ordinal", "numerator", "denominator",
+            // CODE_PHRASE
+            "code_string", "terminology_id");
+
+    /**
+     * Maps a condition's {@code targetAttribute} onto the flat-format pipe attribute of a leaf data
+     * value, or returns {@code null} when it is an ordinary path that has to go through the AQL
+     * converter.
+     *
+     * <p>Conditions address openEHR with RM paths, so a DV_IDENTIFIER part is written {@code type} (or
+     * {@code value/type}, spelling out the ELEMENT's value attribute) rather than {@code |type}. Those
+     * parts have no node in the operational template, so the converter silently drops the segment and
+     * returns the parent's flat path — which would leave the evaluator with a full path where it
+     * expects a pipe attribute. The flat pipe syntax is accepted as-is too, for mappings that already
+     * use it.
+     */
+    private String toLeafAttributeFlatPath(final String targetAttribute) {
+        if (targetAttribute.startsWith("|")) {
+            return targetAttribute;
+        }
+        // "value/type" addresses the RM attribute through the ELEMENT's value; both spellings are common
+        final String withoutValuePrefix = targetAttribute.startsWith("value/")
+                ? targetAttribute.substring("value/".length())
+                : targetAttribute;
+        if (withoutValuePrefix.contains("/") || !LEAF_RM_ATTRIBUTES.contains(withoutValuePrefix)) {
+            // Ordinary paths — including a bare "value", which is the ELEMENT's own value node — still
+            // resolve against the template.
+            return null;
+        }
+        return "|" + withoutValuePrefix;
+    }
+
     Condition amendCondition(final Condition originalCondition,
                              final String coreResource,
                              final String coreArchetype,
@@ -530,12 +577,9 @@ public class HelpersCreator {
                     if (!StringUtils.isNotBlank(targetAttribute)) {
                         continue;
                     }
-                    if (targetAttribute.startsWith("|")) {
-                        // Already a flat-format pipe attribute (|type, |issuer, |id of a DV_IDENTIFIER, ...).
-                        // The AQL converter has no template node for it and would silently drop it, leaving the
-                        // attribute flat path equal to the root; pass it through so the evaluator sees the
-                        // pipe attribute it expects.
-                        amendedCondition.getTargetAttributesFlatPath().add(targetAttribute);
+                    final String leafAttributeFlatPath = toLeafAttributeFlatPath(targetAttribute);
+                    if (leafAttributeFlatPath != null) {
+                        amendedCondition.getTargetAttributesFlatPath().add(leafAttributeFlatPath);
                         continue;
                     }
                     final String combined = amendedTargetRoot + "/" + targetAttribute;
