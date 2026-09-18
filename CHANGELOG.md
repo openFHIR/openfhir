@@ -80,14 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   `"id"`, `"assigner"`), `DV_QUANTITY` and the other quantified types (`"magnitude"`, `"units"`,
   `"precision"`, `"numerator"`, `"denominator"`), `CODE_PHRASE` (`"code_string"`, `"terminology_id"`),
   `DV_TEXT` (`"formatting"`, `"language"`, `"encoding"`), `DV_ORDINAL` (`"ordinal"`, `"symbol"`) and
-  the encapsulated types (`"formalism"`, `"media_type"`, `"size"`, `"charset"`, `"uri"`). Each part may
-  also be spelled out through the element's value (`"value/type"`). Such a condition used to exclude
-  every occurrence of the targeted element — so a cluster holding several identifiers could not be
-  narrowed down to one of them, for example selecting only the HSA id out of a care unit that also
-  carries an organisation number. These attributes have no node of their own in the operational
-  template, so resolving them against it yielded the element's own path; they are now mapped to the
-  pipe attribute the flat format uses, including where the flat name differs from the RM one (`units`
-  → `|unit`, `code_string` → `|code`, `terminology_id` → `|terminology`, `media_type` → `|mediatype`).
+  the encapsulated types (`"formalism"`, `"media_type"`, `"size"`, `"charset"`, `"uri"`).
   Conditions already written in the flat pipe syntax keep working.
 
 ## [3.0.1] - 2026-09-09
