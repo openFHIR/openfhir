@@ -15,17 +15,19 @@ import org.openehr.schemas.v1.OPERATIONALTEMPLATE;
 import org.openehr.schemas.v1.TemplateDocument;
 
 /**
- * An openehrCondition addressing a part of a DV_IDENTIFIER must resolve to the pipe attribute that part
- * has in the flat format.
+ * An openehrCondition addressing an attribute of an RM data value (DV_*) must resolve to the pipe
+ * attribute that attribute has in the flat format — {@code type} of a DV_IDENTIFIER to {@code |type},
+ * {@code units} of a DV_QUANTITY to {@code |unit}, and so on.
  * <p>
- * Conditions address openEHR with RM paths, so the parts are written {@code type} / {@code issuer} /
- * {@code id} (or {@code value/type}), the same way a DV_CODED_TEXT is narrowed on
- * {@code defining_code/code_string}. They have no node of their own in the web template, so the AQL
- * converter silently drops the segment and returns the parent's flat path. Stripping
- * {@code rootFlatPath + "/"} off that then does nothing, and the evaluator used to receive a full flat
- * path where it expected {@code |type} — which made it exclude every identifier occurrence.
+ * Conditions address openEHR with RM paths, the same way a DV_CODED_TEXT is narrowed on
+ * {@code defining_code/code_string}. These attributes have no node of their own in the web template
+ * (across the templates in this repo the only child nodes any DV_* type has are a DV_CODED_TEXT's
+ * {@code defining_code} and a DV_INTERVAL's bounds), so the AQL converter silently drops the segment
+ * and returns the parent's flat path. Stripping {@code rootFlatPath + "/"} off that then does nothing,
+ * and the evaluator used to receive a full flat path where it expected {@code |type} — which made it
+ * exclude every identifier occurrence.
  */
-public class ConditionDvIdentifierFlatPathTest {
+public class ConditionLeafRmAttributeFlatPathTest {
 
     private static final String OPT = "/kds/laborauftrag/KDS_Laborauftrag.opt";
 
@@ -113,6 +115,44 @@ public class ConditionDvIdentifierFlatPathTest {
     public void flatPipeSpellingIsStillAccepted() {
         Assert.assertEquals(List.of("|type"), amend(conditionOn("|type")).getTargetAttributesFlatPath());
         Assert.assertEquals(List.of("|issuer"), amend(conditionOn("|issuer")).getTargetAttributesFlatPath());
+    }
+
+    /**
+     * The rewrite is generic across the RM data value types, not special-cased to DV_IDENTIFIER: none
+     * of these attributes has a node of its own in an operational template.
+     */
+    @Test
+    public void attributesOfTheOtherRmDataValueTypesResolveToPipeAttributes() {
+        // DV_QUANTITY / DV_PROPORTION and the other quantified types. "units" is |unit in the flat format.
+        Assert.assertEquals(List.of("|magnitude"), amend(conditionOn("magnitude")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|unit"), amend(conditionOn("units")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|numerator"), amend(conditionOn("numerator")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|denominator"), amend(conditionOn("denominator")).getTargetAttributesFlatPath());
+        // CODE_PHRASE, whose flat names differ from the RM ones
+        Assert.assertEquals(List.of("|code"), amend(conditionOn("code_string")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|terminology"),
+                            amend(conditionOn("terminology_id")).getTargetAttributesFlatPath());
+        // DV_TEXT, DV_ORDINAL, DV_PARSABLE, DV_MULTIMEDIA
+        Assert.assertEquals(List.of("|formatting"), amend(conditionOn("formatting")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|ordinal"), amend(conditionOn("ordinal")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|formalism"), amend(conditionOn("formalism")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|mediatype"), amend(conditionOn("media_type")).getTargetAttributesFlatPath());
+    }
+
+    /**
+     * A DV_CODED_TEXT is still narrowed through the converter on its {@code defining_code} node — the
+     * generic rewrite must not shortcut the path that already worked.
+     */
+    @Test
+    public void definingCodePathStillResolvesThroughTheConverter() {
+        final Condition condition = new Condition()
+                .withTargetRoot("openEHR-EHR-INSTRUCTION.service_request.v1"
+                                        + "/protocol[at0008]/items[openEHR-EHR-CLUSTER.organisation.v1]/items[at0001]")
+                .withTargetAttributes(List.of("defining_code/code_string"))
+                .withOperator("one of")
+                .withCriterias("at0001");
+
+        Assert.assertEquals(List.of("|code"), amend(condition).getTargetAttributesFlatPath());
     }
 
     /** Several parts on one condition are all resolved, preserving order. */

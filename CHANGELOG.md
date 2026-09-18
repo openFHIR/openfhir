@@ -74,14 +74,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
     direction, matching the guard the `$toopenehr` direction already had
   - unexpected errors no longer echo internal exception text back to the caller; the response carries
     a reference id and the detail stays in the log
-- an `openehrCondition` can now narrow on a part of a `DV_IDENTIFIER` (`targetAttribute: "type"`,
-  `"issuer"`, `"id"`, `"assigner"`, or spelled out through the element's value as `"value/type"`),
-  the same way a `DV_CODED_TEXT` is narrowed on `defining_code/code_string`. Such a condition used to
-  exclude every occurrence of the targeted element, so a cluster holding several identifiers could not
-  be narrowed down to one of them — for example selecting only the HSA id out of a care unit that also
-  carries an organisation number. These parts have no node of their own in the operational template, so
-  resolving them against it yielded the element's own path; they are now mapped to the pipe attribute
-  the flat format uses (`|type`). Conditions already written in the flat pipe syntax keep working.
+- an `openehrCondition` can now narrow on an attribute of an RM data value (`DV_*`) that the flat format
+  represents as a pipe attribute, written as the RM path the same way a `DV_CODED_TEXT` is narrowed on
+  `defining_code/code_string`. This covers `DV_IDENTIFIER` (`targetAttribute: "type"`, `"issuer"`,
+  `"id"`, `"assigner"`), `DV_QUANTITY` and the other quantified types (`"magnitude"`, `"units"`,
+  `"precision"`, `"numerator"`, `"denominator"`), `CODE_PHRASE` (`"code_string"`, `"terminology_id"`),
+  `DV_TEXT` (`"formatting"`, `"language"`, `"encoding"`), `DV_ORDINAL` (`"ordinal"`, `"symbol"`) and
+  the encapsulated types (`"formalism"`, `"media_type"`, `"size"`, `"charset"`, `"uri"`). Each part may
+  also be spelled out through the element's value (`"value/type"`). Such a condition used to exclude
+  every occurrence of the targeted element — so a cluster holding several identifiers could not be
+  narrowed down to one of them, for example selecting only the HSA id out of a care unit that also
+  carries an organisation number. These attributes have no node of their own in the operational
+  template, so resolving them against it yielded the element's own path; they are now mapped to the
+  pipe attribute the flat format uses, including where the flat name differs from the RM one (`units`
+  → `|unit`, `code_string` → `|code`, `terminology_id` → `|terminology`, `media_type` → `|mediatype`).
+  Conditions already written in the flat pipe syntax keep working.
 
 ## [3.0.1] - 2026-09-09
 ### Added

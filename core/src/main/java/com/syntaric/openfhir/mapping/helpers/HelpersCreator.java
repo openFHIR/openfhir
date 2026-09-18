@@ -496,34 +496,65 @@ public class HelpersCreator {
     }
 
     /**
-     * RM attributes of a leaf data value that have no node of their own in the operational template and
-     * are therefore represented as a pipe attribute in the flat format, e.g. the {@code type} of a
-     * DV_IDENTIFIER is {@code |type}.
+     * Attributes of the RM data value types (DV_*) that are represented as a pipe attribute in the flat
+     * format, keyed by the RM attribute name and mapped to the flat name where the two differ.
      *
-     * <p>{@code DV_CODED_TEXT.defining_code/code_string} is deliberately absent: it is rewritten to
-     * {@code |code} further down, after the converter has resolved it.
+     * <p>None of these have a node of their own in an operational template — a DV_IDENTIFIER's
+     * {@code type} or a DV_QUANTITY's {@code magnitude} is a leaf of the data value, not a child node —
+     * so the AQL converter cannot resolve them and a condition addressing one has to be rewritten here.
+     *
+     * <p>The exceptions, deliberately absent, are the attributes that <em>are</em> real nodes and
+     * therefore resolve normally: the element's own {@code value}, {@code defining_code} (a
+     * DV_CODED_TEXT's CODE_PHRASE node, whose {@code defining_code/code_string} spelling is rewritten
+     * to {@code |code} further down) and the {@code lower} / {@code upper} bounds of a DV_INTERVAL.
      */
-    private static final Set<String> LEAF_RM_ATTRIBUTES = Set.of(
+    private static final Map<String, String> LEAF_RM_ATTRIBUTES = Map.ofEntries(
             // DV_IDENTIFIER
-            "id", "type", "issuer", "assigner",
-            // DV_TEXT and friends
-            "formatting",
-            // DV_QUANTITY / DV_ORDINAL and other quantified types
-            "magnitude", "units", "precision", "ordinal", "numerator", "denominator",
-            // CODE_PHRASE
-            "code_string", "terminology_id");
+            Map.entry("id", "id"),
+            Map.entry("type", "type"),
+            Map.entry("issuer", "issuer"),
+            Map.entry("assigner", "assigner"),
+            // DV_TEXT / DV_CODED_TEXT
+            Map.entry("formatting", "formatting"),
+            Map.entry("language", "language"),
+            Map.entry("encoding", "encoding"),
+            Map.entry("hyperlink", "hyperlink"),
+            // CODE_PHRASE — the flat format names these |code and |terminology
+            Map.entry("code_string", "code"),
+            Map.entry("terminology_id", "terminology"),
+            Map.entry("preferred_term", "preferred_term"),
+            // DV_QUANTITY / DV_COUNT / DV_PROPORTION and the other quantified types.
+            // "units" is |unit in the flat format.
+            Map.entry("magnitude", "magnitude"),
+            Map.entry("units", "unit"),
+            Map.entry("precision", "precision"),
+            Map.entry("numerator", "numerator"),
+            Map.entry("denominator", "denominator"),
+            Map.entry("magnitude_status", "magnitude_status"),
+            Map.entry("accuracy", "accuracy"),
+            Map.entry("accuracy_is_percent", "accuracy_is_percent"),
+            // DV_ORDINAL / DV_SCALE
+            Map.entry("symbol", "symbol"),
+            Map.entry("ordinal", "ordinal"),
+            // DV_DURATION / DV_PARSABLE / DV_URI / DV_MULTIMEDIA / DV_ENCAPSULATED
+            Map.entry("formalism", "formalism"),
+            Map.entry("charset", "charset"),
+            Map.entry("media_type", "mediatype"),
+            Map.entry("size", "size"),
+            Map.entry("alternate_text", "alternate_text"),
+            Map.entry("uri", "uri"));
 
     /**
-     * Maps a condition's {@code targetAttribute} onto the flat-format pipe attribute of a leaf data
+     * Maps a condition's {@code targetAttribute} onto the flat-format pipe attribute of an RM data
      * value, or returns {@code null} when it is an ordinary path that has to go through the AQL
      * converter.
      *
      * <p>Conditions address openEHR with RM paths, so a DV_IDENTIFIER part is written {@code type} (or
-     * {@code value/type}, spelling out the ELEMENT's value attribute) rather than {@code |type}. Those
-     * parts have no node in the operational template, so the converter silently drops the segment and
-     * returns the parent's flat path — which would leave the evaluator with a full path where it
-     * expects a pipe attribute. The flat pipe syntax is accepted as-is too, for mappings that already
-     * use it.
+     * {@code value/type}, spelling out the ELEMENT's value attribute) rather than {@code |type}, the
+     * same way a DV_CODED_TEXT is narrowed on {@code defining_code/code_string}. Those parts have no
+     * node in the operational template, so the converter silently drops the segment and returns the
+     * parent's flat path — which would leave the evaluator with a full path where it expects a pipe
+     * attribute. The flat pipe syntax is accepted as-is too, for mappings that already use it.
      */
     private String toLeafAttributeFlatPath(final String targetAttribute) {
         if (targetAttribute.startsWith("|")) {
@@ -533,12 +564,16 @@ public class HelpersCreator {
         final String withoutValuePrefix = targetAttribute.startsWith("value/")
                 ? targetAttribute.substring("value/".length())
                 : targetAttribute;
-        if (withoutValuePrefix.contains("/") || !LEAF_RM_ATTRIBUTES.contains(withoutValuePrefix)) {
-            // Ordinary paths — including a bare "value", which is the ELEMENT's own value node — still
-            // resolve against the template.
+        if (withoutValuePrefix.contains("/")) {
+            // Multi-segment paths still go through the converter — notably a DV_CODED_TEXT's
+            // "defining_code/code_string", which resolves against the template and is rewritten to
+            // |code further down.
             return null;
         }
-        return "|" + withoutValuePrefix;
+        // Ordinary attributes — including a bare "value", which is the ELEMENT's own value node —
+        // still resolve against the template.
+        final String flatName = LEAF_RM_ATTRIBUTES.get(withoutValuePrefix);
+        return flatName == null ? null : "|" + flatName;
     }
 
     Condition amendCondition(final Condition originalCondition,
