@@ -910,10 +910,7 @@ public class OpenEhrPopulator {
                                   translate(getIdentifierValue(value), getIdentifierSystem(value), terminology), flat);
             return true;
         } else if (value instanceof IBaseEnumeration<?> enumeration) {
-            final String enumVal = enumeration.getValueAsString();
-            addToConstructingFlat(path + "|code", translate(enumVal, null, terminology), flat);
-            addToConstructingFlat(path + "|terminology", translateSystem(enumVal, null, null, terminology), flat);
-            addToConstructingFlat(path + "|value", translate(enumVal, null, terminology), flat);
+            setEnumeration(path, enumeration, true, flat, terminology);
             return true;
         } else if (value instanceof IPrimitiveType<?> prim) {
             addToConstructingFlat(path + "|value", translate(prim.getValueAsString(), null, terminology), flat);
@@ -1343,9 +1340,7 @@ public class OpenEhrPopulator {
                             flat, terminology, availableCodes);
             return true;
         } else if (value instanceof IBaseEnumeration<?> enumeration) {
-            final String enumVal = enumeration.getValueAsString();
-            addToConstructingFlat(path + "|code", translate(enumVal, null, terminology), flat);
-            addToConstructingFlat(path + "|value", translate(enumVal, null, terminology), flat);
+            setEnumeration(path, enumeration, false, flat, terminology);
             return true;
         } else {
             log.warn(
@@ -1423,6 +1418,34 @@ public class OpenEhrPopulator {
         } else {
             log.error("Unsupported fhir value toString!: {}", fhirValue);
         }
+    }
+
+    /**
+     * Writes a FHIR enumeration (a {@code code} element such as {@code MedicationAdministration.status}) as a
+     * coded text. An enumeration carries no display of its own, so {@code |value} takes the display the
+     * terminology translation returns (an inline mapping's or a ConceptMap target's) when it has one.
+     * <p>
+     * Without a display it falls back to the translated <em>code</em>, and only to the enumeration's own
+     * value when nothing was translated at all — a mapping that translates {@code permit -> at0035} without
+     * naming a term means the openEHR side of that pair, not the FHIR token it came from, which would
+     * otherwise leak into the composition.
+     *
+     * @param withTerminology whether to write {@code |terminology} from the translation (a DV_CODED_TEXT
+     *                        does, a CODE_PHRASE does not)
+     */
+    private void setEnumeration(final String path, final IBaseEnumeration<?> enumeration,
+                                final boolean withTerminology, final JsonObject flat,
+                                final Terminology terminology) {
+        final String enumVal = enumeration.getValueAsString();
+        final Coding translated = translateCoding(enumVal, null, terminology);
+        final boolean hasCode = translated != null && StringUtils.isNotBlank(translated.getCode());
+        final boolean hasDisplay = translated != null && StringUtils.isNotBlank(translated.getDisplay());
+        addToConstructingFlat(path + "|code", hasCode ? translated.getCode() : enumVal, flat);
+        if (withTerminology && translated != null && StringUtils.isNotBlank(translated.getSystem())) {
+            addToConstructingFlat(path + "|terminology", translated.getSystem(), flat);
+        }
+        final String value = hasDisplay ? translated.getDisplay() : hasCode ? translated.getCode() : enumVal;
+        addToConstructingFlat(path + "|value", value, flat);
     }
 
     private Coding translateCoding(final String value, final String system, final Terminology terminology) {
