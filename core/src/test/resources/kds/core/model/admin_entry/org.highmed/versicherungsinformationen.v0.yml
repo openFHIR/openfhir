@@ -34,10 +34,17 @@ mappings:
                 - path: "system"
                   value: "http://fhir.de/sid/gkv/kvid-10"
 
+        # A DV_IDENTIFIER that carries its |type already yields this coding; the manual is the fallback
+        # for one that does not. Without the condition the same coding would be added twice, since a
+        # re-walked single-valued 'type' is continued into rather than replaced.
         - name: "typeCoding"
           with:
             fhir: "type.coding"
             openehr: "$archetype"
+          openehrCondition:
+            targetRoot: "$archetype/data[at0001]/items[at0006]"
+            targetAttribute: "type"
+            operator: "empty"
           manual:
             - name: "type"
               fhir:

@@ -82,6 +82,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   `DV_TEXT` (`"formatting"`, `"language"`, `"encoding"`), `DV_ORDINAL` (`"ordinal"`, `"symbol"`) and
   the encapsulated types (`"formalism"`, `"media_type"`, `"size"`, `"charset"`, `"uri"`).
   Conditions already written in the flat pipe syntax keep working.
+- toFHIR: a mapping whose FHIR path walks *through* a single-valued element that an earlier walk already
+  built (a sibling mapping, or an earlier occurrence of the same one) now continues into that element
+  instead of replacing it, so what was there is kept. A repeating openEHR element mapped to
+  `$resource.code.coding` yields one `code` with all its codings rather than only the last, and a `manual`
+  on `$resource.identifier.system` no longer discards the `identifier` a sibling mapping filled — a
+  `type: NONE` parent is no longer needed to merge them (it remains the order-independent way to do so).
+  Lists are unaffected: a re-walked list element still appends. References are unaffected: walking through
+  one (a `$reference` mapping, or a path continuing with `resolve()`) still replaces it, so an
+  identifier-only Reference is still superseded by the resolved one.
+  Existing mappings to check: a writer that was redundant with what an earlier mapping already produced
+  was masked by the replacement and now adds a second entry — e.g. a `manual` adding the `KVZ10` type
+  coding to an identifier whose `DV_IDENTIFIER` already carries that type. Guard such fallbacks with an
+  `openehrCondition` (`targetAttribute: "type"`, `operator: "empty"`), as the KDS Person mapping now does.
 
 ## [3.0.1] - 2026-09-09
 ### Added

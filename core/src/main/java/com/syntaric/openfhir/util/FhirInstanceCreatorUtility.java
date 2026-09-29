@@ -123,6 +123,22 @@ public class FhirInstanceCreatorUtility {
         return (IBaseEnumeration<?>) newInstance(getClassForName(modelPackage + "Enumeration"));
     }
 
+    /**
+     * Reads the current value of {@code theField} on {@code resource}, or null when unset or unreadable.
+     */
+    public Object getFieldObject(final Field theField, final Object resource) {
+        if (theField == null || resource == null) {
+            return null;
+        }
+        try {
+            theField.setAccessible(true);
+            return theField.get(resource);
+        } catch (IllegalAccessException e) {
+            log.error("Error trying to read field object.", e);
+            return null;
+        }
+    }
+
     public Object setFieldObject(final Field theField, final Object resource, final Object settingObject,
                                  final String modelPackage) {
         if (theField == null) {
