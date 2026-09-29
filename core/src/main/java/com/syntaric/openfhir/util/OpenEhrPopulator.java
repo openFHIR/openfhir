@@ -865,7 +865,8 @@ public class OpenEhrPopulator {
                 // Handle the first coding as the primary coded text
                 IBaseCoding primaryCoding = codings.get(0);
                 addToConstructingFlat(path + "|code",
-                                      translate(primaryCoding.getCode(), primaryCoding.getSystem(), terminology), flat);
+                                      translate(primaryCoding.getCode(), primaryCoding.getSystem(),
+                                                primaryCoding.getDisplay(), terminology), flat);
                 setTerminology(path + "|terminology", primaryCoding, flat, terminology);
                 if (StringUtils.isNotBlank(primaryCoding.getDisplay())) {
                     addToConstructingFlat(path + "|value",
@@ -890,7 +891,8 @@ public class OpenEhrPopulator {
             if (StringUtils.isBlank(coding.getCode())) {
                 return true;
             }
-            addToConstructingFlat(path + "|code", translate(coding.getCode(), coding.getSystem(), terminology), flat);
+            addToConstructingFlat(path + "|code",
+                                  translate(coding.getCode(), coding.getSystem(), coding.getDisplay(), terminology), flat);
             setTerminology(path + "|terminology", coding, flat, terminology);
             setDisplay(path, coding, flat, terminology);
             addToConstructingFlat(path + "|value", translate(coding.getDisplay(), coding.getSystem(), terminology),
@@ -910,7 +912,7 @@ public class OpenEhrPopulator {
         } else if (value instanceof IBaseEnumeration<?> enumeration) {
             final String enumVal = enumeration.getValueAsString();
             addToConstructingFlat(path + "|code", translate(enumVal, null, terminology), flat);
-            addToConstructingFlat(path + "|terminology", translateSystem(enumVal, null, terminology), flat);
+            addToConstructingFlat(path + "|terminology", translateSystem(enumVal, null, null, terminology), flat);
             addToConstructingFlat(path + "|value", translate(enumVal, null, terminology), flat);
             return true;
         } else if (value instanceof IPrimitiveType<?> prim) {
@@ -938,6 +940,7 @@ public class OpenEhrPopulator {
                                 final Terminology terminology) {
         final String translatedSystem = translateSystem(coding.getCode(),
                                                         coding.getSystem(),
+                                                        coding.getDisplay(),
                                                         terminology);
         final String version = coding.getVersion();
         if (translatedSystem == null && StringUtils.isNotBlank(version)) {
@@ -974,7 +977,7 @@ public class OpenEhrPopulator {
             addToConstructingFlat(mappingPath + "/target|preferred_term",
                                   translate(coding.getDisplay(), coding.getSystem(), terminology), flat);
             addToConstructingFlat(mappingPath + "/target|code",
-                                  translate(coding.getCode(), coding.getSystem(), terminology), flat);
+                                  translate(coding.getCode(), coding.getSystem(), coding.getDisplay(), terminology), flat);
             setTerminology(mappingPath + "/target|terminology", coding, flat, terminology);
         }
     }
@@ -1325,8 +1328,10 @@ public class OpenEhrPopulator {
             path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
         }
         if (value instanceof IBaseCoding coding) {
-            addToConstructingFlat(path + "|code", translate(coding.getCode(), coding.getSystem(), terminology), flat);
-            addToConstructingFlat(path + "|value", translate(coding.getCode(), coding.getSystem(), terminology), flat);
+            addToConstructingFlat(path + "|code",
+                                  translate(coding.getCode(), coding.getSystem(), coding.getDisplay(), terminology), flat);
+            addToConstructingFlat(path + "|value",
+                                  translate(coding.getCode(), coding.getSystem(), coding.getDisplay(), terminology), flat);
             setTerminology(path + "|terminology", coding, flat, terminology);
             return true;
         } else if (value instanceof IBaseExtension<?, ?> extension) {
@@ -1421,22 +1426,37 @@ public class OpenEhrPopulator {
     }
 
     private Coding translateCoding(final String value, final String system, final Terminology terminology) {
+        return translateCoding(value, system, null, terminology);
+    }
+
+    /**
+     * @param display the display of the coding {@code value} is the code of, when translating a coding; the
+     *                translator hands it back for a system-only rewrite, so the term is not lost
+     */
+    private Coding translateCoding(final String value, final String system, final String display,
+                                   final Terminology terminology) {
         if (StringUtils.isBlank(value) || terminology == null) {
             return null;
         }
-        return terminologyTranslator.translateToOpenEhr(value, system, null, terminology, null);
+        return terminologyTranslator.translateToOpenEhr(value, system, display, null, terminology, null);
     }
 
     private String translate(final String value, final String system, final Terminology terminology) {
-        final Coding translated = translateCoding(value, system, terminology);
+        return translate(value, system, null, terminology);
+    }
+
+    private String translate(final String value, final String system, final String display,
+                             final Terminology terminology) {
+        final Coding translated = translateCoding(value, system, display, terminology);
         if (translated != null && StringUtils.isNotBlank(translated.getCode())) {
             return translated.getCode();
         }
         return value;
     }
 
-    private String translateSystem(final String value, final String system, final Terminology terminology) {
-        final Coding translated = translateCoding(value, system, terminology);
+    private String translateSystem(final String value, final String system, final String display,
+                                   final Terminology terminology) {
+        final Coding translated = translateCoding(value, system, display, terminology);
         if (translated != null && StringUtils.isNotBlank(translated.getSystem())) {
             return translated.getSystem();
         }
