@@ -50,6 +50,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   FHIRPath-warning issues above
 
 ### Fixed
+- a terminology translation of a coding no longer loses the coding's display when the translation
+  keeps the code and rewrites only the system (a ConceptMap `"*"` element, the idiom for open code
+  sets such as ATC or ICD-10): the populators now hand the source display to the terminology
+  translator, and `TerminologyTranslatorInterface` gained `default` overloads of `translateToFhir` /
+  `translateToOpenEhr` that take it. A translator that does not use the display keeps working
+  unchanged; one that does (the enterprise ConceptMap service) returns it, so `$tofhir` keeps
+  `coding.display` and the openEHR return leg keeps `|value` instead of writing the code into it
 - a bare resource posted to `$toopenehr` (not wrapped in a Bundle) now maps as documented when its type
   matches the one the start archetype's model mapper generates, instead of returning an empty
   Composition (issue #118); previously this only worked for mappers without a

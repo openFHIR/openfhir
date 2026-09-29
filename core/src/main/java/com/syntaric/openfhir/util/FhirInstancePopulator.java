@@ -157,7 +157,8 @@ public class FhirInstancePopulator {
     private void populateTiming(Object toPopulate, Timing data, Terminology terminology) {
         if (data.hasCode()) {
             data.getCode().getCoding().replaceAll(coding -> {
-                final Coding translated = terminologyTranslator.translateToFhir(coding.getCode(), coding.getSystem(), null, terminology);
+                final Coding translated = terminologyTranslator.translateToFhir(coding.getCode(), coding.getSystem(),
+                                                                                coding.getDisplay(), null, terminology);
                 return translated != null ? translated : coding;
             });
         }
@@ -172,7 +173,8 @@ public class FhirInstancePopulator {
     }
 
     private void populateQuantity(Object toPopulate, Quantity data, Terminology terminology) {
-        final Coding translated = terminologyTranslator.translateToFhir(data.getCode(), data.getSystem(), null, terminology);
+        final Coding translated = terminologyTranslator.translateToFhir(data.getCode(), data.getSystem(), data.getUnit(),
+                                                                        null, terminology);
         if (translated != null) {
             if (StringUtils.isNotBlank(translated.getCode())) {
                 data.setCode(translated.getCode());
@@ -275,7 +277,8 @@ public class FhirInstancePopulator {
 
     private void populateCodeableConcept(Object toPopulate, CodeableConcept data, Terminology terminology) {
         data.getCoding().replaceAll(coding -> {
-            final Coding translated = terminologyTranslator.translateToFhir(coding.getCode(), coding.getSystem(), null, terminology);
+            final Coding translated = terminologyTranslator.translateToFhir(coding.getCode(), coding.getSystem(),
+                                                                            coding.getDisplay(), null, terminology);
             return translated != null ? translated : coding;
         });
         if (toPopulate instanceof CodeableConcept) {
@@ -302,7 +305,8 @@ public class FhirInstancePopulator {
     }
 
     private void populateCoding(Object toPopulate, Coding data, Terminology terminology) {
-        final Coding translated = terminologyTranslator.translateToFhir(data.getCode(), data.getSystem(), null, terminology);
+        final Coding translated = terminologyTranslator.translateToFhir(data.getCode(), data.getSystem(), data.getDisplay(),
+                                                                        null, terminology);
         if (translated != null) {
             data = translated;
         }
@@ -534,7 +538,7 @@ public class FhirInstancePopulator {
             return;
         }
         final Coding translated = terminologyTranslator.translateToFhir(quantity.getCode(), quantity.getSystem(),
-                null, terminology);
+                quantity.getUnit(), null, terminology);
         if (translated == null) {
             return;
         }
