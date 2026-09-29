@@ -57,6 +57,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   `translateToOpenEhr` that take it. A translator that does not use the display keeps working
   unchanged; one that does (the enterprise ConceptMap service) returns it, so `$tofhir` keeps
   `coding.display` and the openEHR return leg keeps `|value` instead of writing the code into it
+- `$toopenehr` of a FHIR enumeration (a `code` element such as `MedicationAdministration.status`) into a
+  `DV_CODED_TEXT` / `CODE_PHRASE` now takes `|value` from the display the terminology translation
+  returns (an inline mapping's or a ConceptMap target's), so an ISM state mapped `completed -> 532`
+  comes out as `|code: 532`, `|value: completed` instead of `|value: 532`. When the translation names
+  no display, `|value` falls back to the translated **code**, and only to the enumeration's own value
+  when nothing was translated at all — a mapping of `permit -> at0035` that declares no term still
+  yields `|value: at0035`, never the untranslated FHIR token
 - a bare resource posted to `$toopenehr` (not wrapped in a Bundle) now maps as documented when its type
   matches the one the start archetype's model mapper generates, instead of returning an empty
   Composition (issue #118); previously this only worked for mappers without a
