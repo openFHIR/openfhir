@@ -30,7 +30,7 @@ public class ToFhirMappingEngineInstantiateTest {
     }
 
     @Test
-    public void testInstantiation_overwritting() {
+    public void testInstantiation_singleParentReused() {
         final MappingHelper mappingHelper = new MappingHelper();
         final Condition generatingFhirResource = new Condition();
         mappingHelper.setGeneratingFhirResource(generatingFhirResource);
@@ -42,10 +42,14 @@ public class ToFhirMappingEngineInstantiateTest {
         Assert.assertNotNull(generatingFhirResource.getCode().getCodingFirstRep().getCodeElement());
         ((CodeType) firstObj).setValue("test");
 
-        // now if we do it again, we should have 1 code because Condition.code was overwritten
-        toFhirInstantiator.instantiateElement(mappingHelper, null, null, -1, Spec.Version.R4.modelPackage());
-        Assert.assertEquals(1, generatingFhirResource.getCode().getCoding().size());
-        Assert.assertNull(generatingFhirResource.getCode().getCodingFirstRep().getCode());
+        // walking the same path again continues into the existing single-valued Condition.code instead of
+        // replacing it, so the list beneath it appends and the first coding is kept
+        final Object secondObj = toFhirInstantiator.instantiateElement(mappingHelper, null, null, -1,
+                Spec.Version.R4.modelPackage());
+        ((CodeType) secondObj).setValue("second");
+        Assert.assertEquals(2, generatingFhirResource.getCode().getCoding().size());
+        Assert.assertEquals("test", generatingFhirResource.getCode().getCoding().get(0).getCode());
+        Assert.assertEquals("second", generatingFhirResource.getCode().getCoding().get(1).getCode());
     }
 
     @Test

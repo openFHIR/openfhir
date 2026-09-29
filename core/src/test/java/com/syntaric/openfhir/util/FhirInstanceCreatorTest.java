@@ -12,6 +12,8 @@ import org.hl7.fhir.r4.model.Enumeration;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Medication;
 import org.hl7.fhir.r4.model.MedicationRequest;
+import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.StringType;
 import org.junit.Assert;
@@ -103,6 +105,100 @@ public class FhirInstanceCreatorTest {
         final Medication medication = (Medication) resource.getMedicationReference().getResource();
         Assert.assertEquals("This is medication text", medication.getCode().getText());
     }
+
+    @Test
+    public void reWalkingSingleValuedParent_reusesIt() {
+        final MedicationRequest resource = new MedicationRequest();
+        final String fhirPath = "MedicationRequest.statusReason.coding.code";
+
+        final CodeType first = (CodeType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                MedicationRequest.class, fhirPath, null, null, R4)).getReturning();
+        first.setValue("first");
+        final CodeType second = (CodeType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                MedicationRequest.class, fhirPath, null, null, R4)).getReturning();
+        second.setValue("second");
+
+        // statusReason is 0..1 so it is continued into, coding is 0..* so it appends
+        Assert.assertEquals(2, resource.getStatusReason().getCoding().size());
+        Assert.assertEquals("first", resource.getStatusReason().getCoding().get(0).getCode());
+        Assert.assertEquals("second", resource.getStatusReason().getCoding().get(1).getCode());
+    }
+
+    @Test
+    public void reWalkingCastParent_reusesIt() {
+        final Observation resource = new Observation();
+        final String fhirPath = "Observation.value.as(CodeableConcept).coding.code";
+
+        final CodeType first = (CodeType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                Observation.class, fhirPath, null, null, R4)).getReturning();
+        first.setValue("first");
+        final CodeType second = (CodeType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                Observation.class, fhirPath, null, null, R4)).getReturning();
+        second.setValue("second");
+
+        Assert.assertTrue(resource.getValue() instanceof CodeableConcept);
+        Assert.assertEquals(2, resource.getValueCodeableConcept().getCoding().size());
+        Assert.assertEquals("first", resource.getValueCodeableConcept().getCoding().get(0).getCode());
+    }
+
+    @Test
+    public void castToDifferentChoiceType_stillReplaces() {
+        final Observation resource = new Observation();
+
+        final CodeType code = (CodeType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                Observation.class, "Observation.value.as(CodeableConcept).coding.code", null, null, R4))
+                .getReturning();
+        code.setValue("first");
+        fhirInstanceCreator.instantiateAndSetElement(resource, Observation.class,
+                "Observation.value.as(Quantity).value", null, null, R4);
+
+        Assert.assertTrue(resource.getValue() instanceof Quantity);
+    }
+
+    @Test
+    public void reWalkingThroughReference_stillReplacesIt() {
+        // an identifier-only Reference (fallback when the target resource is not available) is superseded by
+        // the resolved one — a $reference mapping means "point this at the resource built here"
+        final MedicationRequest resource = new MedicationRequest();
+
+        final StringType identifierValue = (StringType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(
+                resource, MedicationRequest.class, "MedicationRequest.medication.as(Reference).identifier.value",
+                null, null, R4)).getReturning();
+        identifierValue.setValue("logical id");
+        final StringType text = (StringType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                MedicationRequest.class, "MedicationRequest.medication.resolve().code.text", null, "Medication", R4))
+                .getReturning();
+        text.setValue("medication text");
+
+        final Reference reference = resource.getMedicationReference();
+        Assert.assertFalse(reference.hasIdentifier());
+        Assert.assertEquals("medication text", ((Medication) reference.getResource()).getCode().getText());
+
+        // and a second resolve() walk builds a fresh resource rather than merging into the first
+        fhirInstanceCreator.instantiateAndSetElement(resource, MedicationRequest.class,
+                "MedicationRequest.medication.resolve().code.coding.code", null, "Medication", R4);
+        final Medication second = (Medication) resource.getMedicationReference().getResource();
+        Assert.assertNull(second.getCode().getText());
+    }
+
+    @Test
+    public void reWalkingListParent_stillAppends() {
+        final MedicationRequest resource = new MedicationRequest();
+        final String fhirPath = "MedicationRequest.category.coding.code";
+
+        final CodeType first = (CodeType) getLastReturn(fhirInstanceCreator.instantiateAndSetElement(resource,
+                MedicationRequest.class, fhirPath, null, null, R4)).getReturning();
+        first.setValue("first");
+        fhirInstanceCreator.instantiateAndSetElement(resource, MedicationRequest.class, fhirPath, null, null, R4);
+
+        // category is 0..* so a second walk is a second category, not a second coding on the first
+        Assert.assertEquals(2, resource.getCategory().size());
+        Assert.assertEquals(1, resource.getCategory().get(0).getCoding().size());
+        Assert.assertEquals("first", resource.getCategory().get(0).getCodingFirstRep().getCode());
+        Assert.assertEquals(1, resource.getCategory().get(1).getCoding().size());
+    }
+
+    private static final String R4 = "org.hl7.fhir.r4.model.";
 
     private com.syntaric.openfhir.util.FhirInstanceCreator.InstantiateAndSetReturn getLastReturn(final FhirInstanceCreator.InstantiateAndSetReturn instantiateAndSetReturn) {
         if (instantiateAndSetReturn.getInner() == null) {

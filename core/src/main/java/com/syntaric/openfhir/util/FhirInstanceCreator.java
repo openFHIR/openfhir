@@ -204,7 +204,11 @@ public class FhirInstanceCreator {
                             : fhirInstanceCreatorUtility.findClass(theField,
                                                                    resolveFollows ? resolveResourceType : null,
                                                                    modelPackage);
-            final Object nextClassInstance = fhirInstanceCreatorUtility.newInstance(nextClass);
+            final Object existingFieldValue = theField.getType() == List.class ? null
+                    : fhirInstanceCreatorUtility.getFieldObject(theField, resource);
+            final Object reusable = reusableExisting(existingFieldValue, nextClass, resolveFollows, splitPath);
+            final Object nextClassInstance = reusable != null ? reusable
+                    : fhirInstanceCreatorUtility.newInstance(nextClass);
 
             final InstantiateAndSetReturn returning = instantiateAndSetElement(nextClassInstance, nextClass,
                                                                                String.join(".", list.subList(1,
@@ -213,7 +217,8 @@ public class FhirInstanceCreator {
                                                                                resolveResourceType,
                                                                                modelPackage);
 
-            final Object obj = fhirInstanceCreatorUtility.setFieldObject(theField, resource, nextClassInstance, modelPackage);
+            final Object obj = reusable != null ? existingFieldValue
+                    : fhirInstanceCreatorUtility.setFieldObject(theField, resource, nextClassInstance, modelPackage);
             final String path = splitPath + (castFollows ? ("." + splitFhirPaths[i + 1]) : "") + (
                     StringUtils.isBlank(followingWhereCondition) ? "" : ("." + followingWhereCondition));
             return InstantiateAndSetReturn.builder()
@@ -223,6 +228,46 @@ public class FhirInstanceCreator {
                     .isList(theField != null && theField.getType() == List.class)
                     .build();
         }
+        return null;
+    }
+
+    /**
+     * Decides whether an intermediate, single-valued path segment can continue into the element that is
+     * already set on the parent instead of creating a fresh one and overwriting it.
+     *
+     * <p>Only single-valued data types and backbone elements are ever reused — list fields always get a
+     * new entry, so legitimately repeating structures (two {@code Patient.name}s from two openEHR clusters)
+     * keep repeating, and a Reference or a resource is never reused (see below). A single-valued parent
+     * is reused when its current value is an instance of the class the segment resolves to. A cast to a
+     * different choice type ({@code value.as(Quantity)} after {@code value.as(CodeableConcept)}) does not
+     * match and is replaced as before. The end segment of a path is not affected at all: two values into
+     * one single-valued leaf stay last-wins, merging values being the populator's job.
+     *
+     * @return the existing element to continue into, or null when a new one must be created
+     */
+    private Object reusableExisting(final Object existingFieldValue,
+                                    final Class nextClass,
+                                    final boolean resolveFollows,
+                                    final String splitPath) {
+        if (existingFieldValue == null || nextClass == null) {
+            return null;
+        }
+        if (resolveFollows
+                || existingFieldValue instanceof IBaseReference
+                || existingFieldValue instanceof IBaseResource) {
+            // a Reference is a pointer, and walking through it (a $reference mapping, or a path continuing
+            // with resolve()) means "point it at the resource being built here" — replacing it is the
+            // intended outcome, and the mapping corpus relies on it (an identifier-only Reference being
+            // superseded by a resolved one). Reusing it would also merge a resource built twice from the
+            // same cluster, duplicating its list children.
+            return null;
+        }
+        if (nextClass.isInstance(existingFieldValue)) {
+            return existingFieldValue;
+        }
+        log.warn("Replacing existing {} on '{}' with a new {}: the two types are incompatible, so the "
+                         + "previously mapped value is discarded",
+                 existingFieldValue.getClass().getSimpleName(), splitPath, nextClass.getSimpleName());
         return null;
     }
 }
