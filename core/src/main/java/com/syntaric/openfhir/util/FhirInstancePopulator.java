@@ -1,5 +1,7 @@
 package com.syntaric.openfhir.util;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.fhirpath.IFhirPath;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
@@ -41,12 +43,31 @@ public class FhirInstancePopulator {
 
     private final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface;
     private final TerminologyTranslatorInterface terminologyTranslator;
+    private final FhirConditionEvaluator fhirConditionEvaluator;
+
+    /** Lazily created; {@code data} is always R4, so a single R4 FHIRPath engine serves every call. */
+    private volatile IFhirPath r4FhirPath;
 
     @Autowired
     public FhirInstancePopulator(final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface,
-                                 final TerminologyTranslatorInterface terminologyTranslator) {
+                                 final TerminologyTranslatorInterface terminologyTranslator,
+                                 final FhirConditionEvaluator fhirConditionEvaluator) {
         this.prePostFhirInstancePopulatorInterface = prePostFhirInstancePopulatorInterface;
         this.terminologyTranslator = terminologyTranslator;
+        this.fhirConditionEvaluator = fhirConditionEvaluator;
+    }
+
+    public FhirInstancePopulator(final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface,
+                                 final TerminologyTranslatorInterface terminologyTranslator) {
+        this(prePostFhirInstancePopulatorInterface, terminologyTranslator,
+                new FhirConditionEvaluator(new OpenFhirStringUtils()));
+    }
+
+    private IFhirPath r4FhirPath() {
+        if (r4FhirPath == null) {
+            r4FhirPath = FhirContext.forR4Cached().newFhirPath();
+        }
+        return r4FhirPath;
     }
 
     /**
@@ -88,7 +109,7 @@ public class FhirInstancePopulator {
             return;
         }
 
-        handleSpecificTypePopulation(toPopulate, data, terminology);
+        handleSpecificTypePopulation(toPopulate, data, terminology, mappingHelper);
 
         prePostFhirInstancePopulatorInterface.postPopulateElement(mappingHelper, toPopulate, data, modelName, mappingName, fromPath, toPath, index, terminology);
     }
@@ -121,6 +142,18 @@ public class FhirInstancePopulator {
     }
 
     protected void handleSpecificTypePopulation(final Object toPopulate, final Base data, final Terminology terminology) {
+        handleSpecificTypePopulation(toPopulate, data, terminology, null);
+    }
+
+    /**
+     * @param mappingHelper the mapping being populated, or {@code null} when unknown; only its
+     *                      coding-level fhirConditions are consulted (see
+     *                      {@link FhirConditionEvaluator#selectCodings})
+     */
+    protected void handleSpecificTypePopulation(final Object toPopulate,
+                                                final Base data,
+                                                final Terminology terminology,
+                                                final MappingHelper mappingHelper) {
         if (data instanceof Quantity) {
             populateQuantity(toPopulate, (Quantity) data, terminology);
         } else if (data instanceof IntegerType) {
@@ -136,7 +169,7 @@ public class FhirInstancePopulator {
         } else if (data instanceof DateType) {
             populateDateType(toPopulate, (DateType) data);
         } else if (data instanceof CodeableConcept) {
-            populateCodeableConcept(toPopulate, (CodeableConcept) data, terminology);
+            populateCodeableConcept(toPopulate, (CodeableConcept) data, terminology, mappingHelper);
         } else if (data instanceof Coding) {
             populateCoding(toPopulate, (Coding) data, terminology);
         } else if (data instanceof Attachment) {
@@ -275,12 +308,20 @@ public class FhirInstancePopulator {
         }
     }
 
-    private void populateCodeableConcept(Object toPopulate, CodeableConcept data, Terminology terminology) {
+    private void populateCodeableConcept(final Object toPopulate,
+                                         final CodeableConcept data,
+                                         final Terminology terminology,
+                                         final MappingHelper mappingHelper) {
         data.getCoding().replaceAll(coding -> {
             final Coding translated = terminologyTranslator.translateToFhir(coding.getCode(), coding.getSystem(),
                                                                             coding.getDisplay(), null, terminology);
             return translated != null ? translated : coding;
         });
+        // after translation, so the condition matches the FHIR systems that are actually written; the
+        // first-rep branches below then pick the first surviving coding
+        if (mappingHelper != null) {
+            fhirConditionEvaluator.selectCodings(data, mappingHelper, toPopulate instanceof Coding, r4FhirPath());
+        }
         if (toPopulate instanceof CodeableConcept) {
             data.copyValues((CodeableConcept) toPopulate);
         } else if (toPopulate instanceof Coding coding) {

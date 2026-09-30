@@ -105,13 +105,18 @@ public class CodedParser {
                 break;
             }
 
-            String system = fhirValueReaders.cleanVersionFromSystem(
-                    fhirValueReaders.get(valueHolder, prefix + "/target|terminology"));
+            String systemRaw = fhirValueReaders.get(valueHolder, prefix + "/target|terminology");
+            String system = fhirValueReaders.cleanVersionFromSystem(systemRaw);
+            String version = fhirValueReaders.version(systemRaw);
             String code = fhirValueReaders.get(valueHolder, prefix + "/target|code");
             String display = fhirValueReaders.get(valueHolder, prefix + "/target|preferred_term");
 
             if (system != null || code != null) {
-                cc.addCoding(new Coding(system, code, display));
+                Coding coding = new Coding(system, code, display);
+                if (version != null) {
+                    coding.setVersion(version);
+                }
+                cc.addCoding(coding);
             }
         }
     }

@@ -603,7 +603,7 @@
           "value" : "B05.3",
           "mappings" : [ {
             "_type" : "TERM_MAPPING",
-            "match" : "?",
+            "match" : "=",
             "target" : {
               "_type" : "CODE_PHRASE",
               "terminology_id" : {
@@ -615,7 +615,7 @@
             }
           }, {
             "_type" : "TERM_MAPPING",
-            "match" : "?",
+            "match" : "=",
             "target" : {
               "_type" : "CODE_PHRASE",
               "terminology_id" : {

@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 ### Added
+- `$tofhir`: a `fhirCondition` whose `targetRoot` is the mapped CodeableConcept's `coding` (or the
+  mapped Coding itself) now selects which of a `DV_CODED_TEXT`'s codings — its own code and its
+  TERM_MAPPING targets (`_mapping:N/target`) — are written, with the same `one of` / `not of`
+  condition that already filters codings in the `$toopenehr` direction. It used to be a no-op
+  outbound. The condition is matched after terminology translation, so the criteria are FHIR
+  systems (e.g. `http://snomed.info/sct` after a `"*"` passthrough ConceptMap); a `Coding`, `code`
+  or `Identifier` target takes the first surviving coding. It is a selection, not a gate: when no
+  coding satisfies the condition the codings are written unchanged, so existing mappings whose
+  condition describes a value a child `manual` writes later keep working
 - a runtime failure inside a single mapping no longer fails the whole `$tofhir` / `$toopenehr` request
   as an opaque 500 (issue #120): it is reported as an `OperationOutcome` issue of severity `error`
   naming the model mapper, archetype, mapping and the openEHR/FHIR paths being processed, the
@@ -50,6 +59,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   FHIRPath-warning issues above
 
 ### Fixed
+- `$tofhir`: a TERM_MAPPING target whose `target|terminology` carries a version
+  (`http://snomed.info/sct@20240101`) now yields a coding with that `version`, as the element's own
+  code already did; the version was parsed and dropped
+- `$toopenehr`: the additional codings of a CodeableConcept are written as TERM_MAPPINGs under the
+  flat key `_mapping:N|match`; the engine wrote `_mapping:N/match`, which the flat format does not
+  know, so the resulting TERM_MAPPINGs came out with `match: "?"` (unknown). They now carry the
+  `match: "="` (equivalent) the engine always intended — check any consumer that keyed on `?`
 - a terminology translation of a coding no longer loses the coding's display when the translation
   keeps the code and rewrites only the system (a ConceptMap `"*"` element, the idiom for open code
   sets such as ATC or ICD-10): the populators now hand the source display to the terminology

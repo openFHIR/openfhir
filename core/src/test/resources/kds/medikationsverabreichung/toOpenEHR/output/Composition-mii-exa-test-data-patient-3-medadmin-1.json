@@ -228,7 +228,7 @@
             "value" : "Metamizol HEXAL® 500 mg",
             "mappings" : [ {
               "_type" : "TERM_MAPPING",
-              "match" : "?",
+              "match" : "=",
               "target" : {
                 "_type" : "CODE_PHRASE",
                 "terminology_id" : {

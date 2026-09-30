@@ -19,11 +19,13 @@
                 },
                 {
                   "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+                  "version": "2022",
                   "code": "I29975",
                   "display": "Bösartige anorektale Neubildung"
                 },
                 {
                   "system": "http://snomed.info/sct",
+                  "version": "20230731",
                   "code": "447886005",
                   "display": "Adenocarcinoma of anorectum (disorder)"
                 }
