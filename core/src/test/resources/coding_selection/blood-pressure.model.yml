@@ -1,0 +1,70 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name:  OBSERVATION.blood_pressure.v2
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-OBSERVATION.blood_pressure.v2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+# Every protocol element below is a DV_CODED_TEXT carrying its own local code plus a SNOMED
+# TERM_MAPPING (`_mapping:0`). Each mapping's fhirCondition selects which of the two codings is
+# written in the openEHR->FHIR direction (and, as before, filters codings in the other direction).
+mappings:
+
+  # Coding target: the condition's targetRoot IS the mapped path. Only the SNOMED coding is copied.
+  - name: "locationCoding"
+    with:
+      fhir: "$resource.bodySite.coding"
+      openehr: "$archetype/protocol[at0011]/items[at0014]"
+    fhirCondition:
+      targetRoot: "$resource.bodySite.coding"
+      targetAttribute: "system"
+      operator: "one of"
+      criteria: "http://snomed.info/sct"
+
+  # CodeableConcept target: the condition's targetRoot is the mapped path's `coding`. The local
+  # coding is dropped, the SNOMED one kept, the text untouched.
+  - name: "methodConcept"
+    with:
+      fhir: "$resource.method"
+      openehr: "$archetype/protocol[at0011]/items[at1035]"
+    fhirCondition:
+      targetRoot: "$resource.method.coding"
+      targetAttribute: "system"
+      operator: "not of"
+      criteria: "local"
+
+  # The nested shape (a Karolinska dosageInstruction -> route): a `type: NONE` parent, the child mapping
+  # a relative CodeableConcept path, and the condition spelled relative to the child's own path.
+  - name: "componentParent"
+    with:
+      fhir: "$resource.component"
+      openehr: "$archetype/protocol[at0011]"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "componentCode"
+          with:
+            fhir: "code"
+            openehr: "items[at1035]"
+          fhirCondition:
+            targetRoot: "code.coding"
+            targetAttribute: "system"
+            operator: "one of"
+            criteria: "http://snomed.info/sct"
+
+  # A condition nothing satisfies: selection is not a gate, both codings are written.
+  - name: "cuffSizeUnmatched"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/protocol[at0011]/items[at0013]"
+    fhirCondition:
+      targetRoot: "$resource.code.coding"
+      targetAttribute: "system"
+      operator: "one of"
+      criteria: "http://loinc.org"

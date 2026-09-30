@@ -69,6 +69,7 @@
             },
             {
               "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "version": "2023",
               "code": "1-275.2"
             },
             {} // a fix for now, not blocking issue

@@ -69,6 +69,7 @@
             },
             {
               "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "version": "2022",
               "code": "5-485.02"
             },
             {} // a fix for now, not blocking issue

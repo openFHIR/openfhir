@@ -970,7 +970,7 @@ public class OpenEhrPopulator {
             }
             String mappingPath = path + "/_mapping:" + mappingIndex++;
 
-            addToConstructingFlat(mappingPath + "/match", "=", flat);
+            addToConstructingFlat(mappingPath + "|match", "=", flat);
             addToConstructingFlat(mappingPath + "/target|preferred_term",
                                   translate(coding.getDisplay(), coding.getSystem(), terminology), flat);
             addToConstructingFlat(mappingPath + "/target|code",

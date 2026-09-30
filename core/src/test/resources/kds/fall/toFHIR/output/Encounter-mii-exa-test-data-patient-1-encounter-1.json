@@ -19,11 +19,13 @@
                 },
                 {
                   "system": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+                  "version": "2023",
                   "code": "I29578",
                   "display": "Masern mit Otitis"
                 },
                 {
                   "system": "http://snomed.info/sct",
+                  "version": "20230731",
                   "code": "13420004",
                   "display": "Post measles otitis media (disorder)"
                 }
