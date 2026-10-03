@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IPrimitiveType;
+import org.hl7.fhir.r4.model.Base;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +33,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class FhirConditionEvaluator {
+
+    private static final String CODING = "coding";
 
     private final OpenFhirStringUtils openFhirStringUtils;
 
@@ -71,8 +76,9 @@ public class FhirConditionEvaluator {
      * via the remaining T segments plus each targetAttribute), and the rest of the plain path is
      * then evaluated on the surviving elements.
      *
-     * @return the filtered evaluation results, or {@code null} when evaluation fails (already
-     * logged) — the same contract as plain path evaluation
+     * @return the filtered evaluation results
+     * @throws FhirPathEvaluationException when the path or a condition cannot be evaluated — the
+     * same contract as plain path evaluation
      */
     public List<? extends IBase> evaluateWithConditions(final MappingHelper helper,
                                                         final String plainFhirPath,
@@ -141,9 +147,8 @@ public class FhirConditionEvaluator {
                 }
             }
             return results;
-        } catch (final Exception e) {
-            log.error("Error trying to evaluate path {} with fhirConditions", plainFhirPath);
-            return null;
+        } catch (final RuntimeException e) {
+            throw new FhirPathEvaluationException(plainFhirPath, e);
         }
     }
 
@@ -186,6 +191,85 @@ public class FhirConditionEvaluator {
                     condition.getTargetRoot(), resource.fhirType());
             return false;
         }
+    }
+
+    /**
+     * openEHR→FHIR counterpart of {@link #evaluateWithConditions}: removes from {@code cc.getCoding()}
+     * the codings that fail the helper's coding-level fhirConditions, so a mapping author can pick
+     * which of a DV_CODED_TEXT's codings (its own code plus its TERM_MAPPING targets) reaches FHIR
+     * with the same condition that already filters codings in the FHIR→openEHR direction.
+     *
+     * <p>A condition is coding-level when its (amended) targetRoot resolves, relative to the helper's
+     * full fhir path F, to exactly {@code coding} for a CodeableConcept target, or to F itself when
+     * the mapping targets a Coding ({@code targetIsCoding}). Conditions anchored anywhere else — a
+     * sibling element, a parent, an extension url a child mapping writes later — are ignored, as are
+     * presence gates ({@code empty} / {@code not empty}).
+     *
+     * <p>This is a selection, never a gate: when no coding satisfies the conditions the list is left
+     * untouched (existing bidirectional mappings routinely describe a value a child {@code manual}
+     * writes afterwards, and gating would drop their only coding). Call it after terminology
+     * translation so the criteria are matched against the FHIR systems that will be written.
+     */
+    public void selectCodings(final CodeableConcept cc,
+                              final MappingHelper helper,
+                              final boolean targetIsCoding,
+                              final IFhirPath fhirPath) {
+        if (cc == null || helper == null || cc.getCoding().isEmpty()) {
+            return;
+        }
+        final List<Condition> conditions = pathFilteringConditions(helper.getFhirConditions()).stream()
+                .filter(condition -> isCodingLevelCondition(condition, helper.getFullFhirPath(), targetIsCoding))
+                .toList();
+        if (conditions.isEmpty()) {
+            return;
+        }
+        final List<Coding> survivors = cc.getCoding().stream()
+                .filter(coding -> conditions.stream()
+                        .allMatch(condition -> elementPassesCondition(condition, "", coding, fhirPath, Base.class)))
+                .toList();
+        if (survivors.isEmpty()) {
+            log.debug("No coding of {} satisfies the fhirCondition(s) of mapping {}; keeping all {} coding(s)",
+                    helper.getFullFhirPath(), helper.getMappingName(), cc.getCoding().size());
+            return;
+        }
+        if (survivors.size() < cc.getCoding().size()) {
+            // identity, not equals(): the survivors are the very instances held by the list
+            cc.getCoding().removeIf(coding -> survivors.stream().noneMatch(survivor -> survivor == coding));
+        }
+    }
+
+    /**
+     * True when the condition's targetRoot, relative to the mapping's full fhir path, addresses the
+     * codings of the mapped element: {@code coding} below a CodeableConcept target, or the mapped
+     * element itself when that is a Coding.
+     *
+     * <p>Decided on the amended (absolute) targetRoot and full path, which are right for every
+     * spelling of the condition — relative ({@code route.coding} under a nested parent), anchored
+     * ({@code $resource.dosageInstruction.route.coding}) or top-level. The legacy path-end placement
+     * ({@link Condition#getMappedPathEndAttributePrefix()}) is consulted only as a fallback: it is
+     * derived from the <em>raw</em> paths and for a child mapping with a relative path degenerates
+     * to {@code ""} or to the whole absolute targetRoot, neither of which says anything about the
+     * codings.
+     */
+    private boolean isCodingLevelCondition(final Condition condition,
+                                           final String fullFhirPath,
+                                           final boolean targetIsCoding) {
+        final List<String> fullPathSegments = openFhirStringUtils.splitFhirPathTopLevel(fullFhirPath);
+        final List<String> targetRootSegments = openFhirStringUtils.splitFhirPathTopLevel(condition.getTargetRoot());
+        if (!fullPathSegments.isEmpty()
+                && commonPrefixLength(fullPathSegments, targetRootSegments) == fullPathSegments.size()
+                && addressesCodings(targetRootSegments.subList(fullPathSegments.size(), targetRootSegments.size()),
+                        targetIsCoding)) {
+            return true;
+        }
+        return condition.getMappedPathEndAttributePrefix() != null
+                && addressesCodings(
+                        openFhirStringUtils.splitFhirPathTopLevel(condition.getMappedPathEndAttributePrefix()),
+                        targetIsCoding);
+    }
+
+    private static boolean addressesCodings(final List<String> relativeToMappedPath, final boolean targetIsCoding) {
+        return targetIsCoding ? relativeToMappedPath.isEmpty() : relativeToMappedPath.equals(List.of(CODING));
     }
 
     private boolean conditionPassesOnRoot(final Condition condition,

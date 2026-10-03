@@ -38,6 +38,9 @@ public abstract class OpenFhirMappingContext {
     }
 
     public static String normalizeTemplateId(final String templateId) {
+        if (templateId == null) {
+            return null;
+        }
         return templateId.toLowerCase().replace(" ", "_");
     }
 }

@@ -28,6 +28,7 @@
                 },
                 {
                   "system": "http://fhir.de/CodeSystem/bfarm/atc",
+                  "version": "2023",
                   "code": "B01AC06",
                   "display": "Acetylsalicylsäure"
                 }

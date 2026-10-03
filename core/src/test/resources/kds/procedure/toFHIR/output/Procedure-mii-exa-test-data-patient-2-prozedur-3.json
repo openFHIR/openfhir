@@ -69,6 +69,7 @@
             },
             {
               "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "version": "2024",
               "code": "8-800.61"
             },
             {} // a fix for now, not blocking issue

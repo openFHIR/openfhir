@@ -54,19 +54,27 @@ public class ToFhirInstantiator {
      * path starts from the resource root or the current generating root.
      */
     private Object resolveFhirBase(final MappingHelper mappingHelper) {
-        final boolean onResource = mappingHelper.getOriginalFhirPath()
-                .startsWith(FhirConnectConst.FHIR_RESOURCE_FC);
+        final boolean onResource = isResourceRooted(mappingHelper);
         return onResource && !mappingHelper.isEnteredFromSlotArchetypeLink()
                 ? mappingHelper.getGeneratingFhirResource()
                 : mappingHelper.getGeneratingFhirRoot();
     }
 
     /**
+     * Whether the mapping path is anchored at the resource root. {@code with.fhir} is optional in a FHIRconnect
+     * model mapping, so the original path is legitimately absent for openEHR-only mappings — those are treated
+     * as not resource-rooted, matching how the inbound direction resolves its base.
+     */
+    private boolean isResourceRooted(final MappingHelper mappingHelper) {
+        final String originalFhirPath = mappingHelper.getOriginalFhirPath();
+        return originalFhirPath != null && originalFhirPath.startsWith(FhirConnectConst.FHIR_RESOURCE_FC);
+    }
+
+    /**
      * Strips the FhirConnect path constant prefix to obtain the navigable remainder.
      */
     private String resolveRemainingPath(final MappingHelper mappingHelper) {
-        final boolean onResource = mappingHelper.getOriginalFhirPath()
-                .startsWith(FhirConnectConst.FHIR_RESOURCE_FC);
+        final boolean onResource = isResourceRooted(mappingHelper);
         return onResource
                 ? mappingHelper.getFhir().replace(FhirConnectConst.FHIR_RESOURCE_FC + ".", "")
                 : mappingHelper.getFhir()

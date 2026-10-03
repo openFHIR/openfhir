@@ -7,7 +7,9 @@ import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.operations.MappingIssueCollector;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
+import com.syntaric.openfhir.util.MappingExecutionException;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,26 @@ public class BidirectionalMappingEngine {
 
     protected BidirectionalMappingEngine(final FhirContextRegistry fhirContextRegistry) {
         this.fhirContextRegistry = fhirContextRegistry;
+    }
+
+    /**
+     * Reports a runtime failure inside one mapping: wraps it with the {@link MappingContext} of the helper being
+     * processed, logs it once with the full stack and the reference id, and hands it to the issue collector,
+     * which either records it as an {@code error} issue or (in fail-fast mode) throws it.
+     *
+     * <p>This is the only place the failure is logged — the REST layer must not log it again.
+     *
+     * @param mappingDirection {@link FhirConnectConst#UNIDIRECTIONAL_TOFHIR} or
+     *                         {@link FhirConnectConst#UNIDIRECTIONAL_TOOPENEHR}
+     */
+    protected void reportMappingFailure(final RuntimeException cause,
+                                        final MappingHelper helper,
+                                        final String mappingDirection,
+                                        final MappingIssueCollector issueCollector) {
+        final MappingExecutionException failure = new MappingExecutionException(
+                MappingContext.of(helper, mappingDirection), cause);
+        log.error("[reference {}] {}", failure.getReference(), failure.getMessage(), cause);
+        issueCollector.addError(failure);
     }
 
     /**

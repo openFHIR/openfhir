@@ -33,6 +33,7 @@ optimizations**. For production-ready deployments with full security, scalabilit
 > | Compliance with FHIRConnect specification                      | ✅ | ✅ |
 > | Included support and consultancy                               | No | ✅ |
 > | Postgres support                                               | No | ✅ |
+> | Queue support (Kafka): subscribe, translate, publish                                               | No | ✅ |
 > | Terminology server integration                                 | No | ✅ |
 > | Operational Templates sync with underlying openEHR Server      | No | ✅ |
 > | Multitenancy                                                   | No | ✅ |
@@ -127,7 +128,13 @@ The response summarises the run:
   "unchanged": 14,
   "failed": 0,
   "files": [
-    {"path": "kds/diagnose.context.yaml", "outcome": "UPDATED", "entityType": "CONTEXT", "entityId": "6f2c...", "message": null}
+    {
+      "path": "kds/diagnose.context.yaml",
+      "outcome": "UPDATED",
+      "entityType": "CONTEXT",
+      "entityId": "6f2c...",
+      "message": null
+    }
   ]
 }
 ```

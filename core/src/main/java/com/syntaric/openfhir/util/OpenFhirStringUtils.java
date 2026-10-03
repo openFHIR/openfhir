@@ -47,8 +47,16 @@ public class OpenFhirStringUtils {
         }
     }
 
+    /**
+     * Replaces the last occurrence of charToReplace within the given string. When the string doesn't contain
+     * charToReplace at all there is nothing to replace, so the string is returned unchanged — callers used to
+     * rely on this never happening and turned a -1 index into a StringIndexOutOfBoundsException.
+     */
     public String replaceLastIndexOf(final String string, final String charToReplace, final String replaceWith) {
         int start = string.lastIndexOf(charToReplace);
+        if (start < 0) {
+            return string;
+        }
         return string.substring(0, start) +
                 replaceWith +
                 string.substring(start + charToReplace.length());

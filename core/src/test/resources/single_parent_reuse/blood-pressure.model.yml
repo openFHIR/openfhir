@@ -1,0 +1,41 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name:  OBSERVATION.blood_pressure.v2
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-OBSERVATION.blood_pressure.v2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Observation
+
+# No hierarchy preprocessor: the whole OBSERVATION is one Observation, and every mapping below is
+# walked once per openEHR occurrence against that same resource.
+mappings:
+
+  # A repeating element (one 'position' per any_event occurrence) walking THROUGH the single-valued
+  # 'method' into its 'coding' list: the second and third occurrence must continue into the method the
+  # first one built, appending codings, instead of replacing it.
+  - name: "positionAsMethod"
+    with:
+      fhir: "$resource.method.coding"
+      openehr: "$archetype/data[at0001]/events[at0006]/state[at0007]/items[at0008]"
+
+  # Two top-level siblings sharing the single-valued 'bodySite' prefix, without a 'type: NONE' parent:
+  # the coding from data, the text from a manual walking through the same bodySite.
+  - name: "locationCoding"
+    with:
+      fhir: "$resource.bodySite.coding"
+      openehr: "$archetype/protocol[at0011]/items[at0014]"
+
+  - name: "locationText"
+    with:
+      fhir: "$resource.bodySite.text"
+      openehr: "$archetype"
+    manual:
+      - name: "textManual"
+        fhir:
+          - path: "$fhirRoot"
+            value: "THIS IS LOCATION OF MEASUREMENT"

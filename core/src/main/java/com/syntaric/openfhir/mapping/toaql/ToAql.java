@@ -398,8 +398,8 @@ public class ToAql {
             return;
         }
         final String templateId = OpenFhirMappingContext.normalizeTemplateId(context.getTemplateId());
-        final WebTemplate webTemplate = templateUtils.parseWebTemplate(
-                optManager.byTemplateIdAndOrganization(templateId));
+        // parsed for its validation side effect: reports a missing/unparseable template before mapping starts
+        templateUtils.parseWebTemplate(optManager.byTemplateIdAndOrganization(templateId));
         prodOpenFhirMappingContext.initMappingCache(context.getFhirConnectContext());
     }
 

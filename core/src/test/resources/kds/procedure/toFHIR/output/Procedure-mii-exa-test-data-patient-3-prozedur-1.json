@@ -69,6 +69,7 @@
             },
             {
               "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "version": "2022",
               "code": "1-444.7"
             },
             {} // a fix for now, not blocking issue

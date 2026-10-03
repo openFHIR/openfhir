@@ -69,6 +69,7 @@
             },
             {
               "system": "http://fhir.de/CodeSystem/bfarm/ops",
+              "version": "2024",
               "code": "6-00g.33"
             },
             {} // a fix for now, not blocking issue

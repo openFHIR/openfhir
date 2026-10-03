@@ -8,6 +8,123 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- `$tofhir`: a `fhirCondition` whose `targetRoot` is the mapped CodeableConcept's `coding` (or the
+  mapped Coding itself) now selects which of a `DV_CODED_TEXT`'s codings — its own code and its
+  TERM_MAPPING targets (`_mapping:N/target`) — are written, with the same `one of` / `not of`
+  condition that already filters codings in the `$toopenehr` direction. It used to be a no-op
+  outbound. The condition is matched after terminology translation, so the criteria are FHIR
+  systems (e.g. `http://snomed.info/sct` after a `"*"` passthrough ConceptMap); a `Coding`, `code`
+  or `Identifier` target takes the first surviving coding. It is a selection, not a gate: when no
+  coding satisfies the condition the codings are written unchanged, so existing mappings whose
+  condition describes a value a child `manual` writes later keep working
+- a runtime failure inside a single mapping no longer fails the whole `$tofhir` / `$toopenehr` request
+  as an opaque 500 (issue #120): it is reported as an `OperationOutcome` issue of severity `error`
+  naming the model mapper, archetype, mapping and the openEHR/FHIR paths being processed, the
+  remaining mappings still run and the partial result is returned. The issue `code` tells the two
+  cases apart: `processing` / `structure` when the cause is caller-correctable (the message is
+  echoed, as before), `exception` for an engine fault, where the diagnostics carry a reference id and
+  the exception detail stays in the engine log (logged once, with the stack, at the point of failure)
+- `openfhir.operations.outcome-verbosity` (env `OPENFHIR_OPERATIONS_OUTCOME_VERBOSITY`) controls what the
+  `$tofhir` / `$toopenehr` `OperationOutcome` carries: `all` (default, errors and warnings), `errors`
+  (failed mappings only) or `none` (no `OperationOutcome` at all). Issues below the level are never
+  collected, so the response stays small for inputs that skip many elements; the engine log is
+  unaffected
+
+### Changed
+- callers that do not pass an issue collector (the legacy `/openfhir/*` endpoints, direct engine use)
+  fail fast on the first failed mapping with a `MappingExecutionException` carrying the same
+  descriptive message; the legacy endpoints return it as their usual 400 text body
+- `$toopenehr` failures inside custom mapping code (`mappingCode`) are no longer swallowed and only
+  logged; they are reported like any other mapping failure, and a mapping code that is not
+  registered or declines to map is reported as a warning
+- `$tofhir` nested (`followedBy` / `reference` / `slotArchetype`) mappings now report their warnings;
+  they used to be collected into a throwaway collector and lost
+- a FHIRPath expression in a model mapping that cannot be evaluated in the `$toopenehr` direction
+  (unknown function, malformed condition path, unresolvable `resolve()`) is reported as a `warning`
+  / `incomplete` issue naming the mapping, the expression and the FHIRPath engine's message, instead
+  of only a log line; the mapping is skipped as before
+- the `$toopenehr` "matched the mapping criteria but nothing could be mapped" warning is now raised
+  only when a mapping found no data at its FHIR path or its data produced no openEHR value, and it
+  names those mappings with their FHIR paths, the model mapper and archetype, and quotes the FHIR
+  JSON of the element they were evaluated on (truncated at 2000 characters). It is no longer raised
+  for an element a mapping was never meant to match: a slot or reference mapping whose target
+  mapper's preprocessor condition, resource type or filtering condition rejected it, or a manual
+  FHIR-value mapping that has nothing to write towards openEHR. A Bundle fanned out over several
+  slot mappings therefore no longer yields one warning per slot per entry, and a nested miss is
+  reported once, by the innermost walk, instead of once per level. The "no CustomMapping
+  registered" warning names its mapping
+- the Newman e2e collection exercises the mappings through `$tofhir` / `$toopenehr` instead of the
+  legacy `/openfhir/tofhir` / `/openfhir/toopenehr` endpoints, and covers the per-mapping error and
+  FHIRPath-warning issues above
+
+### Fixed
+- `$tofhir`: a TERM_MAPPING target whose `target|terminology` carries a version
+  (`http://snomed.info/sct@20240101`) now yields a coding with that `version`, as the element's own
+  code already did; the version was parsed and dropped
+- `$toopenehr`: the additional codings of a CodeableConcept are written as TERM_MAPPINGs under the
+  flat key `_mapping:N|match`; the engine wrote `_mapping:N/match`, which the flat format does not
+  know, so the resulting TERM_MAPPINGs came out with `match: "?"` (unknown). They now carry the
+  `match: "="` (equivalent) the engine always intended — check any consumer that keyed on `?`
+- a terminology translation of a coding no longer loses the coding's display when the translation
+  keeps the code and rewrites only the system (a ConceptMap `"*"` element, the idiom for open code
+  sets such as ATC or ICD-10): the populators now hand the source display to the terminology
+  translator, and `TerminologyTranslatorInterface` gained `default` overloads of `translateToFhir` /
+  `translateToOpenEhr` that take it. A translator that does not use the display keeps working
+  unchanged; one that does (the enterprise ConceptMap service) returns it, so `$tofhir` keeps
+  `coding.display` and the openEHR return leg keeps `|value` instead of writing the code into it
+- `$toopenehr` of a FHIR enumeration (a `code` element such as `MedicationAdministration.status`) into a
+  `DV_CODED_TEXT` / `CODE_PHRASE` now takes `|value` from the display the terminology translation
+  returns (an inline mapping's or a ConceptMap target's), so an ISM state mapped `completed -> 532`
+  comes out as `|code: 532`, `|value: completed` instead of `|value: 532`. When the translation names
+  no display, `|value` falls back to the translated **code**, and only to the enumeration's own value
+  when nothing was translated at all — a mapping of `permit -> at0035` that declares no term still
+  yields `|value: at0035`, never the untranslated FHIR token
+- a bare resource posted to `$toopenehr` (not wrapped in a Bundle) now maps as documented when its type
+  matches the one the start archetype's model mapper generates, instead of returning an empty
+  Composition (issue #118); previously this only worked for mappers without a
+  `preprocessor.fhirCondition` — mappers that declared one evaluated a Bundle-rooted path that matched
+  nothing in a bare resource. A bare resource of a type the mapper does not generate is reported as
+  nothing-mapped rather than silently mapped as if it were the expected type. The Newman e2e
+  collection now posts the same Observation both bare and wrapped in a Bundle and asserts the two map
+  identically.
+- unhandled runtime exceptions on the mapping endpoints are now diagnosable responses (issue #119):
+  - a template referenced by a Context mapper but never uploaded returns 400 naming the template,
+    instead of a 500 `NullPointerException` from the SDK's OPT parser; the existing
+    `webTemplate == null` guard was unreachable, because the parser dereferences its argument in its
+    constructor
+  - a stored operational template that no longer parses is reported separately, as a 500 naming it
+  - input containing none of the resource type the template starts from (e.g. a lab report mapping
+    given an `Observation` but no `DiagnosticReport`) is reported as a warning with an empty result,
+    instead of `Index 0 out of bounds for length 0`
+  - a non-repeating hierarchy node no longer fails with `Range [0, -1) out of bounds`;
+    `replaceLastIndexOf` leaves the string untouched when the target is absent, and a hierarchy path
+    that doesn't resolve against the uploaded template is now warned about at helper-construction time
+  - a model mapping without the optional `with.fhir` no longer throws an NPE in the `$tofhir`
+    direction, matching the guard the `$toopenehr` direction already had
+  - unexpected errors no longer echo internal exception text back to the caller; the response carries
+    a reference id and the detail stays in the log
+- an `openehrCondition` can now narrow on an attribute of an RM data value (`DV_*`) that the flat format
+  represents as a pipe attribute, written as the RM path the same way a `DV_CODED_TEXT` is narrowed on
+  `defining_code/code_string`. This covers `DV_IDENTIFIER` (`targetAttribute: "type"`, `"issuer"`,
+  `"id"`, `"assigner"`), `DV_QUANTITY` and the other quantified types (`"magnitude"`, `"units"`,
+  `"precision"`, `"numerator"`, `"denominator"`), `CODE_PHRASE` (`"code_string"`, `"terminology_id"`),
+  `DV_TEXT` (`"formatting"`, `"language"`, `"encoding"`), `DV_ORDINAL` (`"ordinal"`, `"symbol"`) and
+  the encapsulated types (`"formalism"`, `"media_type"`, `"size"`, `"charset"`, `"uri"`).
+  Conditions already written in the flat pipe syntax keep working.
+- toFHIR: a mapping whose FHIR path walks *through* a single-valued element that an earlier walk already
+  built (a sibling mapping, or an earlier occurrence of the same one) now continues into that element
+  instead of replacing it, so what was there is kept. A repeating openEHR element mapped to
+  `$resource.code.coding` yields one `code` with all its codings rather than only the last, and a `manual`
+  on `$resource.identifier.system` no longer discards the `identifier` a sibling mapping filled — a
+  `type: NONE` parent is no longer needed to merge them (it remains the order-independent way to do so).
+  Lists are unaffected: a re-walked list element still appends. References are unaffected: walking through
+  one (a `$reference` mapping, or a path continuing with `resolve()`) still replaces it, so an
+  identifier-only Reference is still superseded by the resolved one.
+  Existing mappings to check: a writer that was redundant with what an earlier mapping already produced
+  was masked by the replacement and now adds a second entry — e.g. a `manual` adding the `KVZ10` type
+  coding to an identifier whose `DV_IDENTIFIER` already carries that type. Guard such fallbacks with an
+  `openehrCondition` (`targetAttribute: "type"`, `operator: "empty"`), as the KDS Person mapping now does.
 
 ## [3.0.1] - 2026-09-09
 ### Added
