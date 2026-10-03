@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.2] - 2026-10-03
 ### Added
 - `$tofhir`: a `fhirCondition` whose `targetRoot` is the mapped CodeableConcept's `coding` (or the
   mapped Coding itself) now selects which of a `DV_CODED_TEXT`'s codings — its own code and its
