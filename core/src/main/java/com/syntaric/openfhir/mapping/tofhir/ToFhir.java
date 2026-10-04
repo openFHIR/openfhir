@@ -110,7 +110,8 @@ public class ToFhir {
                             .getStart(),
                     context.getContext()
                             .getArchetypes(),
-                    webTemplate);
+                    webTemplate,
+                    issueCollector);
             metricsLogger.record("compositionsToFhir.constructHelpers", compositionContext, helpersTimer.elapsedMs());
 
             final MappingTimer mapTimer = MappingTimer.start();

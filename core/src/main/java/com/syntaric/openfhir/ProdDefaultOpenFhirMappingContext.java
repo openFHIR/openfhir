@@ -1,5 +1,6 @@
 package com.syntaric.openfhir;
 
+import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.db.entity.FhirConnectModelEntity;
 import com.syntaric.openfhir.fc.OpenFhirFhirConnectModelMapper;
 import com.syntaric.openfhir.fc.schema.context.Context;
@@ -14,9 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -47,45 +48,40 @@ public class ProdDefaultOpenFhirMappingContext extends OpenFhirMappingContext {
         }
         final OpenFhirContextRepository fhirContextRepo = new OpenFhirContextRepository();
 
-        final List<OpenFhirFhirConnectModelMapper> openFhirFhirConnectModelMappers = prepareJoinedModels(
-                context.getContext());
-
-        final Map<String, List<OpenFhirFhirConnectModelMapper>> mappers = new HashMap<>();
-
-        openFhirFhirConnectModelMappers.forEach(mapperEntity -> {
-            final String archetype = mapperEntity.getOpenEhrConfig().getArchetype();
-            final String mappingName = mapperEntity.getName();
-            if (mapperEntity.getFhirConfig() == null) {
-                return;
-            }
-            if (!mappers.containsKey(mappingName)) {
-                mappers.put(mappingName, new ArrayList<>());
-            }
-            if (!mappers.containsKey(archetype)) {
-                mappers.put(archetype, new ArrayList<>());
-            }
-            mappers.get(mappingName).add(mapperEntity);
-            if (!mappingName.equals(archetype)) {
-                mappers.get(archetype).add(mapperEntity);
-            }
-
-        });
+        final Map<String, List<OpenFhirFhirConnectModelMapper>> mappers = groupMappers(
+                prepareJoinedModels(context.getContext()));
 
         fhirContextRepo.setMappers(mappers);
+        fhirContextRepo.setContexts(context.getContext().getContexts());
 
-        final String start = context.getContext().getStart();
-        if (start != null) {
-            final List<OpenFhirFhirConnectModelMapper> archetypeMappers = mappers.get(start);
-            if (archetypeMappers == null) {
-                context.getContext().setStart(start);
-            } else {
-                final String overridenMapper = archetypeMappers.get(0).getOpenEhrConfig()
-                        .getArchetype();
-                context.getContext().setStart(overridenMapper);
-            }
-        }
+        context.getContext().setStart(resolveStart(mappers, context.getContext().getStart()));
+
+        registerSubContexts(context, tenantContextByName(), this::prepareJoinedModels);
 
         repository.put(normalizedRepoId, fhirContextRepo);
+    }
+
+    /**
+     * Finds a context by its metadata.name among the tenant's contexts; these are only loaded when a context
+     * actually references a sub-context, and then only once.
+     */
+    private Function<String, FhirConnectContext> tenantContextByName() {
+        final List<FhirConnectContextEntity> tenantContexts = new ArrayList<>();
+        final boolean[] loaded = {false};
+        return name -> {
+            if (!loaded[0]) {
+                final List<FhirConnectContextEntity> all = fhirConnectManager.allUserContextEntities();
+                if (all != null) {
+                    tenantContexts.addAll(all);
+                }
+                loaded[0] = true;
+            }
+            return tenantContexts.stream()
+                    .map(FhirConnectContextEntity::getFhirConnectContext)
+                    .filter(c -> c != null && c.getMetadata() != null && name.equals(c.getMetadata().getName()))
+                    .findFirst()
+                    .orElse(null);
+        };
     }
 
     public List<OpenFhirFhirConnectModelMapper> prepareJoinedModels(final Context context) {

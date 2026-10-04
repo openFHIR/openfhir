@@ -191,6 +191,10 @@ public class ToFhirMappingEngine extends BidirectionalMappingEngine {
                                         final Spec.Version fhirVersion,
                                         final MappingIssueCollector issueCollector) {
         for (final MappingHelper mappingHelper : helpers) {
+            if (mappingHelper.isOpenEhrPathUnresolved()) {
+                // the openEHR path is not in the template (reported when the helpers were constructed)
+                continue;
+            }
             final MappingTimer mappingTimer = MappingTimer.start();
             try {
                 handleMappingIteration(mappingHelper, jsonObject, fhirVersion, issueCollector);

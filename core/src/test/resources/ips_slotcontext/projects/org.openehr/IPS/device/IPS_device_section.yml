@@ -1,0 +1,64 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: IPS_device_section
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: SECTION.adhoc.v1
+
+# IPS "Medical Devices" section. Loaded only by IPS_device.context (scope: sub), so it applies
+# to this section alone. emptyReason is inherited from SECTION.adhoc.v1.
+mappings:
+  - name: "title"
+    extension: "add"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$archetype"
+    manual:
+      - name: "manualTitle"
+        fhir:
+          - path: "title"
+            value: "Medical Devices and Implants"
+
+  - name: "code"
+    extension: "add"
+    with:
+      fhir: "code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "manualSystem"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "manualCode"
+        fhir:
+          - path: "code"
+            value: "46264-8"
+      - name: "manualDisplay"
+        fhir:
+          - path: "display"
+            value: "History of medical device use"
+
+  - name: "entry"
+    extension: "add"
+    with:
+      fhir: "entry"
+      openehr: "$reference/items[openEHR-EHR-EVALUATION.device_summary.v0]"
+    reference:
+      resourceType: "DeviceUseStatement"
+      mappings:
+        - name: "deviceSummary"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/items[openEHR-EHR-EVALUATION.device_summary.v0]"
+          slotArchetype: "EVALUATION.device_summary.v0"
+
+  - name: "narrativeText"
+    extension: "add"
+    with:
+      fhir: "text"
+      openehr: "$archetype"
+    mappingCode: "generateNarrative(entry, deviceUseStatements)"
+    unidirectional: "openehr->fhir"

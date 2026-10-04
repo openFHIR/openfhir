@@ -12,6 +12,7 @@ import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.producers.UserContextProducerInterface;
 import com.syntaric.openfhir.rest.RequestValidationException;
 import com.syntaric.openfhir.util.FhirConnectValidator;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +136,10 @@ public class FhirConnectService {
 
             checkContextTemplateNotTaken(fhirContext, id, reqId);
 
+            validateOrThrow(validateSubContexts(fhirContext),
+                            "[{}] Error occurred trying to validate sub-contexts of the context mapper. Nothing has been created. Errors: {}",
+                            reqId, "Couldn't validate the sub-contexts of the context mapper");
+
             final FhirConnectContextEntity build = FhirConnectContextEntity.builder()
                     .fhirConnectContext(fhirContext)
                     .id(StringUtils.isBlank(id) ? null : id)
@@ -169,12 +174,44 @@ public class FhirConnectService {
         if (StringUtils.isNotBlank(id)) {
             return; // updating an existing record — template collision check not needed
         }
+        if (fhirContext.getContext().isSubContext()) {
+            // sub-contexts are entered by name via slotContext and may share a template id (also with their
+            // parent), so it is the name that has to be unique rather than the template
+            final String name = fhirContext.getMetadata().getName();
+            if (findContextByName(name) != null) {
+                log.error("[{}] A context mapper named {} already exists.", reqId, name);
+                throw new RequestValidationException("Couldn't create a FhirConnectContext. Invalid one.",
+                                                     List.of("A context mapper with this name already exists."));
+            }
+            return;
+        }
         final String templateId = fhirContext.getContext().getTemplate().getId();
-        if (contextRepository.findByTemplateIdAndTenant(templateId, openFhirUser.getAuthContext().getTenant()) != null) {
+        if (findContextByTemplateId(templateId) != null) {
             log.error("[{}] A context mapper for this templateId {} already exists.", reqId, templateId);
             throw new RequestValidationException("Couldn't create a FhirConnectContext. Invalid one.",
                                                  List.of("A context mapper for this template already exists."));
         }
+    }
+
+    /**
+     * Cross-file sub-context checks: every slotContext used by the models of this context has to be listed under
+     * its 'contexts', and the 'contexts' references must not be cyclic. Only what has already been uploaded can
+     * be checked, so models or sub-contexts that arrive later are not covered here.
+     */
+    private List<String> validateSubContexts(final FhirConnectContext fhirContext) {
+        final List<String> modelNames = new ArrayList<>();
+        if (fhirContext.getContext().getArchetypes() != null) {
+            modelNames.addAll(fhirContext.getContext().getArchetypes());
+        }
+        if (fhirContext.getContext().getExtensions() != null) {
+            modelNames.addAll(fhirContext.getContext().getExtensions());
+        }
+        final List<FhirConnectModelEntity> modelEntities = modelNames.isEmpty() ? null : findModelsByNames(modelNames);
+        final List<FhirConnectModel> models = modelEntities == null ? List.of() : modelEntities.stream()
+                .map(FhirConnectModelEntity::getFhirConnectModel)
+                .collect(Collectors.toList());
+        final List<FhirConnectContext> tenantContexts = allUserContextMappers(null);
+        return validator.validateSubContexts(fhirContext, tenantContexts == null ? List.of() : tenantContexts, models);
     }
 
     private void validateOrThrow(final List<String> errors, final String logMessage, final String reqId,
@@ -230,8 +267,44 @@ public class FhirConnectService {
                 FhirConnectContextEntity::getFhirConnectContext).collect(Collectors.toList());
     }
 
+    /**
+     * Finds the root context of a template. Sub-contexts (scope: sub) are never returned: they may declare the
+     * same template id as their parent and are only ever entered via slotContext.
+     */
     public FhirConnectContextEntity findContextByTemplateId(final String templateId) {
-        return contextRepository.findByTemplateIdAndTenant(templateId, openFhirUser.getAuthContext().getTenant());
+        if (templateId == null) {
+            return null;
+        }
+        final List<FhirConnectContextEntity> byTenant = allUserContextEntities();
+        if (byTenant == null) {
+            return null;
+        }
+        return byTenant.stream()
+                .filter(entity -> {
+                    final FhirConnectContext context = entity.getFhirConnectContext();
+                    return context != null && context.getContext() != null
+                            && !context.getContext().isSubContext()
+                            && context.getContext().getTemplate() != null
+                            && templateId.equals(context.getContext().getTemplate().getId());
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+    public FhirConnectContextEntity findContextByName(final String name) {
+        if (name == null) {
+            return null;
+        }
+        final List<FhirConnectContextEntity> byTenant = allUserContextEntities();
+        if (byTenant == null) {
+            return null;
+        }
+        return byTenant.stream()
+                .filter(entity -> entity.getFhirConnectContext() != null
+                        && entity.getFhirConnectContext().getMetadata() != null
+                        && name.equals(entity.getFhirConnectContext().getMetadata().getName()))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<FhirConnectContextEntity> allUserContextEntities() {

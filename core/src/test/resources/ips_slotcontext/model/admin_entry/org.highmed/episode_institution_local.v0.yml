@@ -1,0 +1,74 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: ADMIN_ENTRY.episode_institution_local.v0
+  version: 0.0.1-alpha 
+spec: 
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-ADMIN_ENTRY.episode_institution_local.v0
+    revision: 0.0.1-alpha
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Encounter
+
+mappings:
+
+  - name: "healthcareFacility"
+    with:
+      fhir: "$resource.serviceProvider"
+      openehr: "$composition/context/health_care_facility"
+
+  - name: "contextPeriod"
+    with:
+      fhir: "$resource.period"
+      openehr: "$composition/context"
+    followedBy:
+      mappings:
+        - name: "contextStart"
+          with:
+            fhir: "start"
+            openehr: "start_time"
+        - name: "contextEnd"
+          with:
+            fhir: "end"
+            openehr: "end_time"
+
+  - name: "location"
+    with:
+      fhir: "$resource.location"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.location.v1]"
+    slotArchetype: "CLUSTER.location.v1"
+
+  - name: "period"
+    with:
+      fhir: "$resource.period"
+      openehr: "$archetype"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "admissionDate"
+          with:
+            fhir: "start"
+            openehr: "data[at0001]/items[at0004]"
+
+        - name: "seperationDate"
+          with:
+            fhir: "end"
+            openehr: "data[at0001]/items[at0002]"
+
+
+        - name: "bed"
+          with:
+            fhir: "location.identifier"
+            openehr: "items[at0024]"
+          fhirCondition:
+            targetRoot: "$fhirRoot"
+            targetAttribute: "physicalType.coding.code"
+            operator: "one of"
+            criteria: "bd"
+
+        - name: "locationStatus"
+          with:
+            fhir: "status"
+            openehr: "items[at0028]"

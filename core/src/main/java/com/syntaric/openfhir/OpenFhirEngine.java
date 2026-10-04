@@ -104,6 +104,9 @@ public class OpenFhirEngine {
 
         final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getDefaultContext());
         for (final FhirConnectContextEntity context : allUserContexts) {
+            if (context.getFhirConnectContext().getContext().isSubContext()) {
+                continue; // a sub-context is never a root, it is only entered via slotContext
+            }
             final String resourceType = resource.getResourceType().name();
             final List<Condition> conditions = getContextConditions(
                     context.getFhirConnectContext().getContext().getProfile().getUrl(),

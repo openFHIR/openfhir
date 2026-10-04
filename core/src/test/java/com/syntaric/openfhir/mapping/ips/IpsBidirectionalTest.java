@@ -17,8 +17,38 @@ import java.util.List;
 
 public class IpsBidirectionalTest extends GenericTest {
 
-    final String MODEL_MAPPINGS = "/ips/";
-    final String CONTEXT_MAPPING = "/ips/ips.context.yml";
+    /**
+     * Directory holding the model mappings; overridden to run the same assertions against another set of mappings.
+     */
+    protected String modelMappings() {
+        return "/ips/";
+    }
+
+    protected String contextMapping() {
+        return "/ips/ips.context.yml";
+    }
+
+    /**
+     * AllergyIntolerance.category as mapped from the "Food" DV_TEXT of the input.
+     */
+    protected String expectedAllergyCategory() {
+        return "Food";
+    }
+
+    /**
+     * Operational template the mappings are written against.
+     */
+    protected String optLocation() {
+        return HELPER_LOCATION + OPT;
+    }
+
+    /**
+     * Flat composition of {@link #optLocation()} that is mapped to FHIR and back.
+     */
+    protected String flatInput() {
+        return HELPER_LOCATION + FLAT_TEXT_VALUE;
+    }
+
     final String HELPER_LOCATION = "/ips/";
     final String OPT = "International Patient Summary.opt";
     final String FLAT_TEXT_VALUE = "ips.flat.json";
@@ -28,10 +58,10 @@ public class IpsBidirectionalTest extends GenericTest {
     @SneakyThrows
     @Override
     protected void prepareState() {
-        context = getContext(CONTEXT_MAPPING);
-        operationaltemplateSerialized = IOUtils.toString(this.getClass().getResourceAsStream(HELPER_LOCATION + OPT));
+        context = getContext(contextMapping());
+        operationaltemplateSerialized = IOUtils.toString(this.getClass().getResourceAsStream(optLocation()));
         operationaltemplate = getOperationalTemplate();
-        repo.initRepository(context, operationaltemplate, getClass().getResource(MODEL_MAPPINGS).getFile());
+        repo.initRepository(context, operationaltemplate, getClass().getResource(modelMappings()).getFile());
         webTemplate = new OPTParser(operationaltemplate).parse();
     }
 
@@ -39,7 +69,7 @@ public class IpsBidirectionalTest extends GenericTest {
     public void toFhirToOpenEhrToFhir() {
         // openEHR to FHIR
         final Composition compositionFromFlat = new FlatJsonUnmarshaller().unmarshal(
-                getFlat(HELPER_LOCATION + FLAT_TEXT_VALUE), new OPTParser(operationaltemplate).parse());
+                getFlat(flatInput()), new OPTParser(operationaltemplate).parse());
         final Bundle bundle = (Bundle) toFhir.compositionsToFhir(context, List.of(compositionFromFlat), webTemplate);
 
         Assert.assertEquals(org.hl7.fhir.r4.model.Bundle.BundleType.DOCUMENT, bundle.getType());
@@ -135,7 +165,7 @@ public class IpsBidirectionalTest extends GenericTest {
         Assert.assertEquals("http://terminology.hl7.org/CodeSystem/allergyintolerance-verification", allergy.getVerificationStatus().getCodingFirstRep().getSystem());
 
         Assert.assertEquals("high", allergy.getCriticalityElement().getValueAsString());
-        Assert.assertEquals("Food", allergy.getCategory().get(0).getValueAsString());
+        Assert.assertEquals(expectedAllergyCategory(), allergy.getCategory().get(0).getValueAsString());
 
         Assert.assertEquals("2022-02-03T04:05:07", allergy.getOnsetDateTimeType().getValueAsString());
 

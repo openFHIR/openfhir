@@ -1,0 +1,30 @@
+# IPS "Problem List" section. Entered from IPS.context via slotContext; maps into the IPS composition.
+# Section slice of Composition-uv-ips; entries are Condition-uv-ips.
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name: IPS_problem.context
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  scope: sub
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+    version: "2.0.0"
+  template:
+    id: "IPS - Problem List"
+  archetypes:
+    - "SECTION.adhoc.v1"
+    - "EVALUATION.absence.v2"
+    - "EVALUATION.exclusion_global.v1"
+    - "EVALUATION.problem_diagnosis.v1"
+    - "CLUSTER.problem_qualifier.v2"
+    - "CLUSTER.clinical_evidence.v1"
+  extensions:
+    - "IPS_problem_section"
+    - "IPS_problem_diagnose"
+    - "IPS_problem_qualifier"
+  start: "SECTION.adhoc.v1"

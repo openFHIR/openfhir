@@ -99,7 +99,10 @@ public class ToAql {
             }
         }
 
-        final List<FhirConnectContextEntity> allUserContexts = fhirConnectManager.allUserContextEntities();
+        // sub-contexts are never a root, they are only reached through the slotContext of the context using them
+        final List<FhirConnectContextEntity> allUserContexts = fhirConnectManager.allUserContextEntities().stream()
+                .filter(c -> !c.getFhirConnectContext().getContext().isSubContext())
+                .toList();
         final ToAqlResponse userContextResponse = findQueryResponse(allUserContexts, resourceType, queryParams);
         if (userContextResponse != null) {
             return userContextResponse;
@@ -282,6 +285,24 @@ public class ToAql {
                 narrowByResourceTypeAndPrecondition(referenceMappings, comingFromSlot, resourceType, lookingIntoModel,
                                                     relevantModels, queryParams);
             }
+            if (StringUtils.isNotEmpty(mapping.getSlotContext())) {
+                // same hop as a slotArchetype, except that the slotted model - and everything below it - is
+                // resolved from the sub-context's own registry
+                final String slotContext = mapping.getSlotContext();
+                final List<OpenFhirFhirConnectModelMapper> startMappers = openFhirMappingContext
+                        .getStartMappersForContext(slotContext);
+                if (startMappers == null) {
+                    log.warn("Slot context {} couldn't be found.", slotContext);
+                    continue;
+                }
+                final String start = openFhirMappingContext.getStartOfContext(slotContext);
+                startMappers.forEach(nextSlot -> narrowByResourceTypeAndPrecondition(
+                        nextSlot, start, resourceType,
+                        new ToAqlModels(null, startMappers, lookingIntoModel.getContext(), null,
+                                        OpenFhirMappingContext.subContextKey(slotContext)),
+                        relevantModels, queryParams));
+                continue;
+            }
             if (StringUtils.isEmpty(mapping.getSlotArchetype())) {
                 continue;
             }
@@ -290,10 +311,11 @@ public class ToAql {
                 continue; // recursion infinite loop
             }
 
-            String templateId = OpenFhirMappingContext.normalizeTemplateId(
-                    lookingIntoModel.getContext().getTemplateId());
+            final String repositoryKey = lookingIntoModel.getRepositoryKey() != null
+                    ? lookingIntoModel.getRepositoryKey()
+                    : OpenFhirMappingContext.normalizeTemplateId(lookingIntoModel.getContext().getTemplateId());
             final OpenFhirContextRepository relevantRepositoryForThisTemplate = openFhirMappingContext.getRepository()
-                    .get(templateId);
+                    .get(repositoryKey);
             final List<OpenFhirFhirConnectModelMapper> nextSlots = relevantRepositoryForThisTemplate.getMappers()
                     .get(slotArchetype); // should only be one
             if(nextSlots == null) {
@@ -302,7 +324,8 @@ public class ToAql {
             }
             nextSlots.forEach(nextSlot -> narrowByResourceTypeAndPrecondition(nextSlot, slotArchetype, resourceType,
                                                                               new ToAqlModels(null, nextSlots,
-                                                                                              lookingIntoModel.getContext(), null),
+                                                                                              lookingIntoModel.getContext(), null,
+                                                                                              lookingIntoModel.getRepositoryKey()),
                                                                               relevantModels, queryParams));
         }
     }
@@ -413,6 +436,7 @@ public class ToAql {
             log.debug("Finding context by profile url {}", profileUrl);
             List<FhirConnectContextEntity> byTenant = fhirConnectManager.allUserContextEntities();
             return byTenant.stream()
+                    .filter(c -> !c.getFhirConnectContext().getContext().isSubContext())
                     .filter(c -> profileUrl.equals(c.getFhirConnectContext().getContext().getProfile().getUrl()))
                     .findAny()
                     .orElse(null);
@@ -428,5 +452,10 @@ public class ToAql {
         private List<OpenFhirFhirConnectModelMapper> modelMappers;
         private FhirConnectContextEntity context;
         private String mainArchetype;
+        /**
+         * Registry the model mappers resolve their slots from when they were reached through a slotContext;
+         * null means the registry of the context's template.
+         */
+        private String repositoryKey;
     }
 }

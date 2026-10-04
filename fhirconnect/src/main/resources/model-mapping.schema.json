@@ -478,11 +478,21 @@
             "string",
             "null"
           ]
+        },
+        "slotContext": {
+          "type": "string",
+          "description": "Name of a context mapping entered at this slot. Mutually exclusive with slotArchetype."
         }
       },
       "required": [
         "name"
       ],
+      "not": {
+        "required": [
+          "slotArchetype",
+          "slotContext"
+        ]
+      },
       "title": "Model Mapping"
     }
   },

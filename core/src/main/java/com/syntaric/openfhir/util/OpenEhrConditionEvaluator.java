@@ -94,6 +94,14 @@ public class OpenEhrConditionEvaluator {
                 .collect(Collectors.toList());
     }
 
+    private static boolean isValueAttribute(final String targetAttributeFlatPath) {
+        return "value".equals(targetAttributeFlatPath) || "|value".equals(targetAttributeFlatPath);
+    }
+
+    private static boolean isPrimitive(final JsonObject fullFlatPath, final String key) {
+        return fullFlatPath.has(key) && fullFlatPath.get(key).isJsonPrimitive();
+    }
+
     private JsonObject handleOneOfOperatorSplit(final Condition openEhrCondition,
                                                 final List<String> extractedValueKeys,
                                                 final JsonObject fullFlatPath) {
@@ -108,10 +116,12 @@ public class OpenEhrConditionEvaluator {
             boolean groupMatches = false;
             for (final String targetAttribute : openEhrCondition.getTargetAttributesFlatPath()) {
                 final boolean subPath = targetAttribute.startsWith("|");
-                if (subPath && !groupPrefix.endsWith(targetAttribute)) {
+                // a DV_TEXT has no pipe attributes in flat format, its value sits on the node itself
+                final boolean valueOnNode = isValueAttribute(targetAttribute) && isPrimitive(fullFlatPath, groupPrefix);
+                if (subPath && !groupPrefix.endsWith(targetAttribute) && !valueOnNode) {
                     continue;
                 }
-                final String keyToCheckFor = subPath ? groupPrefix : groupPrefix + "/" + targetAttribute;
+                final String keyToCheckFor = valueOnNode || subPath ? groupPrefix : groupPrefix + "/" + targetAttribute;
                 final JsonPrimitive extractedValueJson = fullFlatPath.getAsJsonPrimitive(keyToCheckFor);
                 final String extractedValue = extractedValueJson == null ? "" : extractedValueJson.getAsString();
 

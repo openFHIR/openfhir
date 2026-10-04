@@ -164,7 +164,8 @@ public class ToOpenEhr {
                                                                                                                 .getStart(),
                                                                                                         context.getContext()
                                                                                                                 .getArchetypes(),
-                                                                                                        webTemplate);
+                                                                                                        webTemplate,
+                                                                                                        issueCollector);
         metricsLogger.record("fhirToFlatJsonObject.constructHelpers", "template=" + templateId, helpersTimer.elapsedMs());
 
         // apply limiting criteria and find the starting point within the Bundle

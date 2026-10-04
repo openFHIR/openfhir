@@ -143,7 +143,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         boolean somethingWasAdded = false;
         final Map<MappingHelper, MappingOutcome> unmapped = new LinkedHashMap<>();
         for (final MappingHelper helper : mappingHelpers) {
-            if (helper.getFullOpenEhrFlatPath() == null) {
+            if (helper.getFullOpenEhrFlatPath() == null || helper.isOpenEhrPathUnresolved()) {
                 continue;
             }
             final int previousFinalFlatSize = finalFlat.size();

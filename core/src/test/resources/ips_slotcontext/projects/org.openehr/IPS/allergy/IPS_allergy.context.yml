@@ -1,0 +1,28 @@
+# IPS "Allergies and Intolerances" section. Entered from IPS.context via slotContext; maps into the IPS composition.
+# Section slice of Composition-uv-ips; entries are AllergyIntolerance-uv-ips.
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name: IPS_allergy.context
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  scope: sub
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+    version: "2.0.0"
+  template:
+    id: "IPS - Allergies and Intolerances"
+  archetypes:
+    - "SECTION.adhoc.v1"
+    - "EVALUATION.absence.v2"
+    - "EVALUATION.exclusion_global.v1"
+    - "EVALUATION.adverse_reaction_risk.v2"
+    - "CLUSTER.adverse_reaction_event.v1"
+  extensions:
+    - "IPS_allergy_section"
+    - "IPS_adverse_reaction"
+  start: "SECTION.adhoc.v1"

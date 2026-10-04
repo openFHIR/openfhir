@@ -1,0 +1,18 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: SECTION.adhoc.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-SECTION.adhoc.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+  - name: "common"
+    with:
+      fhir: "title"
+      openehr: "$archetype/name"

@@ -28,16 +28,23 @@ public class AqlToFlatPathConverter {
     /**
      * Result of converting an AQL path to a flat path.
      *
-     * @param flatPath the flat JSON path, e.g. {@code growth_chart/body_weight/any_event[n]/weight}
-     * @param rmType   the detected RM type of the leaf node, or {@code null} if not resolved
-     * @param valid    {@code false} when the path could not be fully resolved in the template
+     * @param flatPath          the flat JSON path, e.g. {@code growth_chart/body_weight/any_event[n]/weight}; when
+     *                          {@code unresolvedSegment} is set, only the prefix that was resolved
+     * @param rmType            the detected RM type of the leaf node, or {@code null} if not resolved
+     * @param valid             {@code false} when no RM type was resolved for the path (also the case for
+     *                          CLUSTER / slot / bare archetype paths) or when {@code unresolvedSegment} is set
+     * @param unresolvedSegment the AQL segment addressing an archetype node (e.g. {@code items[at0004]}) that
+     *                          does not exist in the template below the node matched before it; {@code null}
+     *                          when every such segment was found. A trailing RM attribute ({@code value},
+     *                          {@code defining_code/code_string} ...) has no template node and is not reported
      */
     public record Result(String flatPath, String rmType, boolean valid, List<String> possibleTypes,
-                         List<OfCoding> availableCodings) {
+                         List<OfCoding> availableCodings, String unresolvedSegment) {
 
     }
 
-    public record WalkSegmentsResult(String rmType, List<String> possibleRmTypes, List<OfCoding> availableCodings) {
+    public record WalkSegmentsResult(String rmType, List<String> possibleRmTypes, List<OfCoding> availableCodings,
+                                     String unresolvedSegment) {
 
     }
 
@@ -46,14 +53,15 @@ public class AqlToFlatPathConverter {
 
     /**
      * Converts the {@code fullOpenEhrPath} stored on a {@link MappingHelper} to a flat path,
-     * also setting {@link MappingHelper#setFullOpenEhrFlatPath} and
-     * {@link MappingHelper#setDetectedType} as a side effect.
+     * also setting {@link MappingHelper#setFullOpenEhrFlatPath}, {@link MappingHelper#setDetectedType} and
+     * {@link MappingHelper#setOpenEhrPathUnresolved} as a side effect.
      */
     public Result convert(final MappingHelper mappingHelper, final WebTemplate webTemplate, final Boolean isManualCodedText) {
         final Result result = convert(mappingHelper.getFullOpenEhrPath(), mappingHelper.getHardcodedType(),
                 webTemplate);
         final String flatPath = result.flatPath();
         mappingHelper.setFullOpenEhrFlatPath(flatPath);
+        mappingHelper.setOpenEhrPathUnresolved(result.unresolvedSegment() != null);
 
         mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
 
@@ -136,7 +144,7 @@ public class AqlToFlatPathConverter {
      */
     public Result convert(final String aqlPath, final String forcedType, final WebTemplate webTemplate) {
         if (StringUtils.isBlank(aqlPath)) {
-            return new Result(aqlPath, null, false, null, null);
+            return new Result(aqlPath, null, false, null, null, null);
         }
 
         // $composition paths: strip the $composition prefix and walk the remaining segments through the web template
@@ -165,7 +173,7 @@ public class AqlToFlatPathConverter {
             // Archetype not found in this template — return as-is (invalid)
             final String flatPath = firstSlash < 0 ? aqlPath : tree.getId() + "/" + String.join("/", segments);
             return new Result(fixFlatPath(flatPath), null, false,
-                    null, null);
+                    null, null, null);
         }
 
         flat.add(archetypeRoot.isMulti() ? flatId(archetypeRoot) + RECURRING_SYNTAX : flatId(archetypeRoot));
@@ -178,11 +186,11 @@ public class AqlToFlatPathConverter {
 
         final String flatPath = removeStructuralSegments(tree.getId() + "/" + flat);
         final String amendedFlatPath = fixFlatPath(flatPath);
-        // Valid when an rmType was resolved
-        final boolean valid = !result.possibleRmTypes().isEmpty();
+        // Valid when every archetype node of the path exists in the template and an rmType was resolved
+        final boolean valid = result.unresolvedSegment() == null && !result.possibleRmTypes().isEmpty();
 
         return new Result(amendedFlatPath, valid ? result.rmType() : null, valid, result.possibleRmTypes(),
-                result.availableCodings());
+                result.availableCodings(), result.unresolvedSegment());
     }
 
     private String fixFlatPath(final String flatPath) {
@@ -204,7 +212,7 @@ public class AqlToFlatPathConverter {
                                           final WebTemplate webTemplate) {
         final String suffix = aqlPath.substring(FhirConnectConst.OPENEHR_COMPOSITION_FC.length());
         if (suffix.isEmpty()) {
-            return new Result(webTemplate.getTree().getId(), null, true, null, null);
+            return new Result(webTemplate.getTree().getId(), null, true, null, null, null);
         }
 
 //        final String[] segments = suffix.split("/");
@@ -224,9 +232,10 @@ public class AqlToFlatPathConverter {
 
         final String flatPath = removeStructuralSegments(tree.getId() + (flat.length() > 0 ? "/" + flat : ""));
         final String amendedFlatPath = fixFlatPath(flatPath);
-        final boolean valid = walkResult.possibleRmTypes() != null && !walkResult.possibleRmTypes().isEmpty();
+        final boolean valid = walkResult.unresolvedSegment() == null
+                && walkResult.possibleRmTypes() != null && !walkResult.possibleRmTypes().isEmpty();
         return new Result(amendedFlatPath, valid ? walkResult.rmType() : null, valid, walkResult.possibleRmTypes(),
-                walkResult.availableCodings());
+                walkResult.availableCodings(), walkResult.unresolvedSegment());
     }
 
     String[] splitPath(final String path) {
@@ -275,10 +284,11 @@ public class AqlToFlatPathConverter {
 
     /**
      * Iterates over the AQL {@code segments}, finding each one among {@code descendants} by matching
-     * the node whose absolute AQL path ends with {@code "/" + segment}.  When multiple nodes match,
-     * the one that is a descendant of the previous match is preferred.
+     * the node whose absolute AQL path ends with {@code "/" + segment}.  After the first match, only
+     * descendants of the previous match qualify.
      *
-     * @return the resolved RM type of the leaf node, or {@code null} if unresolved
+     * @return the resolved RM type of the leaf node ({@code null} if unresolved), and the segment that
+     * addresses an archetype node missing from the template, if any
      */
     private WalkSegmentsResult walkSegments(final List<WebTemplateNode> descendants,
                                             final String[] segments,
@@ -306,21 +316,27 @@ public class AqlToFlatPathConverter {
                     flat.add(segment);
                     return new WalkSegmentsResult(FhirConnectConst.CODE_PHRASE,
                             Collections.singletonList(FhirConnectConst.CODE_PHRASE),
-                            null);
+                            null, null);
                 }
                 if ("coded_text_value".equals(segment)) { // but what if it doesn't exist?!
                     return new WalkSegmentsResult(FhirConnectConst.DV_CODED_TEXT,
                             Collections.singletonList(FhirConnectConst.DV_CODED_TEXT),
-                            null);
+                            null, null);
                 }
                 if ("function".equals(segment)) {
                     return new WalkSegmentsResult(FhirConnectConst.DV_PARTICIPATION,
                             Collections.singletonList(FhirConnectConst.DV_PARTICIPATION),
-                            null);
+                            null, null);
                 }
+                if (addressesArchetypeNode(segment)) {
+                    // The segment addresses an archetype node (items[at0004], items[openEHR-EHR-CLUSTER.x.v1])
+                    // that is not in the template below the node matched so far: the path does not exist.
+                    return new WalkSegmentsResult(null, Collections.emptyList(), null, segment);
+                }
+                // An RM attribute tail (value, defining_code/code_string, magnitude ...) has no template node
                 return new WalkSegmentsResult(rmType,
                         Collections.singletonList(rmType),
-                        getPossibleCodings(lastFound));
+                        getPossibleCodings(lastFound), null);
             }
 
             lastFound = found;
@@ -354,12 +370,16 @@ public class AqlToFlatPathConverter {
 
         return new WalkSegmentsResult(rmType,
                 possibleTypes.stream().distinct().toList(),
-                possibleCodings);
+                possibleCodings, null);
     }
 
     /**
      * Finds the single web-template node whose absolute AQL path ends with {@code "/" + segment}.
-     * When multiple candidates exist, the one that descends from {@code lastFound} is preferred.
+     * Once a node has been matched ({@code lastFound}), a segment that addresses an archetype node
+     * (it carries a node predicate, e.g. {@code items[at0004]}) only matches a descendant of it: a
+     * same-named node elsewhere in the template is not the node the path addresses. An RM attribute
+     * segment ({@code defining_code}, {@code value} ...) is often not modelled below its parent in the
+     * web template, so it still falls back to a same-named node elsewhere, which carries its RM type.
      */
     private static WebTemplateNode findNode(final List<WebTemplateNode> nodes,
                                             final String segment,
@@ -374,20 +394,24 @@ public class AqlToFlatPathConverter {
         if (candidates.isEmpty()) {
             return null;
         }
-        if (candidates.size() == 1) {
-            return candidates.get(0);
-        }
         // Prefer the candidate that descends from the last matched node, favouring the
         // most direct (shallowest) descendant so that nodes nested inside sub-archetypes
         // (e.g. address.v1/items[at0006]) are not chosen over the direct child.
         if (lastFound != null) {
             final String parentAql = lastFound.getAqlPath(true);
-            return candidates.stream()
+            final WebTemplateNode descendant = candidates.stream()
                     .filter(n -> n.getAqlPath(true).startsWith(parentAql + "/"))
                     .min(java.util.Comparator.comparingInt(n -> n.getAqlPath(true).length()))
-                    .orElse(candidates.get(0));
+                    .orElse(null);
+            if (descendant != null || addressesArchetypeNode(segment)) {
+                return descendant;
+            }
         }
         return candidates.get(0);
+    }
+
+    private static boolean addressesArchetypeNode(final String segment) {
+        return segment.contains("[");
     }
 
     // -----------------------------------------------------------------------------------------------------------------

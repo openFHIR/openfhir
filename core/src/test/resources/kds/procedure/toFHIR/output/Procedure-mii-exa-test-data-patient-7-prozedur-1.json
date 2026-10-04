@@ -71,8 +71,7 @@
               "system": "http://fhir.de/CodeSystem/bfarm/ops",
               "version": "2024",
               "code": "1-690.0"
-            },
-            {} // a fix for now, not blocking issue
+            }
           ],
           "text": "10847001"
         },

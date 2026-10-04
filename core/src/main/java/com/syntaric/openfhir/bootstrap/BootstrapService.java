@@ -314,8 +314,10 @@ public class BootstrapService {
             }
             case CONTEXT -> {
                 final FhirConnectContext context = yamlParser.readValue(contents, FhirConnectContext.class);
-                final FhirConnectContextEntity found = fhirConnectManager.findContextByTemplateId(
-                        context.getContext().getTemplate().getId());
+                // a sub-context is identified by its name: it may share its template id with its parent
+                final FhirConnectContextEntity found = context.getContext().isSubContext()
+                        ? fhirConnectManager.findContextByName(context.getMetadata().getName())
+                        : fhirConnectManager.findContextByTemplateId(context.getContext().getTemplate().getId());
                 return found == null ? null : found.getId();
             }
             case OPT -> {

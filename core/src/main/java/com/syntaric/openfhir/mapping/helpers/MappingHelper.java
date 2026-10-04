@@ -36,6 +36,11 @@ public class MappingHelper {
     private String fullOpenEhrPath;
     private String fullOpenEhrFlatPath;
     private String fullOpenEhrFlatPathWithMatchingRegex;
+    // an archetype node of the openEHR path is not in the template; the mapping (and its children) is skipped
+    private boolean openEhrPathUnresolved;
+    // problems found while this helper was built (unresolved path, missing slot model ...); kept on the helper so
+    // they survive a cached helper tree and can be reported on every request
+    private List<String> constructionIssues;
     private String flatPathPipeSuffix; // used primarily for fhir->openehr and has the flat path suffix appended to it
 
     private String detectedType; // when doing openehr->fhir, we can detect specific type based on incoming openehr composition
@@ -79,6 +84,11 @@ public class MappingHelper {
         return children;
     }
 
+    public void addConstructionIssue(final String issue) {
+        if (constructionIssues == null) constructionIssues = new ArrayList<>();
+        constructionIssues.add(issue);
+    }
+
     public MappingHelper clone() {
         final MappingHelper clone = cloneWithFhirResourceAndRootIntact();
         clone.generatingFhirResource = null;
@@ -109,6 +119,8 @@ public class MappingHelper {
         clone.fullOpenEhrPath = this.fullOpenEhrPath;
         clone.fullOpenEhrFlatPath = this.fullOpenEhrFlatPath;
         clone.fullOpenEhrFlatPathWithMatchingRegex = this.fullOpenEhrFlatPathWithMatchingRegex;
+        clone.openEhrPathUnresolved = this.openEhrPathUnresolved;
+        clone.constructionIssues = this.constructionIssues == null ? null : new ArrayList<>(this.constructionIssues);
         clone.detectedType = this.detectedType;
         clone.hardcodedType = this.hardcodedType;
         clone.manualOpenEhrValue = this.manualOpenEhrValue;
