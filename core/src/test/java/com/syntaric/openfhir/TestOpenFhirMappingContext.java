@@ -11,7 +11,6 @@ import com.syntaric.openfhir.util.OpenFhirTestUtility;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +80,15 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
             return false;
         }
         try {
-            fhirContextRepo.setMappers(loadMappings(modelsDir, context));
+            final File directory = new File(modelsDir);
+            final Map<String, List<OpenFhirFhirConnectModelMapper>> mappers = groupMappers(
+                    loadJoinedMappers(directory, context.getContext()));
+            context.getContext().setStart(resolveStart(mappers, context.getContext().getStart()));
+            fhirContextRepo.setMappers(mappers);
+            fhirContextRepo.setContexts(context.getContext().getContexts());
+            registerSubContexts(context,
+                                name -> findContextByName(directory, name),
+                                subContext -> loadJoinedMappers(directory, subContext));
             return true;
         } catch (final Exception e) {
             log.error("Couldn't initialize OpenFhirContextRepository", e);
@@ -89,50 +96,42 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
         }
     }
 
-    private Map<String, List<OpenFhirFhirConnectModelMapper>> loadMappings(final String dir,
-                                                                           final FhirConnectContext context) {
-        return loadMappings(new File(dir), context);
-    }
-
-    private Map<String, List<OpenFhirFhirConnectModelMapper>> loadMappings(final File directory,
-                                                                           final FhirConnectContext context) {
-        Map<String, List<OpenFhirFhirConnectModelMapper>> mappers = new HashMap<>();
+    private List<OpenFhirFhirConnectModelMapper> loadJoinedMappers(final File directory, final Context context) {
         final List<FhirConnectModel> extensionModels = new ArrayList<>();
         final List<FhirConnectModel> coreModels = new ArrayList<>();
 
         loadCoreAndExtensionMappings(directory, context, extensionModels, coreModels);
 
-        final List<OpenFhirFhirConnectModelMapper> mergedOpenFhirModelMappers = modelMerger.joinModelMappers(
-                coreModels, extensionModels);
+        return modelMerger.joinModelMappers(coreModels, extensionModels);
+    }
 
-        mergedOpenFhirModelMappers.forEach(mapperEntity -> {
-            final String archetype = mapperEntity.getOpenEhrConfig().getArchetype();
-            final String mappingName = mapperEntity.getName();
-            if (!mappers.containsKey(mappingName)) {
-                mappers.put(mappingName, new ArrayList<>());
+    /**
+     * Finds a context mapping by its metadata.name among the *.context.yml files under the directory
+     * (and its sub-directories); null if there is none.
+     */
+    private FhirConnectContext findContextByName(final File directory, final String name) {
+        for (final File file : directory.listFiles()) {
+            if (file.isDirectory()) {
+                final FhirConnectContext found = findContextByName(file, name);
+                if (found != null) {
+                    return found;
+                }
+                continue;
             }
-            if (!mappers.containsKey(archetype) && !archetype.equals(mappingName)) {
-                mappers.put(archetype, new ArrayList<>());
+            if (!isContextMapper(file.getName())) {
+                continue;
             }
-            mappers.get(mappingName).add(mapperEntity);
-            if (!archetype.equals(mappingName)) {
-                mappers.get(archetype).add(mapperEntity);
-            }
-        });
-
-        final String start = context.getContext().getStart();
-        if (start != null) {
-            final List<OpenFhirFhirConnectModelMapper> archetypeMappers = mappers.get(start);
-            if (archetypeMappers == null) {
-                context.getContext().setStart(start);
-            } else {
-                final String overridenMapper = archetypeMappers.get(0).getOpenEhrConfig()
-                        .getArchetype();
-                context.getContext().setStart(overridenMapper);
+            try (FileInputStream contextInputStream = FileUtils.openInputStream(file)) {
+                final FhirConnectContext parsed = OpenFhirTestUtility.getYaml()
+                        .readValue(contextInputStream, FhirConnectContext.class);
+                if (parsed.getMetadata() != null && name.equals(parsed.getMetadata().getName())) {
+                    return parsed;
+                }
+            } catch (Exception e) {
+                log.warn("Couldn't parse context file: {}", file.getName(), e);
             }
         }
-
-        return mappers;
+        return null;
     }
 
     /**
@@ -144,7 +143,7 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
      * @param coreModels list being populated with parsed core mappings
      */
     private void loadCoreAndExtensionMappings(final File directory,
-                                              final FhirConnectContext context,
+                                              final Context context,
                                               final List<FhirConnectModel> extensionModels,
                                               final List<FhirConnectModel> coreModels) {
         for (final File file : directory.listFiles()) {
@@ -158,7 +157,7 @@ public class TestOpenFhirMappingContext extends OpenFhirMappingContext {
             if (fhirConnectMapper == null) {
                 continue;
             }
-            final Context contextMetadata = context.getContext();
+            final Context contextMetadata = context;
             final Metadata parsedMapperMetadata = fhirConnectMapper.getMetadata();
             if (contextMetadata.getArchetypes().contains(parsedMapperMetadata.getName())) {
                 coreModels.add(fhirConnectMapper);

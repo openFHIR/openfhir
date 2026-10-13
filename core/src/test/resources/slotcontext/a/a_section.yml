@@ -1,0 +1,16 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: a_section
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: SECTION.adhoc.v1
+
+mappings:
+  - name: "onlyInA"
+    extension: "add"
+    with:
+      fhir: "code.text"
+      openehr: "$archetype/name"

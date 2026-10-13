@@ -1,0 +1,21 @@
+# see a.context.yml
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name: b.context
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  scope: sub
+  profile:
+    url: "http://example.org/StructureDefinition/summary"
+  template:
+    id: "Summary"
+  archetypes:
+    - "SECTION.adhoc.v1"
+  contexts:
+    - "a.context"
+  start: "SECTION.adhoc.v1"

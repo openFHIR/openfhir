@@ -1,0 +1,27 @@
+# IPS "Medical Devices" section. Entered from IPS.context via slotContext; maps into the IPS composition.
+# Section slice of Composition-uv-ips; entries are DeviceUseStatement-uv-ips.
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name: IPS_device.context
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  scope: sub
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+    version: "2.0.0"
+  template:
+    id: "International Patient Summary" # TODO no section OPT in resources yet; replace with the section template id
+  archetypes:
+    - "SECTION.adhoc.v1"
+    - "EVALUATION.absence.v2"
+    - "EVALUATION.exclusion_global.v1"
+    - "EVALUATION.device_summary.v0"
+    - "CLUSTER.device.v1"
+  extensions:
+    - "IPS_device_section"
+  start: "SECTION.adhoc.v1"

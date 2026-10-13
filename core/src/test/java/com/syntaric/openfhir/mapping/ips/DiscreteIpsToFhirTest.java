@@ -1,5 +1,7 @@
 package com.syntaric.openfhir.mapping.ips;
 
+import com.syntaric.openfhir.operations.MappingIssueCollector;
+import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -22,8 +24,36 @@ import java.util.List;
 
 public class DiscreteIpsToFhirTest extends GenericTest {
 
-    final String MODEL_MAPPINGS = "/ips/";
-    final String CONTEXT_MAPPING = "/ips/ips.context.yml";
+    /**
+     * Directory holding the model mappings; overridden to run the same assertions against another set of mappings.
+     */
+    protected String modelMappings() {
+        return "/ips/";
+    }
+
+    protected String contextMapping() {
+        return "/ips/ips.context.yml";
+    }
+
+    /**
+     * A mapping whose openEHR path is not in the template: items[at0117] is not there under the adverse reaction
+     * risk evaluation.
+     */
+    protected String unresolvedMapping() {
+        return "lastOccurrence";
+    }
+
+    protected String unresolvedSegment() {
+        return "items[at0117]";
+    }
+
+    /**
+     * Operational template the mappings are written against.
+     */
+    protected String optLocation() {
+        return HELPER_LOCATION + OPT;
+    }
+
     final String HELPER_LOCATION = "/ips/";
     final String OPT = "International Patient Summary.opt";
     final String FLAT_TEXT_VALUE = "ips.flat.json";
@@ -32,10 +62,10 @@ public class DiscreteIpsToFhirTest extends GenericTest {
     @SneakyThrows
     @Override
     protected void prepareState() {
-        context = getContext(CONTEXT_MAPPING);
-        operationaltemplateSerialized = IOUtils.toString(this.getClass().getResourceAsStream(HELPER_LOCATION + OPT));
+        context = getContext(contextMapping());
+        operationaltemplateSerialized = IOUtils.toString(this.getClass().getResourceAsStream(optLocation()));
         operationaltemplate = getOperationalTemplate();
-        repo.initRepository(context, operationaltemplate, getClass().getResource(MODEL_MAPPINGS).getFile());
+        repo.initRepository(context, operationaltemplate, getClass().getResource(modelMappings()).getFile());
         webTemplate = new OPTParser(operationaltemplate).parse();
     }
 
@@ -88,6 +118,28 @@ public class DiscreteIpsToFhirTest extends GenericTest {
         Assert.assertEquals("Medtronic", device.getManufacturer());
         Assert.assertEquals("SN-20240501-PMK", device.getSerialNumber());
         Assert.assertEquals("Micra AV2", device.getModelNumber());
+    }
+
+    @Test
+    public void unresolvedOpenEhrPathIsReportedOncePerRequest() {
+        final String templateId = OpenFhirMappingContext.normalizeTemplateId(
+                context.getContext().getTemplate().getId());
+        final MappingIssueCollector issueCollector = new MappingIssueCollector();
+
+        // helpers are constructed once per composition of a request
+        for (int i = 0; i < 2; i++) {
+            helpersCreator.constructHelpers(templateId, context.getContext().getStart(),
+                    context.getContext().getArchetypes(), webTemplate, issueCollector);
+        }
+
+        final List<MappingIssueCollector.MappingIssue> lastOccurrence = issueCollector.getIssues().stream()
+                .filter(issue -> issue.diagnostics().contains("Mapping '" + unresolvedMapping() + "'"))
+                .toList();
+        Assert.assertEquals(issueCollector.getIssues().toString(), 1, lastOccurrence.size());
+        Assert.assertEquals(MappingIssueCollector.SEVERITY_WARNING, lastOccurrence.get(0).severity());
+        Assert.assertEquals(MappingIssueCollector.CODE_INCOMPLETE, lastOccurrence.get(0).code());
+        Assert.assertTrue(lastOccurrence.get(0).diagnostics(),
+                lastOccurrence.get(0).diagnostics().contains("'" + unresolvedSegment() + "' not found"));
     }
 
     @Test

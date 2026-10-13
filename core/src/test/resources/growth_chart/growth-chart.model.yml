@@ -16,7 +16,7 @@ mappings:
   - name: "heightParent"
     with:
       fhir: "$resource.entry"
-      openehr: "$composition/content[openEHR-EHR-OBSERVATION.height.v2]/data[at0002]/events[at0003]"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.height.v2]/data[at0001]/events[at0002]"
     followedBy:
       mappings:
         - name: "iterateHeight"
@@ -54,7 +54,7 @@ mappings:
   - name: "bmiParent"
     with:
       fhir: "$resource.entry"
-      openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0002]/events[at0003]"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.body_mass_index.v2]/data[at0001]/events[at0002]"
     followedBy:
       mappings:
         - name: "iterateBmi"
@@ -73,7 +73,7 @@ mappings:
   - name: "headCircumferenceParent"
     with:
       fhir: "$resource.entry"
-      openehr: "$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0002]/events[at0003]"
+      openehr: "$composition/content[openEHR-EHR-OBSERVATION.head_circumference.v1]/data[at0001]/events[at0010]"
     followedBy:
       mappings:
         - name: "iterateHead"

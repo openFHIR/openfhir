@@ -8,6 +8,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- sub-contexts (FHIRconnect-spec PR #100): a mapping may carry `slotContext: <context name>` where
+  `slotArchetype` is used today. The engine enters that context mapper and maps from its `start` with
+  that context's own `archetypes` and `extensions`, into the parent composition. A context mapper
+  lists the sub-contexts it uses under `context.contexts`, and a sub-context is marked with
+  `context.scope: sub` (default `root`). This lets several template nodes of the same archetype (e.g.
+  the IPS `SECTION.adhoc.v1` sections) each have their own extensions
+  - a `scope: sub` context is never picked as the context of a request (by template id or profile) and
+    is exempt from the one-context-per-template rule; its `metadata.name` must be unique instead
+  - rejected on upload: `slotArchetype` together with `slotContext`, a `slotContext` not listed under
+    `contexts`, cyclic `contexts`, and `slotContext` with `openehr: $reference`. Not validated yet:
+    the spec's *template mismatch* and *start archetype mismatch* checks. A root context entered via
+    `slotContext` (composition slot skipped) is not supported
+- `$tofhir` / `$toopenehr`: problems in the model mappers that were only written to the server log are now
+  also returned as `warning` issues (code `incomplete`) in the `OperationOutcome` of each request, once per
+  request: a slot whose archetype has no model mapper, a `slotContext` that is undeclared or whose start
+  archetype has no model mapper, a mapping declaring both `slotArchetype` and `slotContext`, a model
+  mapper without mappings, and a preprocessor hierarchy path that cannot be resolved against the template
+
+### Fixed
+- `$tofhir`: an `openehrCondition` with operator `one of` on the `value` of a `DV_TEXT` never matched,
+  because a `DV_TEXT` has no `|value` attribute in flat format (its value sits on the node itself);
+  the mapping was silently skipped. The condition now reads the node's value
+- an openEHR path that addresses an archetype node (e.g. `items[at0004]`) which is not in the template
+  below its parent no longer resolves to a same-named node elsewhere in the template (which produced a
+  bogus flat path, e.g. `…/problem_diagnosis_qualifier/specific_time`). Such a mapping, together with its
+  children, is now skipped in both directions. A warning naming the mapping, the path and the missing
+  segment is logged and returned in the `OperationOutcome` of every `$tofhir` / `$toopenehr` request that
+  uses the model mapper. A model mapper that only worked because a wrong path happened to resolve to
+  another node has to be corrected
+  - the mappings generated from a `manual` block's `fhir` entries now sit on their parent's openEHR path
+    instead of repeating the parent's relative path below it
 
 ## [3.0.2] - 2026-10-03
 ### Added

@@ -49,6 +49,11 @@ public class Mapping implements Serializable {
     @JsonProperty("slotArchetype")
     private String slotArchetype;
     /**
+     * Name of a context mapping (sub-context) entered at this slot. Mutually exclusive with slotArchetype.
+     */
+    @JsonProperty("slotContext")
+    private String slotContext;
+    /**
      * (Required)
      */
     @JsonProperty("with")
@@ -91,6 +96,7 @@ public class Mapping implements Serializable {
         mapping.setExtension(extension);
         mapping.setAppendTo(appendTo);
         mapping.setSlotArchetype(slotArchetype);
+        mapping.setSlotContext(slotContext);
         mapping.setWith(with == null ? null : with.copy());
         mapping.setLink(link == null ? null : link.copy());
         mapping.setManual(manual == null ? null : manual.stream().map(e -> e.copy())
@@ -114,6 +120,7 @@ public class Mapping implements Serializable {
         this.setName(copyingFrom.getName());
         this.setExtension(copyingFrom.getExtension());
         this.setSlotArchetype(copyingFrom.getSlotArchetype());
+        this.setSlotContext(copyingFrom.getSlotContext());
         this.setAppendTo(copyingFrom.getAppendTo());
         this.setWith(copyingFrom.getWith());
         this.setFhirCondition(copyingFrom.getFhirCondition());
@@ -357,6 +364,21 @@ public class Mapping implements Serializable {
 
     public Mapping withSlotArchetype(String slotArchetype) {
         this.slotArchetype = slotArchetype;
+        return this;
+    }
+
+    @JsonProperty("slotContext")
+    public String getSlotContext() {
+        return slotContext;
+    }
+
+    @JsonProperty("slotContext")
+    public void setSlotContext(String slotContext) {
+        this.slotContext = slotContext;
+    }
+
+    public Mapping withSlotContext(String slotContext) {
+        this.slotContext = slotContext;
         return this;
     }
 

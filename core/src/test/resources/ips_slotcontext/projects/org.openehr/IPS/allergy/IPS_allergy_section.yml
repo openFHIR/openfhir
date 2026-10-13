@@ -1,0 +1,64 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: IPS_allergy_section
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: SECTION.adhoc.v1
+
+# IPS "Allergies and Intolerances" section. Loaded only by IPS_allergy.context (scope: sub), so it applies
+# to this section alone. emptyReason is inherited from SECTION.adhoc.v1.
+mappings:
+  - name: "title"
+    extension: "add"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$archetype"
+    manual:
+      - name: "manualTitle"
+        fhir:
+          - path: "title"
+            value: "Active Allergies and Intolerances"
+
+  - name: "code"
+    extension: "add"
+    with:
+      fhir: "code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "manualSystem"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "manualCode"
+        fhir:
+          - path: "code"
+            value: "48765-2"
+      - name: "manualDisplay"
+        fhir:
+          - path: "display"
+            value: "Allergies and Intolerances"
+
+  - name: "entry"
+    extension: "add"
+    with:
+      fhir: "entry"
+      openehr: "$reference/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]"
+    reference:
+      resourceType: "AllergyIntolerance"
+      mappings:
+        - name: "allergy"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]"
+          slotArchetype: "EVALUATION.adverse_reaction_risk.v2"
+
+  - name: "narrativeText"
+    extension: "add"
+    with:
+      fhir: "text"
+      openehr: "$archetype"
+    mappingCode: "generateNarrative(entry, allergies)"
+    unidirectional: "openehr->fhir"

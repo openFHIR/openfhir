@@ -1,0 +1,33 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: EVALUATION.device_summary.v0
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.device_summary.v0
+    revision: 0.0.3
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/DeviceUseStatement
+
+mappings:
+
+  - name: "bodySite"
+    with:
+      fhir: "$resource.bodySite"
+      openehr: "$archetype/data[at0001]/items[at0022]/items[at0012]"
+
+  - name: "device"
+    with:
+      fhir: "$resource.device"
+      openehr: "$archetype/data[at0001]/items[at0022]/items[openEHR-EHR-CLUSTER.device.v1]"
+    reference:
+      resourceType: "Device"
+      mappings:
+        - name: "deviceDetails"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/data[at0001]/items[at0022]/items[openEHR-EHR-CLUSTER.device.v1]"
+          slotArchetype: "CLUSTER.device.v1"

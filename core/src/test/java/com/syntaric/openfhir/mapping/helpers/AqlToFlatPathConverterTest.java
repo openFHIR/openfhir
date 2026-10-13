@@ -179,6 +179,41 @@ public class AqlToFlatPathConverterTest {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    // Segment absent under the matched parent but present elsewhere in the template
+    // -----------------------------------------------------------------------------------------------------------------
+
+    private static final String IPS_PROBLEM_QUALIFIER =
+            "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='Problem List']"
+                    + "/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]"
+                    + "/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]";
+
+    @Test
+    public void ips_segmentNotUnderParent_isUnresolved() {
+        final WebTemplate wt = loadWebTemplate("/ips/International Patient Summary.opt");
+
+        // at0004 is not in the template under the problem qualifier, but an items[at0004] exists elsewhere
+        // (specific_time of timing_daily under the medication summary)
+        final Result result = converter.convert(IPS_PROBLEM_QUALIFIER + "/items[at0004]", null, wt);
+
+        Assert.assertFalse(result.valid());
+        Assert.assertEquals("items[at0004]", result.unresolvedSegment());
+        Assert.assertNull(result.rmType());
+        Assert.assertFalse(result.flatPath(), result.flatPath().contains("specific_time"));
+        Assert.assertTrue(result.flatPath(), result.flatPath().endsWith("/problem_diagnosis_qualifier"));
+    }
+
+    @Test
+    public void ips_segmentUnderParent_isResolved() {
+        final WebTemplate wt = loadWebTemplate("/ips/International Patient Summary.opt");
+
+        final Result result = converter.convert(IPS_PROBLEM_QUALIFIER + "/items[at0003]", null, wt);
+
+        Assert.assertTrue(result.valid());
+        Assert.assertNull(result.unresolvedSegment());
+        Assert.assertTrue(result.flatPath(), result.flatPath().contains("/problem_diagnosis_qualifier/"));
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
     // Helpers
     // -----------------------------------------------------------------------------------------------------------------
 

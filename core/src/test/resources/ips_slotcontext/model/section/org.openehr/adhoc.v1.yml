@@ -1,0 +1,43 @@
+# Generic ad hoc section model. Carries only what holds for any SECTION.adhoc.v1:
+# Composition.section.emptyReason onto the absence / exclusion archetypes.
+# Title, code, entries and narrative are template-specific and come from project
+# extensions loaded by a sub-context (e.g. projects/org.openehr/IPS/problem/).
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: SECTION.adhoc.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-SECTION.adhoc.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/BackboneElement
+
+mappings:
+  - name: "emptyReason"
+    with:
+      fhir: "emptyReason"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.absence.v2]"
+    slotArchetype: "EVALUATION.absence.v2"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "emptyReason.coding.code"
+      operator: "not of"
+      criteria: "nilknown"
+
+  - name: "emptyReasonNilKnown" # after emptyReason; overwrites it if both apply, which is intended
+    with:
+      fhir: "emptyReason"
+      openehr: "$archetype/items[openEHR-EHR-EVALUATION.exclusion_global.v1]"
+    slotArchetype: "EVALUATION.exclusion_global.v1"
+    fhirCondition:
+      targetRoot: "$resource"
+      targetAttribute: "emptyReason.coding.code"
+      operator: "one of"
+      criteria: "nilknown"
+    openehrCondition:
+      targetRoot: "$archetype"
+      targetAttribute: "items[openEHR-EHR-EVALUATION.exclusion_global.v1]/data[at0001]/items[at0002]"
+      operator: "not empty"
