@@ -79,7 +79,7 @@ public class FhirContextRegistry {
     }
 
     private IFhirPath createFhirPath(final FhirContext ctx) {
-        final IFhirPath fhirPath = ctx.newFhirPath();
+        final IFhirPath fhirPath = new CastNormalizingFhirPath(ctx.newFhirPath());
         fhirPath.setEvaluationContext(new IFhirPathEvaluationContext() {
             @Override
             public IBase resolveReference(@Nonnull IIdType theReference, @Nullable IBase theContext) {

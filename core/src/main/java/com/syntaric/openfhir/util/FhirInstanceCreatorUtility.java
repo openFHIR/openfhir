@@ -283,6 +283,18 @@ public class FhirInstanceCreatorUtility {
         }
     }
 
+    /**
+     * Like {@link #getClassForName(String)}, for a name that may legitimately not exist (a type a mapping names):
+     * returns null without logging, leaving it to the caller to report in terms of the mapping.
+     */
+    public Class findClassForName(final String name) {
+        try {
+            return Class.forName(name);
+        } catch (final ClassNotFoundException | LinkageError e) {
+            return null;
+        }
+    }
+
     public String prepareFhirPathForInstantiation(final Class clazz, final String fhirPath) {
         String prepared = fhirPath;
 

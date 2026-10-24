@@ -48,6 +48,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   another node has to be corrected
   - the mappings generated from a `manual` block's `fhir` entries now sit on their parent's openEHR path
     instead of repeating the parent's relative path below it
+- FHIRPath casts in `with.fhir` now work however the type is spelled, in both directions: the FHIR spelling
+  (`as(string)`, `as(dateTime)`), any other capitalisation (`as(String)`), `as(FHIR.string)`, the legacy
+  `as(StringType)` and `as(System.String)` (read as FHIR `string`). The same applies to `ofType(...)` in
+  FHIR → openEHR
+  - `$tofhir`: a lowercase primitive cast built nothing, without an error, and `as(FHIR.string)` failed the
+    request
+  - `$toopenehr`: a mapping cast to a HAPI class name (`as(DateTimeType)`, `ofType(DateTimeType)`) was skipped
+    with a warning; it is now mapped, so such model mappers produce values they did not before
+  - `$tofhir`: a cast to a type that does not exist in the FHIR version (`as(foo)`) is logged as a warning
+    naming the mapping and the path, and nothing is built for that mapping; before, it logged an error and
+    could also drop the mappings next to it
 
 ## [3.0.2] - 2026-10-03
 ### Added

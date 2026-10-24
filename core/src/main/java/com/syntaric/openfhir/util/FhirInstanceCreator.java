@@ -198,12 +198,16 @@ public class FhirInstanceCreator {
             final List<String> list = fhirInstanceCreatorUtility.listFromSplitPath(splitFhirPaths, resolveFollows,
                                                                                    castFollows);
 
-            final String castingTo = castFollows ? openFhirStringUtils.getCastType(preparedFhirPath) : null;
             final Class nextClass =
-                    castFollows ? fhirInstanceCreatorUtility.getClassForName(modelPackage + castingTo)
+                    castFollows ? castClass(openFhirStringUtils.getCastType(preparedFhirPath), modelPackage)
                             : fhirInstanceCreatorUtility.findClass(theField,
                                                                    resolveFollows ? resolveResourceType : null,
                                                                    modelPackage);
+            if (castFollows && nextClass == null) {
+                log.warn("Unknown cast type in '{}' of '{}'; nothing is built for it", splitFhirPaths[i + 1],
+                         preparedFhirPath);
+                return null;
+            }
             final Object existingFieldValue = theField.getType() == List.class ? null
                     : fhirInstanceCreatorUtility.getFieldObject(theField, resource);
             final Object reusable = reusableExisting(existingFieldValue, nextClass, resolveFollows, splitPath);
@@ -229,6 +233,29 @@ public class FhirInstanceCreator {
                     .build();
         }
         return null;
+    }
+
+    /**
+     * The first {@code as(...)} cast of the path whose type has no HAPI model class in the given model package,
+     * after normalization (see {@link OpenFhirStringUtils#normalizeCastType(String)}): {@code as(foo)}, or an
+     * {@code as(integer64)} in R4.
+     *
+     * @return the cast type as written in the path, or null when every cast resolves
+     */
+    public String findUnknownCastType(final String fhirPath, final String modelPackage) {
+        if (fhirPath == null) {
+            return null;
+        }
+        return openFhirStringUtils.getRawCastTypes(fhirPath).stream()
+                .filter(castType -> castClass(OpenFhirStringUtils.castTypeToClassName(
+                        OpenFhirStringUtils.normalizeCastType(castType)), modelPackage) == null)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Class castClass(final String castClassName, final String modelPackage) {
+        return StringUtils.isBlank(castClassName) ? null
+                : fhirInstanceCreatorUtility.findClassForName(modelPackage + castClassName);
     }
 
     /**
