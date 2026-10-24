@@ -109,6 +109,7 @@ public abstract class GenericTest {
                 openFhirMapperUtils));
         openEhrFlatPathDataExtractor = new OpenEhrFlatPathDataExtractor(
                 openFhirStringUtils,
+                openFhirMapperUtils,
                 new ValueToFHIRParser(
                         new TemporalParser(
                                 readers),

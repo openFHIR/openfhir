@@ -8,6 +8,7 @@ import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.context.Context;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.mapping.helpers.RmAttributePins;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -205,17 +206,33 @@ public class ToAqlMappingEngine {
                                                                   compositionArchetype);
 
             if (pathWithoutArchetype != null) {
-                final String str = stripPinpointedAqlPath(pathWithoutArchetype);
-                conditions.append(str.startsWith("/") ? str : ("/"+str));
-                conditions.append(openEhrAqlPopulator.getDataTypeAwareAqlSuffix(pathWithoutArchetype,
-                                                                                StringUtils.isEmpty(manualOpenEhrValue)
-                                                                                        ? hv.getValue().getValue()
-                                                                                        : manualOpenEhrValue,
-                                                                                helper.getPossibleRmTypes()));
+                final String condition = condition(helper, pathWithoutArchetype,
+                                                   StringUtils.isEmpty(manualOpenEhrValue)
+                                                           ? hv.getValue().getValue()
+                                                           : manualOpenEhrValue);
+                conditions.append(condition.startsWith("/") ? condition : ("/" + condition));
             }
         }
         return String.format("SELECT h FROM EHR e CONTAINS %s h [%s] WHERE e/ehr_id/value='{{ehrid}}' AND h%s",
                              entryType, compositionArchetype, conditions.toString().startsWith("/") ? conditions : ("/"+conditions));
+    }
+
+    /**
+     * The WHERE condition of one mapping on {@code path}. A path pinning one attribute of a data value with strict
+     * AQL ({@code .../value/magnitude}, {@code .../value/defining_code/code_string}) already is the attribute's
+     * path: it is compared as written, a number or boolean unquoted. Any other path is the element, completed with
+     * the data-type-aware suffix.
+     */
+    private String condition(final MappingHelper helper, final String path, final String expectedValue) {
+        final RmAttributePins.Attribute pinned = RmAttributePins.pinnedBy(helper);
+        if (pinned != null) {
+            final String literal = pinned.kind() == RmAttributePins.Kind.TEXT
+                    ? String.format("'%s'", expectedValue)
+                    : expectedValue;
+            return path + pinned.aqlTail() + " = " + literal;
+        }
+        return stripPinpointedAqlPath(path)
+                + openEhrAqlPopulator.getDataTypeAwareAqlSuffix(path, expectedValue, helper.getPossibleRmTypes());
     }
 
     private String stripPinpointedAqlPath(final String path) {
@@ -269,12 +286,10 @@ public class ToAqlMappingEngine {
                                                                   compositionArchetype);
 
             if (pathWithoutArchetype != null) {
-                conditions.append(stripPinpointedAqlPath(pathWithoutArchetype));
-                conditions.append(openEhrAqlPopulator.getDataTypeAwareAqlSuffix(pathWithoutArchetype,
-                                                                                StringUtils.isEmpty(manualOpenEhrValue)
-                                                                                        ? hv.getValue().getValue()
-                                                                                        : manualOpenEhrValue,
-                                                                                helper.getPossibleRmTypes()));
+                conditions.append(condition(helper, pathWithoutArchetype,
+                                            StringUtils.isEmpty(manualOpenEhrValue)
+                                                    ? hv.getValue().getValue()
+                                                    : manualOpenEhrValue));
             }
         }
         if (narrowToTemplate) {
