@@ -44,6 +44,14 @@ public class ToFhirInstantiator {
         }
 
         final String remainingPath = resolveRemainingPath(mappingHelper);
+        final String unknownCastType = fhirInstanceCreator.findUnknownCastType(remainingPath, modelPackage);
+        if (unknownCastType != null) {
+            // checked up front, as walking the path would build the elements leading up to the cast before failing
+            log.warn("Mapping '{}' of model mapper '{}': unknown cast type '{}' in '{}'; nothing is built for it",
+                     mappingHelper.getMappingName(), mappingHelper.getModelMetadataName(), unknownCastType,
+                     mappingHelper.getFhir());
+            return propagateAndReturn(mappingHelper, null);
+        }
         final Object instantiated = resolveFromBase(fhirBase, remainingPath, forcingClass, resolveResourceType,
                                                     modelPackage);
         return propagateAndReturn(mappingHelper, instantiated);

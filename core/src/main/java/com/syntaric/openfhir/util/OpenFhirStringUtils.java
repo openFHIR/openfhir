@@ -11,16 +11,22 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r4.model.Coding;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class OpenFhirStringUtils {
 
@@ -77,36 +83,147 @@ public class OpenFhirStringUtils {
         return Integer.valueOf(match);
     }
 
+    private static final String CAST_TYPE = "as\\(([^()]*)\\)";
+
+    /**
+     * Name of the HAPI model class (without the package) the first {@code as(...)} cast of the path casts to, i.e.
+     * {@code StringType} for {@code value.as(string)}. The cast type is normalized first, see
+     * {@link #normalizeCastType(String)}.
+     *
+     * @return the class name, or null when the path has no cast
+     */
     public String getCastType(final String path) {
-        String CAST_TYPE = "as\\(([^()]*)\\)";
         final String castString = getByRegex(path, CAST_TYPE);
-        return adjustCastingToClassName(castString);
+        return castString == null ? null : castTypeToClassName(normalizeCastType(castString));
     }
 
     /**
-     * FHIR primitive types, as they appear in a FHIR Path cast expression, i.e. `value.as(Integer)`. The corresponding
-     * HAPI model classes are all named after the primitive type with a `Type` suffix, i.e. `IntegerType`.
-     * <p>
-     * Complex types (`Quantity`, `CodeableConcept`, `Period`, ...) are deliberately not part of this set as their HAPI
-     * model classes carry no such suffix and are already named exactly like the cast type.
+     * Every {@code as(...)} cast type of the path, as written in the path (not normalized).
      */
-    private static final Set<String> FHIR_PRIMITIVE_TYPES = Set.of(
-            "Base64Binary", "Boolean", "Canonical", "Code", "Date", "DateTime", "Decimal", "Id", "Instant", "Integer",
-            "Markdown", "Oid", "PositiveInt", "String", "Time", "UnsignedInt", "Uri", "Url", "Uuid");
+    public List<String> getRawCastTypes(final String path) {
+        final List<String> castTypes = getByRegexAll(path, CAST_TYPE);
+        return castTypes == null ? List.of() : castTypes;
+    }
 
     /**
-     * Adjusts the type a FHIR Path is casting to, to the name of the HAPI model class implementing it. For primitive
-     * types this means appending a `Type` suffix (`Integer` -> `IntegerType`), for complex types the cast type already
-     * matches the class name and is returned unchanged (`Quantity` -> `Quantity`).
-     *
-     * @param castingTo type as extracted from the `as(...)` expression
-     * @return name of the corresponding HAPI model class, without the package
+     * FHIR primitive types in their FHIR spelling (lowercase first letter), keyed by the lower-cased name so a cast
+     * matches them however it is capitalised. The corresponding HAPI model classes are named after the type with a
+     * capitalised first letter and a `Type` suffix, i.e. `dateTime` -> `DateTimeType`. A version that lacks one of
+     * them (no `integer64` before R4B) simply has no class for it.
+     * <p>
+     * Complex types (`Quantity`, `CodeableConcept`, `Period`, ...) are deliberately not part of this map as their
+     * HAPI model classes carry no such suffix and are already named exactly like the cast type.
      */
-    private String adjustCastingToClassName(final String castingTo) {
-        if (castingTo == null || castingTo.endsWith("Type")) {
-            return castingTo;
+    private static final Map<String, String> FHIR_PRIMITIVE_TYPES = Stream.of(
+                    "base64Binary", "boolean", "canonical", "code", "date", "dateTime", "decimal", "id", "instant",
+                    "integer", "integer64", "markdown", "oid", "positiveInt", "string", "time", "unsignedInt", "uri",
+                    "url", "uuid")
+            .collect(Collectors.toUnmodifiableMap(type -> type.toLowerCase(Locale.ROOT), type -> type));
+
+    /**
+     * FHIRPath System types and the FHIR type a cast to them is read as. FHIR elements are never of a System type,
+     * so a cast like `as(System.String)` selects nothing in a FHIRPath engine; it is taken to mean the FHIR type.
+     */
+    private static final Map<String, String> SYSTEM_TYPES = Map.of(
+            "Boolean", "boolean", "String", "string", "Integer", "integer", "Long", "integer64", "Decimal", "decimal",
+            "Date", "date", "DateTime", "dateTime", "Time", "time", "Quantity", "Quantity");
+
+    /**
+     * System types that more than one FHIR primitive is a specialisation of, with the FHIR types a cast to them
+     * does NOT select once it is read as the FHIR type of {@link #SYSTEM_TYPES}.
+     */
+    private static final Map<String, String> AMBIGUOUS_SYSTEM_TYPES = Map.of(
+            "String", "code, id, markdown, uri, url, canonical, oid, uuid, base64Binary",
+            "Integer", "positiveInt, unsignedInt",
+            "DateTime", "instant");
+
+    private static final Set<String> WARNED_SYSTEM_TYPES = ConcurrentHashMap.newKeySet();
+
+    private static final String FHIR_NAMESPACE = "FHIR.";
+    private static final String SYSTEM_NAMESPACE = "System.";
+
+    private static final Pattern FHIR_PATH_CAST = Pattern.compile("\\b(as|ofType)\\(\\s*([A-Za-z][\\w.]*)\\s*\\)");
+
+    /**
+     * Normalizes the type of a FHIRPath cast to the spelling FHIR uses: primitives start lowercase
+     * ({@code string}, {@code dateTime}), complex types and resources uppercase ({@code Quantity}). Accepted are:
+     * <ul>
+     *     <li>primitives in any capitalisation: {@code string}, {@code String}, {@code datetime} -> {@code string},
+     *     {@code string}, {@code dateTime}</li>
+     *     <li>the legacy HAPI class spelling: {@code StringType} -> {@code string}</li>
+     *     <li>the {@code FHIR.} namespace: {@code FHIR.string} -> {@code string}</li>
+     *     <li>System types, read as the matching FHIR type: {@code System.String} -> {@code string}</li>
+     *     <li>complex types, capitalised: {@code quantity} -> {@code Quantity}</li>
+     * </ul>
+     * A type that is none of these (an unknown System type) is returned as is.
+     */
+    public static String normalizeCastType(final String castType) {
+        if (StringUtils.isBlank(castType)) {
+            return castType;
         }
-        return FHIR_PRIMITIVE_TYPES.contains(castingTo) ? castingTo + "Type" : castingTo;
+        String type = castType.trim();
+        if (type.startsWith(SYSTEM_NAMESPACE)) {
+            return systemTypeAsFhirType(type.substring(SYSTEM_NAMESPACE.length()), castType);
+        }
+        if (type.startsWith(FHIR_NAMESPACE)) {
+            type = type.substring(FHIR_NAMESPACE.length());
+        }
+        final String primitive = FHIR_PRIMITIVE_TYPES.get(type.toLowerCase(Locale.ROOT));
+        if (primitive != null) {
+            return primitive;
+        }
+        if (type.endsWith("Type")) {
+            final String legacyPrimitive = FHIR_PRIMITIVE_TYPES.get(
+                    StringUtils.removeEnd(type, "Type").toLowerCase(Locale.ROOT));
+            if (legacyPrimitive != null) {
+                return legacyPrimitive;
+            }
+        }
+        return StringUtils.capitalize(type);
+    }
+
+    private static String systemTypeAsFhirType(final String systemType, final String castType) {
+        final String fhirType = SYSTEM_TYPES.get(systemType);
+        if (fhirType == null) {
+            return castType;
+        }
+        if (AMBIGUOUS_SYSTEM_TYPES.containsKey(systemType) && WARNED_SYSTEM_TYPES.add(systemType)) {
+            log.warn("Cast to '{}' is read as a cast to FHIR '{}'; FHIR elements of type {} are not selected by it. "
+                             + "Cast to the FHIR type instead.",
+                     castType, fhirType, AMBIGUOUS_SYSTEM_TYPES.get(systemType));
+        }
+        return fhirType;
+    }
+
+    /**
+     * Name of the HAPI model class (without the package) implementing the given normalized cast type: primitives get
+     * a `Type` suffix (`dateTime` -> `DateTimeType`), complex types are named exactly like the cast type.
+     */
+    public static String castTypeToClassName(final String normalizedCastType) {
+        if (normalizedCastType != null && FHIR_PRIMITIVE_TYPES.containsValue(normalizedCastType)) {
+            return StringUtils.capitalize(normalizedCastType) + "Type";
+        }
+        return normalizedCastType;
+    }
+
+    /**
+     * Normalizes the type of every {@code as(...)} and {@code ofType(...)} cast in a FHIRPath expression, see
+     * {@link #normalizeCastType(String)}, so that every accepted spelling evaluates alike. HAPI's FHIRPath engine
+     * rejects HAPI class names ({@code as(StringType)}) and lowercase complex types, matches {@code as(...)}
+     * case-insensitively but {@code ofType(...)} case-sensitively, and selects nothing for a System type.
+     */
+    public static String normalizeFhirPathCasts(final String fhirPath) {
+        if (fhirPath == null || (!fhirPath.contains("as(") && !fhirPath.contains("ofType("))) {
+            return fhirPath;
+        }
+        final Matcher matcher = FHIR_PATH_CAST.matcher(fhirPath);
+        final StringBuilder normalized = new StringBuilder();
+        while (matcher.find()) {
+            final String cast = matcher.group(1) + "(" + normalizeCastType(matcher.group(2)) + ")";
+            matcher.appendReplacement(normalized, Matcher.quoteReplacement(cast));
+        }
+        matcher.appendTail(normalized);
+        return normalized.toString();
     }
 
     private String getByRegex(final String path,
@@ -135,14 +252,14 @@ public class OpenFhirStringUtils {
     }
 
     /**
-     * fixes fhirPath casting, as BooleanType is not a valid FHIR path, but boolean is.. similar to StringType > String,
-     * ..
+     * fixes fhirPath casting, as BooleanType is not a valid FHIR path, but boolean is (see
+     * {@link #normalizeFhirPathCasts(String)})
      *
      * @param originalFhirPath path as it exists up until now
      * @return fhir path with casting
      */
     public String fixFhirPathCasting(final String originalFhirPath) {
-        final String replacedCasting = replaceCasting(originalFhirPath);
+        final String replacedCasting = normalizeFhirPathCasts(originalFhirPath);
         // now check if resolve() was preceeded with a case to a specific Resource; if that has happened, it needs to be
         // removed because it's not handled properly by fhirPath evaluation engine
         final String[] splitPath = replacedCasting.split("\\.");
@@ -162,13 +279,6 @@ public class OpenFhirStringUtils {
             }
         }
         return building.toString();
-    }
-
-    private String replaceCasting(final String originalFhirPath) {
-        return originalFhirPath.replace("as(BooleanType)", "as(Boolean)")
-                .replace("as(DateTimeType)", "as(DateTime)")
-                .replace("as(TimeType)", "as(Time)")
-                .replace("as(StringType)", "as(String)");
     }
 
     /**

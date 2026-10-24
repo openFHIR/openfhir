@@ -5,6 +5,7 @@ import ca.uhn.fhir.fhirpath.IFhirPath;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.producers.CastNormalizingFhirPath;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -65,7 +66,7 @@ public class FhirInstancePopulator {
 
     private IFhirPath r4FhirPath() {
         if (r4FhirPath == null) {
-            r4FhirPath = FhirContext.forR4Cached().newFhirPath();
+            r4FhirPath = new CastNormalizingFhirPath(FhirContext.forR4Cached().newFhirPath());
         }
         return r4FhirPath;
     }
