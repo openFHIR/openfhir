@@ -388,7 +388,8 @@ public class FhirInstancePopulator {
         } else if (toPopulate instanceof Duration duration) {
             populateDurationFromIso8601(duration, data.getValue());
         } else if (toPopulate instanceof PrimitiveType<?> primitiveType) {
-            ((PrimitiveType<String>) primitiveType).setValue(value);
+            // parsed by the target type: text read from a flat attribute (|magnitude) can land in a decimal, date ...
+            primitiveType.setValueAsString(value);
         } else if (toPopulate instanceof XhtmlNode xhtmlNode) {
             xhtmlNode.setValueAsString(value);
         } else {

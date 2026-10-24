@@ -57,6 +57,10 @@ public class AqlToFlatPathConverter {
      * {@link MappingHelper#setOpenEhrPathUnresolved} as a side effect.
      */
     public Result convert(final MappingHelper mappingHelper, final WebTemplate webTemplate, final Boolean isManualCodedText) {
+        final Result pinned = convertPinnedAttribute(mappingHelper, webTemplate);
+        if (pinned != null) {
+            return pinned;
+        }
         final Result result = convert(mappingHelper.getFullOpenEhrPath(), mappingHelper.getHardcodedType(),
                 webTemplate);
         final String flatPath = result.flatPath();
@@ -96,6 +100,54 @@ public class AqlToFlatPathConverter {
         }
 
         return result;
+    }
+
+    /**
+     * A path pinning one attribute of an ELEMENT's data value with strict AQL ({@code items[at0004]/value/magnitude},
+     * {@code items[at0130]/value/defining_code/code_string}): the helper maps the element's flat path (with the type
+     * segment of a choice element, {@code .../quantity_value}) and that attribute's pipe ({@code |magnitude}), or the
+     * element itself where the attribute is the whole value in the flat format ({@code value} of a DV_TEXT). The
+     * path is kept as written, so the AQL generated from it stays strict AQL.
+     *
+     * @return null when the path pins nothing, the element is not in the template or none of its types has the
+     * attribute; the path then converts as before
+     */
+    private Result convertPinnedAttribute(final MappingHelper mappingHelper, final WebTemplate webTemplate) {
+        final RmAttributePins.Pin pin = RmAttributePins.parse(mappingHelper.getFullOpenEhrPath());
+        if (pin == null || webTemplate == null) {
+            return null;
+        }
+        // all the element's types: whether it is a choice decides the flat type segment
+        final Result element = convert(pin.elementPath(), null, webTemplate);
+        if (element.unresolvedSegment() != null) {
+            return null;
+        }
+        // An attribute several of a choice element's types have (value, magnitude ...) is the mapping's type's
+        // (with.type) when it names one of them; otherwise the first type, in template order, that has it.
+        final String hardcodedType = mappingHelper.getHardcodedType();
+        final List<String> candidates = hardcodedType != null && element.possibleTypes() != null
+                && element.possibleTypes().contains(hardcodedType)
+                ? List.of(hardcodedType)
+                : element.possibleTypes();
+        final RmAttributePins.Attribute attribute = RmAttributePins.resolve(candidates, pin.rmPath());
+        if (attribute == null) {
+            return null;
+        }
+        final String typeSegment = RmAttributePins.typeSegment(element.possibleTypes(), attribute.rmType());
+        final String flatPath = typeSegment == null ? element.flatPath() : element.flatPath() + "/" + typeSegment;
+        // a pipe attribute takes the value as is, whatever the element's type; the element itself has the type
+        final String rmType = attribute.isElementItself() ? attribute.rmType() : FhirConnectConst.ELEMENT;
+
+        mappingHelper.setFullOpenEhrFlatPath(flatPath);
+        mappingHelper.setOpenEhrPathUnresolved(false);
+        mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
+        if (mappingHelper.getPossibleRmTypes() == null) {
+            mappingHelper.setPossibleRmTypes(List.of(rmType));
+        }
+        mappingHelper.setAvailableCodings(element.availableCodings());
+        mappingHelper.setFlatPathPipeSuffix(attribute.isElementItself() ? "" : "|" + attribute.flatAttribute());
+        mappingHelper.setPinnedRmType(attribute.rmType());
+        return new Result(flatPath, rmType, true, List.of(rmType), element.availableCodings(), null);
     }
 
     private String getFlatPathSuffixFromMapping(final String openehrPath) {

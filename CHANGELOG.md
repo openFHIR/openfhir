@@ -26,8 +26,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   request: a slot whose archetype has no model mapper, a `slotContext` that is undeclared or whose start
   archetype has no model mapper, a mapping declaring both `slotArchetype` and `slotContext`, a model
   mapper without mappings, and a preprocessor hierarchy path that cannot be resolved against the template
+- an openEHR path can pin one attribute of an element's data value with strict AQL through its `value`
+  (`…/items[at0004]/value/magnitude`, `…/value/units`, `…/value/defining_code/code_string`, `…/value/value`,
+  …), for every data value type except `DV_SCALE` and `DV_STATE`. The mapping then writes and reads only that
+  flat attribute (`…|magnitude`; on a choice element `…/quantity_value|magnitude`)
 
 ### Fixed
+- `$tofhir`: a mapping pinning one attribute of a coded text (`…/defining_code/code_string`,
+  `…/defining_code/terminology_id`, `…/|code`, `…/|value`) wrote nothing to FHIR; it now reads that attribute
+- `$tofhir`: text mapped onto a FHIR decimal, date, uri or other non-string primitive is now parsed into that
+  type instead of being set as a raw string
 - `$tofhir`: an `openehrCondition` with operator `one of` on the `value` of a `DV_TEXT` never matched,
   because a `DV_TEXT` has no `|value` attribute in flat format (its value sits on the node itself);
   the mapping was silently skipped. The condition now reads the node's value

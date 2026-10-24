@@ -42,6 +42,8 @@ public class MappingHelper {
     // they survive a cached helper tree and can be reported on every request
     private List<String> constructionIssues;
     private String flatPathPipeSuffix; // used primarily for fhir->openehr and has the flat path suffix appended to it
+    // the data value type whose attribute the openEHR path pins (items[at0004]/value/magnitude), see RmAttributePins
+    private String pinnedRmType;
 
     private String detectedType; // when doing openehr->fhir, we can detect specific type based on incoming openehr composition
     private String hardcodedType;
@@ -108,6 +110,7 @@ public class MappingHelper {
         clone.originalFhirPath = this.originalFhirPath;
         clone.originalOpenEhrPath = this.originalOpenEhrPath;
         clone.flatPathPipeSuffix = this.flatPathPipeSuffix;
+        clone.pinnedRmType = this.pinnedRmType;
         clone.openEhrHierarchySplitFlatPath = this.openEhrHierarchySplitFlatPath;
         clone.fhir = this.fhir;
         clone.hasSlot = this.hasSlot;
