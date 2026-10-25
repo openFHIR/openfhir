@@ -32,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   flat attribute (`…|magnitude`; on a choice element `…/quantity_value|magnitude`)
 
 ### Fixed
+- a freshly started engine hit by many concurrent `$tofhir` requests (regression in 3.0.2) could run out of
+  memory and stop responding until restarted: every request thread parsed all FHIR R4 StructureDefinitions
+  for itself. They are now parsed once, during startup, which takes a few seconds longer
 - `$tofhir`: a mapping pinning one attribute of a coded text (`…/defining_code/code_string`,
   `…/defining_code/terminology_id`, `…/|code`, `…/|value`) wrote nothing to FHIR; it now reads that attribute
 - `$tofhir`: text mapped onto a FHIR decimal, date, uri or other non-string primitive is now parsed into that
