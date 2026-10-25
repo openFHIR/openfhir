@@ -1,11 +1,9 @@
 package com.syntaric.openfhir.util;
 
-import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.fhirpath.IFhirPath;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.helpers.DataWithIndex;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
-import com.syntaric.openfhir.producers.CastNormalizingFhirPath;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 
 import java.lang.reflect.InvocationTargetException;
@@ -46,29 +44,34 @@ public class FhirInstancePopulator {
     private final TerminologyTranslatorInterface terminologyTranslator;
     private final FhirConditionEvaluator fhirConditionEvaluator;
 
-    /** Lazily created; {@code data} is always R4, so a single R4 FHIRPath engine serves every call. */
-    private volatile IFhirPath r4FhirPath;
+    /**
+     * Source of the R4 FHIRPath engine ({@code data} is always R4). The registry builds it exactly once; building
+     * one parses every R4 StructureDefinition, so it must never be created per caller or per request thread.
+     */
+    private final FhirContextRegistry fhirContextRegistry;
 
     @Autowired
     public FhirInstancePopulator(final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface,
                                  final TerminologyTranslatorInterface terminologyTranslator,
-                                 final FhirConditionEvaluator fhirConditionEvaluator) {
+                                 final FhirConditionEvaluator fhirConditionEvaluator,
+                                 final FhirContextRegistry fhirContextRegistry) {
         this.prePostFhirInstancePopulatorInterface = prePostFhirInstancePopulatorInterface;
         this.terminologyTranslator = terminologyTranslator;
         this.fhirConditionEvaluator = fhirConditionEvaluator;
+        this.fhirContextRegistry = fhirContextRegistry;
+    }
+
+    public FhirInstancePopulator(final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface,
+                                 final TerminologyTranslatorInterface terminologyTranslator,
+                                 final FhirConditionEvaluator fhirConditionEvaluator) {
+        this(prePostFhirInstancePopulatorInterface, terminologyTranslator, fhirConditionEvaluator,
+                new FhirContextRegistry());
     }
 
     public FhirInstancePopulator(final PrePostFhirInstancePopulatorInterface prePostFhirInstancePopulatorInterface,
                                  final TerminologyTranslatorInterface terminologyTranslator) {
         this(prePostFhirInstancePopulatorInterface, terminologyTranslator,
                 new FhirConditionEvaluator(new OpenFhirStringUtils()));
-    }
-
-    private IFhirPath r4FhirPath() {
-        if (r4FhirPath == null) {
-            r4FhirPath = new CastNormalizingFhirPath(FhirContext.forR4Cached().newFhirPath());
-        }
-        return r4FhirPath;
     }
 
     /**
@@ -321,7 +324,8 @@ public class FhirInstancePopulator {
         // after translation, so the condition matches the FHIR systems that are actually written; the
         // first-rep branches below then pick the first surviving coding
         if (mappingHelper != null) {
-            fhirConditionEvaluator.selectCodings(data, mappingHelper, toPopulate instanceof Coding, r4FhirPath());
+            fhirConditionEvaluator.selectCodings(data, mappingHelper, toPopulate instanceof Coding,
+                                                 fhirContextRegistry.getDefaultFhirPath());
         }
         if (toPopulate instanceof CodeableConcept) {
             data.copyValues((CodeableConcept) toPopulate);

@@ -1,10 +1,13 @@
 package com.syntaric.openfhir.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.producers.FhirContextRegistry;
 import com.syntaric.openfhir.terminology.OfCoding;
 import com.syntaric.openfhir.terminology.TerminologyTranslatorInterface;
 import java.util.List;
@@ -127,6 +130,18 @@ class FhirInstancePopulatorCodingSelectionTest {
 
         assertEquals(2, target.getCoding().size());
         assertEquals(CYTODOS, target.getCodingFirstRep().getSystem());
+    }
+
+    @Test
+    void codingSelection_usesTheRegistrysSharedFhirPathEngine() {
+        final FhirContextRegistry registry = spy(new FhirContextRegistry());
+        final FhirInstancePopulator withRegistry = new FhirInstancePopulator(new NoOpPrePostFhirInstancePopulator(),
+                new SystemOnlyTranslator(), new FhirConditionEvaluator(new OpenFhirStringUtils()), registry);
+
+        withRegistry.handleSpecificTypePopulation(new CodeableConcept(), parsedRoute(), terminology(),
+                helper(ROUTE, ROUTE + ".coding", "one of", SNOMED));
+
+        verify(registry).getDefaultFhirPath();
     }
 
     @Test
