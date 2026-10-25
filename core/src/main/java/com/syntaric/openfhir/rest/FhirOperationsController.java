@@ -1,6 +1,7 @@
 package com.syntaric.openfhir.rest;
 
 import com.syntaric.openfhir.operations.FhirOperationsService;
+import com.syntaric.openfhir.operations.MappingCallContext;
 import com.syntaric.openfhir.operations.OperationRequestParser;
 import com.syntaric.openfhir.operations.ToFhirOperationRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,8 +86,9 @@ public class FhirOperationsController {
     @Operation(
             summary = "Maps a FHIR Bundle to an openEHR Composition ($toopenehr operation)",
             description = "FHIR Operations-framework form of the FHIR→openEHR mapping. Input is the FHIR Bundle "
-                    + "itself (no Parameters wrapper; a single resource is also accepted). 'templateId' and 'format' "
-                    + "(canonical|flat, default canonical) are query parameters. The response is a FHIR (R4) "
+                    + "itself (no Parameters wrapper; a single resource is also accepted). 'templateId', 'format' "
+                    + "(canonical|flat, default canonical) and 'ehr_id' (optional, the EHR the composition is "
+                    + "committed to) are query parameters. The response is a FHIR (R4) "
                     + "Parameters resource with a 'composition' parameter (valueString) and, when gaps were reported "
                     + "during mapping, an 'outcome' parameter holding an OperationOutcome — a partial result may "
                     + "coexist with issues.",
@@ -105,9 +107,12 @@ public class FhirOperationsController {
     ResponseEntity<String> toOpenEhr(@RequestBody String fhirResource,
                                      @RequestParam(required = false) String templateId,
                                      @RequestParam(required = false) String format,
+                                     @RequestParam(name = "ehr_id", required = false) String ehrId,
                                      @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         final String effectiveFormat = operationRequestParser.parseFormat(format);
-        final String parameters = fhirOperationsService.toOpenEhr(fhirResource, templateId, effectiveFormat);
+        final MappingCallContext callContext = operationRequestParser.parseToOpenEhrCallContext(ehrId, reqId);
+        final String parameters = fhirOperationsService.toOpenEhr(fhirResource, templateId, effectiveFormat,
+                callContext);
         return ResponseEntity.ok().contentType(FhirMediaTypes.APPLICATION_FHIR_JSON).body(parameters);
     }
 }

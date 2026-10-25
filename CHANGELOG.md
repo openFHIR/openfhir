@@ -30,12 +30,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   (`…/items[at0004]/value/magnitude`, `…/value/units`, `…/value/defining_code/code_string`, `…/value/value`,
   …), for every data value type except `DV_SCALE` and `DV_STATE`. The mapping then writes and reads only that
   flat attribute (`…|magnitude`; on a choice element `…/quantity_value|magnitude`)
+- `$toopenehr` takes an optional `ehr_id` query parameter, and `/openfhir/tofhir` and `/openfhir/toopenehr`
+  an optional `ehrId` one, naming the EHR the composition belongs to. It is passed to the mapping as part of
+  its call context, which `OpenFhirEngine.toOpenEhr` and `OpenFhirEngine.toFhir` now also accept
+- `MappingUsageListenerInterface`, an extension point the engine calls around every mapping, in both
+  directions and from every endpoint: `beforeMapping` once the context mapper and template are resolved,
+  before any mapping work (throwing refuses the mapping), and `mapped` after a successful mapping. The
+  default implementation does nothing
 
 ### Fixed
 - `$tofhir`: a mapping pinning one attribute of a coded text (`…/defining_code/code_string`,
   `…/defining_code/terminology_id`, `…/|code`, `…/|value`) wrote nothing to FHIR; it now reads that attribute
 - `$tofhir`: text mapped onto a FHIR decimal, date, uri or other non-string primitive is now parsed into that
   type instead of being set as a raw string
+- updating an operational template no longer resets its creation date (`created`), and now sets `updated`;
+  `POST /opt` and `PUT /opt/{id}` return both, which they used to answer as `null`
 - `$tofhir`: an `openehrCondition` with operator `one of` on the `value` of a `DV_TEXT` never matched,
   because a `DV_TEXT` has no `|value` attribute in flat format (its value sits on the node itself);
   the mapping was silently skipped. The condition now reads the node's value

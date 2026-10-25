@@ -29,6 +29,8 @@ public class OptEntity extends UserBasedEntity {
         final OptEntity optEntity = new OptEntity(id, content, templateId, originalTemplateId, displayTemplateId);
         optEntity.setUser(getUser());
         optEntity.setOrganisation(getOrganisation());
+        optEntity.setCreated(getCreated());
+        optEntity.setUpdated(getUpdated());
         return optEntity;
     }
 }

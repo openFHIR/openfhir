@@ -14,9 +14,12 @@ import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
+import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.manager.FhirConnectManager;
 import com.syntaric.openfhir.manager.OptManager;
+import com.syntaric.openfhir.mapping.MappingDirection;
+import com.syntaric.openfhir.mapping.MappingUsageListenerInterface;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
@@ -59,6 +62,7 @@ public class OpenFhirEngine {
     private final FhirConditionEvaluator fhirConditionEvaluator;
     private final Gson gson;
     private final MappingMetricsLogger metricsLogger;
+    private final MappingUsageListenerInterface usageListener;
 
     @Autowired
     public OpenFhirEngine(final ToOpenEhr fhirToOpenEhr,
@@ -72,7 +76,8 @@ public class OpenFhirEngine {
                           final ProdDefaultOpenFhirMappingContext prodOpenFhirMappingContext,
                           final FhirConditionEvaluator fhirConditionEvaluator,
                           final Gson gson,
-                          final MappingMetricsLogger metricsLogger) {
+                          final MappingMetricsLogger metricsLogger,
+                          final MappingUsageListenerInterface usageListener) {
         this.fhirToOpenEhr = fhirToOpenEhr;
         this.openEhrToFhir = openEhrToFhir;
         this.fhirConnectManager = fhirConnectManager;
@@ -85,6 +90,7 @@ public class OpenFhirEngine {
         this.fhirConditionEvaluator = fhirConditionEvaluator;
         this.gson = gson;
         this.metricsLogger = metricsLogger;
+        this.usageListener = usageListener;
     }
 
     /**
@@ -220,6 +226,17 @@ public class OpenFhirEngine {
      */
     public String toOpenEhr(final String incomingFhirResource, final String incomingTemplateId, final Boolean flat,
                             final MappingIssueCollector issueCollector) {
+        return toOpenEhr(incomingFhirResource, incomingTemplateId, flat, MappingCallContext.empty(), issueCollector);
+    }
+
+    /**
+     * Same as {@link #toOpenEhr(String, String, Boolean, MappingIssueCollector)} for a caller that supplies a call
+     * context, such as the EHR the mapped Composition is committed to.
+     *
+     * @param callContext caller-supplied call context (ehr_id, request id)
+     */
+    public String toOpenEhr(final String incomingFhirResource, final String incomingTemplateId, final Boolean flat,
+                            final MappingCallContext callContext, final MappingIssueCollector issueCollector) {
         // get context and operational template
         final FhirConnectContextEntity fhirConnectContext = getContextForFhir(incomingTemplateId,
                 incomingFhirResource);
@@ -233,6 +250,11 @@ public class OpenFhirEngine {
 
         validatePrerequisites(fhirConnectContext, templateIdToUse);
 
+        final MappingCallContext callContextToUse = Objects.requireNonNullElse(callContext,
+                MappingCallContext.empty());
+        usageListener.beforeMapping(MappingDirection.TO_OPEN_EHR, fhirConnectContext.getFhirConnectContext(),
+                templateIdToUse, callContextToUse);
+
         final Spec.Version fhirVersion = getFhirVersion(fhirConnectContext);
         final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getContext(fhirVersion));
 
@@ -240,20 +262,23 @@ public class OpenFhirEngine {
 
         prodOpenFhirMappingContext.initMappingCache(fhirConnectContext.getFhirConnectContext());
 
+        final String mapped;
         if (flat != null && flat) {
             final JsonObject jsonObject = fhirToOpenEhr.fhirToFlatJsonObject(fhirConnectContext.getFhirConnectContext(),
                     resource,
                     webTemplate,
                     issueCollector);
-            return gson.toJson(jsonObject);
+            mapped = gson.toJson(jsonObject);
         } else {
             final Composition composition = fhirToOpenEhr.fhirToCompositionRm(
                     fhirConnectContext.getFhirConnectContext(),
                     resource,
                     webTemplate,
                     issueCollector);
-            return new CanonicalJson().marshal(composition);
+            mapped = new CanonicalJson().marshal(composition);
         }
+        notifyMapped(MappingDirection.TO_OPEN_EHR, fhirConnectContext.getFhirConnectContext(), callContextToUse);
+        return mapped;
     }
 
     private Resource parseIncomingFhirResource(final String incomingFhirResource, final FhirContext fhirContext) {
@@ -278,8 +303,19 @@ public class OpenFhirEngine {
     }
 
     public String toFhir(final String openEhrCompositionJson, final String incomingTemplateId) {
-        final IBaseBundle fhir = toFhirBundle(openEhrCompositionJson, incomingTemplateId,
-                MappingCallContext.empty(), MappingIssueCollector.failFast());
+        return toFhir(openEhrCompositionJson, incomingTemplateId, MappingCallContext.empty());
+    }
+
+    /**
+     * Same as {@link #toFhir(String, String)} for a caller that supplies a call context, such as the EHR the
+     * Composition was read from.
+     *
+     * @param callContext caller-supplied call context (ehr_id, patient/who/onBehalfOf references, request id)
+     */
+    public String toFhir(final String openEhrCompositionJson, final String incomingTemplateId,
+                         final MappingCallContext callContext) {
+        final IBaseBundle fhir = toFhirBundle(openEhrCompositionJson, incomingTemplateId, callContext,
+                MappingIssueCollector.failFast());
         final Spec.Version fhirVersion = FhirContextRegistry.specVersionOf(fhir.getStructureFhirVersionEnum());
         return fhirContextRegistry.getContext(fhirVersion).newJsonParser().encodeResourceToString(fhir);
     }
@@ -307,6 +343,11 @@ public class OpenFhirEngine {
 
         final String templateIdToUse = fhirConnectContext.getFhirConnectContext().getContext().getTemplate()
                 .getId(); // fhirConnectContext can not be null because prerequisites are validated above
+
+        final MappingCallContext callContextToUse = Objects.requireNonNullElse(callContext,
+                MappingCallContext.empty());
+        usageListener.beforeMapping(MappingDirection.TO_FHIR, fhirConnectContext.getFhirConnectContext(),
+                templateIdToUse, callContextToUse);
 
         final MappingTimer cacheTimer = MappingTimer.start();
         final WebTemplate webTemplate = resolveWebTemplate(templateIdToUse);
@@ -339,7 +380,21 @@ public class OpenFhirEngine {
         metricsLogger.record("toFhir.mapping", "template=" + templateIdToUse + " type=" + incomingOpenEhrType,
                 mappingTimer.elapsedMs());
         metricsLogger.record("toFhir.total", "template=" + templateIdToUse, totalTimer.elapsedMs());
+        notifyMapped(MappingDirection.TO_FHIR, fhirConnectContext.getFhirConnectContext(), callContextToUse);
         return fhir;
+    }
+
+    /**
+     * Tells the usage listener about a successful mapping. A failing listener is logged and never fails the mapping.
+     */
+    private void notifyMapped(final MappingDirection direction, final FhirConnectContext context,
+                              final MappingCallContext callContext) {
+        try {
+            usageListener.mapped(direction, context, callContext);
+        } catch (final Exception e) {
+            log.warn("Mapping usage listener failed after a successful {} mapping: {}", direction, e.getMessage(),
+                    e);
+        }
     }
 
     List<Composition> parseCompositions(final String marshalled) {

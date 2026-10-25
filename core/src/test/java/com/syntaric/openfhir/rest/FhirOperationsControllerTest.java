@@ -234,7 +234,8 @@ public class FhirOperationsControllerTest {
     @Test
     public void toOpenEhrHappyPathReturnsParametersWithComposition() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenReturn("{\"_type\": \"COMPOSITION\"}");
 
         final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
@@ -256,7 +257,8 @@ public class FhirOperationsControllerTest {
     @Test
     public void toOpenEhrFormatFlatIsPassedToEngine() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenReturn("{}");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
@@ -267,14 +269,16 @@ public class FhirOperationsControllerTest {
 
         final ArgumentCaptor<Boolean> flatCaptor = ArgumentCaptor.forClass(Boolean.class);
         Mockito.verify(openFhirEngine).toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                flatCaptor.capture(), ArgumentMatchers.any(MappingIssueCollector.class));
+                flatCaptor.capture(), ArgumentMatchers.any(MappingCallContext.class),
+                ArgumentMatchers.any(MappingIssueCollector.class));
         Assert.assertTrue(flatCaptor.getValue());
     }
 
     @Test
     public void toOpenEhrDefaultsToCanonical() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenReturn("{}");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
@@ -284,8 +288,31 @@ public class FhirOperationsControllerTest {
 
         final ArgumentCaptor<Boolean> flatCaptor = ArgumentCaptor.forClass(Boolean.class);
         Mockito.verify(openFhirEngine).toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                flatCaptor.capture(), ArgumentMatchers.any(MappingIssueCollector.class));
+                flatCaptor.capture(), ArgumentMatchers.any(MappingCallContext.class),
+                ArgumentMatchers.any(MappingIssueCollector.class));
         Assert.assertFalse(flatCaptor.getValue());
+    }
+
+    @Test
+    public void toOpenEhrEhrIdIsPassedToEngine() throws Exception {
+        Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
+                .thenReturn("{}");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
+                        .contentType(FhirMediaTypes.APPLICATION_FHIR_JSON)
+                        .param("ehr_id", "ehr-1")
+                        .header("x-req-id", "req-1")
+                        .content("{\"resourceType\": \"Bundle\"}"))
+                .andExpect(status().isOk());
+
+        final ArgumentCaptor<MappingCallContext> contextCaptor = ArgumentCaptor.forClass(MappingCallContext.class);
+        Mockito.verify(openFhirEngine).toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
+                ArgumentMatchers.anyBoolean(), contextCaptor.capture(),
+                ArgumentMatchers.any(MappingIssueCollector.class));
+        Assert.assertEquals("ehr-1", contextCaptor.getValue().getEhrId());
+        Assert.assertEquals("req-1", contextCaptor.getValue().getRequestId());
     }
 
     @Test
@@ -304,9 +331,10 @@ public class FhirOperationsControllerTest {
     @Test
     public void toOpenEhrSurfacesCollectedIssuesAsOutcomeParameter() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenAnswer(invocation -> {
-                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    final MappingIssueCollector collector = invocation.getArgument(4);
                     collector.addWarning("a gap was found");
                     return "{}";
                 });
@@ -384,7 +412,8 @@ public class FhirOperationsControllerTest {
     @Test
     public void toOpenEhrMissingOperationalTemplateIsBadRequest() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.any(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.any(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenThrow(new TemplateNotFoundException("KDS_Laborbericht"));
 
         final MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/$toopenehr")
@@ -505,9 +534,10 @@ public class FhirOperationsControllerTest {
     @Test
     public void toOpenEhrCollectedMappingErrorIsReturnedAs200WithErrorIssue() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenAnswer(invocation -> {
-                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    final MappingIssueCollector collector = invocation.getArgument(4);
                     collector.addError(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR,
                             new NullPointerException(NPE_TEXT)));
                     return "{\"partial\": true}";
@@ -556,7 +586,8 @@ public class FhirOperationsControllerTest {
     @Test
     public void thrownMappingFailureWithCallerErrorIs400WithCauseText() throws Exception {
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenThrow(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR,
                         new DataFormatException("Invalid date/time format: \"2024-13-45\"")));
 
@@ -594,9 +625,10 @@ public class FhirOperationsControllerTest {
                     return bundle;
                 });
         Mockito.when(openFhirEngine.toOpenEhr(ArgumentMatchers.anyString(), ArgumentMatchers.any(),
-                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingIssueCollector.class)))
+                        ArgumentMatchers.anyBoolean(), ArgumentMatchers.any(MappingCallContext.class),
+                        ArgumentMatchers.any(MappingIssueCollector.class)))
                 .thenAnswer(invocation -> {
-                    final MappingIssueCollector collector = invocation.getArgument(3);
+                    final MappingIssueCollector collector = invocation.getArgument(4);
                     collector.addWarning("skipped an element");
                     collector.addError(mappingFailure(FhirConnectConst.UNIDIRECTIONAL_TOOPENEHR,
                             new NullPointerException(NPE_TEXT)));

@@ -46,7 +46,10 @@ public class OptService {
     public OptEntity upsert(final String opt, String id, final String reqId) {
         log.debug("Receive CREATE/UPDATE OPT, id {}, reqId: {}", id, reqId);
         try {
-            id = resolveOptId(id);
+            final OptEntity existing = findOwnOpt(id);
+            id = existing == null
+                    ? null // id not owned by this tenant — treat as create
+                    : id;
 
             final OPERATIONALTEMPLATE operationaltemplate = parseOptFromString(opt);
             final String normalizedTemplateId = OpenFhirMappingContext.normalizeTemplateId(
@@ -54,7 +57,7 @@ public class OptService {
 
             checkTemplateIdNotTaken(operationaltemplate, normalizedTemplateId, id);
 
-            final OptEntity entity = buildOptEntity(id, opt, operationaltemplate, normalizedTemplateId);
+            final OptEntity entity = buildOptEntity(id, opt, operationaltemplate, normalizedTemplateId, existing);
             final OptEntity saved = optRepository.save(entity);
             final OptEntity copied = saved.copy();
             copied.setContent("redacted");
@@ -67,14 +70,15 @@ public class OptService {
         }
     }
 
-    private String resolveOptId(final String id) {
+    /**
+     * The tenant's operational template with the given id, or null when there is no id or the tenant has no such
+     * template.
+     */
+    private OptEntity findOwnOpt(final String id) {
         if (StringUtils.isEmpty(id)) {
             return null;
         }
-        final String existing = optRepository.readByOrganisation(openFhirUser.getAuthContext().getTenant(), id);
-        return existing == null
-                ? null // id not owned by this tenant — treat as create
-                : id;
+        return optRepository.findByIdAndOrganisation(id, openFhirUser.getAuthContext().getTenant());
     }
 
     private void checkTemplateIdNotTaken(final OPERATIONALTEMPLATE operationaltemplate,
@@ -93,13 +97,17 @@ public class OptService {
 
     private OptEntity buildOptEntity(final String id, final String opt,
                                      final OPERATIONALTEMPLATE operationaltemplate,
-                                     final String normalizedTemplateId) {
+                                     final String normalizedTemplateId,
+                                     final OptEntity existing) {
         final OptEntity entity = new OptEntity(StringUtils.isEmpty(id) ? null : id, opt, normalizedTemplateId,
                 operationaltemplate.getTemplateId().getValue(),
                 operationaltemplate.getTemplateId().getValue());
         entity.setUser(openFhirUser.getAuthContext().getUserId());
         entity.setOrganisation(openFhirUser.getAuthContext().getTenant());
-        entity.setCreated(new Date());
+        final Date now = new Date();
+        // an update keeps the creation date, also when the row predates the created column and has none
+        entity.setCreated(existing == null ? now : existing.getCreated());
+        entity.setUpdated(now);
         return entity;
     }
 

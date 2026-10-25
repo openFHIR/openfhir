@@ -1,5 +1,7 @@
 package com.syntaric.openfhir;
 
+import com.syntaric.openfhir.mapping.MappingUsageListenerInterface;
+import com.syntaric.openfhir.mapping.NoOpMappingUsageListener;
 import com.syntaric.openfhir.mapping.tofhir.ToFhirPrePostProcessor;
 import com.syntaric.openfhir.operations.NoOpPatientResolver;
 import com.syntaric.openfhir.operations.PatientResolverInterface;
@@ -62,5 +64,11 @@ public class OpenFhirDefaultsConfig {
     @ConditionalOnMissingBean(PatientResolverInterface.class)
     public PatientResolverInterface patientResolver() {
         return new NoOpPatientResolver();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(MappingUsageListenerInterface.class)
+    public MappingUsageListenerInterface mappingUsageListener() {
+        return new NoOpMappingUsageListener();
     }
 }

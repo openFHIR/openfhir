@@ -106,6 +106,15 @@ public class FhirOperationsService {
      * (OperationOutcome) parameter carrying reported gaps. Returns the encoded Parameters.
      */
     public String toOpenEhr(final String fhirResource, final String templateId, final String format) {
+        return toOpenEhr(fhirResource, templateId, format, MappingCallContext.empty());
+    }
+
+    /**
+     * Same as {@link #toOpenEhr(String, String, String)} with the call context of the request, such as the EHR the
+     * mapped Composition is committed to.
+     */
+    public String toOpenEhr(final String fhirResource, final String templateId, final String format,
+                            final MappingCallContext callContext) {
         if (StringUtils.isBlank(fhirResource)) {
             throw OperationRequestException.badRequest(OperationOutcome.IssueType.REQUIRED,
                     "Request body must be a FHIR Bundle (or single resource) to map to openEHR.");
@@ -113,7 +122,8 @@ public class FhirOperationsService {
         final boolean flat = OperationRequestParser.FORMAT_FLAT.equalsIgnoreCase(format);
 
         final MappingIssueCollector issueCollector = new MappingIssueCollector(outcomeVerbosity);
-        final String composition = openFhirEngine.toOpenEhr(fhirResource, templateId, flat, issueCollector);
+        final String composition = openFhirEngine.toOpenEhr(fhirResource, templateId, flat, callContext,
+                issueCollector);
 
         final Parameters response = new Parameters();
         response.addParameter().setName(OperationRequestParser.PARAM_COMPOSITION)
