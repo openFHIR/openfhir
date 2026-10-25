@@ -35,6 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - a freshly started engine hit by many concurrent `$tofhir` requests (regression in 3.0.2) could run out of
   memory and stop responding until restarted: every request thread parsed all FHIR R4 StructureDefinitions
   for itself. They are now parsed once, during startup, which takes a few seconds longer
+- concurrent `$tofhir` / `$toopenehr` requests could corrupt each other's dates: a date or date-time could be
+  written with another request's value, or the request failed with HTTP 500 (`NumberFormatException`).
+  Single requests were not affected
 - `$tofhir`: a mapping pinning one attribute of a coded text (`…/defining_code/code_string`,
   `…/defining_code/terminology_id`, `…/|code`, `…/|value`) wrote nothing to FHIR; it now reads that attribute
 - `$tofhir`: text mapped onto a FHIR decimal, date, uri or other non-string primitive is now parsed into that

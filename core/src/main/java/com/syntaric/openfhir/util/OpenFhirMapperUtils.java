@@ -18,9 +18,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpenFhirMapperUtils {
 
-    final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    final SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
-    final SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String TIME_PATTERN = "HH:mm:ss";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+
+    /**
+     * A fresh formatter per call, in the JVM's default time zone: {@link SimpleDateFormat} is not thread-safe and
+     * this bean is shared by every request thread. Kept as {@code SimpleDateFormat} (rather than java.time) so
+     * parsing stays exactly as lenient as before.
+     */
+    private static SimpleDateFormat formatter(final String pattern) {
+        return new SimpleDateFormat(pattern);
+    }
 
     public String replaceAqlSuffixWithFlatSuffix(final String pathWithAqlSuffix,
                                                  final String detectedType) {
@@ -143,24 +152,21 @@ public class OpenFhirMapperUtils {
         if (date == null) {
             return null;
         }
-        sdf2.setTimeZone(java.util.TimeZone.getDefault());
-        return sdf2.format(date);
+        return formatter(DATE_PATTERN).format(date);
     }
 
     public String dateTimeToString(final Date date) {
         if (date == null) {
             return null;
         }
-        sdf.setTimeZone(java.util.TimeZone.getDefault());
-        return sdf.format(date);
+        return formatter(DATE_TIME_PATTERN).format(date);
     }
 
     public String timeToString(final Date date) {
         if (date == null) {
             return null;
         }
-        time.setTimeZone(java.util.TimeZone.getDefault());
-        return time.format(date);
+        return formatter(TIME_PATTERN).format(date);
     }
 
     public Date stringToDate(final String date) {
@@ -168,13 +174,11 @@ public class OpenFhirMapperUtils {
             return null;
         }
         try {
-            sdf.setTimeZone(java.util.TimeZone.getDefault());
-            return sdf.parse(date);
+            return formatter(DATE_TIME_PATTERN).parse(date);
         } catch (ParseException e) {
             log.error("Couldn't parse date: {}", date, e);
             try {
-                sdf2.setTimeZone(java.util.TimeZone.getDefault());
-                return sdf2.parse(date);
+                return formatter(DATE_PATTERN).parse(date);
             } catch (ParseException ex) {
                 log.error("Couldn't parse date: {}", date, e);
             }
