@@ -268,6 +268,77 @@ public class OpenFhirStringUtilsTest {
         Assert.assertEquals("DateTimeType", openFhirStringUtils.getCastType("Patient.deceased.as(DateTime)"));
         Assert.assertEquals("TimeType", openFhirStringUtils.getCastType("Observation.value.as(Time)"));
         Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Observation.value.as(String)"));
+
+        // the FHIR spelling of primitives, as FHIRPath writes them
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Extension.value.as(string)"));
+        Assert.assertEquals("DateTimeType", openFhirStringUtils.getCastType("Patient.deceased.as(dateTime)"));
+        Assert.assertEquals("BooleanType", openFhirStringUtils.getCastType("Patient.deceased.as(boolean)"));
+        Assert.assertEquals("PositiveIntType", openFhirStringUtils.getCastType("Observation.value.as(positiveInt)"));
+        Assert.assertEquals("UnsignedIntType", openFhirStringUtils.getCastType("Observation.value.as(unsignedInt)"));
+        Assert.assertEquals("Base64BinaryType",
+                openFhirStringUtils.getCastType("Observation.value.as(base64Binary)"));
+        Assert.assertEquals("Integer64Type", openFhirStringUtils.getCastType("Extension.value.as(integer64)"));
+
+        // matched case-insensitively
+        Assert.assertEquals("DateTimeType", openFhirStringUtils.getCastType("Patient.deceased.as(datetime)"));
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Extension.value.as(STRING)"));
+
+        // FHIR namespace
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Extension.value.as(FHIR.string)"));
+        Assert.assertEquals("DateTimeType", openFhirStringUtils.getCastType("Patient.deceased.as(FHIR.dateTime)"));
+
+        // System types are read as the matching FHIR type
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Extension.value.as(System.String)"));
+        Assert.assertEquals("BooleanType", openFhirStringUtils.getCastType("Patient.deceased.as(System.Boolean)"));
+        Assert.assertEquals("DateTimeType",
+                openFhirStringUtils.getCastType("Patient.deceased.as(System.DateTime)"));
+
+        // legacy HAPI class spelling
+        Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Extension.value.as(StringType)"));
+        Assert.assertEquals("DateTimeType", openFhirStringUtils.getCastType("Patient.deceased.as(DateTimeType)"));
+    }
+
+    @Test
+    public void normalizeCastType_fhirSpelling() {
+        Assert.assertEquals("string", OpenFhirStringUtils.normalizeCastType("string"));
+        Assert.assertEquals("string", OpenFhirStringUtils.normalizeCastType("String"));
+        Assert.assertEquals("string", OpenFhirStringUtils.normalizeCastType("FHIR.string"));
+        Assert.assertEquals("string", OpenFhirStringUtils.normalizeCastType("StringType"));
+        Assert.assertEquals("string", OpenFhirStringUtils.normalizeCastType("System.String"));
+        Assert.assertEquals("dateTime", OpenFhirStringUtils.normalizeCastType("datetime"));
+        Assert.assertEquals("dateTime", OpenFhirStringUtils.normalizeCastType("DateTime"));
+        Assert.assertEquals("positiveInt", OpenFhirStringUtils.normalizeCastType("PositiveInt"));
+
+        Assert.assertEquals("Quantity", OpenFhirStringUtils.normalizeCastType("Quantity"));
+        Assert.assertEquals("Quantity", OpenFhirStringUtils.normalizeCastType("quantity"));
+        Assert.assertEquals("Quantity", OpenFhirStringUtils.normalizeCastType("FHIR.Quantity"));
+        Assert.assertEquals("Quantity", OpenFhirStringUtils.normalizeCastType("System.Quantity"));
+        Assert.assertEquals("CodeableConcept", OpenFhirStringUtils.normalizeCastType("CodeableConcept"));
+        Assert.assertEquals("Reference", OpenFhirStringUtils.normalizeCastType("Reference"));
+
+        // not a FHIR type: left alone apart from the capitalisation of a type name
+        Assert.assertEquals("Foo", OpenFhirStringUtils.normalizeCastType("foo"));
+        Assert.assertEquals("System.Foo", OpenFhirStringUtils.normalizeCastType("System.Foo"));
+    }
+
+    @Test
+    public void normalizeFhirPathCasts_everyCastOfThePath() {
+        Assert.assertEquals("Observation.value.as(string)",
+                OpenFhirStringUtils.normalizeFhirPathCasts("Observation.value.as(StringType)"));
+        Assert.assertEquals("onset.ofType(dateTime)",
+                OpenFhirStringUtils.normalizeFhirPathCasts("onset.ofType(DateTimeType)"));
+        Assert.assertEquals("extension.where(value.as(string) = 'a').value.as(Quantity).value",
+                OpenFhirStringUtils.normalizeFhirPathCasts(
+                        "extension.where(value.as(FHIR.string) = 'a').value.as(quantity).value"));
+        Assert.assertEquals("medication.as(Reference).resolve()",
+                OpenFhirStringUtils.normalizeFhirPathCasts("medication.as(Reference).resolve()"));
+        Assert.assertEquals("entry.resource.ofType(Observation)",
+                OpenFhirStringUtils.normalizeFhirPathCasts("entry.resource.ofType(Observation)"));
+
+        // only the as()/ofType() functions, not anything that ends with "as(", and no paths without a cast
+        Assert.assertEquals("code.coding.has(x)", OpenFhirStringUtils.normalizeFhirPathCasts("code.coding.has(x)"));
+        Assert.assertEquals("Observation.value", OpenFhirStringUtils.normalizeFhirPathCasts("Observation.value"));
+        Assert.assertNull(OpenFhirStringUtils.normalizeFhirPathCasts(null));
     }
 
     @Test
@@ -280,6 +351,8 @@ public class OpenFhirStringUtilsTest {
                 openFhirStringUtils.getCastType("Observation.value.as(CodeableConcept)"));
         Assert.assertEquals("Period", openFhirStringUtils.getCastType("Observation.effective.as(Period)"));
         Assert.assertEquals("Ratio", openFhirStringUtils.getCastType("Observation.value.as(Ratio)"));
+        Assert.assertEquals("Quantity", openFhirStringUtils.getCastType("Observation.value.as(FHIR.Quantity)"));
+        Assert.assertEquals("Quantity", openFhirStringUtils.getCastType("Observation.value.as(quantity)"));
 
         // an already suffixed cast type must not be suffixed twice
         Assert.assertEquals("StringType", openFhirStringUtils.getCastType("Observation.value.as(StringType)"));

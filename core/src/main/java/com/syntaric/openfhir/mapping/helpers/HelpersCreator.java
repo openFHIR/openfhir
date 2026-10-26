@@ -19,7 +19,10 @@ import com.syntaric.openfhir.fc.schema.model.Mapping;
 import com.syntaric.openfhir.fc.schema.model.Preprocessor;
 import com.syntaric.openfhir.fc.schema.terminology.Terminology;
 
+import com.syntaric.openfhir.operations.MappingIssueCollector;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +51,58 @@ public class HelpersCreator {
         this.aqlToFlatPathConverter = aqlToFlatPathConverter;
     }
 
+
+    /**
+     * Same as {@link #constructHelpers(String, String, List, WebTemplate)} but also reporting the problems found
+     * while the helpers were built (a mapping whose openEHR path is not in the template, a slot without a model
+     * mapper ...) into the given {@link MappingIssueCollector} as warnings. The problems are read from the
+     * helpers themselves, so they are reported on every request even when the helper tree comes from a cache.
+     */
+    public Map<String, List<MappingHelper>> constructHelpers(final String templateId,
+                                                             final String startingArchetype,
+                                                             final List<String> archetypes,
+                                                             final WebTemplate webTemplate,
+                                                             final MappingIssueCollector issueCollector) {
+        final Map<String, List<MappingHelper>> helpers = constructHelpers(templateId, startingArchetype, archetypes,
+                webTemplate);
+        if (issueCollector != null) {
+            helpers.values().forEach(ofArchetype -> reportConstructionIssues(ofArchetype, issueCollector));
+        }
+        return helpers;
+    }
+
+    private void reportConstructionIssues(final Collection<MappingHelper> helpers,
+                                          final MappingIssueCollector issueCollector) {
+        if (helpers == null) {
+            return;
+        }
+        for (final MappingHelper helper : helpers) {
+            if (helper.getConstructionIssues() != null) {
+                for (final String issue : helper.getConstructionIssues()) {
+                    // the same helpers are built once per composition of a request; report each problem once
+                    if (issueCollector.getIssues().stream().noneMatch(i -> issue.equals(i.diagnostics()))) {
+                        issueCollector.addWarning(issue);
+                    }
+                }
+            }
+            reportConstructionIssues(helper.getChildren(), issueCollector);
+        }
+    }
+
+    /**
+     * Logs a problem found while building helpers and keeps it on the given helper (when there is one) so it is
+     * reported to the caller, see {@link #constructHelpers(String, String, List, WebTemplate, MappingIssueCollector)}.
+     */
+    private void constructionIssue(final MappingHelper helper, final String issue) {
+        log.warn(issue);
+        if (helper != null) {
+            helper.addConstructionIssue(issue);
+        }
+    }
+
+    private static String modelName(final FhirConnectModel fhirConnectModel) {
+        return fhirConnectModel.getMetadata() == null ? null : fhirConnectModel.getMetadata().getName();
+    }
 
     public Map<String, List<MappingHelper>> constructHelpers(final String templateId,
                                                              final String startingArchetype,
@@ -115,16 +170,21 @@ public class HelpersCreator {
                               final WebTemplate webTemplate,
                               final Terminology parentTerminology) {
         if (mappings == null) {
-            log.error("No mappings in this mapping file id: {}, metadata.name: {}", fhirConnectModel.getId(),
-                    fhirConnectModel.getMetadata().getName());
+            constructionIssue(parentHelper, String.format(
+                    "Model mapper '%s' (id %s) has no mappings where some were expected; nothing is mapped there.",
+                    modelName(fhirConnectModel), fhirConnectModel.getId()));
             return;
         }
 
+        final List<String> hierarchyIssues = new ArrayList<>();
         final String hierarchySplitFlatPath = getHierarchySplitFlatPath(fhirConnectModel, webTemplate, fullSlotPath,
-                parentHelper);
+                parentHelper, hierarchyIssues);
 
         for (final Mapping mapping : mappings) {
             final MappingHelper mappingHelper = new MappingHelper();
+            // a hierarchy problem belongs to the model mapper as a whole; it is kept on its first helper
+            hierarchyIssues.forEach(mappingHelper::addConstructionIssue);
+            hierarchyIssues.clear();
             mappingHelper.setModelMetadataName(fhirConnectModel.getMetadata().getName());
             mappingHelper.setArchetype(fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype());
             mappingHelper.setMappingName(mapping.getName());
@@ -157,9 +217,24 @@ public class HelpersCreator {
                     fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper,
                     fullSlotPath);
 
+            // with.type picks among the types the template allows, so the paths are resolved knowing it
+            mappingHelper.setHardcodedType(mapping.getWith().getType());
+
             // Find flat paths
             if (webTemplate != null) {
-                aqlToFlatPathConverter.convert(mappingHelper, webTemplate, mapping.getManualCodedText());
+                final AqlToFlatPathConverter.Result flatPathResult = aqlToFlatPathConverter.convert(mappingHelper,
+                        webTemplate, mapping.getManualCodedText());
+                // children hang off this path, so they are unresolved as well; the parent's warning covers them
+                if (flatPathResult.unresolvedSegment() != null
+                        && (parentHelper == null || !parentHelper.isOpenEhrPathUnresolved())) {
+                    constructionIssue(mappingHelper, String.format(
+                            "Mapping '%s' of model mapper '%s': openEHR path '%s' does not exist in the template "
+                                    + "('%s' not found); the mapping is skipped.",
+                            mapping.getName(),
+                            modelName(fhirConnectModel),
+                            mappingHelper.getFullOpenEhrPath(),
+                            flatPathResult.unresolvedSegment()));
+                }
                 mappingHelper.setPreprocessorOpenEhrCondition(
                         handlePreprocessorOpenEhrCondition(fhirConnectModel,
                                 webTemplate,
@@ -170,8 +245,6 @@ public class HelpersCreator {
             setConditions(mappingHelper, mapping, fhirDataType,
                     fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper, fullSlotPath,
                     fullFhirSlotPath, webTemplate);
-
-            mappingHelper.setHardcodedType(mapping.getWith().getType());
 
             mappingHelper.setUnidirectional(resolveUnidirectional(mapping, fhirConnectModel));
 
@@ -225,6 +298,18 @@ public class HelpersCreator {
                         webTemplate,
                         relevantTerminology);
             }
+            if (mapping.getSlotArchetype() != null && mapping.getSlotContext() != null) {
+                constructionIssue(mappingHelper, String.format(
+                        "Mapping '%s' of model mapper '%s' declares both slotArchetype and slotContext, which are "
+                                + "mutually exclusive; the slot is not mapped.",
+                        mapping.getName(), modelName(fhirConnectModel)));
+                continue;
+            }
+            if (mapping.getSlotContext() != null) {
+                createSlotContextHelpers(mapping, mappingHelper, creatingHelpers, templateId, webTemplate,
+                        relevantTerminology);
+                continue;
+            }
             if (mapping.getSlotArchetype() != null) {
                 if (mapping.getSlotArchetype().equals(slotArchetype)) {
                     log.warn("Breaking possible infinite recursion with mapping: {}", mapping.getName());
@@ -233,26 +318,80 @@ public class HelpersCreator {
                 final List<OpenFhirFhirConnectModelMapper> nextModelMappers = openFhirTemplateRepo.getMapperForArchetype(
                         templateId, mapping.getSlotArchetype());
                 if (nextModelMappers == null) {
-                    log.error("No mapping model file found for slot archetype: {}", mapping.getSlotArchetype());
+                    constructionIssue(mappingHelper, String.format(
+                            "Mapping '%s' of model mapper '%s': no model mapper found for slot archetype '%s'; "
+                                    + "the slot is not mapped.",
+                            mapping.getName(), modelName(fhirConnectModel), mapping.getSlotArchetype()));
                     continue;
                 }
-                mappingHelper.setHasSlot(true);
-                for (final OpenFhirFhirConnectModelMapper nextModelMapper : nextModelMappers) {
-                    createHelpers(nextModelMapper.getOriginalModel(),
-                            nextModelMapper.getFhirConfig().getResource(),
-                            nextModelMapper.getFhirConfig().getResource(),
-                            nextModelMapper.getMappings(),
-                            mappingHelper,
-                            creatingHelpers,
-                            templateId,
-                            mappingHelper.getFullOpenEhrPath(),
-                            mappingHelper.getFullFhirPath(),
-                            mapping.getSlotArchetype(),
-                            false,
-                            webTemplate,
-                            relevantTerminology);
-                }
+                createSlotHelpers(nextModelMappers, mappingHelper, creatingHelpers, templateId,
+                        mapping.getSlotArchetype(), webTemplate, relevantTerminology);
             }
+        }
+    }
+
+    /**
+     * A slotContext is a slot whose model - and everything slotted below it - is resolved from the referenced
+     * sub-context's own archetypes and extensions instead of from the current context's. A sub-context
+     * that can't be entered is logged and skipped, like an unresolvable slotArchetype.
+     */
+    private void createSlotContextHelpers(final Mapping mapping,
+                                             final MappingHelper mappingHelper,
+                                             final List<MappingHelper> creatingHelpers,
+                                             final String templateId,
+                                             final WebTemplate webTemplate,
+                                             final Terminology relevantTerminology) {
+        final String slotContext = mapping.getSlotContext();
+        if (!openFhirTemplateRepo.declaresSubContext(templateId, slotContext)) {
+            constructionIssue(mappingHelper, String.format(
+                    "Mapping '%s': slotContext '%s' is not listed under the context's contexts; the slot is not "
+                            + "mapped.",
+                    mapping.getName(), slotContext));
+            return;
+        }
+        final List<OpenFhirFhirConnectModelMapper> startMappers = openFhirTemplateRepo.getStartMappersForContext(
+                slotContext);
+        if (startMappers == null) {
+            constructionIssue(mappingHelper, String.format(
+                    "Mapping '%s': no model mapper found for the start archetype of slotContext '%s'; the slot is "
+                            + "not mapped.",
+                    mapping.getName(), slotContext));
+            return;
+        }
+        createSlotHelpers(startMappers, mappingHelper, creatingHelpers,
+                OpenFhirMappingContext.subContextKey(slotContext),
+                openFhirTemplateRepo.getStartOfContext(slotContext), webTemplate, relevantTerminology);
+    }
+
+    /**
+     * Creates helpers of the model mappers slotted in at the given mapping, as children of its helper.
+     *
+     * @param repositoryKey registry the slotted models resolve their own slots from: the template id, or the
+     *         sub-context key when the slot was a slotContext
+     * @param slotArchetype archetype being slotted, used to break infinite recursion
+     */
+    private void createSlotHelpers(final List<OpenFhirFhirConnectModelMapper> slottedModelMappers,
+                                   final MappingHelper mappingHelper,
+                                   final List<MappingHelper> creatingHelpers,
+                                   final String repositoryKey,
+                                   final String slotArchetype,
+                                   final WebTemplate webTemplate,
+                                   final Terminology relevantTerminology) {
+        mappingHelper.setHasSlot(true);
+        for (final OpenFhirFhirConnectModelMapper nextModelMapper : slottedModelMappers) {
+            createHelpers(nextModelMapper.getOriginalModel(),
+                    nextModelMapper.getFhirConfig().getResource(),
+                    nextModelMapper.getFhirConfig().getResource(),
+                    nextModelMapper.getMappings(),
+                    mappingHelper,
+                    creatingHelpers,
+                    repositoryKey,
+                    mappingHelper.getFullOpenEhrPath(),
+                    mappingHelper.getFullFhirPath(),
+                    slotArchetype,
+                    false,
+                    webTemplate,
+                    relevantTerminology);
         }
     }
 
@@ -286,7 +425,8 @@ public class HelpersCreator {
     private String getHierarchySplitFlatPath(final FhirConnectModel fhirConnectModel,
                                              final WebTemplate webTemplate,
                                              final String fullSlotPath,
-                                             final MappingHelper parentHelper) {
+                                             final MappingHelper parentHelper,
+                                             final List<String> issues) {
         final Preprocessor preprocessor = fhirConnectModel.getPreprocessor();
         if (preprocessor == null || preprocessor.getHierarchy() == null) {
             return null;
@@ -299,19 +439,20 @@ public class HelpersCreator {
                         .getArchetype(),
                 fallback, parentHelper, fullSlotPath);
 
-        final AqlToFlatPathConverter.Result result = aqlToFlatPathConverter.convert(resolvedOpenEhrPath, null,
-                webTemplate);
+        final AqlToFlatPathConverter.Result result = aqlToFlatPathConverter.convert(resolvedOpenEhrPath, webTemplate);
         // An unresolved path is only a problem when it also lost its repeating marker: the split path has then
         // collapsed to a non-repeating node, and repeating entries under it silently share an index. A path that
         // kept its [n] resolved well enough (e.g. a hierarchy that is just $archetype), so it stays quiet.
         if (!result.valid() && result.flatPath() != null
                 && !result.flatPath().contains(OpenFhirStringUtils.RECURRING_SYNTAX)) {
-            log.warn(
-                    "Hierarchy path '{}' of model mapper '{}' could not be fully resolved against the template; "
-                            + "resolved to '{}'. Check that the model mapper matches the uploaded operational template.",
+            final String issue = String.format(
+                    "Hierarchy path '%s' of model mapper '%s' could not be fully resolved against the template; "
+                            + "resolved to '%s'. Check that the model mapper matches the uploaded operational template.",
                     resolvedOpenEhrPath,
-                    fhirConnectModel.getMetadata() == null ? null : fhirConnectModel.getMetadata().getName(),
+                    modelName(fhirConnectModel),
                     result.flatPath());
+            log.warn(issue);
+            issues.add(issue);
         }
         return result.flatPath();
     }
@@ -496,84 +637,48 @@ public class HelpersCreator {
     }
 
     /**
-     * Attributes of the RM data value types (DV_*) that are represented as a pipe attribute in the flat
-     * format, keyed by the RM attribute name and mapped to the flat name where the two differ.
+     * The flat path, relative to the condition's targetRoot, of what a condition's {@code targetAttribute}
+     * addresses below it.
      *
-     * <p>None of these have a node of their own in an operational template — a DV_IDENTIFIER's
-     * {@code type} or a DV_QUANTITY's {@code magnitude} is a leaf of the data value, not a child node —
-     * so the AQL converter cannot resolve them and a condition addressing one has to be rewritten here.
-     *
-     * <p>The exceptions, deliberately absent, are the attributes that <em>are</em> real nodes and
-     * therefore resolve normally: the element's own {@code value}, {@code defining_code} (a
-     * DV_CODED_TEXT's CODE_PHRASE node, whose {@code defining_code/code_string} spelling is rewritten
-     * to {@code |code} further down) and the {@code lower} / {@code upper} bounds of a DV_INTERVAL.
+     * <p>Conditions address openEHR with RM paths, so an attribute of a data value is written {@code type} or
+     * {@code value/type} (spelling out the ELEMENT's value attribute), {@code defining_code/code_string} ... rather
+     * than {@code |type} or {@code |code}; see {@link RmAttributePins}. It resolves to the pipe attribute (with the
+     * type segment of a choice element, {@code quantity_value|magnitude}), and, where the targetRoot's type does not
+     * tell, to that of whichever data value type has the attribute. The flat pipe syntax is accepted as-is too, for
+     * mappings that already use it. Anything else ({@code value}, {@code items[at0005]}) is an ordinary path.
      */
-    private static final Map<String, String> LEAF_RM_ATTRIBUTES = Map.ofEntries(
-            // DV_IDENTIFIER
-            Map.entry("id", "id"),
-            Map.entry("type", "type"),
-            Map.entry("issuer", "issuer"),
-            Map.entry("assigner", "assigner"),
-            // DV_TEXT / DV_CODED_TEXT
-            Map.entry("formatting", "formatting"),
-            Map.entry("language", "language"),
-            Map.entry("encoding", "encoding"),
-            Map.entry("hyperlink", "hyperlink"),
-            // CODE_PHRASE — the flat format names these |code and |terminology
-            Map.entry("code_string", "code"),
-            Map.entry("terminology_id", "terminology"),
-            Map.entry("preferred_term", "preferred_term"),
-            // DV_QUANTITY / DV_COUNT / DV_PROPORTION and the other quantified types.
-            // "units" is |unit in the flat format.
-            Map.entry("magnitude", "magnitude"),
-            Map.entry("units", "unit"),
-            Map.entry("precision", "precision"),
-            Map.entry("numerator", "numerator"),
-            Map.entry("denominator", "denominator"),
-            Map.entry("magnitude_status", "magnitude_status"),
-            Map.entry("accuracy", "accuracy"),
-            Map.entry("accuracy_is_percent", "accuracy_is_percent"),
-            // DV_ORDINAL / DV_SCALE
-            Map.entry("symbol", "symbol"),
-            Map.entry("ordinal", "ordinal"),
-            // DV_DURATION / DV_PARSABLE / DV_URI / DV_MULTIMEDIA / DV_ENCAPSULATED
-            Map.entry("formalism", "formalism"),
-            Map.entry("charset", "charset"),
-            Map.entry("media_type", "mediatype"),
-            Map.entry("size", "size"),
-            Map.entry("alternate_text", "alternate_text"),
-            Map.entry("uri", "uri"));
-
-    /**
-     * Maps a condition's {@code targetAttribute} onto the flat-format pipe attribute of an RM data
-     * value, or returns {@code null} when it is an ordinary path that has to go through the AQL
-     * converter.
-     *
-     * <p>Conditions address openEHR with RM paths, so a DV_IDENTIFIER part is written {@code type} (or
-     * {@code value/type}, spelling out the ELEMENT's value attribute) rather than {@code |type}, the
-     * same way a DV_CODED_TEXT is narrowed on {@code defining_code/code_string}. Those parts have no
-     * node in the operational template, so the converter silently drops the segment and returns the
-     * parent's flat path — which would leave the evaluator with a full path where it expects a pipe
-     * attribute. The flat pipe syntax is accepted as-is too, for mappings that already use it.
-     */
-    private String toLeafAttributeFlatPath(final String targetAttribute) {
+    private String conditionAttributeFlatPath(final String targetRoot,
+                                              final AqlToFlatPathConverter.Result rootResult,
+                                              final String targetAttribute,
+                                              final WebTemplate webTemplate) {
         if (targetAttribute.startsWith("|")) {
             return targetAttribute;
         }
-        // "value/type" addresses the RM attribute through the ELEMENT's value; both spellings are common
-        final String withoutValuePrefix = targetAttribute.startsWith("value/")
+        final String combined = targetRoot + "/" + targetAttribute;
+        final AqlToFlatPathConverter.AttributeResult resolved =
+                aqlToFlatPathConverter.resolveAttribute(combined, null, webTemplate);
+        if (resolved != null && resolved.attribute() != null && resolved.unresolvedSegment() == null) {
+            final String relative = resolved.flatPath().equals(rootResult.flatPath())
+                    ? ""
+                    : resolved.flatPath().replace(rootResult.flatPath() + "/", "");
+            final String pipe = resolved.pipe();
+            if (relative.isEmpty()) {
+                // the root itself: its pipe, or the node's own value
+                return pipe.isEmpty() ? "value" : pipe;
+            }
+            return relative + pipe;
+        }
+        final String spelling = targetAttribute.startsWith("value/")
                 ? targetAttribute.substring("value/".length())
                 : targetAttribute;
-        if (withoutValuePrefix.contains("/")) {
-            // Multi-segment paths still go through the converter — notably a DV_CODED_TEXT's
-            // "defining_code/code_string", which resolves against the template and is rewritten to
-            // |code further down.
-            return null;
+        final RmAttributePins.Attribute anyTypes = "value".equals(targetAttribute)
+                ? null
+                : RmAttributePins.anyTypes(spelling);
+        if (anyTypes != null && !anyTypes.isElementItself()) {
+            return "|" + anyTypes.flatAttribute();
         }
-        // Ordinary attributes — including a bare "value", which is the ELEMENT's own value node —
-        // still resolve against the template.
-        final String flatName = LEAF_RM_ATTRIBUTES.get(withoutValuePrefix);
-        return flatName == null ? null : "|" + flatName;
+        final AqlToFlatPathConverter.Result attrResult = aqlToFlatPathConverter.convert(combined, webTemplate);
+        return attrResult.flatPath().replace(rootResult.flatPath() + "/", "");
     }
 
     Condition amendCondition(final Condition originalCondition,
@@ -601,7 +706,7 @@ public class HelpersCreator {
             // Populate flat path alternatives for openEHR conditions
             if (webTemplate != null && StringUtils.isNotBlank(amendedTargetRoot)) {
                 final AqlToFlatPathConverter.Result rootResult =
-                        aqlToFlatPathConverter.convert(amendedTargetRoot, null, webTemplate);
+                        aqlToFlatPathConverter.convert(amendedTargetRoot, webTemplate);
                 amendedCondition.setTargetRootFlatPath(rootResult.flatPath());
 
                 // may legitimately be null on an attribute-less condition; FhirConditionEvaluator
@@ -612,24 +717,8 @@ public class HelpersCreator {
                     if (!StringUtils.isNotBlank(targetAttribute)) {
                         continue;
                     }
-                    final String leafAttributeFlatPath = toLeafAttributeFlatPath(targetAttribute);
-                    if (leafAttributeFlatPath != null) {
-                        amendedCondition.getTargetAttributesFlatPath().add(leafAttributeFlatPath);
-                        continue;
-                    }
-                    final String combined = amendedTargetRoot + "/" + targetAttribute;
-                    final AqlToFlatPathConverter.Result attrResult =
-                            aqlToFlatPathConverter.convert(combined, null, webTemplate);
-                    final String fullFlatPath = attrResult.flatPath();
-                    final String attributeFlatPath = fullFlatPath.replace(rootResult.flatPath() + "/", "");
-                    final String replaceTerminologyAqlSyntax =
-                            attributeFlatPath.contains("terminology") ? attributeFlatPath : attributeFlatPath
-                                                                                            .replace("/defining_code/code_string", "|code")
-                                                                                            .replace("/defining_code", "|code")
-                                                                                            .replace("defining_code/code_string", "|code")
-                                                                                            .replace("defining_code", "|code");
-                    amendedCondition.getTargetAttributesFlatPath()
-                            .add(replaceTerminologyAqlSyntax);
+                    amendedCondition.getTargetAttributesFlatPath().add(
+                            conditionAttributeFlatPath(amendedTargetRoot, rootResult, targetAttribute, webTemplate));
                 }
             }
         }

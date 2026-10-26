@@ -1,0 +1,26 @@
+# International Patient Summary (IPS) context mapper
+grammar: FHIRConnect/v1.0.0
+type: context
+metadata:
+  name:  IPS.context
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+    version: "2.0.0"
+  template:
+    id: "International Patient Summary"
+  archetypes:
+    - "COMPOSITION.health_summary.v1"
+  extensions:
+    - "IPS_composition"
+  contexts: # one sub-context per section, entered via slotContext
+    - "IPS_problem.context"
+    - "IPS_allergy.context"
+    - "IPS_medication.context"
+    - "IPS_device.context"
+  start: "COMPOSITION.health_summary.v1"

@@ -1,0 +1,122 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name:  COMPOSITION.report-result.v1.Composition
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-COMPOSITION.report-result.v1
+    revision: 1.0.3
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Composition
+
+mappings:
+# date
+# title missing
+
+  - name: "reportId"
+    with:
+      fhir: "$resource.identifier"
+      openehr: "$composition/context/other_context[at0001]/items[at0002]"
+
+  - name: "status"
+    with:
+      fhir: "$resource.status"
+      openehr: "$composition/context/other_context[at0001]/items[at0005]"
+
+  - name: "status_emtpy"
+    with:
+      fhir: "$resource.status"
+      openehr: "$composition/context/other_context[at0001]/items[at0005]"
+    unidirectional: "openehr->fhir"
+    manual:
+      - name: "data-absent" # map data absence, since most openEHR templates do not require status
+        fhir:
+          - path: "extension.url"
+            value: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+          - path: "extension.code"
+            value: "unsupported"
+    openehrCondition:
+      targetRoot: "$composition/context/other_context[at0001]" # if no status is provided, status is always 1..1
+      targetAttribute: "items[at0005]"
+      operator: "empty"
+
+  - name: "date"
+    with:
+      fhir: "$resource.date"
+      openehr: "$composition/context/start_time" #Is not the correct thing to ingest but to export, correct would be commit time, but thats in the versioned object.
+    unidirectional: "openehr->fhir"
+
+  - name: "author"
+    with:
+      fhir: "$resource.author"
+      openehr: "$composition/composer"
+
+  - name: "attester" #participations
+    with:
+      fhir: "$resource.attester"
+      openehr: "$composition/context/participations"
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name: "function"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$reference"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "attester"
+
+        - name: "mode"
+          with:
+            fhir: "mode"
+            openehr: "$reference"
+          manual:
+            - name: "modeManual"
+              fhir:
+                - path: "$fhirRoot"
+                  value: "official"
+
+        - name: "time"
+          with:
+            fhir: "time"
+            openehr: "time"
+
+        - name: "party"
+          with:
+            fhir: "party"
+            openehr: "performer"
+
+
+  - name: "custodian"
+    with:
+      fhir: "$resource.custodian"
+      openehr: "$composition/health_care_facility"
+
+  - name: "event"
+    extension: "add"
+    with:
+      fhir: "$resource.event"
+      openehr: "$composition"
+    followedBy:
+      mappings:
+        - name: "period"
+          with:
+            fhir: "period"
+            openehr: "$composition/context"
+            type: "NONE"
+          followedBy:
+            mappings:
+              - name: "contextStart"
+                with:
+                  fhir: "start"
+                  openehr: "start_time"
+
+              - name: "contextEnd"
+                with:
+                  fhir: "end"
+                  openehr: "end_time"

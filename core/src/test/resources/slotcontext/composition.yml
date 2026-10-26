@@ -1,0 +1,31 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name: COMPOSITION.health_summary.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-COMPOSITION.health_summary.v1
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Composition
+
+mappings:
+  - name: "sectionA"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='A']"
+    slotContext: "a.context"
+
+  - name: "sectionB"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='B']"
+    slotContext: "b.context"
+
+  - name: "sectionUndeclared" # c.context exists but root.context does not list it under contexts
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='C']"
+    slotContext: "c.context"

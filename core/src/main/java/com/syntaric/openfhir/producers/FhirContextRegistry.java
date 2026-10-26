@@ -9,6 +9,7 @@ import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.instance.model.api.IBase;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -16,14 +17,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Registry that provides version-specific {@link FhirContext} and {@link IFhirPath} instances.
- * Instances are created lazily and cached per FHIR version.
+ * Instances are created lazily and cached per FHIR version; the default R4 FHIRPath engine is built eagerly
+ * when running as a Spring bean (see {@link #afterSingletonsInstantiated()}).
  */
 @Component
 @Slf4j
-public class FhirContextRegistry {
+public class FhirContextRegistry implements SmartInitializingSingleton {
 
     private final Map<Spec.Version, FhirContext> contextCache = new ConcurrentHashMap<>();
     private final Map<Spec.Version, IFhirPath> fhirPathCache = new ConcurrentHashMap<>();
+
+    /**
+     * Builds the default R4 FHIRPath engine before the web server starts accepting requests. Building it parses
+     * every R4 StructureDefinition from HAPI's bundled XML, which is slow and memory hungry; left to the first
+     * request, a burst of concurrent traffic on a cold instance queues behind it and times out.
+     */
+    @Override
+    public void afterSingletonsInstantiated() {
+        final long start = System.currentTimeMillis();
+        getDefaultFhirPath();
+        log.info("Initialised R4 FHIRPath engine in {} ms", System.currentTimeMillis() - start);
+    }
 
     public FhirContext getContext(final Spec.Version version) {
         return contextCache.computeIfAbsent(version, this::createFhirContext);
@@ -79,7 +93,7 @@ public class FhirContextRegistry {
     }
 
     private IFhirPath createFhirPath(final FhirContext ctx) {
-        final IFhirPath fhirPath = ctx.newFhirPath();
+        final IFhirPath fhirPath = new CastNormalizingFhirPath(ctx.newFhirPath());
         fhirPath.setEvaluationContext(new IFhirPathEvaluationContext() {
             @Override
             public IBase resolveReference(@Nonnull IIdType theReference, @Nullable IBase theContext) {

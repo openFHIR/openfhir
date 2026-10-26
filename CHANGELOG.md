@@ -8,6 +8,86 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- sub-contexts (FHIRconnect-spec PR #100): a mapping may carry `slotContext: <context name>` where
+  `slotArchetype` is used today. The engine enters that context mapper and maps from its `start` with
+  that context's own `archetypes` and `extensions`, into the parent composition. A context mapper
+  lists the sub-contexts it uses under `context.contexts`, and a sub-context is marked with
+  `context.scope: sub` (default `root`). This lets several template nodes of the same archetype (e.g.
+  the IPS `SECTION.adhoc.v1` sections) each have their own extensions
+  - a `scope: sub` context is never picked as the context of a request (by template id or profile) and
+    is exempt from the one-context-per-template rule; its `metadata.name` must be unique instead
+  - rejected on upload: `slotArchetype` together with `slotContext`, a `slotContext` not listed under
+    `contexts`, cyclic `contexts`, and `slotContext` with `openehr: $reference`. Not validated yet:
+    the spec's *template mismatch* and *start archetype mismatch* checks. A root context entered via
+    `slotContext` (composition slot skipped) is not supported
+- `$tofhir` / `$toopenehr`: problems in the model mappers that were only written to the server log are now
+  also returned as `warning` issues (code `incomplete`) in the `OperationOutcome` of each request, once per
+  request: a slot whose archetype has no model mapper, a `slotContext` that is undeclared or whose start
+  archetype has no model mapper, a mapping declaring both `slotArchetype` and `slotContext`, a model
+  mapper without mappings, and a preprocessor hierarchy path that cannot be resolved against the template
+- `$toopenehr` takes an optional `ehr_id` query parameter, and `/openfhir/tofhir` and `/openfhir/toopenehr`
+  an optional `ehrId` one, naming the EHR the composition belongs to. It is passed to the mapping as part of
+  its call context, which `OpenFhirEngine.toOpenEhr` and `OpenFhirEngine.toFhir` now also accept
+- `MappingListenerInterface`, an extension point the engine calls around every mapping, in both directions
+  and from every endpoint, with a `MappingEvent` describing it: `beforeMapping` once the context mapper and
+  template are resolved, before any mapping work (throwing refuses the mapping), and `afterMapping` after a
+  successful mapping. Any number of listeners can be registered as beans; none are by default
+
+### Changed
+- `$toaql`: a mapping on a whole data value now compares the attribute its type is compared by, through the
+  element's `value`: `…/value/magnitude = 500` for a quantity or count (was `…/value = 500`),
+  `…/value/defining_code/code_string = '…'` for a coded text, since a FHIR token search names a code (was its text,
+  `…/value/value`; a manual mapping's fixed value still compares the text), `…/value/value` for a text, date, time or
+  boolean (was `…/value`), `…/value/id` for an identifier and `…/value/numerator` for a proportion. A node that is a
+  data value itself (`context/start_time`, `ism_transition/current_state`) has the attribute directly. A param whose
+  mappings address no data value (an EVENT, a CLUSTER, a participation …) is left out of the AQL with a `WARNING` in
+  `unhandledParams`, instead of producing a condition no composition matches
+
+### Fixed
+- `$toaql`: a condition on a mapping below another mapping of the same model (the children of a `manual`, a
+  `followedBy`) appeared twice in the WHERE, and such a child was matched even when its parent's `fhirCondition`
+  ruled it out
+- `$toaql`: a param mapped in a model slotted into an entry (a CLUSTER in an EVALUATION) produced
+  `CONTAINS CLUSTER h [<entry archetype>]`; the entry AQL now contains the entry the condition's path starts from
+  (`CONTAINS EVALUATION h [openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]`)
+- an openEHR path ending in a flat pipe attribute written onto the node without a slash (`…/items[at0004]|code`)
+  lost the attribute; it now maps like `…/items[at0004]/|code`
+- a freshly started engine hit by many concurrent `$tofhir` requests (regression in 3.0.2) could run out of
+  memory and stop responding until restarted: every request thread parsed all FHIR R4 StructureDefinitions
+  for itself. They are now parsed once, during startup, which takes a few seconds longer
+- concurrent `$tofhir` / `$toopenehr` requests could corrupt each other's dates: a date or date-time could be
+  written with another request's value, or the request failed with HTTP 500 (`NumberFormatException`).
+  Single requests were not affected
+- `$tofhir`: a mapping pinning one attribute of a coded text (`…/defining_code/code_string`,
+  `…/defining_code/terminology_id`, `…/|code`, `…/|value`) wrote nothing to FHIR; it now reads that attribute
+- `$tofhir`: text mapped onto a FHIR decimal, date, uri or other non-string primitive is now parsed into that
+  type instead of being set as a raw string
+- updating an operational template no longer resets its creation date (`created`), and now sets `updated`;
+  `POST /opt` and `PUT /opt/{id}` return both, which they used to answer as `null`
+- `$tofhir`: an `openehrCondition` with operator `one of` on the `value` of a `DV_TEXT` never matched,
+  because a `DV_TEXT` has no `|value` attribute in flat format (its value sits on the node itself);
+  the mapping was silently skipped. The condition now reads the node's value
+- an openEHR path that addresses an archetype node (e.g. `items[at0004]`) which is not in the template
+  below its parent no longer resolves to a same-named node elsewhere in the template (which produced a
+  bogus flat path, e.g. `…/problem_diagnosis_qualifier/specific_time`). Such a mapping, together with its
+  children, is now skipped in both directions. A warning naming the mapping, the path and the missing
+  segment is logged and returned in the `OperationOutcome` of every `$tofhir` / `$toopenehr` request that
+  uses the model mapper. A model mapper that only worked because a wrong path happened to resolve to
+  another node has to be corrected
+  - the mappings generated from a `manual` block's `fhir` entries now sit on their parent's openEHR path
+    instead of repeating the parent's relative path below it
+- FHIRPath casts in `with.fhir` now work however the type is spelled, in both directions: the FHIR spelling
+  (`as(string)`, `as(dateTime)`), any other capitalisation (`as(String)`), `as(FHIR.string)`, the legacy
+  `as(StringType)` and `as(System.String)` (read as FHIR `string`). The same applies to `ofType(...)` in
+  FHIR → openEHR
+  - `$tofhir`: a lowercase primitive cast built nothing, without an error, and `as(FHIR.string)` failed the
+    request
+  - `$toopenehr`: a mapping cast to a HAPI class name (`as(DateTimeType)`, `ofType(DateTimeType)`) was skipped
+    with a warning; it is now mapped, so such model mappers produce values they did not before
+  - `$tofhir`: a cast to a type that does not exist in the FHIR version (`as(foo)`) is logged as a warning
+    naming the mapping and the path, and nothing is built for that mapping; before, it logged an error and
+    could also drop the mappings next to it
 
 ## [3.0.2] - 2026-10-03
 ### Added

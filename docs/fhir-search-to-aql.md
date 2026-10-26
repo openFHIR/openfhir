@@ -102,16 +102,16 @@ Matched helpers are grouped by context. For each context, all matched helpers an
 ```
 SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.body_weight.v2]
 WHERE e/ehr_id/value='{{ehrid}}'
-AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value = 80
-AND h/data[at0002]/events[at0003]/data[at0001]/items[at0005]/value = 'final'
+AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude = 80
+AND h/data[at0002]/events[at0003]/data[at0001]/items[at0005]/value/defining_code/code_string = 'final'
 ```
 
 **Composition AQL** (targets the composition level):
 ```
 SELECT c FROM EHR e CONTAINS COMPOSITION c
 WHERE e/ehr_id/value='{{ehrid}}'
-AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/.../value = 80
-AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/.../value = 'final'
+AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/.../value/magnitude = 80
+AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/.../value/defining_code/code_string = 'final'
 ```
 
 If `narrowToTemplate=true` (set when either `template` or `_profile` was provided in the request), the composition archetype is added to the composition AQL:
@@ -121,11 +121,22 @@ CONTAINS OBSERVATION [openEHR-EHR-OBSERVATION.body_weight.v2]
 WHERE e/ehr_id/value='{{ehrid}}'
 ```
 
-### Data type-aware value formatting
+### What is compared
 
-The value in the WHERE clause is formatted based on the `detectedType` of the helper:
-- `DV_QUANTITY` — unquoted numeric value: `/value = 80`
-- All other types — quoted string value: `/value = '29463-7'`
+Each condition compares one attribute of a data value, on its strict AQL path (`RmAttributePins`):
+- a mapping whose openEHR path ends in an attribute (`…/value/magnitude`, `…/defining_code/code_string`, `…/|code`)
+  compares that attribute
+- a mapping on a whole data value compares the attribute its type is compared by: `magnitude` of a `DV_QUANTITY` or
+  `DV_COUNT`, `defining_code/code_string` of a `DV_CODED_TEXT` (a token search names a code; a manual mapping's
+  fixed value is compared to the text, `value`), `numerator` of a `DV_PROPORTION`, `id` of a `DV_IDENTIFIER`, `value`
+  of a text, date, time, boolean or ordinal. Of an element allowing several types, the type the mapping's
+  `with.type` picks, otherwise the first the template lists that has one
+- the attribute sits below the element's `value` for an ELEMENT (`items[at0004]/value/magnitude`), directly on a
+  node that is a data value itself (`context/start_time/value`, `ism_transition/current_state/defining_code/code_string`)
+
+Numbers and booleans are unquoted (`= 80`), text quoted (`= '29463-7'`). A param whose mappings all address a node
+holding no data value (an EVENT, a CLUSTER, a participation …) is left out of the AQL and reported in
+`unhandledParams` with type `WARNING`.
 
 ### AQL validation
 
@@ -137,6 +148,7 @@ Each generated AQL is parsed by the EHRbase AQL parser before being included in 
 
 `ToAqlResponse` contains:
 - `aqls` — list of `AqlResponse(aql, type)` where type is `ENTRY` or `COMPOSITION`
-- `unhandledParams` — list of `UnhandledParam(paramName, type, message)` for params that could not be mapped; currently always `ERROR` type
+- `unhandledParams` — list of `UnhandledParam(paramName, type, message)` for params that could not be mapped: `ERROR`
+  when no mapping matches the param, `WARNING` when its mappings address nothing an AQL can compare
 
 The `{{ehrid}}` placeholder in the generated AQL is intended to be replaced by the caller with the actual EHR ID at query time.

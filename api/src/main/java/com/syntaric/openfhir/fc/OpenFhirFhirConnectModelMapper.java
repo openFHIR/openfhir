@@ -165,7 +165,7 @@ public class OpenFhirFhirConnectModelMapper {
         intermediate.setName(mapping.getName() + "." + manual.getName());
         intermediate.setWith(new With()
                 .withType(OPENEHR_TYPE_NONE)
-                .withOpenehr(mapping.getWith().getOpenehr())
+                .withOpenehr(OPENEHR_ROOT_FC)
                 .withFhir(String.join(".", commonPrefix)));
         intermediate.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
 
@@ -191,7 +191,7 @@ public class OpenFhirFhirConnectModelMapper {
         fromManual.setName(mapping.getName() + "." + manual.getName());
         fromManual.setWith(new With()
                 .withValue(value)
-                .withOpenehr(mapping.getWith().getOpenehr())
+                .withOpenehr(OPENEHR_ROOT_FC)
                 .withFhir(path));
         fromManual.setOpenehrCondition(resolveOpenEhrCondition(mapping, manual));
         return fromManual;

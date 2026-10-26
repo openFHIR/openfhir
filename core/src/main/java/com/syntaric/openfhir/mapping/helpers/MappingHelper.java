@@ -36,7 +36,20 @@ public class MappingHelper {
     private String fullOpenEhrPath;
     private String fullOpenEhrFlatPath;
     private String fullOpenEhrFlatPathWithMatchingRegex;
+    // an archetype node of the openEHR path is not in the template; the mapping (and its children) is skipped
+    private boolean openEhrPathUnresolved;
+    // problems found while this helper was built (unresolved path, missing slot model ...); kept on the helper so
+    // they survive a cached helper tree and can be reported on every request
+    private List<String> constructionIssues;
     private String flatPathPipeSuffix; // used primarily for fhir->openehr and has the flat path suffix appended to it
+    // the attribute of a data value the openEHR path ends in (items[at0004]/value/magnitude), see RmAttributePins,
+    // and its strict AQL path
+    private RmAttributePins.Attribute pinnedAttribute;
+    private String pinnedAqlPath;
+
+    // the RM type of the template node the openEHR path addresses (ELEMENT, DV_DATE_TIME, EVENT ...); for a path
+    // ending in an attribute of a data value, of the node holding that data value
+    private String openEhrNodeRmType;
 
     private String detectedType; // when doing openehr->fhir, we can detect specific type based on incoming openehr composition
     private String hardcodedType;
@@ -79,6 +92,16 @@ public class MappingHelper {
         return children;
     }
 
+    /** The data value type whose attribute the openEHR path addresses, null when it addresses none. */
+    public String getPinnedRmType() {
+        return pinnedAttribute == null ? null : pinnedAttribute.rmType();
+    }
+
+    public void addConstructionIssue(final String issue) {
+        if (constructionIssues == null) constructionIssues = new ArrayList<>();
+        constructionIssues.add(issue);
+    }
+
     public MappingHelper clone() {
         final MappingHelper clone = cloneWithFhirResourceAndRootIntact();
         clone.generatingFhirResource = null;
@@ -98,6 +121,8 @@ public class MappingHelper {
         clone.originalFhirPath = this.originalFhirPath;
         clone.originalOpenEhrPath = this.originalOpenEhrPath;
         clone.flatPathPipeSuffix = this.flatPathPipeSuffix;
+        clone.pinnedAttribute = this.pinnedAttribute;
+        clone.pinnedAqlPath = this.pinnedAqlPath;
         clone.openEhrHierarchySplitFlatPath = this.openEhrHierarchySplitFlatPath;
         clone.fhir = this.fhir;
         clone.hasSlot = this.hasSlot;
@@ -109,7 +134,10 @@ public class MappingHelper {
         clone.fullOpenEhrPath = this.fullOpenEhrPath;
         clone.fullOpenEhrFlatPath = this.fullOpenEhrFlatPath;
         clone.fullOpenEhrFlatPathWithMatchingRegex = this.fullOpenEhrFlatPathWithMatchingRegex;
+        clone.openEhrPathUnresolved = this.openEhrPathUnresolved;
+        clone.constructionIssues = this.constructionIssues == null ? null : new ArrayList<>(this.constructionIssues);
         clone.detectedType = this.detectedType;
+        clone.openEhrNodeRmType = this.openEhrNodeRmType;
         clone.hardcodedType = this.hardcodedType;
         clone.manualOpenEhrValue = this.manualOpenEhrValue;
         clone.manualFhirValue = this.manualFhirValue;

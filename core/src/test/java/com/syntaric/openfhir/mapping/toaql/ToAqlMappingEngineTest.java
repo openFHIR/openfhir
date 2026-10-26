@@ -317,14 +317,14 @@ public class ToAqlMappingEngineTest {
         final MappingHelper codeHelper = new MappingHelper();
         codeHelper.setFullFhirPath("Observation.code");
         codeHelper.setFhir("code");
-        codeHelper.setPossibleRmTypes(List.of("DvCodedText"));
+        codeHelper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
         codeHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         codeHelper.setFullOpenEhrPath("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
 
         final MappingHelper statusHelper = new MappingHelper();
         statusHelper.setFullFhirPath("Observation.status");
         statusHelper.setFhir("status");
-        statusHelper.setPossibleRmTypes(List.of("DvCodedText"));
+        statusHelper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
         statusHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
         statusHelper.setFullOpenEhrPath("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0005]");
 
@@ -346,16 +346,53 @@ public class ToAqlMappingEngineTest {
         final ToAqlResponse.AqlResponse entryAqlResponse = response.getAqls().stream()
                 .filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY).findFirst().orElseThrow();
         Assert.assertEquals(
-                "SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.body_weight.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value = '29463-7' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0005]/value = 'final'",
+                "SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.body_weight.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/defining_code/code_string = '29463-7' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0005]/value/defining_code/code_string = 'final'",
                 entryAqlResponse.getAql());
 
         final ToAqlResponse.AqlResponse compositionAqlResponse = response.getAqls().stream()
                 .filter(a -> a.getType() == ToAqlResponse.AqlType.COMPOSITION).findFirst().orElseThrow();
         Assert.assertEquals(
-                "SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value = '29463-7' AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0005]/value = 'final'",
+                "SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/defining_code/code_string = '29463-7' AND c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0005]/value/defining_code/code_string = 'final'",
                 compositionAqlResponse.getAql());
 
         Assert.assertTrue(response.getUnhandledParams() == null || response.getUnhandledParams().isEmpty());
+    }
+
+    @Test
+    public void map_paramOnANodeWithoutADataValue_isLeftOutWithAWarning() {
+        final MappingHelper codeHelper = new MappingHelper();
+        codeHelper.setFullFhirPath("Observation.code");
+        codeHelper.setFhir("code");
+        codeHelper.setPossibleRmTypes(List.of("DV_CODED_TEXT"));
+        codeHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
+        codeHelper.setFullOpenEhrPath("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]");
+
+        // an EVENT holds no data value a search value could be compared to
+        final MappingHelper statusHelper = new MappingHelper();
+        statusHelper.setFullFhirPath("Observation.status");
+        statusHelper.setFhir("status");
+        statusHelper.setPossibleRmTypes(List.of("EVENT"));
+        statusHelper.setArchetype("openEHR-EHR-OBSERVATION.body_weight.v2");
+        statusHelper.setFullOpenEhrPath("$composition/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]");
+
+        final ToAql.ToAqlModels model = ToAql.ToAqlModels.builder()
+                .context(getContext())
+                .mappingHelpers(List.of(codeHelper, statusHelper))
+                .build();
+        final List<FhirQueryParam> params = new ArrayList<>();
+        params.add(new FhirQueryParam("code", "29463-7", null));
+        params.add(new FhirQueryParam("status", "final", null));
+
+        final ToAqlResponse response = engine.map(List.of(model), "Observation", params, false);
+
+        final ToAqlResponse.AqlResponse entryAqlResponse = response.getAqls().stream()
+                .filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY).findFirst().orElseThrow();
+        Assert.assertEquals(
+                "SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.body_weight.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/defining_code/code_string = '29463-7'",
+                entryAqlResponse.getAql());
+        Assert.assertEquals(1, response.getUnhandledParams().size());
+        Assert.assertEquals("status", response.getUnhandledParams().get(0).getParamName());
+        Assert.assertEquals(ToAqlResponse.UnhandledParamType.WARNING, response.getUnhandledParams().get(0).getType());
     }
 
     // -----------------------------------------------------------------------------------------------------------------

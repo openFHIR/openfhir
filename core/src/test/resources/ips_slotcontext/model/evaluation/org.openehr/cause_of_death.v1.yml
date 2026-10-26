@@ -1,0 +1,103 @@
+grammar: FHIRConnect/v1.0.0
+type: model
+metadata:
+  name:  EVALUATION.cause_of_death.v1
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: openEHR-EHR-EVALUATION.cause_of_death.v1
+    revision: 1.0.2
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/Condition
+
+mappings:
+  - name: "compositionMapping"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$composition"
+    slotArchetype: "COMPOSITION.report.v1.Condition"
+
+  - name: "other_participations"
+    with:
+      fhir: "$resource.asserter"
+      openehr: "$archetype/other_participations"  # reference to part
+      type: "NONE"
+    followedBy:
+      mappings:
+        - name : "participationFunction"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openEHRRoot"
+          manual:
+            - name: "function"
+              openehr:
+                - path: "function"
+                  value: "asserter"
+        - name: "performer"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$openehrRoot/performer" # reference to party_identified NOT SUPPORTED since 1..1 whole mapping is commented out
+
+  - name: "provider"
+    with:
+      fhir: "$resource.recorder"
+      openehr: "$archetype/provider"
+
+  - name: "status" #clincalStatus
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[openEHR-EHR-CLUSTER.problem_qualifier.v2]"
+    slotArchetype: "CLUSTER.problem_qualifier.v2"
+
+  - name: "causeOfDeath"
+    with:
+      fhir: "$resource.code"
+      openehr: "$archetype/data[at0001]/items[at0002]"
+
+  - name: "category"
+    with:
+      fhir: "$resource.category"
+      openehr: "$archetype"
+    unidirectional: "openEHR->fhir"
+    followedBy:
+      mappings:
+        - name: "categoryCodeCodingLoinc"
+          with:
+            fhir: "coding"
+            openehr: "$archetype"
+          manual:
+            - name: "loincCode"
+              fhir:
+                - path: "code"
+                  value: "79378-6"
+
+            - name: "loincSystem"
+              fhir:
+                - path: "system"
+                  value: "http://loinc.org"
+
+
+        - name: "categoryCodeCodingSnomed"
+          with:
+            fhir: "coding"
+            openehr: "$archetype"
+          manual:
+            - name: "snomedCode"
+              fhir:
+                - path: "code"
+                  value: "16100001"
+
+            - name: "snomedSystem"
+              fhir:
+                - path: "system"
+                  value: "http://snomed.info/sct"
+
+
+  - name: "comment"
+    with:
+      fhir: "$resource.note.text"
+      openehr: "$archetype/data[at0001]/items[at0013]"
+

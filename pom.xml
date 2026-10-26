@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>open-fhir</artifactId>
-    <version>3.0.2</version>
+    <version>3.0.3-SNAPSHOT</version>
     <groupId>com.syntaric.openfhir</groupId>
     <packaging>pom</packaging>
 
@@ -32,6 +32,15 @@
             <id>gasperr</id>
             <name>Gasper Andrejc</name>
             <email>gasper.andrejc@syntaric.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Syntaric d.o.o.</organization>
+        </developer>
+        <developer>
+            <id>TilenKopac</id>
+            <name>Tilen Kopač</name>
+            <email>tilen.kopac@syntaric.com</email>
             <roles>
                 <role>Developer</role>
             </roles>

@@ -1,0 +1,100 @@
+grammar: FHIRConnect/v0.0.1
+type: model
+metadata:
+  name: "openEHR-EHR-INSTRUCTION.medication_order.v2"
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: R4
+  openEhrConfig:
+    archetype: "openEHR-EHR-INSTRUCTION.medication_order.v2"
+  fhirConfig:
+    structureDefinition: http://hl7.org/fhir/StructureDefinition/MedicationRequest
+
+# Template of a model mapper: CastSpellingBidirectionalTest replaces ${string}, ${dateTime} and ${boolean} with
+# the spelling of the cast under test (String, string, FHIR.string, StringType ...) before loading it.
+
+preprocessor:
+  hierarchy:
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/activities[at0001]/description[at0002]"
+    split:
+      fhir:
+        create: "resource"
+
+mappings:
+  - name: "commentExtension"
+    with:
+      fhir: "$resource.extension"
+      openehr: "$archetype/activities[at0001]/description[at0002]/items[at0167]"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.extension"
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://example.org/comment"
+    followedBy:
+      mappings:
+        - name: "commentValue"
+          with:
+            fhir: "value.as(${string})"
+            openehr: "$archetype/activities[at0001]/description[at0002]/items[at0167]"
+        - name: "commentUrl"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "url"
+              fhir:
+                - path: "url"
+                  value: "http://example.org/comment"
+
+  - name: "orderStartExtension"
+    with:
+      fhir: "$resource.extension"
+      openehr: "$archetype/activities[at0001]/description[at0002]/items[at0113]/items[at0012]"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.extension"
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://example.org/order-start"
+    followedBy:
+      mappings:
+        - name: "orderStartValue"
+          with:
+            fhir: "value.as(${dateTime})"
+            openehr: "$archetype/activities[at0001]/description[at0002]/items[at0113]/items[at0012]"
+        - name: "orderStartUrl"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "url"
+              fhir:
+                - path: "url"
+                  value: "http://example.org/order-start"
+
+  - name: "safetyOverrideExtension"
+    with:
+      fhir: "$resource.extension"
+      openehr: "$archetype/activities[at0001]/description[at0002]/items[at0062]/items[at0064]"
+      type: "NONE"
+    fhirCondition:
+      targetRoot: "$resource.extension"
+      targetAttribute: "url"
+      operator: "one of"
+      criteria: "http://example.org/safety-override"
+    followedBy:
+      mappings:
+        - name: "safetyOverrideValue"
+          with:
+            fhir: "value.as(${boolean})"
+            openehr: "$archetype/activities[at0001]/description[at0002]/items[at0062]/items[at0064]"
+        - name: "safetyOverrideUrl"
+          with:
+            fhir: "$fhirRoot"
+          manual:
+            - name: "url"
+              fhir:
+                - path: "url"
+                  value: "http://example.org/safety-override"

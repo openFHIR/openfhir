@@ -20,7 +20,6 @@ import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
 import com.syntaric.openfhir.fc.schema.Spec;
 import com.syntaric.openfhir.producers.FhirContextRegistry;
 import ca.uhn.fhir.fhirpath.IFhirPath;
-import org.hl7.fhir.dstu3.hapi.fluentpath.FhirPathDstu3;
 import org.hl7.fhir.instance.model.api.IAnyResource;
 import org.hl7.fhir.instance.model.api.IBaseBooleanDatatype;
 import org.hl7.fhir.instance.model.api.IBaseBundle;
@@ -164,7 +163,8 @@ public class ToOpenEhr {
                                                                                                                 .getStart(),
                                                                                                         context.getContext()
                                                                                                                 .getArchetypes(),
-                                                                                                        webTemplate);
+                                                                                                        webTemplate,
+                                                                                                        issueCollector);
         metricsLogger.record("fhirToFlatJsonObject.constructHelpers", "template=" + templateId, helpersTimer.elapsedMs());
 
         // apply limiting criteria and find the starting point within the Bundle
@@ -259,7 +259,7 @@ public class ToOpenEhr {
                 if (aMapperFromStartingArchetype.getGeneratingResourceType().equals("Bundle")) {
                     return Collections.singletonList(toEvaluateOn);
                 }
-                if(fhirPath instanceof FhirPathDstu3) {
+                if (fhirVersion == Spec.Version.STU3) {
                     // no ofType function
                     return fhirPath.evaluate(toEvaluateOn,
                                       String.format("entry.resource.where($this is %s)",

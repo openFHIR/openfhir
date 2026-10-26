@@ -1,0 +1,60 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: IPS_medication_section
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: SECTION.adhoc.v1
+
+# IPS "Medication list" section. Loaded only by IPS_medication.context (scope: sub), so it applies
+# to this section alone. emptyReason is inherited from SECTION.adhoc.v1.
+mappings:
+  - name: "title"
+    extension: "add"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$archetype"
+    manual:
+      - name: "manualTitle"
+        fhir:
+          - path: "title"
+            value: "Active Medication List"
+
+  - name: "code"
+    extension: "add"
+    with:
+      fhir: "code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "manualSystem"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "manualCode"
+        fhir:
+          - path: "code"
+            value: "10160-0"
+      - name: "manualDisplay"
+        fhir:
+          - path: "display"
+            value: "Medication List"
+
+  # TODO entry mapping: MedicationStatement / MedicationRequest -> medication archetype slot
+
+  # TODO placeholder narrative; replace with generateNarrative once the entry mapping exists
+  - name: "narrativeText"
+    extension: "add"
+    with:
+      fhir: "text"
+      openehr: "$archetype"
+    manual:
+      - name: "status"
+        fhir:
+          - path: "status"
+            value: "generated"
+      - name: "div"
+        fhir:
+          - path: "div"
+            value: "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hot flushes</div>"

@@ -1,0 +1,17 @@
+grammar: FHIRConnect/v0.0.1
+type: context
+metadata:
+  name: "medication order cast spelling"
+  version: 0.0.1a
+spec:
+  system: FHIR
+  version: R4
+
+context:
+  profile:
+    url: "MedicationRequest"
+  template:
+    id: "medication order"
+  archetypes:
+    - "openEHR-EHR-INSTRUCTION.medication_order.v2"
+  start: "openEHR-EHR-INSTRUCTION.medication_order.v2"

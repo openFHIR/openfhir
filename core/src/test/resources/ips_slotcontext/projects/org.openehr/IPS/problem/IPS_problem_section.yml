@@ -1,0 +1,64 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: IPS_problem_section
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: SECTION.adhoc.v1
+
+# IPS "Problem List" section. Loaded only by IPS_problem.context (scope: sub), so it applies
+# to this section alone. emptyReason is inherited from SECTION.adhoc.v1.
+mappings:
+  - name: "title"
+    extension: "add"
+    with:
+      fhir: "$fhirRoot"
+      openehr: "$archetype"
+    manual:
+      - name: "manualTitle"
+        fhir:
+          - path: "title"
+            value: "Active Problems"
+
+  - name: "code"
+    extension: "add"
+    with:
+      fhir: "code.coding"
+      openehr: "$archetype"
+    manual:
+      - name: "manualSystem"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "manualCode"
+        fhir:
+          - path: "code"
+            value: "11450-4"
+      - name: "manualDisplay"
+        fhir:
+          - path: "display"
+            value: "Problem list Reported"
+
+  - name: "entry"
+    extension: "add"
+    with:
+      fhir: "entry"
+      openehr: "$reference/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+    reference:
+      resourceType: "Condition"
+      mappings:
+        - name: "problemDiagnosis"
+          with:
+            fhir: "$fhirRoot"
+            openehr: "$archetype/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]"
+          slotArchetype: "EVALUATION.problem_diagnosis.v1"
+
+  - name: "narrativeText"
+    extension: "add"
+    with:
+      fhir: "text"
+      openehr: "$archetype"
+    mappingCode: "generateNarrative(entry, conditions)"
+    unidirectional: "openehr->fhir"

@@ -10,6 +10,7 @@ import com.syntaric.openfhir.mapping.MappingContext;
 import com.syntaric.openfhir.mapping.custommappings.CustomMapping;
 import com.syntaric.openfhir.mapping.custommappings.CustomMappingRegistry;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
+import com.syntaric.openfhir.mapping.helpers.RmTypes;
 import com.syntaric.openfhir.metrics.MappingMetricsLogger;
 import com.syntaric.openfhir.metrics.MappingTimer;
 import com.syntaric.openfhir.operations.MappingIssueCollector;
@@ -143,7 +144,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
         boolean somethingWasAdded = false;
         final Map<MappingHelper, MappingOutcome> unmapped = new LinkedHashMap<>();
         for (final MappingHelper helper : mappingHelpers) {
-            if (helper.getFullOpenEhrFlatPath() == null) {
+            if (helper.getFullOpenEhrFlatPath() == null || helper.isOpenEhrPathUnresolved()) {
                 continue;
             }
             final int previousFinalFlatSize = finalFlat.size();
@@ -591,10 +592,9 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             if (!OPENEHR_TYPE_NONE.equals(clonedHelper.getHardcodedType())) {
                 final List<String> possibleRmTypes = clonedHelper.getPossibleRmTypes();
                 if (possibleRmTypes != null && !possibleRmTypes.isEmpty()) {
-                    final String deducedRmType = deduceRmType(result, possibleRmTypes); // if we can deduce RM type based on what result is and what possibleRmTypes are, we do that
-                    final String openEhrPathToPopulateTo =
-                            openFhirMapperUtils.removeAqlSuffix(thePath, deducedRmType)
-                                    + clonedHelper.getFlatPathPipeSuffix();
+                    // the type with.type picks, or else the one the FHIR value's type points to
+                    final String deducedRmType = deduceRmType(result, RmTypes.preferred(clonedHelper));
+                    final String openEhrPathToPopulateTo = thePath + clonedHelper.getFlatPathPipeSuffix();
                     valueOutcome = populateValue(helper, clonedHelper, result, thePath, openEhrPathToPopulateTo,
                             flatComposition, deducedRmType, issueCollector);
                 } else if (StringUtils.isNotEmpty(clonedHelper.getProgrammedMapping())) {

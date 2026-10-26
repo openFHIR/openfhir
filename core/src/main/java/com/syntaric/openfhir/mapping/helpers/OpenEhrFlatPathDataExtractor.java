@@ -1,13 +1,18 @@
 package com.syntaric.openfhir.mapping.helpers;
 
+import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
+
 import com.google.gson.JsonObject;
+import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.parser.ValueToFHIRParser;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r4.model.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +31,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OpenEhrFlatPathDataExtractor {
 
-    private OpenFhirStringUtils openFhirStringUtils;
+    private final OpenFhirStringUtils openFhirStringUtils;
     private final ValueToFHIRParser valueToFHIRParser;
 
     @Autowired
@@ -44,6 +49,18 @@ public class OpenEhrFlatPathDataExtractor {
      * @return one {@link DataWithIndex} per matching occurrence, never {@code null}
      */
     public List<DataWithIndex> extract(final MappingHelper mappingHelper, final JsonObject flatJsonObject) {
+        // An attribute of a data value (.../value/magnitude, .../defining_code/code_string) is read from that
+        // attribute only: read as the element, its other attributes - or the bare element key a DV_PARSABLE's value is
+        // written as - answer for it.
+        final RmAttributePins.Attribute pinned = RmAttributePins.pinnedBy(mappingHelper);
+        if (pinned != null) {
+            return extractPinnedAttribute(mappingHelper, flatJsonObject,
+                                          pinned.isElementItself() || pinned.emittedOnElement());
+        }
+        return extractByFlatPath(mappingHelper, flatJsonObject);
+    }
+
+    private List<DataWithIndex> extractByFlatPath(final MappingHelper mappingHelper, final JsonObject flatJsonObject) {
         final String withRegex = mappingHelper.getFullOpenEhrFlatPathWithMatchingRegex();
         if (StringUtils.isBlank(withRegex)) {
             log.debug("No flat-path regex on mapping '{}'; returning empty.",
@@ -73,6 +90,53 @@ public class OpenEhrFlatPathDataExtractor {
                     return dataWithIndex;
                 })
                 .filter(d -> d != null)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * A path ending in an attribute of a data value is written to that pipe attribute of the element
+     * ({@code active_inactive_status|code}, {@code analyte_result/quantity_value|magnitude}); it is read back from there,
+     * as text the FHIR side parses into its own type.
+     *
+     * @param orBareElement the attribute may (also) come as the element itself: it is the whole value in the flat
+     *                      format ({@code value} of a DV_TEXT), or the SDK writes it so
+     */
+    private List<DataWithIndex> extractPinnedAttribute(final MappingHelper mappingHelper,
+                                                       final JsonObject flatJsonObject,
+                                                       final boolean orBareElement) {
+        final String pipeSuffix = StringUtils.defaultString(mappingHelper.getFlatPathPipeSuffix());
+        final String flatPath = mappingHelper.getFullOpenEhrFlatPath();
+        if ((pipeSuffix.isEmpty() && !orBareElement) || StringUtils.isBlank(flatPath)) {
+            return List.of();
+        }
+        final String elementFlatPath = flatPath.replace(RECURRING_SYNTAX, "");
+        List<String> keys = pipeSuffix.isEmpty() ? List.of()
+                : wholeKeysMatching(openFhirStringUtils.addRegexPatternToSimplifiedFlatFormat(elementFlatPath + pipeSuffix),
+                                    flatJsonObject);
+        if (keys.isEmpty() && orBareElement) {
+            keys = wholeKeysMatching(openFhirStringUtils.addRegexPatternToSimplifiedFlatFormat(elementFlatPath),
+                                     flatJsonObject).stream()
+                    .filter(key -> !key.contains("|"))
+                    .collect(Collectors.toList());
+        }
+
+        final List<DataWithIndex> extracted = keys.stream()
+                .filter(key -> flatJsonObject.has(key) && flatJsonObject.get(key).isJsonPrimitive())
+                .map(key -> new DataWithIndex(new StringType(flatJsonObject.get(key).getAsString()),
+                        openFhirStringUtils.getLastIndex(key.contains("|") ? key.substring(0, key.lastIndexOf('|')) : key),
+                        key, FhirConnectConst.DV_TEXT))
+                .collect(Collectors.toList());
+        if (!extracted.isEmpty()) {
+            mappingHelper.setDetectedType(FhirConnectConst.DV_TEXT);
+        }
+        return extracted;
+    }
+
+    // The flat keys the regex matches as a whole: |unit must not take |units_system for its own.
+    private static List<String> wholeKeysMatching(final String regex, final JsonObject flatJsonObject) {
+        final Pattern pattern = Pattern.compile(regex);
+        return flatJsonObject.keySet().stream()
+                .filter(key -> pattern.matcher(key).matches())
                 .collect(Collectors.toList());
     }
 

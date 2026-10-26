@@ -49,6 +49,10 @@ public class FhirConnectManager {
         return fhirConnectService.findContextByTemplateId(templateId);
     }
 
+    public FhirConnectContextEntity findContextByName(final String name) {
+        return fhirConnectService.findContextByName(name);
+    }
+
     public List<FhirConnectContextEntity> allUserContextEntities() {
         return fhirConnectService.allUserContextEntities();
     }

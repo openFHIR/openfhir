@@ -1,0 +1,138 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: IPS_adverse_reaction
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: EVALUATION.adverse_reaction_risk.v2
+
+# The IPS template replaces two openEHR value sets with the FHIR ones, but as DV_TEXT with
+# capitalised values (see "IPS - Allergies and Intolerances.opt" and the HL7/openEHR alignment
+# table). FHIR codes are lower case, so both need a value table instead of a direct mapping.
+#
+# AllergyIntolerance-uv-ips carries abatement as the extension allergyintolerance-abatement;
+# the IPS template has no node for it. Not mapped.
+mappings:
+  - name: "reactionMechanism" # AllergyIntolerance.type <-> at0058 (DV_TEXT: Allergy | Intolerance)
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[at0058]"
+      type: "NONE"
+    manual:
+      - name: "allergy"
+        openehr:
+          - path: "value"
+            value: "Allergy"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "type"
+          operator: "one of"
+          criteria: "allergy"
+        fhir:
+          - path: "type"
+            value: "allergy"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0058]"
+          targetAttribute: "value"
+          operator: "one of"
+          criteria: "Allergy"
+
+      - name: "intolerance"
+        openehr:
+          - path: "value"
+            value: "Intolerance"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "type"
+          operator: "one of"
+          criteria: "intolerance"
+        fhir:
+          - path: "type"
+            value: "intolerance"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0058]"
+          targetAttribute: "value"
+          operator: "one of"
+          criteria: "Intolerance"
+
+  - name: "categoryToTest" # overwrites the base direct mapping: at0120 is DV_TEXT Food | Medication | Environment | Biologic in the template
+    extension: "overwrite"
+    with:
+      fhir: "$resource"
+      openehr: "$archetype/data[at0001]/items[at0120]"
+      type: "NONE"
+    manual:
+      - name: "food"
+        openehr:
+          - path: "value"
+            value: "Food"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "category"
+          operator: "one of"
+          criteria: "food"
+        fhir:
+          - path: "category"
+            value: "food"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0120]"
+          targetAttribute: "value"
+          operator: "one of"
+          criteria: "Food"
+
+      - name: "medication"
+        openehr:
+          - path: "value"
+            value: "Medication"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "category"
+          operator: "one of"
+          criteria: "medication"
+        fhir:
+          - path: "category"
+            value: "medication"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0120]"
+          targetAttribute: "value"
+          operator: "one of"
+          criteria: "Medication"
+
+      - name: "environment"
+        openehr:
+          - path: "value"
+            value: "Environment"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "category"
+          operator: "one of"
+          criteria: "environment"
+        fhir:
+          - path: "category"
+            value: "environment"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0120]"
+          targetAttribute: "value"
+          operator: "one of"
+          criteria: "Environment"
+
+      - name: "biologic"
+        openehr:
+          - path: "value"
+            value: "Biologic"
+        fhirCondition:
+          targetRoot: "$resource"
+          targetAttribute: "category"
+          operator: "one of"
+          criteria: "biologic"
+        fhir:
+          - path: "category"
+            value: "biologic"
+        openehrCondition:
+          targetRoot: "$archetype/data[at0001]/items[at0120]"
+          targetAttribute: "value"
+          operator: "one of"
+          criteria: "Biologic"

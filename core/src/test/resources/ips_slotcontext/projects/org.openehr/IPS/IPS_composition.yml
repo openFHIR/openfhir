@@ -1,0 +1,104 @@
+grammar: FHIRConnect/v1.0.0
+type: extension
+metadata:
+  name: IPS_composition
+  version: 0.0.1-alpha
+spec:
+  system: FHIR
+  version: R4
+  extends: COMPOSITION.health_summary.v1
+
+# COMPOSITION.health_summary.v1 is a generic archetype, so the base model only carries
+# what holds for any health summary (status). Everything specific to the IPS profile
+# (Composition-uv-ips) lives here: profile, title, type and the dispatch of the sections.
+# Each section is mapped by its own sub-context (see IPS.context.yml, contexts), chosen
+# by the LOINC code the FHIR section carries.
+mappings:
+  - name: "meta"
+    extension: "add"
+    with:
+      fhir: "$resource.meta"
+      openehr: "$composition"
+    manual:
+      - name: "profile"
+        fhir:
+          - path: "profile"
+            value: "http://hl7.org/fhir/uv/ips/StructureDefinition/Composition-uv-ips"
+
+  - name: "title"
+    extension: "add"
+    with:
+      fhir: "$resource"
+      openehr: "$composition"
+    manual:
+      - name: "title"
+        fhir:
+          - path: "title"
+            value: "Patient Summary"
+
+  - name: "type"
+    extension: "add"
+    with:
+      fhir: "$resource.type.coding"
+      openehr: "$composition"
+    manual:
+      - name: "code"
+        fhir:
+          - path: "code"
+            value: "60591-5"
+      - name: "system"
+        fhir:
+          - path: "system"
+            value: "http://loinc.org"
+      - name: "display"
+        fhir:
+          - path: "display"
+            value: "Patient summary Document"
+
+  - name: "sectionActiveProblems"
+    extension: "add"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='IPS Problem List']"
+    slotContext: "IPS_problem.context"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "11450-4"
+
+  - name: "sectionAllergiesAndIntolerances"
+    extension: "add"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='IPS Allergies and Intolerances']"
+    slotContext: "IPS_allergy.context"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "48765-2"
+
+  - name: "sectionMedications"
+    extension: "add"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='IPS Medication Summary']"
+    slotContext: "IPS_medication.context"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "10160-0"
+
+  - name: "sectionMedicalDevices"
+    extension: "add"
+    with:
+      fhir: "$resource.section"
+      openehr: "$composition/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='IPS Medical Devices']"
+    slotContext: "IPS_device.context"
+    fhirCondition:
+      targetRoot: "$resource.section"
+      targetAttribute: "code.coding.code"
+      operator: "one of"
+      criteria: "46264-8"

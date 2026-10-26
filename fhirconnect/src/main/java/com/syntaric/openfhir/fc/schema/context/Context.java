@@ -1,6 +1,7 @@
 
 package com.syntaric.openfhir.fc.schema.context;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -12,16 +13,27 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "scope",
         "profile",
         "template",
         "profileUrl",
         "templateId",
         "archetypes",
         "extensions",
+        "contexts",
         "start",
         "_query"
 })
 public class Context implements Serializable {
+
+    public static final String SCOPE_ROOT = "root";
+    public static final String SCOPE_SUB = "sub";
+
+    /**
+     * root (default) or sub. A sub-context is only ever entered via slotContext, never picked as a root.
+     */
+    @JsonProperty("scope")
+    private String scope;
 
     /**
      * (Required)
@@ -45,6 +57,11 @@ public class Context implements Serializable {
      */
     @JsonProperty("extensions")
     private List<String> extensions;
+    /**
+     * Names of the sub-contexts this context enters via slotContext.
+     */
+    @JsonProperty("contexts")
+    private List<String> contexts;
     /**
      * (Required)
      */
@@ -138,6 +155,34 @@ public class Context implements Serializable {
     @JsonProperty("start")
     public void setStart(String start) {
         this.start = start;
+    }
+
+    @JsonProperty("scope")
+    public String getScope() {
+        return scope;
+    }
+
+    @JsonProperty("scope")
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    /**
+     * @return true if this context is a sub-context (scope: sub); scope defaults to root
+     */
+    @JsonIgnore
+    public boolean isSubContext() {
+        return SCOPE_SUB.equalsIgnoreCase(scope);
+    }
+
+    @JsonProperty("contexts")
+    public List<String> getContexts() {
+        return contexts;
+    }
+
+    @JsonProperty("contexts")
+    public void setContexts(List<String> contexts) {
+        this.contexts = contexts;
     }
 
     @JsonProperty("_query")
