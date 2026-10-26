@@ -54,7 +54,6 @@ public class ToFhirMappingEngineTest {
                 fhirInstanceCreatorUtility,
                 new FhirContextRegistry(),
                 new OpenEhrFlatPathDataExtractor(openFhirStringUtils,
-                                                 openFhirMapperUtils,
                                                  new ValueToFHIRParser(
                                                          new TemporalParser(
                                                                  readers),

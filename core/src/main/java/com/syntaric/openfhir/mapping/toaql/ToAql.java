@@ -211,19 +211,21 @@ public class ToAql {
         return true;
     }
 
+    /**
+     * The helpers of the relevant model mappers, wherever in the helper tree they are (a slotted model sits below
+     * the slot's helper): the topmost helper of each, since a helper's children are reached through it (and its
+     * conditions) when the query params are matched, see {@link ToAqlMappingEngine#findByFhirPath}.
+     */
     final List<MappingHelper> getRelevantMappingHelpers(final List<OpenFhirFhirConnectModelMapper> relevantModelMappers,
                                                         final List<MappingHelper> mappers,
                                                         final List<MappingHelper> relevanOnes) {
-        for (final OpenFhirFhirConnectModelMapper relevantModelMapper : relevantModelMappers) {
-            for (final MappingHelper mapper : mappers) {
-                if (mapper.getModelMetadataName().equals(relevantModelMapper.getName())) {
-                    relevanOnes.add(mapper);
-                }
-                if (mapper.getChildren() != null && !mapper.getChildren().isEmpty()) {
-                    getRelevantMappingHelpers(relevantModelMappers,
-                                              mapper.getChildren(),
-                                              relevanOnes);
-                }
+        for (final MappingHelper mapper : mappers) {
+            final boolean relevant = relevantModelMappers.stream()
+                    .anyMatch(m -> mapper.getModelMetadataName().equals(m.getName()));
+            if (relevant) {
+                relevanOnes.add(mapper);
+            } else if (mapper.getChildren() != null && !mapper.getChildren().isEmpty()) {
+                getRelevantMappingHelpers(relevantModelMappers, mapper.getChildren(), relevanOnes);
             }
         }
         return relevanOnes;

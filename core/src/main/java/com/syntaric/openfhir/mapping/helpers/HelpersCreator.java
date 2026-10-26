@@ -217,6 +217,9 @@ public class HelpersCreator {
                     fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper,
                     fullSlotPath);
 
+            // with.type picks among the types the template allows, so the paths are resolved knowing it
+            mappingHelper.setHardcodedType(mapping.getWith().getType());
+
             // Find flat paths
             if (webTemplate != null) {
                 final AqlToFlatPathConverter.Result flatPathResult = aqlToFlatPathConverter.convert(mappingHelper,
@@ -242,8 +245,6 @@ public class HelpersCreator {
             setConditions(mappingHelper, mapping, fhirDataType,
                     fhirConnectModel.getSpec().getOpenEhrConfig().getArchetype(), parentHelper, fullSlotPath,
                     fullFhirSlotPath, webTemplate);
-
-            mappingHelper.setHardcodedType(mapping.getWith().getType());
 
             mappingHelper.setUnidirectional(resolveUnidirectional(mapping, fhirConnectModel));
 
@@ -438,8 +439,7 @@ public class HelpersCreator {
                         .getArchetype(),
                 fallback, parentHelper, fullSlotPath);
 
-        final AqlToFlatPathConverter.Result result = aqlToFlatPathConverter.convert(resolvedOpenEhrPath, null,
-                webTemplate);
+        final AqlToFlatPathConverter.Result result = aqlToFlatPathConverter.convert(resolvedOpenEhrPath, webTemplate);
         // An unresolved path is only a problem when it also lost its repeating marker: the split path has then
         // collapsed to a non-repeating node, and repeating entries under it silently share an index. A path that
         // kept its [n] resolved well enough (e.g. a hierarchy that is just $archetype), so it stays quiet.
@@ -637,84 +637,48 @@ public class HelpersCreator {
     }
 
     /**
-     * Attributes of the RM data value types (DV_*) that are represented as a pipe attribute in the flat
-     * format, keyed by the RM attribute name and mapped to the flat name where the two differ.
+     * The flat path, relative to the condition's targetRoot, of what a condition's {@code targetAttribute}
+     * addresses below it.
      *
-     * <p>None of these have a node of their own in an operational template — a DV_IDENTIFIER's
-     * {@code type} or a DV_QUANTITY's {@code magnitude} is a leaf of the data value, not a child node —
-     * so the AQL converter cannot resolve them and a condition addressing one has to be rewritten here.
-     *
-     * <p>The exceptions, deliberately absent, are the attributes that <em>are</em> real nodes and
-     * therefore resolve normally: the element's own {@code value}, {@code defining_code} (a
-     * DV_CODED_TEXT's CODE_PHRASE node, whose {@code defining_code/code_string} spelling is rewritten
-     * to {@code |code} further down) and the {@code lower} / {@code upper} bounds of a DV_INTERVAL.
+     * <p>Conditions address openEHR with RM paths, so an attribute of a data value is written {@code type} or
+     * {@code value/type} (spelling out the ELEMENT's value attribute), {@code defining_code/code_string} ... rather
+     * than {@code |type} or {@code |code}; see {@link RmAttributePins}. It resolves to the pipe attribute (with the
+     * type segment of a choice element, {@code quantity_value|magnitude}), and, where the targetRoot's type does not
+     * tell, to that of whichever data value type has the attribute. The flat pipe syntax is accepted as-is too, for
+     * mappings that already use it. Anything else ({@code value}, {@code items[at0005]}) is an ordinary path.
      */
-    private static final Map<String, String> LEAF_RM_ATTRIBUTES = Map.ofEntries(
-            // DV_IDENTIFIER
-            Map.entry("id", "id"),
-            Map.entry("type", "type"),
-            Map.entry("issuer", "issuer"),
-            Map.entry("assigner", "assigner"),
-            // DV_TEXT / DV_CODED_TEXT
-            Map.entry("formatting", "formatting"),
-            Map.entry("language", "language"),
-            Map.entry("encoding", "encoding"),
-            Map.entry("hyperlink", "hyperlink"),
-            // CODE_PHRASE — the flat format names these |code and |terminology
-            Map.entry("code_string", "code"),
-            Map.entry("terminology_id", "terminology"),
-            Map.entry("preferred_term", "preferred_term"),
-            // DV_QUANTITY / DV_COUNT / DV_PROPORTION and the other quantified types.
-            // "units" is |unit in the flat format.
-            Map.entry("magnitude", "magnitude"),
-            Map.entry("units", "unit"),
-            Map.entry("precision", "precision"),
-            Map.entry("numerator", "numerator"),
-            Map.entry("denominator", "denominator"),
-            Map.entry("magnitude_status", "magnitude_status"),
-            Map.entry("accuracy", "accuracy"),
-            Map.entry("accuracy_is_percent", "accuracy_is_percent"),
-            // DV_ORDINAL / DV_SCALE
-            Map.entry("symbol", "symbol"),
-            Map.entry("ordinal", "ordinal"),
-            // DV_DURATION / DV_PARSABLE / DV_URI / DV_MULTIMEDIA / DV_ENCAPSULATED
-            Map.entry("formalism", "formalism"),
-            Map.entry("charset", "charset"),
-            Map.entry("media_type", "mediatype"),
-            Map.entry("size", "size"),
-            Map.entry("alternate_text", "alternate_text"),
-            Map.entry("uri", "uri"));
-
-    /**
-     * Maps a condition's {@code targetAttribute} onto the flat-format pipe attribute of an RM data
-     * value, or returns {@code null} when it is an ordinary path that has to go through the AQL
-     * converter.
-     *
-     * <p>Conditions address openEHR with RM paths, so a DV_IDENTIFIER part is written {@code type} (or
-     * {@code value/type}, spelling out the ELEMENT's value attribute) rather than {@code |type}, the
-     * same way a DV_CODED_TEXT is narrowed on {@code defining_code/code_string}. Those parts have no
-     * node in the operational template, so the converter silently drops the segment and returns the
-     * parent's flat path — which would leave the evaluator with a full path where it expects a pipe
-     * attribute. The flat pipe syntax is accepted as-is too, for mappings that already use it.
-     */
-    private String toLeafAttributeFlatPath(final String targetAttribute) {
+    private String conditionAttributeFlatPath(final String targetRoot,
+                                              final AqlToFlatPathConverter.Result rootResult,
+                                              final String targetAttribute,
+                                              final WebTemplate webTemplate) {
         if (targetAttribute.startsWith("|")) {
             return targetAttribute;
         }
-        // "value/type" addresses the RM attribute through the ELEMENT's value; both spellings are common
-        final String withoutValuePrefix = targetAttribute.startsWith("value/")
+        final String combined = targetRoot + "/" + targetAttribute;
+        final AqlToFlatPathConverter.AttributeResult resolved =
+                aqlToFlatPathConverter.resolveAttribute(combined, null, webTemplate);
+        if (resolved != null && resolved.attribute() != null && resolved.unresolvedSegment() == null) {
+            final String relative = resolved.flatPath().equals(rootResult.flatPath())
+                    ? ""
+                    : resolved.flatPath().replace(rootResult.flatPath() + "/", "");
+            final String pipe = resolved.pipe();
+            if (relative.isEmpty()) {
+                // the root itself: its pipe, or the node's own value
+                return pipe.isEmpty() ? "value" : pipe;
+            }
+            return relative + pipe;
+        }
+        final String spelling = targetAttribute.startsWith("value/")
                 ? targetAttribute.substring("value/".length())
                 : targetAttribute;
-        if (withoutValuePrefix.contains("/")) {
-            // Multi-segment paths still go through the converter — notably a DV_CODED_TEXT's
-            // "defining_code/code_string", which resolves against the template and is rewritten to
-            // |code further down.
-            return null;
+        final RmAttributePins.Attribute anyTypes = "value".equals(targetAttribute)
+                ? null
+                : RmAttributePins.anyTypes(spelling);
+        if (anyTypes != null && !anyTypes.isElementItself()) {
+            return "|" + anyTypes.flatAttribute();
         }
-        // Ordinary attributes — including a bare "value", which is the ELEMENT's own value node —
-        // still resolve against the template.
-        final String flatName = LEAF_RM_ATTRIBUTES.get(withoutValuePrefix);
-        return flatName == null ? null : "|" + flatName;
+        final AqlToFlatPathConverter.Result attrResult = aqlToFlatPathConverter.convert(combined, webTemplate);
+        return attrResult.flatPath().replace(rootResult.flatPath() + "/", "");
     }
 
     Condition amendCondition(final Condition originalCondition,
@@ -742,7 +706,7 @@ public class HelpersCreator {
             // Populate flat path alternatives for openEHR conditions
             if (webTemplate != null && StringUtils.isNotBlank(amendedTargetRoot)) {
                 final AqlToFlatPathConverter.Result rootResult =
-                        aqlToFlatPathConverter.convert(amendedTargetRoot, null, webTemplate);
+                        aqlToFlatPathConverter.convert(amendedTargetRoot, webTemplate);
                 amendedCondition.setTargetRootFlatPath(rootResult.flatPath());
 
                 // may legitimately be null on an attribute-less condition; FhirConditionEvaluator
@@ -753,24 +717,8 @@ public class HelpersCreator {
                     if (!StringUtils.isNotBlank(targetAttribute)) {
                         continue;
                     }
-                    final String leafAttributeFlatPath = toLeafAttributeFlatPath(targetAttribute);
-                    if (leafAttributeFlatPath != null) {
-                        amendedCondition.getTargetAttributesFlatPath().add(leafAttributeFlatPath);
-                        continue;
-                    }
-                    final String combined = amendedTargetRoot + "/" + targetAttribute;
-                    final AqlToFlatPathConverter.Result attrResult =
-                            aqlToFlatPathConverter.convert(combined, null, webTemplate);
-                    final String fullFlatPath = attrResult.flatPath();
-                    final String attributeFlatPath = fullFlatPath.replace(rootResult.flatPath() + "/", "");
-                    final String replaceTerminologyAqlSyntax =
-                            attributeFlatPath.contains("terminology") ? attributeFlatPath : attributeFlatPath
-                                                                                            .replace("/defining_code/code_string", "|code")
-                                                                                            .replace("/defining_code", "|code")
-                                                                                            .replace("defining_code/code_string", "|code")
-                                                                                            .replace("defining_code", "|code");
-                    amendedCondition.getTargetAttributesFlatPath()
-                            .add(replaceTerminologyAqlSyntax);
+                    amendedCondition.getTargetAttributesFlatPath().add(
+                            conditionAttributeFlatPath(amendedTargetRoot, rootResult, targetAttribute, webTemplate));
                 }
             }
         }

@@ -26,10 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   request: a slot whose archetype has no model mapper, a `slotContext` that is undeclared or whose start
   archetype has no model mapper, a mapping declaring both `slotArchetype` and `slotContext`, a model
   mapper without mappings, and a preprocessor hierarchy path that cannot be resolved against the template
-- an openEHR path can pin one attribute of an element's data value with strict AQL through its `value`
-  (`…/items[at0004]/value/magnitude`, `…/value/units`, `…/value/defining_code/code_string`, `…/value/value`,
-  …), for every data value type except `DV_SCALE` and `DV_STATE`. The mapping then writes and reads only that
-  flat attribute (`…|magnitude`; on a choice element `…/quantity_value|magnitude`)
 - `$toopenehr` takes an optional `ehr_id` query parameter, and `/openfhir/tofhir` and `/openfhir/toopenehr`
   an optional `ehrId` one, naming the EHR the composition belongs to. It is passed to the mapping as part of
   its call context, which `OpenFhirEngine.toOpenEhr` and `OpenFhirEngine.toFhir` now also accept
@@ -38,7 +34,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   template are resolved, before any mapping work (throwing refuses the mapping), and `afterMapping` after a
   successful mapping. Any number of listeners can be registered as beans; none are by default
 
+### Changed
+- `$toaql`: a mapping on a whole data value now compares the attribute its type is compared by, through the
+  element's `value`: `…/value/magnitude = 500` for a quantity or count (was `…/value = 500`),
+  `…/value/defining_code/code_string = '…'` for a coded text, since a FHIR token search names a code (was its text,
+  `…/value/value`; a manual mapping's fixed value still compares the text), `…/value/value` for a text, date, time or
+  boolean (was `…/value`), `…/value/id` for an identifier and `…/value/numerator` for a proportion. A node that is a
+  data value itself (`context/start_time`, `ism_transition/current_state`) has the attribute directly. A param whose
+  mappings address no data value (an EVENT, a CLUSTER, a participation …) is left out of the AQL with a `WARNING` in
+  `unhandledParams`, instead of producing a condition no composition matches
+
 ### Fixed
+- `$toaql`: a condition on a mapping below another mapping of the same model (the children of a `manual`, a
+  `followedBy`) appeared twice in the WHERE, and such a child was matched even when its parent's `fhirCondition`
+  ruled it out
+- `$toaql`: a param mapped in a model slotted into an entry (a CLUSTER in an EVALUATION) produced
+  `CONTAINS CLUSTER h [<entry archetype>]`; the entry AQL now contains the entry the condition's path starts from
+  (`CONTAINS EVALUATION h [openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]`)
+- an openEHR path ending in a flat pipe attribute written onto the node without a slash (`…/items[at0004]|code`)
+  lost the attribute; it now maps like `…/items[at0004]/|code`
 - a freshly started engine hit by many concurrent `$tofhir` requests (regression in 3.0.2) could run out of
   memory and stop responding until restarted: every request thread parsed all FHIR R4 StructureDefinitions
   for itself. They are now parsed once, during startup, which takes a few seconds longer

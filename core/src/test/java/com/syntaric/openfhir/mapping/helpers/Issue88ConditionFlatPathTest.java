@@ -1,7 +1,8 @@
 package com.syntaric.openfhir.mapping.helpers;
 
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
+import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
+import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.ehrbase.openehr.sdk.webtemplate.model.WebTemplate;
@@ -42,7 +43,7 @@ public class Issue88ConditionFlatPathTest {
         final String serialized = IOUtils.toString(getClass().getResourceAsStream(OPT));
         final OPERATIONALTEMPLATE operationaltemplate = TemplateDocument.Factory.parse(serialized).getTemplate();
         webTemplate = new OPTParser(operationaltemplate).parse();
-        converter = new AqlToFlatPathConverter(new OpenFhirStringUtils(), new OpenFhirMapperUtils());
+        converter = new AqlToFlatPathConverter(new OpenFhirStringUtils());
     }
 
     /**
@@ -51,7 +52,7 @@ public class Issue88ConditionFlatPathTest {
      */
     @Test
     public void conditionRootResolvesToRecurringDiagnosePath() {
-        final AqlToFlatPathConverter.Result rootResult = converter.convert(MULTIPLE_CODING_ROOT, null, webTemplate);
+        final AqlToFlatPathConverter.Result rootResult = converter.convert(MULTIPLE_CODING_ROOT, webTemplate);
 
         Assert.assertTrue("condition root must resolve against the template", rootResult.valid());
         Assert.assertEquals(EXPECTED_ROOT_FLAT, rootResult.flatPath());
@@ -63,20 +64,16 @@ public class Issue88ConditionFlatPathTest {
      */
     @Test
     public void conditionAttributeResolvesToCodePipeAttribute() {
-        final AqlToFlatPathConverter.Result rootResult = converter.convert(MULTIPLE_CODING_ROOT, null, webTemplate);
-        final AqlToFlatPathConverter.Result attrResult =
-                converter.convert(MULTIPLE_CODING_ROOT + "/defining_code/code_string", null, webTemplate);
+        final Condition amended = new HelpersCreator(null, converter).amendCondition(
+                new Condition()
+                        .withTargetRoot(MULTIPLE_CODING_ROOT)
+                        .withTargetAttributes(List.of("defining_code/code_string"))
+                        .withOperator("one of")
+                        .withCriterias("!"),
+                null, "openEHR-EHR-EVALUATION.problem_diagnosis.v1", null, null, false, null, webTemplate);
 
-        Assert.assertTrue("condition attribute must resolve against the template", attrResult.valid());
-
-        // Mirrors the rewrite in HelpersCreator.amendCondition
-        final String attributeFlatPath = attrResult.flatPath().replace(rootResult.flatPath() + "/", "");
-        final String rewritten = attributeFlatPath.contains("terminology") ? attributeFlatPath : attributeFlatPath
-                .replace("/defining_code/code_string", "|code")
-                .replace("/defining_code", "|code")
-                .replace("defining_code/code_string", "|code")
-                .replace("defining_code", "|code");
-
-        Assert.assertEquals("the condition attribute must resolve to the |code pipe attribute", "|code", rewritten);
+        Assert.assertEquals(EXPECTED_ROOT_FLAT, amended.getTargetRootFlatPath());
+        Assert.assertEquals("the condition attribute must resolve to the |code pipe attribute",
+                            List.of("|code"), amended.getTargetAttributesFlatPath());
     }
 }
