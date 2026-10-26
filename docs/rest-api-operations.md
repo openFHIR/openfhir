@@ -61,6 +61,8 @@ Maps a FHIR Bundle (or a single resource — accepted liberally) to an openEHR C
 
 - `templateId` (optional): forces a specific context mapper.
 - `format`: `canonical` (default) or `flat`.
+- `ehr_id` (optional): the EHR the mapped Composition is committed to, passed to the mapping as part of
+  its call context.
 
 **Response** — a FHIR (R4) `Parameters` resource:
 
@@ -73,7 +75,8 @@ Maps a FHIR Bundle (or a single resource — accepted liberally) to an openEHR C
 `templateId` (both operations), `format` (`$toopenehr`) and the short context fields of `$tofhir`
 (`ehr_id`, `patient`, `who`, `onBehalfOf`) may be sent as query parameters. When a value appears in
 both the body and the query string, **the body takes precedence**; query parameters only fill
-fields missing from the body and are never required.
+fields missing from the body and are never required. `$toopenehr` takes its `ehr_id` from the query
+string only, since its body is the FHIR resource itself.
 
 ## Errors
 
@@ -92,11 +95,14 @@ error bodies.
 
 The pre-existing endpoints are the spec's "direct" form and stay fully backward compatible:
 
-- `POST /openfhir/tofhir?templateId=` — body is the openEHR Composition itself
+- `POST /openfhir/tofhir?templateId=&ehrId=` — body is the openEHR Composition itself
   (`application/openehr+json`); response is the mapped FHIR resource itself.
-- `POST /openfhir/toopenehr?templateId=&format=flat|canonical` — body is the FHIR resource itself
+- `POST /openfhir/toopenehr?templateId=&format=flat|canonical&ehrId=` — body is the FHIR resource itself
   (`application/fhir+json`); response is the Composition itself. The deprecated `flat=true|false`
   parameter is still accepted; `format` wins when both are set.
+
+The optional `ehrId` names the EHR the Composition was read from or is committed to, and is passed to the
+mapping as part of its call context.
 
 No Provenance/OperationOutcome handling is applied on the direct forms — their responses are
 unchanged.

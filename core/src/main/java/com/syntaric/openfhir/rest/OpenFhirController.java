@@ -2,11 +2,14 @@ package com.syntaric.openfhir.rest;
 
 import com.syntaric.openfhir.OpenFhirEngine;
 import com.syntaric.openfhir.aql.ToAqlRequest;
+import com.syntaric.openfhir.operations.MappingCallContext;
+import com.syntaric.openfhir.operations.MappingIssueCollector;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
@@ -38,6 +41,7 @@ public class OpenFhirController {
      *                    flat format,
      *                    this parameter is required, because the engine can not determine templateId in that case (yet
      *                    requires it to find the correct state of the Engine)
+     * @param ehrId       optional id of the EHR the Composition was read from
      * @return FHIR Bundle with mapped Resources inside
      */
     @PostMapping(value = "/openfhir/tofhir", produces = "application/json")
@@ -46,7 +50,8 @@ public class OpenFhirController {
             description = "Maps incoming openEHR Composition to a FHIR Resource according to FHIR Connect state of the engine. "
                     + "This is the direct-payload form of the FHIRconnect $tofhir operation: the body is the openEHR "
                     + "Composition itself (media type application/openehr+json, application/json also accepted) and "
-                    + "the response is the mapped FHIR resource itself.",
+                    + "the response is the mapped FHIR resource itself. The optional 'ehrId' query parameter names "
+                    + "the EHR the Composition was read from.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK")
             },
@@ -59,9 +64,10 @@ public class OpenFhirController {
             )
     )
     ResponseEntity toFhir(@RequestBody String composition, @RequestParam(required = false) String templateId,
+                          @RequestParam(required = false) String ehrId,
                           @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
-            final String fhir = openFhirEngine.toFhir(composition, templateId);
+            final String fhir = openFhirEngine.toFhir(composition, templateId, callContext(ehrId, reqId));
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(fhir);
         } catch (final Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -81,6 +87,7 @@ public class OpenFhirController {
      *                     in a flat format, default is false meaning it will be returned in a canonical format
      * @param format       "flat" or "canonical" (per the FHIRconnect REST API spec); takes precedence over the
      *                     deprecated {@code flat} parameter when both are provided
+     * @param ehrId        optional id of the EHR the mapped Composition is committed to
      * @param reqId        request id that will be logged
      * @return openEHR Composition in either flat or canonical format, depending on "format"/"flat" argument
      * (default is canonical)
@@ -93,7 +100,8 @@ public class OpenFhirController {
                     + "Resource itself (media type application/fhir+json, application/json also accepted) and the "
                     + "response is the mapped openEHR Composition itself (application/openehr+json semantics). The "
                     + "output format is controlled with format=flat|canonical (default canonical); the legacy 'flat' "
-                    + "boolean parameter is still accepted, with 'format' winning when both are set.",
+                    + "boolean parameter is still accepted, with 'format' winning when both are set. The optional "
+                    + "'ehrId' query parameter names the EHR the Composition is committed to.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "openEHR Composition in either flat or canonical format")
             },
@@ -109,6 +117,7 @@ public class OpenFhirController {
                              @RequestParam(required = false) String templateId,
                              @RequestParam(required = false) Boolean flat,
                              @RequestParam(required = false) String format,
+                             @RequestParam(required = false) String ehrId,
                              @RequestHeader(value = "x-req-id", required = false) final String reqId) {
         try {
             Boolean effectiveFlat = flat;
@@ -123,11 +132,22 @@ public class OpenFhirController {
                                     format));
                 }
             }
-            final String openEhr = openFhirEngine.toOpenEhr(fhirResource, templateId, effectiveFlat);
+            final String openEhr = openFhirEngine.toOpenEhr(fhirResource, templateId, effectiveFlat,
+                    callContext(ehrId, reqId), MappingIssueCollector.failFast());
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(openEhr);
         } catch (final Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    /**
+     * The call context of a mapping request, which these endpoints only take the EHR id for.
+     */
+    private MappingCallContext callContext(final String ehrId, final String reqId) {
+        return MappingCallContext.builder()
+                .ehrId(StringUtils.trimToNull(ehrId))
+                .requestId(reqId)
+                .build();
     }
 
     @PostMapping(value = "/openfhir/toaql", produces = "application/json")

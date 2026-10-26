@@ -93,6 +93,20 @@ public class OperationRequestParser {
     }
 
     /**
+     * Builds the call context of a {@code POST /$toopenehr} request, whose body is the FHIR resource itself, so its
+     * context can only come from query parameters.
+     *
+     * @param ehrId     {@code ehr_id} query parameter: the EHR the mapped Composition is committed to
+     * @param requestId the {@code x-req-id} header value
+     */
+    public MappingCallContext parseToOpenEhrCallContext(final String ehrId, final String requestId) {
+        return MappingCallContext.builder()
+                .ehrId(StringUtils.trimToNull(ehrId))
+                .requestId(requestId)
+                .build();
+    }
+
+    /**
      * Validates the {@code format} query parameter of {@code $toopenehr} and returns the effective value
      * (default {@code canonical}).
      */
