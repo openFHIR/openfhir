@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.3] - 2026-10-26
 ### Added
 - sub-contexts (FHIRconnect-spec PR #100): a mapping may carry `slotContext: <context name>` where
   `slotArchetype` is used today. The engine enters that context mapper and maps from its `start` with
