@@ -9,6 +9,7 @@ import com.syntaric.openfhir.fc.schema.context.Context;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.RmAttributePins;
+import com.syntaric.openfhir.mapping.helpers.RmTypes;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +89,16 @@ public class ToAqlMappingEngine {
             return archOnlyResponse;
         }
 
+        // a param all of whose mappings address what a WHERE cannot compare (an EVENT, a CLUSTER ...) is left out
+        helperValues.stream()
+                .map(HelperValue::getValue)
+                .distinct()
+                .filter(queryParam -> !queryParam.isHandled())
+                .forEach(queryParam -> toAqlResponse.addUnhandledParam(
+                        queryParam.getName(), ToAqlResponse.UnhandledParamType.WARNING,
+                        "The mappings of this param address no data value an AQL can compare; it is not included "
+                                + "in the AQL."));
+
         return toAqlResponse;
     }
 
@@ -150,18 +161,39 @@ public class ToAqlMappingEngine {
         return responses;
     }
 
+    /**
+     * Whether the helper's openEHR path can be compared in a WHERE: an attribute of a data value, or a whole data
+     * value of a type that has an attribute to compare. A node that holds no data value (EVENT, CLUSTER, a
+     * participation ...) has nothing to compare a search value to.
+     */
     boolean possibleTypesAreAcceptableForAqlTranslation(final HelperValue helperValue) {
         final MappingHelper helper = helperValue.getHelper();
-        if (helper.getPossibleRmTypes() == null
-                || helper.getPossibleRmTypes().isEmpty()
-                || FhirConnectConst.OPENEHR_TYPE_NONE.equals(helper.getHardcodedType())) {
+        if (FhirConnectConst.OPENEHR_TYPE_NONE.equals(helper.getHardcodedType())) {
             return false;
         }
-        if (helper.getPossibleRmTypes().size() == 1 && helper.getPossibleRmTypes()
-                .contains(FhirConnectConst.OPENEHR_TYPE_CLUSTER)) {
-            return false;
+        return RmAttributePins.pinnedBy(helper) != null || comparedAttribute(helper) != null;
+    }
+
+    /**
+     * The attribute a whole data value is compared by: that of its type the mapping's {@code with.type} picks, or
+     * the first of the types the template allows that has one. A search value is compared to a coded text's code, a
+     * manual mapping's fixed value to its text.
+     */
+    private static RmAttributePins.Attribute comparedAttribute(final MappingHelper helper) {
+        final List<String> types = RmTypes.preferred(helper);
+        if (types == null) {
+            return null;
         }
-        return true;
+        final RmAttributePins.Attribute compared = types.stream()
+                .map(RmAttributePins::compared)
+                .filter(java.util.Objects::nonNull)
+                .findFirst().orElse(null);
+        if (compared != null && StringUtils.isNotEmpty(helper.getManualOpenEhrValue())
+                && FhirConnectConst.DV_CODED_TEXT.equals(compared.rmType())) {
+            // a manual mapping's fixed value is written to a coded text as its text (|value), so it is compared so
+            return RmAttributePins.attribute(FhirConnectConst.DV_CODED_TEXT, "value");
+        }
+        return compared;
     }
 
     private boolean isValidAql(final String aql) {
@@ -184,13 +216,12 @@ public class ToAqlMappingEngine {
      * Multiple params:
      * "SELECT h from EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.height.v2] WHERE e/ehr_id/value='{{ehrid}}'
      * AND h/data[...]/value=500 AND h/data[...]/value=200"
+     * The conditions' paths are relative to {@code entryArchetype}, so that is what {@code h} contains, also for a
+     * mapping of a model slotted into it (a CLUSTER: {@code h/data[at0001]/items[openEHR-EHR-CLUSTER...]/...}).
      */
     String createEntryAql(final List<HelperValue> helperValues,
-                          final String compositionArchetype) {
-        final HelperValue first = helperValues.get(0);
-
-        final String archetype = first.helper.getArchetype();
-        final String entryType = getEntryType(archetype);
+                          final String entryArchetype) {
+        final String entryType = getEntryType(entryArchetype);
         final StringBuilder conditions = new StringBuilder();
         for (final HelperValue hv : helperValues) {
 //            if (hv.getValue().isHandled()) {
@@ -203,7 +234,7 @@ public class ToAqlMappingEngine {
             hv.getValue().setHandled(true);
             final MappingHelper helper = hv.getHelper();
             String pathWithoutArchetype = getPathWithoutArchetype(helper.getFullOpenEhrPath(),
-                                                                  compositionArchetype);
+                                                                  entryArchetype);
 
             if (pathWithoutArchetype != null) {
                 final String condition = condition(helper, pathWithoutArchetype,
@@ -214,31 +245,48 @@ public class ToAqlMappingEngine {
             }
         }
         return String.format("SELECT h FROM EHR e CONTAINS %s h [%s] WHERE e/ehr_id/value='{{ehrid}}' AND h%s",
-                             entryType, compositionArchetype, conditions.toString().startsWith("/") ? conditions : ("/"+conditions));
+                             entryType, entryArchetype, conditions.toString().startsWith("/") ? conditions : ("/"+conditions));
     }
 
     /**
-     * The WHERE condition of one mapping on {@code path}. A path pinning one attribute of a data value with strict
-     * AQL ({@code .../value/magnitude}, {@code .../value/defining_code/code_string}) already is the attribute's
-     * path: it is compared as written, a number or boolean unquoted. Any other path is the element, completed with
-     * the data-type-aware suffix.
+     * The WHERE condition of one mapping on {@code path}, comparing an attribute on its strict AQL path: the one the
+     * path ends in ({@code .../value/magnitude}, {@code .../defining_code/code_string}), or for a whole data value the
+     * one its type is compared by ({@code magnitude} of a quantity, {@code defining_code/code_string} of a coded
+     * text), through the ELEMENT's value when the path addresses an ELEMENT.
      */
     private String condition(final MappingHelper helper, final String path, final String expectedValue) {
         final RmAttributePins.Attribute pinned = RmAttributePins.pinnedBy(helper);
         if (pinned != null) {
-            final String literal = pinned.kind() == RmAttributePins.Kind.TEXT
-                    ? String.format("'%s'", expectedValue)
-                    : expectedValue;
-            return path + pinned.aqlTail() + " = " + literal;
+            return openEhrAqlPopulator.comparison(strictAttributePath(helper, path), pinned, expectedValue);
         }
-        return stripPinpointedAqlPath(path)
-                + openEhrAqlPopulator.getDataTypeAwareAqlSuffix(path, expectedValue, helper.getPossibleRmTypes());
+        final RmAttributePins.Attribute compared = comparedAttribute(helper);
+        return openEhrAqlPopulator.comparison(RmAttributePins.aqlPath(path, addressesElement(helper, path), compared),
+                                              compared, expectedValue);
     }
 
-    private String stripPinpointedAqlPath(final String path) {
-        return path
-                .replace("/defining_code/terminology_id", "")
-                .replace("/defining_code/code_string", "");
+    /**
+     * Whether {@code path} addresses an ELEMENT, whose data value is its {@code value}, rather than a node that is a
+     * data value itself ({@code context/start_time}, {@code items[at0004]/value}). A helper not resolved against a
+     * template says nothing; an archetype node ({@code items[at0004]}) is then taken for an ELEMENT.
+     */
+    private static boolean addressesElement(final MappingHelper helper, final String path) {
+        final String nodeRmType = helper.getOpenEhrNodeRmType();
+        return nodeRmType == null ? path.endsWith("]") : FhirConnectConst.ELEMENT.equals(nodeRmType);
+    }
+
+    /**
+     * {@code path} with the attribute spelled the strict AQL way, whatever spelling the mapping used:
+     * {@code items[at0130]/defining_code} becomes {@code items[at0130]/value/defining_code/code_string}.
+     */
+    private static String strictAttributePath(final MappingHelper helper, final String path) {
+        final String written = helper.getFullOpenEhrPath();
+        final String strict = helper.getPinnedAqlPath();
+        final int difference = StringUtils.indexOfDifference(written, strict);
+        if (difference < 0) {
+            return path;
+        }
+        final String writtenTail = written.substring(difference);
+        return path.substring(0, path.length() - writtenTail.length()) + strict.substring(difference);
     }
 
     /**

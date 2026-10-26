@@ -93,8 +93,7 @@ public class EpsToAqlTest {
         }
 
         final HelpersCreator helpersCreator1 = new HelpersCreator(repo, new AqlToFlatPathConverter(
-                new OpenFhirStringUtils(),
-                new OpenFhirMapperUtils()));
+                new OpenFhirStringUtils()));
         toAql = new ToAql(fhirConnectManager, new OpenFhirMapperUtils(), repo, new ToAqlMappingEngine(new OpenEhrAqlPopulator()), helpersCreator1,
                 openEhrTemplateUtils, null, optManager);
     }
@@ -112,9 +111,9 @@ public class EpsToAqlTest {
     public void toAql_conditionVerificationStatusConfirmed() {
         final ToAqlResponse response = toAql.toAql(new ToAqlRequest(null, "123", "Condition?verification-status=confirmed"));
         assertAql(response, ToAqlResponse.AqlType.ENTRY,
-                "SELECT h FROM EHR e CONTAINS EVALUATION h [openEHR-EHR-EVALUATION.problem_diagnosis.v1] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0001]/items[at0073]/value/defining_code/terminology_id/value = 'local' AND h/data[at0001]/items[at0073]/value/defining_code/code_string = 'at0076' AND h/data[at0001]/items[at0073]/value/value = 'Confirmed' AND h/data[at0001]/items[at0073]/value/defining_code/terminology_id/value = 'local' AND h/data[at0001]/items[at0073]/value/defining_code/code_string = 'at0076' AND h/data[at0001]/items[at0073]/value/value = 'Confirmed'");
+                "SELECT h FROM EHR e CONTAINS EVALUATION h [openEHR-EHR-EVALUATION.problem_diagnosis.v1] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0001]/items[at0073]/value/defining_code/terminology_id/value = 'local' AND h/data[at0001]/items[at0073]/value/defining_code/code_string = 'at0076' AND h/data[at0001]/items[at0073]/value/value = 'Confirmed'");
         assertAql(response, ToAqlResponse.AqlType.COMPOSITION,
-                "SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/defining_code/terminology_id/value = 'local' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/defining_code/code_string = 'at0076' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/value = 'Confirmed' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/defining_code/terminology_id/value = 'local' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/defining_code/code_string = 'at0076' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/value = 'Confirmed'");
+                "SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/defining_code/terminology_id/value = 'local' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/defining_code/code_string = 'at0076' AND c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Problems']/items[openEHR-EHR-EVALUATION.problem_diagnosis.v1]/data[at0001]/items[at0073]/value/value = 'Confirmed'");
     }
 
     @Test
@@ -139,9 +138,9 @@ public class EpsToAqlTest {
     public void toAql_byCodedText() {
         final ToAqlResponse response = toAql.toAql(new ToAqlRequest(null, "123", "AllergyIntolerance?manifestation=4386001"));
         assertAql(response, ToAqlResponse.AqlType.ENTRY,
-                "SELECT h FROM EHR e CONTAINS CLUSTER h [openEHR-EHR-EVALUATION.adverse_reaction_risk.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]/value/value = '4386001'");
+                "SELECT h FROM EHR e CONTAINS EVALUATION h [openEHR-EHR-EVALUATION.adverse_reaction_risk.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]/value/defining_code/code_string = '4386001'");
         assertAql(response, ToAqlResponse.AqlType.COMPOSITION,
-                "SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Allergies']/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]/value/value = '4386001'");
+                "SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-SECTION.adhoc.v1 and name/value='EPS Allergies']/items[openEHR-EHR-EVALUATION.adverse_reaction_risk.v2]/data[at0001]/items[openEHR-EHR-CLUSTER.adverse_reaction_event.v1]/items[at0006]/value/defining_code/code_string = '4386001'");
     }
 
     private void assertAql(final ToAqlResponse response, final ToAqlResponse.AqlType type, final String expectedAql) {

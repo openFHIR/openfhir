@@ -104,8 +104,8 @@ public class GrowthChartToAqlTest extends GenericToAqlTest {
                 .findAny().orElse(null);
         final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
                 .findAny().orElse(null);
-        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value = 500", compositionAql.getAql());
-        Assert.assertEquals("SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.body_weight.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value = 500", entryAql.getAql());
+        Assert.assertEquals("SELECT c from EHR e CONTAINS COMPOSITION c WHERE e/ehr_id/value='{{ehrid}}' and c/content[openEHR-EHR-OBSERVATION.body_weight.v2]/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude = 500", compositionAql.getAql());
+        Assert.assertEquals("SELECT h FROM EHR e CONTAINS OBSERVATION h [openEHR-EHR-OBSERVATION.body_weight.v2] WHERE e/ehr_id/value='{{ehrid}}' AND h/data[at0002]/events[at0003]/data[at0001]/items[at0004]/value/magnitude = 500", entryAql.getAql());
     }
 
 

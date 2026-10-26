@@ -2,7 +2,6 @@ package com.syntaric.openfhir.mapping.helpers;
 
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.terminology.OfCoding;
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -37,19 +36,19 @@ public class AqlToFlatPathConverter {
      *                          does not exist in the template below the node matched before it; {@code null}
      *                          when every such segment was found. A trailing RM attribute ({@code value},
      *                          {@code defining_code/code_string} ...) has no template node and is not reported
+     * @param node              the template node the path ends at, null when it ends at none
      */
     public record Result(String flatPath, String rmType, boolean valid, List<String> possibleTypes,
-                         List<OfCoding> availableCodings, String unresolvedSegment) {
+                         List<OfCoding> availableCodings, String unresolvedSegment, WebTemplateNode node) {
 
     }
 
     public record WalkSegmentsResult(String rmType, List<String> possibleRmTypes, List<OfCoding> availableCodings,
-                                     String unresolvedSegment) {
+                                     String unresolvedSegment, WebTemplateNode node) {
 
     }
 
     private final OpenFhirStringUtils openFhirStringUtils;
-    private final OpenFhirMapperUtils openFhirMapperUtils;
 
     /**
      * Converts the {@code fullOpenEhrPath} stored on a {@link MappingHelper} to a flat path,
@@ -57,14 +56,17 @@ public class AqlToFlatPathConverter {
      * {@link MappingHelper#setOpenEhrPathUnresolved} as a side effect.
      */
     public Result convert(final MappingHelper mappingHelper, final WebTemplate webTemplate, final Boolean isManualCodedText) {
-        final Result pinned = convertPinnedAttribute(mappingHelper, webTemplate);
+        final Result pinned = convertAttribute(mappingHelper, webTemplate);
         if (pinned != null) {
             return pinned;
         }
-        final Result result = convert(mappingHelper.getFullOpenEhrPath(), mappingHelper.getHardcodedType(),
-                webTemplate);
+        // a pipe no data value type has (|function of a participation) is passed on as written, after the node
+        final RmAttributePins.PathPipe pathPipe = RmAttributePins.pathPipe(mappingHelper.getFullOpenEhrPath());
+        final Result result = convert(pathPipe == null ? mappingHelper.getFullOpenEhrPath() : pathPipe.path(),
+                                      webTemplate);
         final String flatPath = result.flatPath();
         mappingHelper.setFullOpenEhrFlatPath(flatPath);
+        mappingHelper.setOpenEhrNodeRmType(result.node() == null ? null : result.node().getRmType());
         mappingHelper.setOpenEhrPathUnresolved(result.unresolvedSegment() != null);
 
         mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
@@ -81,14 +83,7 @@ public class AqlToFlatPathConverter {
 
         mappingHelper.setAvailableCodings(result.availableCodings());
 
-        final String flatPathPipeSuffix = openFhirMapperUtils.replaceAqlSuffixWithFlatSuffix(flatPath,
-                result.rmType());
-        mappingHelper.setFlatPathPipeSuffix(flatPathPipeSuffix);
-
-        final String flatPathSuffixFromMapping = getFlatPathSuffixFromMapping(mappingHelper.getFullOpenEhrPath());
-        if(flatPathSuffixFromMapping != null) {
-            mappingHelper.setFlatPathPipeSuffix(getFlatPathSuffixFromMapping(mappingHelper.getFullOpenEhrPath()));
-        }
+        mappingHelper.setFlatPathPipeSuffix(pathPipe == null ? "" : "|" + pathPipe.pipe());
 
         // if multiple rm types are here and children are really only manual mappings,
         // then rm types need to be propagated on
@@ -103,60 +98,147 @@ public class AqlToFlatPathConverter {
     }
 
     /**
-     * A path pinning one attribute of an ELEMENT's data value with strict AQL ({@code items[at0004]/value/magnitude},
-     * {@code items[at0130]/value/defining_code/code_string}): the helper maps the element's flat path (with the type
-     * segment of a choice element, {@code .../quantity_value}) and that attribute's pipe ({@code |magnitude}), or the
-     * element itself where the attribute is the whole value in the flat format ({@code value} of a DV_TEXT). The
-     * path is kept as written, so the AQL generated from it stays strict AQL.
+     * An attribute of a data value a path ends in, resolved against the template.
      *
-     * @return null when the path pins nothing, the element is not in the template or none of its types has the
-     * attribute; the path then converts as before
+     * @param attribute         the attribute, null when the path addresses one the holder's types do not have
+     *                          ({@code items[at0004]/value/magnitude} on a coded text); for a holder the template
+     *                          does not have, whichever data value type's attribute it is spelled like
+     * @param flatPath          the flat path of the node holding the attribute, with the type segment of a choice
+     *                          element ({@code .../quantity_value}); the attribute's pipe goes on it
+     * @param aqlPath           the attribute's strict AQL path ({@code .../items[at0130]/value/defining_code/code_string})
+     * @param holder            the holder's own conversion
+     * @param availableCodings  the codes the template allows the attribute's data value
+     * @param unresolvedSegment what of the path does not exist: the holder, or the attribute when {@code attribute}
+     *                          is null; null when it all exists
      */
-    private Result convertPinnedAttribute(final MappingHelper mappingHelper, final WebTemplate webTemplate) {
-        final RmAttributePins.Pin pin = RmAttributePins.parse(mappingHelper.getFullOpenEhrPath());
-        if (pin == null || webTemplate == null) {
-            return null;
-        }
-        // all the element's types: whether it is a choice decides the flat type segment
-        final Result element = convert(pin.elementPath(), null, webTemplate);
-        if (element.unresolvedSegment() != null) {
-            return null;
-        }
-        // An attribute several of a choice element's types have (value, magnitude ...) is the mapping's type's
-        // (with.type) when it names one of them; otherwise the first type, in template order, that has it.
-        final String hardcodedType = mappingHelper.getHardcodedType();
-        final List<String> candidates = hardcodedType != null && element.possibleTypes() != null
-                && element.possibleTypes().contains(hardcodedType)
-                ? List.of(hardcodedType)
-                : element.possibleTypes();
-        final RmAttributePins.Attribute attribute = RmAttributePins.resolve(candidates, pin.rmPath());
-        if (attribute == null) {
-            return null;
-        }
-        final String typeSegment = RmAttributePins.typeSegment(element.possibleTypes(), attribute.rmType());
-        final String flatPath = typeSegment == null ? element.flatPath() : element.flatPath() + "/" + typeSegment;
-        // a pipe attribute takes the value as is, whatever the element's type; the element itself has the type
-        final String rmType = attribute.isElementItself() ? attribute.rmType() : FhirConnectConst.ELEMENT;
+    record AttributeResult(RmAttributePins.Attribute attribute, String flatPath, String aqlPath, Result holder,
+                           List<OfCoding> availableCodings, String unresolvedSegment) {
 
+        /** The flat key below {@code flatPath} the attribute is: its pipe, or nothing for the node itself. */
+        String pipe() {
+            return attribute.isElementItself() ? "" : "|" + attribute.flatAttribute();
+        }
+    }
+
+    /**
+     * The attribute of a data value {@code path} ends in, in any of its spellings (see {@link RmAttributePins}):
+     * {@code items[at0004]/value/magnitude}, {@code items[at0130]/defining_code/code_string},
+     * {@code null_flavour/value}, {@code items[at0130]/|code} ...
+     *
+     * <p>An attribute several of a choice element's types have ({@code value}, {@code magnitude} ...) is that of the
+     * types {@code preferredType} (the mapping's {@code with.type}) names, when it names some of them; otherwise the
+     * first type, in template order, that has it.
+     *
+     * @return null when the path ends in no attribute or (spelled any other way than strict AQL) none of the
+     * holder's types has it: the path is then an ordinary one. A path through an ELEMENT's value whose types do not
+     * have the attribute, or whose holder is not in the template, does not exist: see
+     * {@link AttributeResult#unresolvedSegment()}.
+     */
+    AttributeResult resolveAttribute(final String path, final String preferredType, final WebTemplate webTemplate) {
+        if (webTemplate == null) {
+            return null;
+        }
+        for (final RmAttributePins.Pin pin : RmAttributePins.parse(path)) {
+            final Result holder = convert(pin.holderPath(), webTemplate);
+            if (holder.unresolvedSegment() != null) {
+                // the path does not exist, but still names its attribute (for AQL, which does not need the template)
+                final RmAttributePins.Attribute anyTypes = pin.pipe() == null
+                        ? RmAttributePins.anyTypes(pin.rmPath())
+                        : null;
+                if (anyTypes == null) {
+                    return null;
+                }
+                final boolean element = pin.throughValue() || pin.holderPath().endsWith("]");
+                return new AttributeResult(anyTypes, holder.flatPath(),
+                                           RmAttributePins.aqlPath(pin.holderPath(), element, anyTypes), holder,
+                                           null, holder.unresolvedSegment());
+            }
+            final boolean holderIsElement = FhirConnectConst.ELEMENT.equals(holder.rmType());
+            final List<String> types = holderIsElement ? holder.possibleTypes()
+                    : holder.rmType() == null ? null : List.of(holder.rmType());
+            if (types == null || types.isEmpty()) {
+                continue;
+            }
+            final List<String> candidates = RmTypes.preferred(types, preferredType);
+            final RmAttributePins.Attribute attribute = RmAttributePins.resolve(pin, holderIsElement, candidates);
+            if (attribute == null) {
+                if (pin.throughValue() && holderIsElement) {
+                    return new AttributeResult(null, holder.flatPath(), null, holder, holder.availableCodings(),
+                                               "value/" + pin.rmPath());
+                }
+                continue;
+            }
+            final String typeSegment = holderIsElement
+                    ? RmAttributePins.typeSegment(types, attribute.rmType())
+                    : null;
+            final String flatPath = typeSegment == null ? holder.flatPath() : holder.flatPath() + "/" + typeSegment;
+            return new AttributeResult(attribute, flatPath,
+                                       RmAttributePins.aqlPath(pin.holderPath(), holderIsElement, attribute),
+                                       holder, dataValueCodings(holder.node(), holderIsElement, attribute.rmType()),
+                                       null);
+        }
+        return null;
+    }
+
+    /**
+     * The codes the template allows a data value of {@code rmType}: on the holder, or on the ELEMENT's value of that
+     * type, and the nodes below it ({@code defining_code}).
+     */
+    private static List<OfCoding> dataValueCodings(final WebTemplateNode holder, final boolean holderIsElement,
+                                                   final String rmType) {
+        if (holder == null) {
+            return null;
+        }
+        final List<WebTemplateNode> values = holderIsElement
+                ? holder.getChildren().stream()
+                .filter(c -> rmType.equals(c.getRmType())
+                        && ("value".equals(c.getId()) || c.getId().endsWith("_value")))
+                .toList()
+                : List.of(holder);
+        final List<WebTemplateNode> nodes = new ArrayList<>(values);
+        values.forEach(v -> collectAll(v.getChildren(), nodes));
+        return nodes.stream()
+                .flatMap(n -> getPossibleCodings(n).stream())
+                .distinct()
+                .toList();
+    }
+
+    /**
+     * A mapping on an attribute of a data value: the helper maps the holder's flat path and that attribute's pipe
+     * ({@code |magnitude}), or the node itself where the attribute is the whole value in the flat format
+     * ({@code value} of a DV_TEXT).
+     *
+     * @return null when the path is an ordinary one, see {@link #resolveAttribute}
+     */
+    private Result convertAttribute(final MappingHelper mappingHelper, final WebTemplate webTemplate) {
+        final AttributeResult resolved = resolveAttribute(mappingHelper.getFullOpenEhrPath(),
+                                                          mappingHelper.getHardcodedType(), webTemplate);
+        if (resolved == null) {
+            return null;
+        }
+        final String flatPath = resolved.flatPath();
         mappingHelper.setFullOpenEhrFlatPath(flatPath);
-        mappingHelper.setOpenEhrPathUnresolved(false);
+        final WebTemplateNode holderNode = resolved.holder().node();
+        mappingHelper.setOpenEhrNodeRmType(holderNode == null ? null : holderNode.getRmType());
         mappingHelper.setFullOpenEhrFlatPathWithMatchingRegex(toMatchingRegex(flatPath));
+        mappingHelper.setAvailableCodings(resolved.availableCodings());
+        mappingHelper.setOpenEhrPathUnresolved(resolved.unresolvedSegment() != null);
+        final RmAttributePins.Attribute attribute = resolved.attribute();
+        if (attribute == null) {
+            return new Result(flatPath, null, false, List.of(), resolved.availableCodings(),
+                              resolved.unresolvedSegment(), resolved.holder().node());
+        }
+        // a pipe attribute takes the value as is, whatever the node's type; the node itself has the type
+        final String rmType = attribute.isElementItself() ? attribute.rmType() : FhirConnectConst.ELEMENT;
         if (mappingHelper.getPossibleRmTypes() == null) {
             mappingHelper.setPossibleRmTypes(List.of(rmType));
         }
-        mappingHelper.setAvailableCodings(element.availableCodings());
-        mappingHelper.setFlatPathPipeSuffix(attribute.isElementItself() ? "" : "|" + attribute.flatAttribute());
-        mappingHelper.setPinnedRmType(attribute.rmType());
-        return new Result(flatPath, rmType, true, List.of(rmType), element.availableCodings(), null);
-    }
-
-    private String getFlatPathSuffixFromMapping(final String openehrPath) {
-        if(StringUtils.isEmpty(openehrPath)) {
-            return null;
-        }
-        final String[] split = openehrPath.split("/");
-        final String lastOccurence = split[split.length-1];
-        return lastOccurence.startsWith("|") ? lastOccurence : null;
+        mappingHelper.setFlatPathPipeSuffix(resolved.pipe());
+        mappingHelper.setPinnedAttribute(attribute);
+        mappingHelper.setPinnedAqlPath(resolved.aqlPath());
+        final boolean valid = resolved.unresolvedSegment() == null;
+        return new Result(flatPath, valid ? rmType : null, valid, List.of(rmType), resolved.availableCodings(),
+                          resolved.unresolvedSegment(), resolved.holder().node());
     }
 
     private boolean shouldAddManualCodedText(final List<String> possibleRmTypes,
@@ -190,18 +272,17 @@ public class AqlToFlatPathConverter {
      *
      * @param aqlPath     full AQL path, e.g.
      *                    {@code openEHR-EHR-OBSERVATION.body_weight.v2/data[at0002]/events[at0003]/data[at0001]/items[at0004]}
-     * @param forcedType  optional RM type hint from the FHIRConnect model (may be {@code null})
      * @param webTemplate the parsed OPT web template to walk
      * @return conversion result with flat path, detected type, and validity flag
      */
-    public Result convert(final String aqlPath, final String forcedType, final WebTemplate webTemplate) {
+    public Result convert(final String aqlPath, final WebTemplate webTemplate) {
         if (StringUtils.isBlank(aqlPath)) {
-            return new Result(aqlPath, null, false, null, null, null);
+            return new Result(aqlPath, null, false, null, null, null, null);
         }
 
         // $composition paths: strip the $composition prefix and walk the remaining segments through the web template
         if (aqlPath.startsWith(FhirConnectConst.OPENEHR_COMPOSITION_FC)) {
-            return convertCompositionPath(aqlPath, forcedType, webTemplate);
+            return convertCompositionPath(aqlPath, webTemplate);
         }
 
         // The first segment is the archetype id (e.g. openEHR-EHR-OBSERVATION.body_weight.v2).
@@ -211,7 +292,6 @@ public class AqlToFlatPathConverter {
         final String[] segments = firstSlash < 0 ? new String[0] : splitPath(aqlPath.substring(firstSlash + 1));
 
         final WebTemplateNode tree = webTemplate.getTree();
-        final Set<String> forcedTypes = openFhirStringUtils.getPossibleRmTypeValue(forcedType);
         final StringJoiner flat = new StringJoiner("/");
 
         // Find the composition-level node for this archetype (e.g. id="body_weight").
@@ -225,7 +305,7 @@ public class AqlToFlatPathConverter {
             // Archetype not found in this template — return as-is (invalid)
             final String flatPath = firstSlash < 0 ? aqlPath : tree.getId() + "/" + String.join("/", segments);
             return new Result(fixFlatPath(flatPath), null, false,
-                    null, null, null);
+                    null, null, null, null);
         }
 
         flat.add(archetypeRoot.isMulti() ? flatId(archetypeRoot) + RECURRING_SYNTAX : flatId(archetypeRoot));
@@ -234,7 +314,7 @@ public class AqlToFlatPathConverter {
         final List<WebTemplateNode> descendants = new ArrayList<>();
         collectAll(archetypeRoot.getChildren(), descendants);
 
-        final WalkSegmentsResult result = walkSegments(descendants, segments, flat, forcedTypes);
+        final WalkSegmentsResult result = walkSegments(descendants, segments, flat);
 
         final String flatPath = removeStructuralSegments(tree.getId() + "/" + flat);
         final String amendedFlatPath = fixFlatPath(flatPath);
@@ -242,7 +322,7 @@ public class AqlToFlatPathConverter {
         final boolean valid = result.unresolvedSegment() == null && !result.possibleRmTypes().isEmpty();
 
         return new Result(amendedFlatPath, valid ? result.rmType() : null, valid, result.possibleRmTypes(),
-                result.availableCodings(), result.unresolvedSegment());
+                result.availableCodings(), result.unresolvedSegment(), result.node());
     }
 
     private String fixFlatPath(final String flatPath) {
@@ -260,11 +340,10 @@ public class AqlToFlatPathConverter {
      * Handles paths starting with {@code $composition/} by stripping the prefix and walking the
      * remaining AQL segments through the web template tree from the composition root.
      */
-    private Result convertCompositionPath(final String aqlPath, final String forcedType,
-                                          final WebTemplate webTemplate) {
+    private Result convertCompositionPath(final String aqlPath, final WebTemplate webTemplate) {
         final String suffix = aqlPath.substring(FhirConnectConst.OPENEHR_COMPOSITION_FC.length());
         if (suffix.isEmpty()) {
-            return new Result(webTemplate.getTree().getId(), null, true, null, null, null);
+            return new Result(webTemplate.getTree().getId(), null, true, null, null, null, webTemplate.getTree());
         }
 
 //        final String[] segments = suffix.split("/");
@@ -273,21 +352,20 @@ public class AqlToFlatPathConverter {
 
 
         final WebTemplateNode tree = webTemplate.getTree();
-        final Set<String> forcedTypes = openFhirStringUtils.getPossibleRmTypeValue(forcedType);
         final StringJoiner flat = new StringJoiner("/");
 
         // Collect all descendants of the composition root (includes context, other_context, etc.)
         final List<WebTemplateNode> descendants = new ArrayList<>();
         collectAll(tree.getChildren(), descendants);
 
-        final WalkSegmentsResult walkResult = walkSegments(descendants, segments, flat, forcedTypes);
+        final WalkSegmentsResult walkResult = walkSegments(descendants, segments, flat);
 
         final String flatPath = removeStructuralSegments(tree.getId() + (flat.length() > 0 ? "/" + flat : ""));
         final String amendedFlatPath = fixFlatPath(flatPath);
         final boolean valid = walkResult.unresolvedSegment() == null
                 && walkResult.possibleRmTypes() != null && !walkResult.possibleRmTypes().isEmpty();
         return new Result(amendedFlatPath, valid ? walkResult.rmType() : null, valid, walkResult.possibleRmTypes(),
-                walkResult.availableCodings(), walkResult.unresolvedSegment());
+                walkResult.availableCodings(), walkResult.unresolvedSegment(), walkResult.node());
     }
 
     String[] splitPath(final String path) {
@@ -344,8 +422,7 @@ public class AqlToFlatPathConverter {
      */
     private WalkSegmentsResult walkSegments(final List<WebTemplateNode> descendants,
                                             final String[] segments,
-                                            final StringJoiner flat,
-                                            final Set<String> forcedTypes) {
+                                            final StringJoiner flat) {
         WebTemplateNode lastFound = null;
         String rmType = null;
 
@@ -364,31 +441,16 @@ public class AqlToFlatPathConverter {
 
             final WebTemplateNode found = findNode(descendants, segment, lastFound);
             if (found == null) {
-                if ("terminology_id".equals(segment)) { // but what if it doesn't exist?!
-                    flat.add(segment);
-                    return new WalkSegmentsResult(FhirConnectConst.CODE_PHRASE,
-                            Collections.singletonList(FhirConnectConst.CODE_PHRASE),
-                            null, null);
-                }
-                if ("coded_text_value".equals(segment)) { // but what if it doesn't exist?!
-                    return new WalkSegmentsResult(FhirConnectConst.DV_CODED_TEXT,
-                            Collections.singletonList(FhirConnectConst.DV_CODED_TEXT),
-                            null, null);
-                }
-                if ("function".equals(segment)) {
-                    return new WalkSegmentsResult(FhirConnectConst.DV_PARTICIPATION,
-                            Collections.singletonList(FhirConnectConst.DV_PARTICIPATION),
-                            null, null);
-                }
                 if (addressesArchetypeNode(segment)) {
                     // The segment addresses an archetype node (items[at0004], items[openEHR-EHR-CLUSTER.x.v1])
                     // that is not in the template below the node matched so far: the path does not exist.
-                    return new WalkSegmentsResult(null, Collections.emptyList(), null, segment);
+                    return new WalkSegmentsResult(null, Collections.emptyList(), null, segment, null);
                 }
-                // An RM attribute tail (value, defining_code/code_string, magnitude ...) has no template node
+                // An RM attribute tail has no template node: one of a data value is resolved before the walk (see
+                // resolveAttribute), any other (a participation's function ...) stays on the node it belongs to
                 return new WalkSegmentsResult(rmType,
                         Collections.singletonList(rmType),
-                        getPossibleCodings(lastFound), null);
+                        getPossibleCodings(lastFound), null, null);
             }
 
             lastFound = found;
@@ -403,14 +465,13 @@ public class AqlToFlatPathConverter {
                 flat.add(flatId(found));
             }
 
-            rmType = resolveType(forcedTypes, found, flat);
+            rmType = found.getRmType();
         }
 
         // After all segments, check children of the leaf for auto-appended value sub-paths and type refinement
         final List<String> possibleTypes = new ArrayList<>();
         final List<OfCoding> possibleCodings = new ArrayList<>();
         if (lastFound != null) {
-//            rmType = resolveLeafType(lastFound.getChildren(), forcedTypes, flat, rmType);
             if (rmType != null &&
                     !FhirConnectConst.ELEMENT.equals(rmType)
                     && !FhirConnectConst.OPENEHR_TYPE_CLUSTER.equals(rmType)) {
@@ -422,7 +483,7 @@ public class AqlToFlatPathConverter {
 
         return new WalkSegmentsResult(rmType,
                 possibleTypes.stream().distinct().toList(),
-                possibleCodings, null);
+                possibleCodings, null, lastFound);
     }
 
     /**
@@ -470,45 +531,6 @@ public class AqlToFlatPathConverter {
     // Type resolution
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Once all path segments are consumed, inspect the leaf node's children to:
-     * <ul>
-     *   <li>auto-append specialised value sub-paths ({@code identifier_value}, {@code date_time_value},
-     *       {@code quantity_value})</li>
-     *   <li>refine the RM type from a {@code value} / {@code coded_text_value} / etc. child</li>
-     * </ul>
-     */
-    private static String resolveLeafType(final List<WebTemplateNode> children,
-                                          final Set<String> forcedTypes,
-                                          final StringJoiner flat,
-                                          final String currentRmType) {
-        if (children == null || children.isEmpty()) {
-            return currentRmType;
-        }
-
-        // todo: refactor this. We should just have all possible flatPaths registered like possibleRmTypes (or no leaf types and leaf types are added at extraction/population phase based on possible rmtypes)
-        boolean identifierValue = appendIfPresent(children, "identifier_value", flat);
-        if (!identifierValue) {
-            boolean dateTimeValue = appendIfPresent(children, "date_time_value", flat);
-            if (!dateTimeValue) {
-                boolean quantityValue = appendIfPresent(children, "quantity_value", flat);
-            }
-        }
-
-        if (forcedTypes == null || forcedTypes.isEmpty()) {
-            return children.stream()
-                    .filter(n -> "value".equals(n.getId())
-                            || "identifier_value".equals(n.getId())
-                            || "coded_text_value".equals(n.getId())
-                            || "quantity_value".equals(n.getId())
-                            || "date_time_value".equals(n.getId()))
-                    .findAny()
-                    .map(WebTemplateNode::getRmType)
-                    .orElse(currentRmType);
-        }
-        return currentRmType;
-    }
-
     private static List<String> getPossibleType(final List<WebTemplateNode> children,
                                                 final String currentRmType) {
         if (children == null || children.isEmpty()) {
@@ -532,48 +554,6 @@ public class AqlToFlatPathConverter {
                 .toList();
     }
 
-    /**
-     * Resolves the RM type for a matched node, honouring any forced type hint and handling ELEMENT
-     * nodes that expose a specialised value child (e.g. {@code coded_text_value}).
-     */
-    private static String resolveType(final Set<String> forcedTypes,
-                                      final WebTemplateNode node,
-                                      final StringJoiner flat) {
-        if (forcedTypes == null || forcedTypes.isEmpty()) {
-            return node.getRmType();
-        }
-
-        // Small leaf or CODE_PHRASE — trust the forced type directly
-        if ((forcedTypes.size() == 1 && node.getChildren().size() <= 3)
-                || (forcedTypes.size() == 1 && node.getChildren().size() <= 5
-                && forcedTypes.contains(FhirConnectConst.CODE_PHRASE))) {
-            return forcedTypes.iterator().next();
-        }
-
-        // ELEMENT: look for a value-carrying child; may need to append its id to the flat path
-        if (FhirConnectConst.ELEMENT.equals(node.getRmType())) {
-            final Set<String> childRmTypes = node.getChildren().stream()
-                    .map(WebTemplateNode::getRmType)
-                    .collect(Collectors.toSet());
-            return node.getChildren().stream()
-                    .filter(c -> c.getId().contains("value"))
-                    .map(c -> {
-                        if (!c.getId().equals("value")
-                                && !FhirConnectConst.OPENEHR_CONSISTENT_SET.containsAll(childRmTypes)) {
-                            flat.add(c.getId());
-                        }
-                        return c.getRmType();
-                    })
-                    .findAny()
-                    .orElse(null);
-        }
-
-        return forcedTypes.stream()
-                .filter(ft -> ft.equals(node.getRmType()))
-                .findFirst()
-                .orElse(forcedTypes.iterator().next());
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
     // Helpers
     // -----------------------------------------------------------------------------------------------------------------
@@ -588,14 +568,6 @@ public class AqlToFlatPathConverter {
             out.add(n);
             collectAll(n.getChildren(), out);
         }
-    }
-
-    private static boolean appendIfPresent(final List<WebTemplateNode> nodes,
-                                           final String id,
-                                           final StringJoiner flat) {
-        Optional<WebTemplateNode> matched = nodes.stream().filter(n -> id.equals(n.getId())).findAny();
-        matched.ifPresent(n -> flat.add(id));
-        return matched.isPresent();
     }
 
     private static String removeStructuralSegments(final String path) {

@@ -1,15 +1,11 @@
 package com.syntaric.openfhir.util;
 
 import com.syntaric.openfhir.aql.FhirQueryParam;
-import com.syntaric.openfhir.fc.FhirConnectConst;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,72 +25,6 @@ public class OpenFhirMapperUtils {
      */
     private static SimpleDateFormat formatter(final String pattern) {
         return new SimpleDateFormat(pattern);
-    }
-
-    public String replaceAqlSuffixWithFlatSuffix(final String pathWithAqlSuffix,
-                                                 final String detectedType) {
-        if (pathWithAqlSuffix == null) {
-            return "";
-        }
-        if (!endsWithAqlSuffix(pathWithAqlSuffix, detectedType)) {
-            return "";
-        }
-        final String[] paths = pathWithAqlSuffix.split("/");
-        final List<String> pathsAsList = Arrays.asList(paths);
-        final String aqlSuffix = pathsAsList.get(pathsAsList.size() - 1);
-        switch (aqlSuffix) {
-            case "defining_code":
-            case "|defining_code":
-            case "code_string":
-            case "|code_string":
-                return "|" + FhirConnectConst.OPENEHR_CODE;
-            case "terminology_id":
-            case "|terminology_id":
-            case "terminology_id/value":
-                return "|" + FhirConnectConst.OPENEHR_TERMINOLOGY;
-            case "function":
-            case "|function":
-                return "|function";
-            case "value":
-                return "|" + FhirConnectConst.OPENEHR_VALUE;
-        }
-        return "";
-    }
-
-    public boolean endsWithAqlSuffix(final String path,
-                                     final String detectedType) {
-        if (path == null) {
-            return false;
-        }
-        final Set<String> relevantRmTypes = Set.of(FhirConnectConst.DV_CODED_TEXT,
-                                                   FhirConnectConst.DV_PARTICIPATION,
-                                                   FhirConnectConst.CODE_PHRASE);
-        if (detectedType == null || !relevantRmTypes.contains(detectedType)) {
-            return false;
-        }
-        if (path.endsWith("coded_text_value")) {
-            // false positive
-            return false;
-        }
-        return path.endsWith("defining_code")
-                || path.endsWith("code_string")
-                || path.endsWith("value")
-                || path.endsWith("terminology_id")
-                || path.endsWith("function")
-                || path.endsWith("terminology_id/value")
-                || path.endsWith("defining_code/code_string");
-    }
-
-    public String removeAqlSuffix(final String path,
-                                  final String detectedType) {
-        if (!endsWithAqlSuffix(path, detectedType)) {
-            return path;
-        }
-        final String[] paths = path.split("/");
-        final List<String> pathsAsList = Arrays.asList(paths);
-        final String removed = pathsAsList.subList(0, pathsAsList.size() - 1).stream().collect(
-                Collectors.joining("/"));
-        return removeAqlSuffix(removed, detectedType);
     }
 
     /**

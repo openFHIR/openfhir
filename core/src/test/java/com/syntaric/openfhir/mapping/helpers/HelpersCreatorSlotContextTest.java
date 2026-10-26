@@ -4,7 +4,6 @@ import com.syntaric.openfhir.OpenFhirMappingContext;
 import com.syntaric.openfhir.TestOpenFhirMappingContext;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.util.FhirConnectModelMerger;
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import com.syntaric.openfhir.util.OpenFhirTestUtility;
 import java.io.IOException;
@@ -26,8 +25,7 @@ public class HelpersCreatorSlotContextTest {
     @Before
     public void setUp() {
         repo = new TestOpenFhirMappingContext(new FhirConnectModelMerger());
-        helpersCreator = new HelpersCreator(repo, new AqlToFlatPathConverter(new OpenFhirStringUtils(),
-                                                                             new OpenFhirMapperUtils()));
+        helpersCreator = new HelpersCreator(repo, new AqlToFlatPathConverter(new OpenFhirStringUtils()));
     }
 
     @Test

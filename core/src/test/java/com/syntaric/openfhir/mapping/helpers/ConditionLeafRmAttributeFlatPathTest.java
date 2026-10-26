@@ -1,7 +1,6 @@
 package com.syntaric.openfhir.mapping.helpers;
 
 import com.syntaric.openfhir.fc.schema.model.Condition;
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -48,7 +47,7 @@ public class ConditionLeafRmAttributeFlatPathTest {
         final String serialized = IOUtils.toString(getClass().getResourceAsStream(OPT));
         final OPERATIONALTEMPLATE operationaltemplate = TemplateDocument.Factory.parse(serialized).getTemplate();
         webTemplate = new OPTParser(operationaltemplate).parse();
-        converter = new AqlToFlatPathConverter(new OpenFhirStringUtils(), new OpenFhirMapperUtils());
+        converter = new AqlToFlatPathConverter(new OpenFhirStringUtils());
         helpersCreator = new HelpersCreator(null, converter);
     }
 
@@ -72,14 +71,14 @@ public class ConditionLeafRmAttributeFlatPathTest {
      */
     @Test
     public void converterCannotResolveRmAttributesOfADvIdentifier() {
-        final AqlToFlatPathConverter.Result rootResult = converter.convert(IDENTIFIER_ROOT, null, webTemplate);
+        final AqlToFlatPathConverter.Result rootResult = converter.convert(IDENTIFIER_ROOT, webTemplate);
 
         Assert.assertEquals(EXPECTED_ROOT_FLAT, rootResult.flatPath());
         for (final String rmAttribute : List.of("type", "issuer", "id", "assigner")) {
             Assert.assertEquals("the converter drops the " + rmAttribute
-                                        + " segment — hence the rewrite in amendCondition",
+                                        + " segment — hence amendCondition resolves the attribute itself",
                                 rootResult.flatPath(),
-                                converter.convert(IDENTIFIER_ROOT + "/" + rmAttribute, null, webTemplate).flatPath());
+                                converter.convert(IDENTIFIER_ROOT + "/" + rmAttribute, webTemplate).flatPath());
         }
     }
 
@@ -137,6 +136,16 @@ public class ConditionLeafRmAttributeFlatPathTest {
         Assert.assertEquals(List.of("|ordinal"), amend(conditionOn("ordinal")).getTargetAttributesFlatPath());
         Assert.assertEquals(List.of("|formalism"), amend(conditionOn("formalism")).getTargetAttributesFlatPath());
         Assert.assertEquals(List.of("|mediatype"), amend(conditionOn("media_type")).getTargetAttributesFlatPath());
+    }
+
+    /** The flat names are the ones the EHRbase SDK reads, also where they differ from the RM name. */
+    @Test
+    public void attributesResolveToTheFlatNamesTheSdkReads() {
+        Assert.assertEquals(List.of("|alternatetext"),
+                            amend(conditionOn("alternate_text")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|url"), amend(conditionOn("uri")).getTargetAttributesFlatPath());
+        Assert.assertEquals(List.of("|terminology"),
+                            amend(conditionOn("defining_code/terminology_id")).getTargetAttributesFlatPath());
     }
 
     /**

@@ -105,11 +105,9 @@ public abstract class GenericTest {
         final OpenFhirMapperUtils openFhirMapperUtils = new OpenFhirMapperUtils();
 
         helpersCreator = new HelpersCreator(repo, new AqlToFlatPathConverter(
-                openFhirStringUtils,
-                openFhirMapperUtils));
+                openFhirStringUtils));
         openEhrFlatPathDataExtractor = new OpenEhrFlatPathDataExtractor(
                 openFhirStringUtils,
-                openFhirMapperUtils,
                 new ValueToFHIRParser(
                         new TemporalParser(
                                 readers),

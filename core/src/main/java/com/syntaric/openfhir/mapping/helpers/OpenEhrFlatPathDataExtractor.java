@@ -5,7 +5,6 @@ import static com.syntaric.openfhir.util.OpenFhirStringUtils.RECURRING_SYNTAX;
 import com.google.gson.JsonObject;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.mapping.helpers.parser.ValueToFHIRParser;
-import com.syntaric.openfhir.util.OpenFhirMapperUtils;
 import com.syntaric.openfhir.util.OpenFhirStringUtils;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +32,12 @@ import org.springframework.stereotype.Component;
 public class OpenEhrFlatPathDataExtractor {
 
     private final OpenFhirStringUtils openFhirStringUtils;
-    private final OpenFhirMapperUtils openFhirMapperUtils;
     private final ValueToFHIRParser valueToFHIRParser;
 
     @Autowired
     public OpenEhrFlatPathDataExtractor(final OpenFhirStringUtils openFhirStringUtils,
-                                        final OpenFhirMapperUtils openFhirMapperUtils,
                                         final ValueToFHIRParser valueToFHIRParser) {
         this.openFhirStringUtils = openFhirStringUtils;
-        this.openFhirMapperUtils = openFhirMapperUtils;
         this.valueToFHIRParser = valueToFHIRParser;
     }
 
@@ -53,15 +49,15 @@ public class OpenEhrFlatPathDataExtractor {
      * @return one {@link DataWithIndex} per matching occurrence, never {@code null}
      */
     public List<DataWithIndex> extract(final MappingHelper mappingHelper, final JsonObject flatJsonObject) {
-        // An attribute pinned with strict AQL (.../value/magnitude) is read from that attribute only: read as the
-        // element, its other attributes - or the bare element key a DV_PARSABLE's value is written as - answer for it.
+        // An attribute of a data value (.../value/magnitude, .../defining_code/code_string) is read from that
+        // attribute only: read as the element, its other attributes - or the bare element key a DV_PARSABLE's value is
+        // written as - answer for it.
         final RmAttributePins.Attribute pinned = RmAttributePins.pinnedBy(mappingHelper);
         if (pinned != null) {
             return extractPinnedAttribute(mappingHelper, flatJsonObject,
                                           pinned.isElementItself() || pinned.emittedOnElement());
         }
-        final List<DataWithIndex> extracted = extractByFlatPath(mappingHelper, flatJsonObject);
-        return extracted.isEmpty() ? extractPinnedAttribute(mappingHelper, flatJsonObject, false) : extracted;
+        return extractByFlatPath(mappingHelper, flatJsonObject);
     }
 
     private List<DataWithIndex> extractByFlatPath(final MappingHelper mappingHelper, final JsonObject flatJsonObject) {
@@ -98,11 +94,9 @@ public class OpenEhrFlatPathDataExtractor {
     }
 
     /**
-     * A path pinning one attribute of a data value is written to that pipe attribute of the element
+     * A path ending in an attribute of a data value is written to that pipe attribute of the element
      * ({@code active_inactive_status|code}, {@code analyte_result/quantity_value|magnitude}); it is read back from there,
-     * as text the FHIR side parses into its own type. Also for the shorthand of a coded value
-     * ({@code .../defining_code/code_string}, {@code .../|code}), whose flat path keeps the RM segments
-     * ({@code active_inactive_status/defining_code}) no flat key has.
+     * as text the FHIR side parses into its own type.
      *
      * @param orBareElement the attribute may (also) come as the element itself: it is the whole value in the flat
      *                      format ({@code value} of a DV_TEXT), or the SDK writes it so
@@ -115,10 +109,7 @@ public class OpenEhrFlatPathDataExtractor {
         if ((pipeSuffix.isEmpty() && !orBareElement) || StringUtils.isBlank(flatPath)) {
             return List.of();
         }
-        final List<String> possibleRmTypes = mappingHelper.getPossibleRmTypes();
-        final String rmType = possibleRmTypes == null || possibleRmTypes.isEmpty() ? null : possibleRmTypes.get(0);
-        final String elementFlatPath = openFhirMapperUtils.removeAqlSuffix(flatPath, rmType)
-                .replace(RECURRING_SYNTAX, "");
+        final String elementFlatPath = flatPath.replace(RECURRING_SYNTAX, "");
         List<String> keys = pipeSuffix.isEmpty() ? List.of()
                 : wholeKeysMatching(openFhirStringUtils.addRegexPatternToSimplifiedFlatFormat(elementFlatPath + pipeSuffix),
                                     flatJsonObject);

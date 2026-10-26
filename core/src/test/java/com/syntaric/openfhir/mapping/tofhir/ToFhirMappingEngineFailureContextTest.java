@@ -72,7 +72,6 @@ public class ToFhirMappingEngineFailureContextTest {
                 fhirInstanceCreatorUtility,
                 new FhirContextRegistry(),
                 new OpenEhrFlatPathDataExtractor(openFhirStringUtils,
-                        openFhirMapperUtils,
                         new ValueToFHIRParser(
                                 new TemporalParser(readers),
                                 new QuantityParser(readers),

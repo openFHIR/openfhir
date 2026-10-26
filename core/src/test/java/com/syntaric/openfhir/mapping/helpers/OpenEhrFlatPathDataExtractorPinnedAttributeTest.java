@@ -28,8 +28,8 @@ import org.openehr.schemas.v1.TemplateDocument;
  * A mapping can pin one attribute of a DV_CODED_TEXT ({@code .../defining_code/code_string},
  * {@code .../defining_code/terminology_id}, {@code .../|value} ...). FHIR to openEHR writes it to that pipe
  * attribute of the element ({@code active_inactive_status|code}); openEHR to FHIR has to read it back from
- * there. The helper's flat path keeps the RM segments ({@code active_inactive_status/defining_code}), which
- * no flat key has, so nothing used to reach FHIR.
+ * there, whichever way the attribute is spelled. The helper's flat path used to keep the RM segments
+ * ({@code active_inactive_status/defining_code}), which no flat key has, so nothing reached FHIR.
  */
 public class OpenEhrFlatPathDataExtractorPinnedAttributeTest {
 
@@ -54,9 +54,9 @@ public class OpenEhrFlatPathDataExtractorPinnedAttributeTest {
         final String serialized = IOUtils.toString(getClass().getResourceAsStream(OPT));
         webTemplate = new OPTParser(TemplateDocument.Factory.parse(serialized).getTemplate()).parse();
         final OpenFhirStringUtils stringUtils = new OpenFhirStringUtils();
-        converter = new AqlToFlatPathConverter(stringUtils, new OpenFhirMapperUtils());
+        converter = new AqlToFlatPathConverter(stringUtils);
         final FhirValueReaders readers = new FhirValueReaders(new OpenFhirMapperUtils());
-        extractor = new OpenEhrFlatPathDataExtractor(stringUtils, new OpenFhirMapperUtils(), new ValueToFHIRParser(
+        extractor = new OpenEhrFlatPathDataExtractor(stringUtils, new ValueToFHIRParser(
                 new TemporalParser(readers), new QuantityParser(readers), new CodedParser(readers),
                 new MediaParser(readers), new TextParser(readers), new IdentifierParser(readers),
                 new ReferenceParser(readers)));

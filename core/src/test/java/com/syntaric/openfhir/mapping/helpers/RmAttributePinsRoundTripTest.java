@@ -71,9 +71,9 @@ public class RmAttributePinsRoundTripTest {
         final String serialized = IOUtils.toString(getClass().getResourceAsStream(OPT));
         webTemplate = new OPTParser(TemplateDocument.Factory.parse(serialized).getTemplate()).parse();
         final OpenFhirStringUtils stringUtils = new OpenFhirStringUtils();
-        converter = new AqlToFlatPathConverter(stringUtils, new OpenFhirMapperUtils());
+        converter = new AqlToFlatPathConverter(stringUtils);
         final FhirValueReaders readers = new FhirValueReaders(new OpenFhirMapperUtils());
-        extractor = new OpenEhrFlatPathDataExtractor(stringUtils, new OpenFhirMapperUtils(), new ValueToFHIRParser(
+        extractor = new OpenEhrFlatPathDataExtractor(stringUtils, new ValueToFHIRParser(
                 new TemporalParser(readers), new QuantityParser(readers), new CodedParser(readers),
                 new MediaParser(readers), new TextParser(readers), new IdentifierParser(readers),
                 new ReferenceParser(readers)));
@@ -204,13 +204,106 @@ public class RmAttributePinsRoundTripTest {
         Assert.assertEquals("|magnitude", helper.getFlatPathPipeSuffix());
     }
 
-    @Test
-    public void theWholeValueIsNoPin() {
-        Assert.assertNull(RmAttributePins.parse(choiceElement + "/value"));
-        Assert.assertNull(RmAttributePins.parse(choiceElement));
-        Assert.assertNull(RmAttributePins.parse(choiceElement + "/value/not_an_attribute"));
+    private MappingHelper converted(final String path) {
         final MappingHelper helper = new MappingHelper();
-        helper.setFullOpenEhrPath(choiceElement + "/null_flavour/value");
-        Assert.assertNull(RmAttributePins.parse(helper.getFullOpenEhrPath()));
+        helper.setFullOpenEhrPath(path);
+        converter.convert(helper, webTemplate, false);
+        return helper;
+    }
+
+    /**
+     * An attribute spelled any other way than strict AQL - without the ELEMENT's value, by an alias, as its flat
+     * pipe (its own segment or on the node) - is the same attribute: the same flat key and the same strict AQL.
+     */
+    @Test
+    public void everySpellingOfAnAttributeIsThatAttribute() {
+        singleTypeElements.forEach((rmType, element) -> {
+            for (final RmAttributePins.Attribute attribute : RmAttributePins.all().getOrDefault(rmType, List.of())) {
+                final MappingHelper strict = converted(element + "/value/" + attribute.rmPath());
+                final List<String> spellings = new java.util.ArrayList<>(attribute.aliases());
+                spellings.add(attribute.rmPath());
+                final List<String> paths = new java.util.ArrayList<>();
+                for (final String spelling : spellings) {
+                    paths.add(element + "/value/" + spelling);
+                    if (!"value".equals(spelling)) {
+                        // a bare value on the ELEMENT is its whole data value
+                        paths.add(element + "/" + spelling);
+                    }
+                }
+                if (!attribute.isElementItself()) {
+                    paths.add(element + "/|" + attribute.flatAttribute());
+                    paths.add(element + "|" + attribute.flatAttribute());
+                }
+                for (final String path : paths) {
+                    final MappingHelper spelled = converted(path);
+                    Assert.assertEquals(path, rmType, spelled.getPinnedRmType());
+                    Assert.assertEquals(path, strict.getFullOpenEhrFlatPath(), spelled.getFullOpenEhrFlatPath());
+                    Assert.assertEquals(path, strict.getFlatPathPipeSuffix(), spelled.getFlatPathPipeSuffix());
+                    Assert.assertEquals(path, strict.getPinnedAqlPath(), spelled.getPinnedAqlPath());
+                }
+            }
+        });
+    }
+
+    /** On a choice element, the mapping's {@code with.type} picks whose attribute the path is. */
+    @Test
+    public void withTypePicksTheTypeOfAnAttributeSeveralTypesHave() {
+        final MappingHelper helper = new MappingHelper();
+        helper.setFullOpenEhrPath(choiceElement + "/value/value");
+        helper.setHardcodedType("CODEABLECONCEPT");
+        converter.convert(helper, webTemplate, false);
+        Assert.assertEquals(FhirConnectConst.DV_CODED_TEXT, helper.getPinnedRmType());
+        Assert.assertEquals("|value", helper.getFlatPathPipeSuffix());
+
+        helper.setHardcodedType("BOOL");
+        helper.setPossibleRmTypes(null);
+        converter.convert(helper, webTemplate, false);
+        Assert.assertEquals(FhirConnectConst.DV_BOOL, helper.getPinnedRmType());
+        Assert.assertEquals("", helper.getFlatPathPipeSuffix());
+    }
+
+    /** A DV_TEXT element may hold a DV_CODED_TEXT, so it has the coded text's attributes too. */
+    @Test
+    public void aTextElementHasTheAttributesOfACodedText() {
+        final String text = singleTypeElements.get(FhirConnectConst.DV_TEXT);
+        Assert.assertNotNull(text);
+        final MappingHelper code = converted(text + "/defining_code/code_string");
+        Assert.assertEquals(FhirConnectConst.DV_CODED_TEXT, code.getPinnedRmType());
+        Assert.assertEquals("|code", code.getFlatPathPipeSuffix());
+        Assert.assertEquals(converted(text).getFullOpenEhrFlatPath(), code.getFullOpenEhrFlatPath());
+        // the text's own value is still the element itself
+        Assert.assertEquals(FhirConnectConst.DV_TEXT, converted(text + "/value/value").getPinnedRmType());
+        Assert.assertEquals("", converted(text + "/value/value").getFlatPathPipeSuffix());
+    }
+
+    @Test
+    public void theWholeValueIsNoAttribute() {
+        for (final String tail : List.of("", "/value", "/value/not_an_attribute")) {
+            Assert.assertNull(tail, converted(choiceElement + tail).getPinnedAttribute());
+        }
+    }
+
+    @Test
+    public void theNullFlavourIsADataValueOfItsOwn() {
+        final MappingHelper value = converted(choiceElement + "/null_flavour/value");
+        Assert.assertEquals(FhirConnectConst.DV_CODED_TEXT, value.getPinnedRmType());
+        Assert.assertEquals("|value", value.getFlatPathPipeSuffix());
+        Assert.assertTrue(value.getFullOpenEhrFlatPath(), value.getFullOpenEhrFlatPath().endsWith("null_flavour"));
+
+        final MappingHelper code = converted(choiceElement + "/null_flavour/defining_code/code_string");
+        Assert.assertEquals("|code", code.getFlatPathPipeSuffix());
+        Assert.assertEquals(value.getFullOpenEhrFlatPath(), code.getFullOpenEhrFlatPath());
+        Assert.assertTrue(code.getPinnedAqlPath(), code.getPinnedAqlPath().endsWith("/null_flavour/defining_code/code_string"));
+    }
+
+    @Test
+    public void anAttributeTheElementsTypesDoNotHaveDoesNotExist() {
+        final String codedOnly = singleTypeElements.get(FhirConnectConst.DV_CODED_TEXT);
+        Assert.assertNotNull(codedOnly);
+        final MappingHelper strict = converted(codedOnly + "/value/magnitude");
+        Assert.assertTrue(strict.isOpenEhrPathUnresolved());
+        Assert.assertNull(strict.getPinnedAttribute());
+        // without the ELEMENT's value it is no attribute of the element, an ordinary path as before
+        Assert.assertFalse(converted(codedOnly + "/magnitude").isOpenEhrPathUnresolved());
     }
 }

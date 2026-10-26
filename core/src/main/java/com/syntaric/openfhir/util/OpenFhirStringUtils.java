@@ -3,13 +3,10 @@ package com.syntaric.openfhir.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.syntaric.openfhir.fc.FhirConnectConst;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -456,28 +453,6 @@ public class OpenFhirStringUtils {
         } else {
             return new Coding(null, criteria, null);
         }
-    }
-
-    public Set<String> getPossibleRmTypeValue(final String val) {
-        if (val == null) {
-            return null;
-        }
-        return switch (val) {
-            case "QUANTITY" -> new HashSet<>(
-                    Arrays.asList(FhirConnectConst.DV_QUANTITY, FhirConnectConst.DV_COUNT, FhirConnectConst.DV_ORDINAL,
-                            FhirConnectConst.DV_PROPORTION));
-            case "DATETIME" -> Collections.singleton(FhirConnectConst.DV_DATE_TIME);
-            case "TIME" -> Collections.singleton(FhirConnectConst.DV_TIME);
-            case "DATE" -> Collections.singleton(FhirConnectConst.DV_DATE);
-            case "CODEABLECONCEPT" -> Collections.singleton(FhirConnectConst.DV_CODED_TEXT);
-            case "CODING" -> Collections.singleton(FhirConnectConst.CODE_PHRASE);
-            case "STRING" -> Collections.singleton(FhirConnectConst.DV_TEXT);
-            case "BOOL" -> Collections.singleton(FhirConnectConst.DV_BOOL);
-            case "IDENTIFIER" -> Collections.singleton(FhirConnectConst.DV_IDENTIFIER);
-            case "MEDIA" -> Collections.singleton(FhirConnectConst.DV_MULTIMEDIA);
-            case "PROPORTION" -> Collections.singleton(FhirConnectConst.DV_PROPORTION);
-            default -> Collections.singleton(val);
-        };
     }
 
     /**
