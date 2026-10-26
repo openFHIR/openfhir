@@ -33,10 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `$toopenehr` takes an optional `ehr_id` query parameter, and `/openfhir/tofhir` and `/openfhir/toopenehr`
   an optional `ehrId` one, naming the EHR the composition belongs to. It is passed to the mapping as part of
   its call context, which `OpenFhirEngine.toOpenEhr` and `OpenFhirEngine.toFhir` now also accept
-- `MappingUsageListenerInterface`, an extension point the engine calls around every mapping, in both
-  directions and from every endpoint: `beforeMapping` once the context mapper and template are resolved,
-  before any mapping work (throwing refuses the mapping), and `mapped` after a successful mapping. The
-  default implementation does nothing
+- `MappingListenerInterface`, an extension point the engine calls around every mapping, in both directions
+  and from every endpoint, with a `MappingEvent` describing it: `beforeMapping` once the context mapper and
+  template are resolved, before any mapping work (throwing refuses the mapping), and `afterMapping` after a
+  successful mapping. Any number of listeners can be registered as beans; none are by default
 
 ### Fixed
 - `$tofhir`: a mapping pinning one attribute of a coded text (`…/defining_code/code_string`,

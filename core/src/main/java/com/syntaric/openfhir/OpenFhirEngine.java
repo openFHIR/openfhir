@@ -14,12 +14,12 @@ import com.syntaric.openfhir.aql.ToAqlResponse;
 import com.syntaric.openfhir.db.entity.FhirConnectContextEntity;
 import com.syntaric.openfhir.fc.FhirConnectConst;
 import com.syntaric.openfhir.fc.schema.Spec;
-import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.manager.FhirConnectManager;
 import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.mapping.MappingDirection;
-import com.syntaric.openfhir.mapping.MappingUsageListenerInterface;
+import com.syntaric.openfhir.mapping.MappingEvent;
+import com.syntaric.openfhir.mapping.MappingListenerInterface;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
@@ -62,7 +62,7 @@ public class OpenFhirEngine {
     private final FhirConditionEvaluator fhirConditionEvaluator;
     private final Gson gson;
     private final MappingMetricsLogger metricsLogger;
-    private final MappingUsageListenerInterface usageListener;
+    private final List<MappingListenerInterface> mappingListeners;
 
     @Autowired
     public OpenFhirEngine(final ToOpenEhr fhirToOpenEhr,
@@ -77,7 +77,7 @@ public class OpenFhirEngine {
                           final FhirConditionEvaluator fhirConditionEvaluator,
                           final Gson gson,
                           final MappingMetricsLogger metricsLogger,
-                          final MappingUsageListenerInterface usageListener) {
+                          final List<MappingListenerInterface> mappingListeners) {
         this.fhirToOpenEhr = fhirToOpenEhr;
         this.openEhrToFhir = openEhrToFhir;
         this.fhirConnectManager = fhirConnectManager;
@@ -90,7 +90,7 @@ public class OpenFhirEngine {
         this.fhirConditionEvaluator = fhirConditionEvaluator;
         this.gson = gson;
         this.metricsLogger = metricsLogger;
-        this.usageListener = usageListener;
+        this.mappingListeners = List.copyOf(mappingListeners);
     }
 
     /**
@@ -252,8 +252,9 @@ public class OpenFhirEngine {
 
         final MappingCallContext callContextToUse = Objects.requireNonNullElse(callContext,
                 MappingCallContext.empty());
-        usageListener.beforeMapping(MappingDirection.TO_OPEN_EHR, fhirConnectContext.getFhirConnectContext(),
-                templateIdToUse, callContextToUse);
+        final MappingEvent mappingEvent = new MappingEvent(MappingDirection.TO_OPEN_EHR,
+                fhirConnectContext.getFhirConnectContext(), templateIdToUse, callContextToUse);
+        notifyBeforeMapping(mappingEvent);
 
         final Spec.Version fhirVersion = getFhirVersion(fhirConnectContext);
         final Resource resource = parseIncomingFhirResource(incomingFhirResource, fhirContextRegistry.getContext(fhirVersion));
@@ -277,7 +278,7 @@ public class OpenFhirEngine {
                     issueCollector);
             mapped = new CanonicalJson().marshal(composition);
         }
-        notifyMapped(MappingDirection.TO_OPEN_EHR, fhirConnectContext.getFhirConnectContext(), callContextToUse);
+        notifyAfterMapping(mappingEvent);
         return mapped;
     }
 
@@ -346,8 +347,9 @@ public class OpenFhirEngine {
 
         final MappingCallContext callContextToUse = Objects.requireNonNullElse(callContext,
                 MappingCallContext.empty());
-        usageListener.beforeMapping(MappingDirection.TO_FHIR, fhirConnectContext.getFhirConnectContext(),
-                templateIdToUse, callContextToUse);
+        final MappingEvent mappingEvent = new MappingEvent(MappingDirection.TO_FHIR,
+                fhirConnectContext.getFhirConnectContext(), templateIdToUse, callContextToUse);
+        notifyBeforeMapping(mappingEvent);
 
         final MappingTimer cacheTimer = MappingTimer.start();
         final WebTemplate webTemplate = resolveWebTemplate(templateIdToUse);
@@ -380,20 +382,31 @@ public class OpenFhirEngine {
         metricsLogger.record("toFhir.mapping", "template=" + templateIdToUse + " type=" + incomingOpenEhrType,
                 mappingTimer.elapsedMs());
         metricsLogger.record("toFhir.total", "template=" + templateIdToUse, totalTimer.elapsedMs());
-        notifyMapped(MappingDirection.TO_FHIR, fhirConnectContext.getFhirConnectContext(), callContextToUse);
+        notifyAfterMapping(mappingEvent);
         return fhir;
     }
 
     /**
-     * Tells the usage listener about a successful mapping. A failing listener is logged and never fails the mapping.
+     * Tells the mapping listeners about a mapping about to start. A listener that throws refuses the mapping.
      */
-    private void notifyMapped(final MappingDirection direction, final FhirConnectContext context,
-                              final MappingCallContext callContext) {
-        try {
-            usageListener.mapped(direction, context, callContext);
-        } catch (final Exception e) {
-            log.warn("Mapping usage listener failed after a successful {} mapping: {}", direction, e.getMessage(),
-                    e);
+    private void notifyBeforeMapping(final MappingEvent event) {
+        for (final MappingListenerInterface listener : mappingListeners) {
+            listener.beforeMapping(event);
+        }
+    }
+
+    /**
+     * Tells the mapping listeners about a successful mapping. A failing listener is logged and neither fails the
+     * mapping nor keeps the other listeners from being told.
+     */
+    private void notifyAfterMapping(final MappingEvent event) {
+        for (final MappingListenerInterface listener : mappingListeners) {
+            try {
+                listener.afterMapping(event);
+            } catch (final Exception e) {
+                log.warn("Mapping listener {} failed after a successful {} mapping: {}",
+                        listener.getClass().getSimpleName(), event.getDirection(), e.getMessage(), e);
+            }
         }
     }
 
