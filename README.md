@@ -8,6 +8,22 @@ openEHR and HL7 FHIR**, based on the **[FHIR Connect specification](https://gith
 openFHIR translates openEHR Compositions and FHIR Resources without storing clinical data itself — making it a flexible
 component for modern health IT architectures.
 
+## Try openFHIR Online
+
+If you’d like to explore openFHIR without installing anything locally, you can use the public sandbox environment, which
+always runs the latest release of openFHIR:
+
+**https://sandbox.open-fhir.com/atlas**
+
+The sandbox provides a live instance of the openFHIR engine where you can:
+
+- Test FHIR ↔ openEHR transformations
+- Validate mapping configurations
+- Experiment with API requests
+- Explore mapping transformation with a UI called [openFHIR Atlas](https://sandbox.open-fhir.com/atlas)
+
+> ⚠️ The sandbox is intended for testing and evaluation purposes only.
+
 ## FHIR Version Support
 
 openFHIR supports all major HL7 FHIR versions:
@@ -62,22 +78,6 @@ production scenarios.
 
 - Executive summary: https://open-fhir.com/performance
 - Detailed JMeter results: https://open-fhir.com/performance-results
-
-## Try openFHIR Online
-
-If you’d like to explore openFHIR without installing anything locally, you can use the public sandbox environment, which
-always runs the latest release of openFHIR:
-
-**https://sandbox.open-fhir.com/**
-
-The sandbox provides a live instance of the openFHIR engine where you can:
-
-- Test FHIR ↔ openEHR transformations
-- Validate mapping configurations
-- Experiment with API requests
-- Explore mapping transformation with a UI called [openFHIR Atlas](https://open-fhir.com/documentation/1.2.9/atlas.html)
-
-> ⚠️ The sandbox is intended for testing and evaluation purposes only.
 
 ---
 
