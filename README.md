@@ -95,6 +95,13 @@ for a complete setup with mongodb.
 
 ---
 
+## Security
+
+To report a vulnerability, see [SECURITY.md](SECURITY.md): never through public issues. It also lists the supported
+versions and the release policy (patch releases contain only fixes).
+
+---
+
 ## Bootstrapping Mappings
 
 openFHIR scans the directory configured with `openfhir.bootstrap.dir` (default `/app/bootstrap/`) on startup and

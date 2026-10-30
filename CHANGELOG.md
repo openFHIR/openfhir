@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Security
+- added `SECURITY.md`: how to report a vulnerability, the supported versions and the release policy. From 3.1.0 on,
+  patch releases contain only fixes
 
 ## [3.0.3] - 2026-10-26
 ### Added
