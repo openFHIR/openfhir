@@ -77,7 +77,8 @@ months after a major, the last line of the previous major: security fixes only).
 ### Release branches
 
 - `release/X.Y` is created **by hand, from the last tag of the line**, when the
-  first fix for that line is needed, and protected like `main`:
+  first fix for that line is needed. The `release/*` branch protection rule
+  applies to it automatically:
 
   ```bash
   git switch -c release/3.0 3.0.3
@@ -185,7 +186,7 @@ prefer rolling forward with a patch release.
 | `RELEASE_TOKEN` | Actions secret | Fine-grained PAT (or GitHub App token) with **Contents: read/write** on this repo. Required because pushes made with the default `GITHUB_TOKEN` do not trigger other workflows — the docker/publish workflows would never fire on the release tag. Needs bypass rights if `main` is protected. |
 | `DOCKER_USERNAME` / `DOCKER_PASSWORD` | Actions secrets | Already in place for `docker.yml`. |
 | `no-changelog` label | Repo labels | Lets a PR skip the changelog check. |
-| `release/*` branch protection | Branch rules | Same rules as `main`; `RELEASE_TOKEN` needs bypass rights, since `patch-release.yml` pushes the release commit. |
+| `release/*` branch protection | Settings → Branches | Same rules as `develop`, not `main`: `main` is locked, which would stop fix PRs from merging. Admins aren't enforced, so `RELEASE_TOKEN` (an admin's token, as for `main` and `develop`) can push the unsigned release commit directly. |
 | Private vulnerability reporting | Settings → Code security | Enabled, so reporters can use *Report a vulnerability* (SECURITY.md). |
 | Merge commits allowed | Settings → General → Pull Requests | Forward-merge PRs must be merged with a merge commit. |
 
