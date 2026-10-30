@@ -58,6 +58,25 @@ openFHIR follows [Semantic Versioning](https://semver.org/):
 Patch releases are **rolling-upgradable**: they contain no database migrations and no changes to the messages nodes of
 a cluster exchange, so the nodes of a cluster can be upgraded one at a time.
 
+### Docker images
+
+| Tag                        | Points at                                                        |
+|----------------------------|------------------------------------------------------------------|
+| `openfhir/openfhir:X.Y.Z`  | that release, never moves                                        |
+| `openfhir/openfhir:X.Y`    | the newest patch release of line `X.Y`                           |
+| `openfhir/openfhir:latest` | the newest release overall; moves to the next minor/major too    |
+| `openfhir/openfhir:build`  | the development branch; a preview, not a release                 |
+
+Use `:X.Y` to receive patch releases (and with them security fixes) without picking up features, or `:X.Y.Z` to pin
+a release exactly. Every release image carries an SBOM and a provenance attestation:
+
+```bash
+docker buildx imagetools inspect openfhir/openfhir:X.Y.Z --format '{{json .SBOM}}'
+docker buildx imagetools inspect openfhir/openfhir:X.Y.Z --format '{{json .Provenance}}'
+```
+
+The GitHub Release of each version also has the CycloneDX SBOM of the Maven build attached (`bom.json`).
+
 This policy applies from 3.1.0 on. Earlier patch releases (up to 3.0.3) were cut from the development branch and could
 contain features.
 

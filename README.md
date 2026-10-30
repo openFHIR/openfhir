@@ -87,8 +87,11 @@ For local development or testing we recommend running openFHIR using Docker.
 
 ```yaml
 docker run -e SPRING_DATA_MONGODB_URI=mongodb://your-mongodb-url \
--p 8080:8080 openfhir/openfhir:latest
+-p 8080:8080 openfhir/openfhir:3.0
 ```
+
+`:X.Y` (here `3.0`) follows the patch releases of that line, which contain only fixes; `:X.Y.Z` pins one release.
+`:latest` also moves to new minor and major releases. See [SECURITY.md](SECURITY.md#docker-images).
 
 Additionally, check out the [Docker Compose](https://github.com/openfhir/openfhir/blob/develop/docker-compose.yml) file
 for a complete setup with mongodb.
