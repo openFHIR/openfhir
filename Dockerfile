@@ -4,7 +4,7 @@ WORKDIR /build
 COPY . .
 RUN mvn -B -q clean package -DskipTests=true
 
-FROM eclipse-temurin:21-jre@sha256:0b99b3376fbb50dbf9c0af8535fdd5b8eb0d3fdfc8b1e4967f383b6919f6901a
+FROM eclipse-temurin:24-jre@sha256:8cb2387a28af84cf0db0948d9c67d4480192f4e567027a3963f145d218e8b4f2
 WORKDIR /app
 COPY --from=builder /build/engine/target/open-fhir-engine-*.jar app.jar
 EXPOSE 8080
