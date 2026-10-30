@@ -84,12 +84,4 @@ contain features.
 
 Every fixed vulnerability gets a [GitHub Security Advisory](https://github.com/openFHIR/openfhir/security/advisories),
 with a CVE requested through GitHub, published together with the patch release that fixes it. The release's
-`CHANGELOG.md` section lists the fix under `### Security`.
-
-## openFHIR Enterprise
-
-openFHIR Enterprise is built on this engine. Its supported versions, release policy and advisories are described on
-the [enterprise security page](https://open-fhir.com/documentation/security.html).
-
-The open-source version is still not intended for production use (see the [README](README.md)), but it receives the
-same security patches, because the enterprise version is built on it.
+`CHANGELOG.md` section lists the fix under `### Security`. 
