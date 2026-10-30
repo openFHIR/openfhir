@@ -21,6 +21,15 @@ updates:
     groups:
       docker-minor-and-patch:
         update-types: [minor, patch]
+    # Moving to another Java version is a deliberate change (LTS releases only, builder and runtime together),
+    # so only digest bumps of the current tags come through here. Dependabot reads the maven tag
+    # 3.9-eclipse-temurin-21 as version 3.9.21, so a Java change there looks like a patch bump: ignore every
+    # tag change for it, not just major ones.
+    ignore:
+      - dependency-name: "eclipse-temurin"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "maven"
+        update-types: ["version-update:semver-major", "version-update:semver-minor", "version-update:semver-patch"]
 
   - package-ecosystem: github-actions
     directory: /

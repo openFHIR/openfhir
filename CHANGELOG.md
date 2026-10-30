@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   provenance attestation. `:latest` now only moves to the newest release, so a patch of an older line no longer
   moves it backwards. Every GitHub Release has a CycloneDX SBOM (`bom.json`) attached
 
+### Fixed
+- the Docker image builds again: its build stage is back on Java 21, after an automated bump to Java 26 broke
+  compilation. Dependabot no longer proposes Java version changes for the base images
+
 ### Security
 - added `SECURITY.md`: how to report a vulnerability, the supported versions and the release policy. From 3.1.0 on,
   patch releases contain only fixes
