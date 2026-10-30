@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Changed
+- Docker images get an `:X.Y` tag that follows the newest patch release of the line, and carry an SBOM and a
+  provenance attestation. `:latest` now only moves to the newest release, so a patch of an older line no longer
+  moves it backwards. Every GitHub Release has a CycloneDX SBOM (`bom.json`) attached
+
+### Security
+- added `SECURITY.md`: how to report a vulnerability, the supported versions and the release policy. From 3.1.0 on,
+  patch releases contain only fixes
+- the Docker image's base images are pinned by digest and updated through reviewed PRs, and the images of the
+  supported lines are scanned for vulnerabilities weekly
 
 ## [3.0.3] - 2026-10-26
 ### Added

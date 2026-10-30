@@ -1,0 +1,303 @@
+name: Patch Release
+
+# Cuts a patch release (X.Y.Z+1) from a release branch (release/X.Y), which is
+# cut from the last release tag of its line and only receives fixes. develop is
+# not involved: a security fix can ship independently of unreleased features.
+#
+# Validates the inputs, refuses changes a rolling upgrade can't take (database
+# migrations), rolls the changelog, sets the release version, gates on build +
+# unit/integration tests + the newman smoke collection, and only then tags,
+# pushes, creates the GitHub Release and opens the forward-merge PR into develop.
+#
+# Nothing is pushed until every gate has passed. Shares the `release`
+# concurrency group with release.yml, so the two never run at the same time.
+#
+# See RELEASING.md ("Patch (security) releases") for the runbook.
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: 'Release branch to release from, e.g. release/3.0'
+        required: true
+      release_version:
+        description: 'Patch version to release on that line, e.g. 3.0.4'
+        required: true
+      dry_run:
+        description: 'Run all gates but push nothing (no tag, no release, no forward-merge PR)'
+        type: boolean
+        default: false
+
+concurrency: release
+
+jobs:
+  patch-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    env:
+      RELEASE_BRANCH: ${{ inputs.release_branch }}
+      RELEASE_VERSION: ${{ inputs.release_version }}
+
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_branch }}
+          fetch-depth: 0
+          # PAT, not GITHUB_TOKEN: pushes made with GITHUB_TOKEN do not trigger
+          # other workflows, so docker.yml/publish.yml would never fire on the tag
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Validate inputs
+        run: |
+          if ! [[ "$RELEASE_BRANCH" =~ ^release/([0-9]+\.[0-9]+)$ ]]; then
+            echo "release_branch must be release/X.Y, got: $RELEASE_BRANCH"; exit 1
+          fi
+          LINE="${BASH_REMATCH[1]}"
+          if ! [[ "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "release_version must be X.Y.Z, got: $RELEASE_VERSION"; exit 1
+          fi
+          if [ "${RELEASE_VERSION%.*}" != "$LINE" ]; then
+            echo "release_version $RELEASE_VERSION is not on the line of $RELEASE_BRANCH ($LINE.*)"; exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/$RELEASE_VERSION" >/dev/null; then
+            echo "Tag $RELEASE_VERSION already exists"; exit 1
+          fi
+          if [ ! -x scripts/release-rank.sh ]; then
+            echo "$RELEASE_BRANCH has no scripts/release-rank.sh: cherry-pick the release tooling onto it (RELEASING.md)"; exit 1
+          fi
+          BASE_TAG=$(scripts/release-rank.sh newest-in-line "$LINE")
+          if ! scripts/release-rank.sh is-newest-in-line "$RELEASE_VERSION"; then
+            echo "release_version $RELEASE_VERSION is not higher than $BASE_TAG, the newest release of $LINE"; exit 1
+          fi
+          echo "Releasing $RELEASE_VERSION from $RELEASE_BRANCH, on top of $BASE_TAG"
+          echo "LINE=$LINE" >> "$GITHUB_ENV"
+          echo "BASE_TAG=$BASE_TAG" >> "$GITHUB_ENV"
+
+      - name: Rolling-upgrade gate
+        run: |
+          # a patch release must be rolling-upgradable in an HA cluster: nodes on
+          # the previous and the new patch run side by side against one database,
+          # so no database migrations. (Cluster messages can't be checked
+          # mechanically; that is a review rule, see RELEASING.md.)
+          CHANGED=$(git diff --name-only "$BASE_TAG"..HEAD)
+          echo "Changed since $BASE_TAG:"
+          echo "$CHANGED"
+          MIGRATIONS=$(echo "$CHANGED" | grep '/migrations/' || true)
+          if [ -n "$MIGRATIONS" ]; then
+            echo "A patch release must not contain database migrations; these ship in a minor release:"
+            echo "$MIGRATIONS"
+            exit 1
+          fi
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Roll changelog
+        run: |
+          scripts/changelog-release.sh check-unreleased
+          scripts/changelog-release.sh roll "$RELEASE_VERSION"
+          scripts/changelog-release.sh extract "$RELEASE_VERSION" > "$RUNNER_TEMP/notes.md"
+          echo "--- release notes ---"
+          cat "$RUNNER_TEMP/notes.md"
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Set release version in poms
+        run: mvn -B versions:set -DnewVersion="$RELEASE_VERSION" -DgenerateBackupPoms=false
+
+      # ---- gates: everything below must pass before anything is pushed ----
+      # (same gates as release.yml)
+
+      - name: Build and run tests
+        env:
+          TZ: Europe/Ljubljana
+        run: mvn -B clean verify
+
+      - name: Check SBOM
+        run: test -s target/bom.json || { echo "target/bom.json (CycloneDX SBOM) was not generated"; exit 1; }
+
+      - name: Install mongosh
+        run: |
+          wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+          echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+          sudo apt-get update -qq
+          sudo apt-get install -y mongodb-mongosh
+
+      - name: Initialise MongoDB
+        run: mongosh --file init-mongo.js
+
+      - name: Start application
+        run: |
+          java -jar engine/target/open-fhir-engine-*.jar \
+            --spring.data.mongodb.uri=mongodb://openfhir:openfhir@localhost:27017/openfhir \
+            > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Wait for application to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8080/health; then
+              echo "Application is ready"
+              exit 0
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 2
+          done
+          echo "Application failed to start - startup log:"
+          cat app.log
+          exit 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run smoke collection
+        run: newman run tests/e2e/1_openFHIR_Test.postman_collection.json --reporters cli
+
+      - name: Stop application
+        if: always()
+        run: |
+          [ -f app.pid ] && kill "$(cat app.pid)" 2>/dev/null || true
+
+      # ---- gates passed: publish ----
+
+      - name: Commit and tag release
+        run: |
+          git commit -am "Release $RELEASE_VERSION"
+          git tag -a "$RELEASE_VERSION" -m "openFHIR $RELEASE_VERSION"
+
+      - name: Push release branch and tag
+        if: ${{ !inputs.dry_run }}
+        # triggers publish.yml (GitHub Packages) and docker.yml (Docker Hub) on the tag
+        run: git push origin "HEAD:refs/heads/$RELEASE_BRANCH" "refs/tags/$RELEASE_VERSION"
+
+      - name: Move main
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # main tracks the newest release. A patch on the newest line moves it;
+          # main sits on the previous tag of that line, so this is a fast-forward
+          # (a non-fast-forward push fails loudly instead of rewriting main).
+          if ! scripts/release-rank.sh is-newest "$RELEASE_VERSION"; then
+            echo "$RELEASE_VERSION is not the newest release: main stays where it is"
+            exit 0
+          fi
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "main is not an ancestor of $RELEASE_BRANCH, so it can't be fast-forwarded to $RELEASE_VERSION"
+            exit 1
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "DRY RUN: would fast-forward main to $RELEASE_VERSION"
+          else
+            git push origin HEAD:main
+          fi
+
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if gh release view "$RELEASE_VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $RELEASE_VERSION already exists — skipping (re-run)"
+          else
+            LATEST=false
+            scripts/release-rank.sh is-newest "$RELEASE_VERSION" && LATEST=true
+            # bom.json: the CycloneDX SBOM the build wrote (root pom, makeAggregateBom)
+            gh release create "$RELEASE_VERSION" \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "$RELEASE_VERSION" \
+              --notes-file "$RUNNER_TEMP/notes.md" \
+              --latest="$LATEST" \
+              target/bom.json
+          fi
+
+      - name: Forward-merge into develop
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # A merge, never a cherry-pick: release.yml requires main to be an
+          # ancestor of develop, which only a merge of the release branch gives.
+          FM_BRANCH="forward-merge/$RELEASE_VERSION"
+
+          # First align the release branch's pom versions with develop's, on a
+          # commit on top of the release. The version lines then don't conflict,
+          # while the release's other pom changes (a dependency bump fixing a
+          # CVE) still merge, instead of being dropped by taking develop's poms.
+          git show origin/develop:pom.xml > "$RUNNER_TEMP/develop-pom.xml"
+          DEV_VERSION=$(mvn -B -q -N -f "$RUNNER_TEMP/develop-pom.xml" help:evaluate -Dexpression=project.version -DforceStdout)
+          echo "develop is on $DEV_VERSION"
+          git switch -c "$FM_BRANCH-source" "$RELEASE_BRANCH"
+          mvn -B -q versions:set -DnewVersion="$DEV_VERSION" -DgenerateBackupPoms=false
+          git commit -qam "Set version $DEV_VERSION to forward-merge $RELEASE_VERSION into develop"
+
+          git switch -c "$FM_BRANCH" origin/develop
+          if ! git merge --no-ff --no-edit -m "Merge $RELEASE_BRANCH ($RELEASE_VERSION) into develop" "$FM_BRANCH-source"; then
+            CONFLICTS=$(git diff --name-only --diff-filter=U)
+            echo "Merge conflicts:"
+            echo "$CONFLICTS"
+            UNEXPECTED=""
+            while IFS= read -r f; do
+              case "$f" in
+                # develop's changelog, with the patch's section inserted above the newest release
+                CHANGELOG.md)
+                  git checkout --ours -- CHANGELOG.md
+                  scripts/changelog-release.sh insert-section "$RELEASE_VERSION" "$RUNNER_TEMP/notes.md"
+                  git add -- CHANGELOG.md ;;
+                *) UNEXPECTED="$UNEXPECTED $f" ;;
+              esac
+            done <<< "$CONFLICTS"
+            if [ -n "$UNEXPECTED" ]; then
+              git merge --abort
+              if [ "$DRY_RUN" = "true" ]; then
+                echo "::warning::The forward-merge of $RELEASE_BRANCH into develop will need resolving by hand:$UNEXPECTED"
+                exit 0
+              fi
+              git push origin "$FM_BRANCH"
+              echo "::error::The forward-merge of $RELEASE_BRANCH into develop has conflicts to resolve by hand:$UNEXPECTED"
+              echo "The release itself is complete. Pushed $FM_BRANCH (develop, without the merge). To finish:"
+              echo "  git fetch origin && git switch $FM_BRANCH"
+              echo "  git merge --no-ff origin/$RELEASE_BRANCH   # resolve; poms keep develop's version"
+              echo "  git push && gh pr create --base develop --head $FM_BRANCH"
+              echo "Merge the PR with a merge commit, not squash or rebase."
+              exit 1
+            fi
+            git commit --no-edit
+          fi
+          git log --oneline -5
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "DRY RUN: the forward-merge into develop is clean; no branch pushed, no PR opened"
+            exit 0
+          fi
+          git push origin "$FM_BRANCH"
+          gh pr create --repo "$GITHUB_REPOSITORY" --base develop --head "$FM_BRANCH" \
+            --title "Forward-merge $RELEASE_VERSION into develop" \
+            --body "Brings the $RELEASE_VERSION patch release ($RELEASE_BRANCH) into develop. Opened by patch-release.yml.
+
+          **Merge with a merge commit, not squash or rebase**: the next minor release (release.yml) requires \`main\` to be an ancestor of \`develop\`."
+
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "DRY RUN — all gates passed for $RELEASE_VERSION on $RELEASE_BRANCH."
+          echo "Nothing was pushed: no tag, no GitHub Release, no main move, no forward-merge PR."
+          git log --oneline -5 "$RELEASE_BRANCH"

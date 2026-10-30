@@ -68,6 +68,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      - name: Check develop contains main
+        run: |
+          # a patch release (patch-release.yml) moves main ahead of develop until
+          # its forward-merge PR is merged; releasing before that would conflict
+          # on CHANGELOG.md and abort the merge below
+          if ! git merge-base --is-ancestor origin/main origin/develop; then
+            echo "main has commits develop doesn't (a patch release): merge the open forward-merge PR first."
+            git log --oneline origin/develop..origin/main
+            exit 1
+          fi
+
       - name: Merge develop into main
         run: |
           if git merge --no-ff --no-edit origin/develop; then
@@ -113,6 +124,9 @@ jobs:
         env:
           TZ: Europe/Ljubljana
         run: mvn -B clean verify
+
+      - name: Check SBOM
+        run: test -s target/bom.json || { echo "target/bom.json (CycloneDX SBOM) was not generated"; exit 1; }
 
       - name: Install mongosh
         run: |
@@ -181,10 +195,12 @@ jobs:
           if gh release view "$RELEASE_VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "Release $RELEASE_VERSION already exists — skipping (re-run)"
           else
+            # bom.json: the CycloneDX SBOM the build wrote (root pom, makeAggregateBom)
             gh release create "$RELEASE_VERSION" \
               --repo "$GITHUB_REPOSITORY" \
               --title "$RELEASE_VERSION" \
-              --notes-file "$RUNNER_TEMP/notes.md"
+              --notes-file "$RUNNER_TEMP/notes.md" \
+              target/bom.json
           fi
 
       - name: Bump develop to next snapshot

@@ -1,0 +1,32 @@
+# Dependency updates for develop. Dependabot (including its security updates)
+# only targets develop: supported release lines (release/X.Y) are covered by
+# security-scan.yml, whose findings lead to a patch release.
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+    groups:
+      maven-minor-and-patch:
+        update-types: [minor, patch]
+
+  # base images in the Dockerfile are pinned by digest; this bumps the digests
+  - package-ecosystem: docker
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+    groups:
+      docker-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: develop
+    schedule:
+      interval: weekly
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]
