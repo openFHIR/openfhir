@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # all tags, so release-rank.sh can rank this release against them
+          fetch-depth: 0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -33,7 +36,17 @@ jobs:
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             TAG_NAME="${GITHUB_REF#refs/tags/}"
-            echo "tags=openfhir/openfhir:${TAG_NAME},openfhir/openfhir:latest" >> $GITHUB_OUTPUT
+            TAGS="openfhir/openfhir:${TAG_NAME}"
+            # moving tags only move forwards: a patch on an older line (or a
+            # re-run of an old tag) must not pull :X.Y or :latest backwards
+            if scripts/release-rank.sh is-newest-in-line "$TAG_NAME"; then
+              TAGS="${TAGS},openfhir/openfhir:${TAG_NAME%.*}"
+            fi
+            if scripts/release-rank.sh is-newest "$TAG_NAME"; then
+              TAGS="${TAGS},openfhir/openfhir:latest"
+            fi
+            echo "tags=${TAGS}"
+            echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
           else
             echo "tags=openfhir/openfhir:build" >> $GITHUB_OUTPUT
           fi
@@ -45,3 +58,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.tags.outputs.tags }}
+          # SBOM and provenance attestations, stored with the image on Docker Hub
+          sbom: true
+          provenance: mode=max
