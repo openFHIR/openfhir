@@ -7,6 +7,11 @@
 #                                                    and insert a fresh empty '## Unreleased' above it;
 #                                                    fails if '## [<version>]' already exists
 #   scripts/changelog-release.sh extract <version>   print the body of the '## [<version>]' section
+#   scripts/changelog-release.sh insert-section <version> <file>
+#                                                    insert '## [<version>] - <today>' with the body from
+#                                                    <file> directly above the first '## [' heading
+#                                                    (forward-merging a patch release into develop);
+#                                                    fails if '## [<version>]' already exists
 #
 # Operates on CHANGELOG.md in the repo root; override with CHANGELOG_FILE=<path>.
 set -euo pipefail
@@ -87,6 +92,38 @@ case "$CMD" in
         fi
         # strip leading blank lines so the output starts at the first entry
         section_body "## [$VERSION]" | sed -e '/./,$!d'
+        ;;
+
+    insert-section)
+        VERSION="${2:-}"
+        BODY="${3:-}"
+        [ -n "$VERSION" ] && [ -n "$BODY" ] || usage
+        [ -f "$BODY" ] || { echo "ERROR: section body not found: $BODY" >&2; exit 1; }
+        if grep -q "^## \[$VERSION\]" "$FILE"; then
+            echo "ERROR: section '## [$VERSION]' already exists in $FILE" >&2
+            exit 1
+        fi
+        if ! grep -q '^## \[' "$FILE"; then
+            echo "ERROR: no '## [' heading to insert above in $FILE" >&2
+            exit 1
+        fi
+        TODAY=$(date +%F)
+        # like roll: inserted lines reuse the heading line's ending; the body's
+        # own line endings are normalised to it, and it is followed by one blank line
+        awk -v v="$VERSION" -v d="$TODAY" -v body="$BODY" '
+            /^## \[/ && !done {
+                eol = ($0 ~ /\r$/) ? "\r" : ""
+                print "## [" v "] - " d eol
+                n = 0
+                while ((getline b < body) > 0) { sub(/\r$/, "", b); lines[++n] = b }
+                while (n > 0 && lines[n] ~ /^[[:space:]]*$/) n--
+                for (i = 1; i <= n; i++) print lines[i] eol
+                print eol
+                done = 1
+            }
+            { print }
+        ' "$FILE" > "$FILE.tmp" && mv "$FILE.tmp" "$FILE"
+        echo "Inserted '## [$VERSION] - $TODAY' above the first released section"
         ;;
 
     *)
