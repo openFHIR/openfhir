@@ -20,6 +20,7 @@ import com.syntaric.openfhir.manager.OptManager;
 import com.syntaric.openfhir.mapping.MappingDirection;
 import com.syntaric.openfhir.mapping.MappingEvent;
 import com.syntaric.openfhir.mapping.MappingListenerInterface;
+import com.syntaric.openfhir.mapping.toaql.AqlPatientScope;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.tofhir.ToFhir;
 import com.syntaric.openfhir.mapping.toopenehr.ToOpenEhr;
@@ -498,12 +499,10 @@ public class OpenFhirEngine {
 
     public ToAqlResponse toAql(final ToAqlRequest toAqlRequest) {
         try {
-            ToAqlResponse aql = toAql.toAql(toAqlRequest);
-            if (aql.getAqls() != null && StringUtils.isNotEmpty(toAqlRequest.getEhrId())) {
-                for (ToAqlResponse.AqlResponse aqlAql : aql.getAqls()) {
-                    aqlAql.setAql(aqlAql.getAql().replace("{{ehrid}}", toAqlRequest.getEhrId()));
-                }
-            }
+            AqlPatientScope.validate(toAqlRequest);
+            final ToAqlResponse aql = toAql.toAql(toAqlRequest);
+            // the patient: by ehrId, by subject, or the {{ehrid}} placeholder left for the caller
+            AqlPatientScope.apply(toAqlRequest, aql);
             return aql;
         } catch (final Exception e) {
             log.error("Error trying to get AQL", e);

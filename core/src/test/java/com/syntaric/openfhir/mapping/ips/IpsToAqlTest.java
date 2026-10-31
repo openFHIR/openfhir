@@ -12,14 +12,17 @@ import com.syntaric.openfhir.db.entity.OptEntity;
 import com.syntaric.openfhir.fc.schema.context.FhirConnectContext;
 import com.syntaric.openfhir.mapping.helpers.AqlToFlatPathConverter;
 import com.syntaric.openfhir.mapping.helpers.HelpersCreator;
+import com.syntaric.openfhir.mapping.toaql.AqlPatientScope;
 import com.syntaric.openfhir.mapping.toaql.OpenEhrAqlPopulator;
 import com.syntaric.openfhir.mapping.toaql.ToAql;
 import com.syntaric.openfhir.mapping.toaql.ToAqlMappingEngine;
+import com.syntaric.openfhir.mapping.toaql.FederationGatewaySubjectPredicateRule;
 import com.syntaric.openfhir.util.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.ehrbase.openehr.sdk.webtemplate.parser.OPTParser;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -105,6 +108,45 @@ public class IpsToAqlTest {
                 .findAny().orElse(null);
         final ToAqlResponse.AqlResponse entryAql = aql.getAqls().stream().filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
                 .findAny().orElse(null);
+    }
+
+    private static final String SUBJECT_ID = "194303193454";
+    private static final String SUBJECT_NAMESPACE = "1.2.752.129.2.1.3.1";
+
+    @Test
+    public void bySubject_conditionVerificationStatusConfirmed() {
+        final ToAqlResponse response = toAqlBySubject("Condition?verification-status=confirmed", SUBJECT_ID,
+                                                      SUBJECT_NAMESPACE);
+        final ToAqlResponse.AqlResponse entryAql = response.getAqls().stream()
+                .filter(a -> a.getType() == ToAqlResponse.AqlType.ENTRY)
+                .findAny().orElseThrow();
+        Assert.assertTrue(entryAql.getAql(), entryAql.getAql().startsWith(
+                "SELECT h FROM EHR e CONTAINS EVALUATION h [openEHR-EHR-EVALUATION.problem_diagnosis.v1] WHERE e/ehr_status/subject/external_ref/id/value = '194303193454' AND e/ehr_status/subject/external_ref/namespace = '1.2.752.129.2.1.3.1'"));
+        FederationGatewaySubjectPredicateRule.assertAllScopedBySubject(response, SUBJECT_ID, SUBJECT_NAMESPACE);
+    }
+
+    /** Every AQL of every IPS section is scoped by the subject in the form Unio's SubjectPredicateExtractor accepts. */
+    @Test
+    public void bySubject_everyIpsSection_isAcceptedByUnio() {
+        for (final String query : List.of("AllergyIntolerance", "Condition?verification-status=confirmed",
+                                          "DeviceUseStatement")) {
+            for (final String namespace : new String[]{null, SUBJECT_NAMESPACE}) {
+                final ToAqlResponse response = toAqlBySubject(query, SUBJECT_ID, namespace);
+                Assert.assertTrue(query, response.getAqls() != null && !response.getAqls().isEmpty());
+                FederationGatewaySubjectPredicateRule.assertAllScopedBySubject(response, SUBJECT_ID, namespace);
+            }
+        }
+        FederationGatewaySubjectPredicateRule.assertAllScopedBySubject(toAqlBySubject("AllergyIntolerance", "it's-1", "urn:'x'"),
+                                                                       "it's-1", "urn:'x'");
+    }
+
+    /** What OpenFhirEngine.toAql does: the request is checked, the AQLs generated, then scoped to the patient. */
+    private ToAqlResponse toAqlBySubject(final String fhirFullUrl, final String id, final String namespace) {
+        final ToAqlRequest request = new ToAqlRequest(null, null, fhirFullUrl, new ToAqlRequest.Subject(id, namespace));
+        AqlPatientScope.validate(request);
+        final ToAqlResponse response = toAql.toAql(request);
+        AqlPatientScope.apply(request, response);
+        return response;
     }
 
     private OPERATIONALTEMPLATE getOperationalTemplate() {
