@@ -10,10 +10,13 @@ import com.syntaric.openfhir.fc.schema.model.Condition;
 import com.syntaric.openfhir.mapping.helpers.MappingHelper;
 import com.syntaric.openfhir.mapping.helpers.RmAttributePins;
 import com.syntaric.openfhir.mapping.helpers.RmTypes;
+import com.syntaric.openfhir.rest.RequestValidationException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +67,7 @@ public class ToAqlMappingEngine {
         }
 
         // Group by context and build one AQL per context combining all matched conditions
+        final Outcome outcome = new Outcome();
         final List<FhirConnectContextEntity> distinctContexts = helperValues.stream()
                 .map(hv -> hv.context)
                 .distinct()
@@ -74,11 +78,25 @@ public class ToAqlMappingEngine {
                     .toList();
             final String mainArchetype = forContext.get(0).getMainArchetype();
             final List<ToAqlResponse.AqlResponse> aqls = createAqls(forContext, context.getFhirConnectContext().getContext(),
-                    mainArchetype, narrowToTemplate);
+                    mainArchetype, narrowToTemplate, outcome);
             toAqlResponse.addAqls(aqls);
         }
 
+        // a value no mapping it matches can compare: the request is at fault
+        for (final FhirQueryParam queryParam : queryParams) {
+            if (outcome.notComparable.containsKey(queryParam) && !outcome.taken.containsKey(queryParam)) {
+                throw new RequestValidationException(String.format(
+                        "The value of search parameter '%s' is compared to %s by every mapping it matches, and is "
+                                + "not one.", queryParam.getName(), outcome.kinds(queryParam)), null);
+            }
+        }
+        final boolean conditionsLeftOut = outcome.report(queryParams, toAqlResponse);
+
         if (toAqlResponse.getAqls() == null || toAqlResponse.getAqls().isEmpty()) {
+            if (conditionsLeftOut) {
+                // never the unfiltered archetype-only AQL for a param whose condition was left out
+                return toAqlResponse;
+            }
             final ToAqlResponse archOnlyResponse = archetypeOnlyAql(modelsToMap, narrowToTemplate);
             for (FhirQueryParam queryParam : queryParams) {
                 if (!queryParam.isHandled()) {
@@ -93,13 +111,75 @@ public class ToAqlMappingEngine {
         helperValues.stream()
                 .map(HelperValue::getValue)
                 .distinct()
-                .filter(queryParam -> !queryParam.isHandled())
+                .filter(queryParam -> !queryParam.isHandled() && !outcome.isReported(queryParam))
                 .forEach(queryParam -> toAqlResponse.addUnhandledParam(
                         queryParam.getName(), ToAqlResponse.UnhandledParamType.WARNING,
                         "The mappings of this param address no data value an AQL can compare; it is not included "
                                 + "in the AQL."));
 
         return toAqlResponse;
+    }
+
+    /**
+     * What building the AQLs of each context left out, per param. Keyed by identity: a {@link FhirQueryParam}'s
+     * equality includes its mutable {@code handled}.
+     */
+    private static final class Outcome {
+
+        /** params whose value a context's mappings can compare */
+        final Map<FhirQueryParam, Boolean> taken = new IdentityHashMap<>();
+        /** params whose request value a context's mappings can't compare: "template (a number)" */
+        final Map<FhirQueryParam, List<String>> notComparable = new IdentityHashMap<>();
+        /** params a context's mapping compares with a fixed value its attribute can't take: "template, mapping" */
+        final Map<FhirQueryParam, List<String>> mappingFaults = new IdentityHashMap<>();
+        /**
+         * params whose context gave no AQL that parses: template. One of the two that doesn't parse loses no condition,
+         * the other one has it; that is only logged (see {@link #isValidAql}).
+         */
+        final Map<FhirQueryParam, List<String>> lost = new IdentityHashMap<>();
+
+        private static void add(final Map<FhirQueryParam, List<String>> map, final FhirQueryParam param,
+                                final String where) {
+            final List<String> list = map.computeIfAbsent(param, p -> new ArrayList<>());
+            if (!list.contains(where)) {
+                list.add(where);
+            }
+        }
+
+        String kinds(final FhirQueryParam param) {
+            return notComparable.get(param).stream()
+                    .map(where -> where.substring(where.lastIndexOf('(') + 1, where.length() - 1))
+                    .distinct()
+                    .collect(Collectors.joining(" or "));
+        }
+
+        boolean isReported(final FhirQueryParam param) {
+            return notComparable.containsKey(param) || mappingFaults.containsKey(param) || lost.containsKey(param);
+        }
+
+        /** @return whether a condition of a param was left out of every AQL of a context */
+        boolean report(final List<FhirQueryParam> params, final ToAqlResponse response) {
+            for (final FhirQueryParam param : params) {
+                if (notComparable.containsKey(param)) {
+                    response.addUnhandledParam(param.getName(), ToAqlResponse.UnhandledParamType.WARNING, String.format(
+                            "The value of this param is not what the mappings of %s compare it to, so they can "
+                                    + "match nothing; their AQL is left out.",
+                            String.join(", ", notComparable.get(param))));
+                }
+                if (mappingFaults.containsKey(param)) {
+                    response.addUnhandledParam(param.getName(), ToAqlResponse.UnhandledParamType.ERROR, String.format(
+                            "A mapping compares this param with a fixed value its openEHR attribute can't take (%s); "
+                                    + "the mapping is at fault, and its AQL is left out.",
+                            String.join("; ", mappingFaults.get(param))));
+                }
+                if (lost.containsKey(param)) {
+                    response.addUnhandledParam(param.getName(), ToAqlResponse.UnhandledParamType.ERROR, String.format(
+                            "The AQL comparing this param for %s does not parse; it is left out rather than "
+                                    + "returned without the condition.", String.join(", ", lost.get(param))));
+                }
+            }
+            return !notComparable.isEmpty() || !mappingFaults.isEmpty() || !lost.isEmpty();
+        }
     }
 
     ToAqlResponse archetypeOnlyAql(final List<ToAql.ToAqlModels> modelsToMap,
@@ -138,7 +218,8 @@ public class ToAqlMappingEngine {
     private List<ToAqlResponse.AqlResponse> createAqls(final List<HelperValue> helperValues,
                                                        final Context context,
                                                        final String mainArchetype,
-                                                       final boolean narrowToTemplate) {
+                                                       final boolean narrowToTemplate,
+                                                       final Outcome outcome) {
         final List<ToAqlResponse.AqlResponse> responses = new ArrayList<>();
         final List<HelperValue> typedEntries = helperValues.stream()
                 .filter(this::possibleTypesAreAcceptableForAqlTranslation)
@@ -146,19 +227,78 @@ public class ToAqlMappingEngine {
         if (typedEntries.isEmpty()) {
             return responses;
         }
+        final String templateId = context.getTemplate().getId();
+
+        // a value compared to a number or a boolean has to be one; if not, these mappings can match nothing
+        boolean comparable = true;
+        final Map<FhirQueryParam, Boolean> rejected = new IdentityHashMap<>();
+        for (final HelperValue hv : typedEntries) {
+            final RmAttributePins.Attribute attribute = attribute(hv.getHelper());
+            final String manualValue = hv.getHelper().getManualOpenEhrValue();
+            final boolean manual = StringUtils.isNotEmpty(manualValue);
+            if (takes(attribute, manual ? manualValue : hv.getValue().getValue())) {
+                continue;
+            }
+            comparable = false;
+            if (manual) {
+                Outcome.add(outcome.mappingFaults, hv.getValue(), String.format(
+                        "template %s, mapping %s writes '%s' to %s, which is %s", templateId,
+                        StringUtils.defaultIfEmpty(hv.getHelper().getModelMetadataName(),
+                                                   hv.getHelper().getFullOpenEhrPath()),
+                        manualValue, attribute.rmPath(), kind(attribute)));
+            } else {
+                Outcome.add(outcome.notComparable, hv.getValue(), templateId + " (" + kind(attribute) + ")");
+                rejected.put(hv.getValue(), true);
+            }
+        }
+        typedEntries.stream()
+                .map(HelperValue::getValue)
+                .filter(param -> !rejected.containsKey(param))
+                .forEach(param -> outcome.taken.put(param, true));
+        if (!comparable) {
+            return responses;
+        }
+
         final String entryAql = createEntryAql(typedEntries, mainArchetype);
-        if (isValidAql(entryAql)) {
-            responses.add(new ToAqlResponse.AqlResponse(entryAql, ToAqlResponse.AqlType.ENTRY,
-                                                        context.getTemplate().getId()));
+        final boolean entryValid = isValidAql(entryAql);
+        if (entryValid) {
+            responses.add(new ToAqlResponse.AqlResponse(entryAql, ToAqlResponse.AqlType.ENTRY, templateId));
         }
         // reset handled
         helperValues.forEach(h -> h.getValue().setHandled(false));
         final String compositionAql = createCompositionAql(typedEntries, context.getStart(), narrowToTemplate);
-        if (isValidAql(compositionAql)) {
+        final boolean compositionValid = isValidAql(compositionAql);
+        if (compositionValid) {
             responses.add(new ToAqlResponse.AqlResponse(compositionAql, ToAqlResponse.AqlType.COMPOSITION,
-                                                        context.getTemplate().getId()));
+                                                        templateId));
+        }
+        if (!entryValid && !compositionValid) {
+            typedEntries.forEach(hv -> Outcome.add(outcome.lost, hv.getValue(), templateId));
         }
         return responses;
+    }
+
+    /** The attribute a helper's condition compares: the one its path ends in, else the one its type is compared by. */
+    private static RmAttributePins.Attribute attribute(final MappingHelper helper) {
+        final RmAttributePins.Attribute pinned = RmAttributePins.pinnedBy(helper);
+        return pinned != null ? pinned : comparedAttribute(helper);
+    }
+
+    /** Whether {@code value} can be compared to {@code attribute}: any text, or a number or boolean that is one. */
+    private static boolean takes(final RmAttributePins.Attribute attribute, final String value) {
+        return switch (attribute.kind()) {
+            case TEXT -> value != null;
+            case NUMBER -> AqlLiterals.isNumber(value);
+            case BOOLEAN -> AqlLiterals.isBoolean(value);
+        };
+    }
+
+    private static String kind(final RmAttributePins.Attribute attribute) {
+        return switch (attribute.kind()) {
+            case TEXT -> "a text";
+            case NUMBER -> "a number";
+            case BOOLEAN -> "true or false";
+        };
     }
 
     /**
@@ -252,7 +392,8 @@ public class ToAqlMappingEngine {
      * The WHERE condition of one mapping on {@code path}, comparing an attribute on its strict AQL path: the one the
      * path ends in ({@code .../value/magnitude}, {@code .../defining_code/code_string}), or for a whole data value the
      * one its type is compared by ({@code magnitude} of a quantity, {@code defining_code/code_string} of a coded
-     * text), through the ELEMENT's value when the path addresses an ELEMENT.
+     * text), through the ELEMENT's value when the path addresses an ELEMENT. The value has been checked to fit the
+     * attribute (see {@link #createAqls}).
      */
     private String condition(final MappingHelper helper, final String path, final String expectedValue) {
         final RmAttributePins.Attribute pinned = RmAttributePins.pinnedBy(helper);

@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+### Added
+- `/openfhir/toaql`: the patient can be named by `subject` (`{"id": "...", "namespace": "..."}`, namespace optional)
+  instead of `ehrId`. The AQLs are then scoped by `e/ehr_status/subject/external_ref/id/value = '<id>'` (and
+  `AND e/ehr_status/subject/external_ref/namespace = '<namespace>'`) in place of the `e/ehr_id/value` condition
+
 ### Changed
 - Docker images get an `:X.Y` tag that follows the newest patch release of the line, and carry an SBOM and a
   provenance attestation. `:latest` now only moves to the newest release, so a patch of an older line no longer
