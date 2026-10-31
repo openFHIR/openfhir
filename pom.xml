@@ -114,7 +114,7 @@
              PropertyNamingStrategy constants that Archie's JacksonUtil still uses; 2.19.4 is the
              version the ehrbase SDK line itself pairs with archie 3.13 -->
         <jackson-bom.version>2.19.4</jackson-bom.version>
-        <archie.version>3.13.0</archie.version>
+        <archie.version>4.0.0</archie.version>
         <hapi-fhir.version>8.12.0</hapi-fhir.version>
         <jjwt.version>0.12.6</jjwt.version>
         <ucum.version>1.0.10</ucum.version>
