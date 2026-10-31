@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   moves it backwards. Every GitHub Release has a CycloneDX SBOM (`bom.json`) attached
 
 ### Fixed
+- to FHIR: a `DV_DATE` mapped to a FHIR `dateTime` element (`onsetDateTime`, `effectiveDateTime`, ...) was silently
+  dropped, on every FHIR version. It is now written as a day-precision dateTime (`2020-05-14`), with no time of day
+  or offset added
 - the Docker image builds again: its build stage is back on Java 21, after an automated bump to Java 26 broke
   compilation. Dependabot no longer proposes Java version changes for the base images
 

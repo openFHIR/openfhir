@@ -307,6 +307,10 @@ public class FhirInstancePopulator {
     private void populateDateType(Object toPopulate, DateType data) {
         if (toPopulate instanceof DateType) {
             ((DateType) toPopulate).setValue(data.getValue());
+        } else if (toPopulate instanceof DateTimeType) {
+            // a date is a valid dateTime at day precision; copy the lexical form so no time of day or
+            // server offset is invented for a value that never had one
+            ((DateTimeType) toPopulate).setValueAsString(data.getValueAsString());
         } else {
             populateDateTypeCrossVersion(toPopulate, data.getValue(), data.getValueAsString());
         }
@@ -746,10 +750,16 @@ public class FhirInstancePopulator {
                                               final String valueAsString) {
         if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateType d) {
             if (value != null) d.setValue(value); else d.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.dstu3.model.DateTimeType dt) {
+            dt.setValueAsString(valueAsString);
         } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateType d) {
             if (value != null) d.setValue(value); else d.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r4b.model.DateTimeType dt) {
+            dt.setValueAsString(valueAsString);
         } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateType d) {
             if (value != null) d.setValue(value); else d.setValueAsString(valueAsString);
+        } else if (toPopulate instanceof org.hl7.fhir.r5.model.DateTimeType dt) {
+            dt.setValueAsString(valueAsString);
         }
     }
 
