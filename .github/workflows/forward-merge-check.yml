@@ -1,0 +1,64 @@
+name: Forward-merge Check
+
+# A fix PR into a release branch reaches develop through the forward-merge of the
+# next patch release (patch-release.yml). This checks, on the PR, that the
+# forward-merge will go through without a human: it simulates the next patch
+# release of the line with the PR merged, and forward-merges it into develop
+# (scripts/forward-merge.sh --check --simulate-release). A failure lists the files
+# that would conflict, while the PR can still be changed.
+#
+# pull_request runs the copy of this file on the PR's branch, so it has to exist
+# on every release branch; the logic is develop's scripts/forward-merge.sh, so
+# keep this file thin. The same file is in openfhir and openfhir-enterprise.
+
+on:
+  pull_request:
+    branches: ['release/**']
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: 'Release branch to check, e.g. release/3.0'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  forward-merge-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          # a PR: its merge into the release branch; by hand: the release branch
+          ref: ${{ inputs.release_branch || '' }}
+          # all branches and tags: develop, and the line's newest release
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+
+      - name: Check the forward-merge into develop
+        env:
+          RELEASE_BRANCH: ${{ github.base_ref || inputs.release_branch }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! [[ "$RELEASE_BRANCH" =~ ^release/([0-9]+\.[0-9]+)$ ]]; then
+            echo "not a release/X.Y branch: $RELEASE_BRANCH"; exit 1
+          fi
+          NEWEST=$(scripts/release-rank.sh newest-in-line "${BASH_REMATCH[1]}")
+          NEXT="${NEWEST%.*}.$(( ${NEWEST##*.} + 1 ))"
+          echo "Simulating $NEXT, the next patch release of $RELEASE_BRANCH after $NEWEST"
+          git show origin/develop:scripts/forward-merge.sh > "$RUNNER_TEMP/forward-merge.sh"
+          chmod +x "$RUNNER_TEMP/forward-merge.sh"
+          "$RUNNER_TEMP/forward-merge.sh" --check --simulate-release --name "$RELEASE_BRANCH" HEAD "$NEXT"
