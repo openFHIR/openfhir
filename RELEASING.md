@@ -90,9 +90,18 @@ months after a major, the last line of the previous major: security fixes only).
   `docker.yml` (the image of a tag is built with the workflow file **from the
   tag**) and the CycloneDX plugin in the root `pom.xml`. Lines released from
   3.1.0 on have it already; for 3.0, cherry-pick the commit that introduced it.
+  A cherry-pick of files develop keeps changing makes the first forward-merge
+  conflict on them (develop's version is the right one); after that, the merge
+  base has them.
 - A fix is a PR against `release/X.Y` with a `CHANGELOG.md` entry under
   `## Unreleased`, in `### Security` or `### Fixed`. A fix that is also needed on
   develop reaches it through the forward-merge, so don't open a second PR.
+- The **Forward-merge Check** on the PR
+  ([forward-merge-check.yml](.github/workflows/forward-merge-check.yml))
+  simulates the line's next patch release with the PR merged and forward-merges
+  it into develop. If it fails, it lists the files that would conflict: change
+  the PR while you still can, or, when both branches really changed the same
+  lines, plan to release with `allow_manual_forward_merge`.
 - **Rolling-upgradable:** the nodes of an HA cluster are upgraded one at a time,
   so old and new patch run side by side on one database. A patch therefore has
   no database migrations (`db/.../mongodb/migrations/`, enforced by the
@@ -114,25 +123,45 @@ months after a major, the last line of the previous major: security fixes only).
    - `release_version`: `3.0.4` (higher than the newest tag of the line)
    - `dry_run`: `true` first (runs every gate and the forward-merge, pushes
      nothing), then `false`.
+   - `allow_manual_forward_merge`: leave `false`. Only if the forward-merge gate
+     failed on conflicts you can't avoid (both branches changed the same lines):
+     `true` releases anyway, and you resolve the forward-merge by hand (step 3).
 2. The workflow:
    1. validates the inputs: the branch is `release/X.Y`, the version is on that
       line, isn't tagged yet and is higher than the newest tag of the line;
    2. fails if anything under `*/migrations/*` changed since that tag;
    3. rolls the changelog, sets the version, and runs the same gates as
       `release.yml` (`mvn clean verify`, newman smoke collection);
-   4. commits `Release X.Y.Z`, tags it, pushes the branch and the tag
+   4. commits `Release X.Y.Z` and tags it, then gates on the **forward-merge**
+      into develop (`scripts/forward-merge.sh --check`): it must go through
+      without a human, unless `allow_manual_forward_merge`. A dry run therefore
+      fails on a forward-merge that would need resolving by hand;
+   5. pushes the branch and the tag
       (→ `publish.yml`, `docker.yml`). If this is the newest release overall,
       it also fast-forwards `main` to it;
-   5. creates the GitHub Release with the notes and `bom.json` (not marked as
+   6. creates the GitHub Release with the notes and `bom.json` (not marked as
       *latest* when an older line is patched);
-   6. opens the **forward-merge PR** `forward-merge/X.Y.Z` → `develop`: a merge
-      of the release branch (never a cherry-pick), with develop's pom versions
-      and the patch's changelog section inserted above develop's newest
-      release. Other conflicts are left for you: the run fails after pushing
-      the branch and prints the commands to finish the merge by hand.
+   7. in its own `forward-merge` job, opens the **forward-merge PR**
+      `forward-merge/X.Y.Z` → `develop`, made by
+      [scripts/forward-merge.sh](scripts/forward-merge.sh): a merge of the release
+      branch (never a cherry-pick) that keeps develop's versions, with the
+      patch's changelog section inserted above develop's newest release. Version
+      lines never conflict, so a pom only conflicts on a real conflict.
 3. **Merge the forward-merge PR with a merge commit** (not squash, not rebase).
    Until it is merged, `release.yml` refuses to run: `main` must be an
    ancestor of `develop`.
+
+   If the `forward-merge` job failed on conflicts (after
+   `allow_manual_forward_merge`, or because develop changed since the gate),
+   the release itself is complete. Make the
+   merge on a develop checkout; the script resolves what it can, leaves the
+   rest in progress in a new worktree and prints how to finish:
+
+   ```bash
+   git fetch origin
+   scripts/forward-merge.sh origin/release/3.0 3.0.4
+   ```
+
 4. Publish the GitHub Security Advisory (with the CVE GitHub assigned) for each
    vulnerability the patch fixes, once the tag and images are out, and credit
    the reporter if they wish.

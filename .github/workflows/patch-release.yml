@@ -6,8 +6,9 @@ name: Patch Release
 #
 # Validates the inputs, refuses changes a rolling upgrade can't take (database
 # migrations), rolls the changelog, sets the release version, gates on build +
-# unit/integration tests + the newman smoke collection, and only then tags,
-# pushes, creates the GitHub Release and opens the forward-merge PR into develop.
+# unit/integration tests + the newman smoke collection and the forward-merge
+# into develop, and only then tags, pushes and creates the GitHub Release. The
+# forward-merge job then opens the forward-merge PR into develop.
 #
 # Nothing is pushed until every gate has passed. Shares the `release`
 # concurrency group with release.yml, so the two never run at the same time.
@@ -25,6 +26,10 @@ on:
         required: true
       dry_run:
         description: 'Run all gates but push nothing (no tag, no release, no forward-merge PR)'
+        type: boolean
+        default: false
+      allow_manual_forward_merge:
+        description: 'Release even if the forward-merge into develop has conflicts to resolve by hand'
         type: boolean
         default: false
 
@@ -185,6 +190,28 @@ jobs:
           git commit -am "Release $RELEASE_VERSION"
           git tag -a "$RELEASE_VERSION" -m "openFHIR $RELEASE_VERSION"
 
+      - name: Forward-merge gate
+        # the forward-merge into develop (forward-merge job) must go through without
+        # a human, so a dry run tells you before the release, not after it
+        env:
+          ALLOW_MANUAL: ${{ inputs.allow_manual_forward_merge }}
+        run: |
+          # develop's copy: the release branch may predate the script
+          git show origin/develop:scripts/forward-merge.sh > "$RUNNER_TEMP/forward-merge.sh"
+          chmod +x "$RUNNER_TEMP/forward-merge.sh"
+          RC=0
+          "$RUNNER_TEMP/forward-merge.sh" --check --name "$RELEASE_BRANCH" HEAD "$RELEASE_VERSION" || RC=$?
+          if [ "$RC" -eq 2 ]; then
+            if [ "$ALLOW_MANUAL" = "true" ]; then
+              echo "::warning::The forward-merge of $RELEASE_BRANCH into develop will need resolving by hand (allowed by allow_manual_forward_merge)"
+            else
+              echo "::error::The forward-merge of $RELEASE_BRANCH into develop would need resolving by hand (files above). Fix that first, or re-run with allow_manual_forward_merge to release anyway and resolve it with scripts/forward-merge.sh"
+              exit 1
+            fi
+          elif [ "$RC" -ne 0 ]; then
+            exit "$RC"
+          fi
+
       - name: Push release branch and tag
         if: ${{ !inputs.dry_run }}
         # triggers publish.yml (GitHub Packages) and docker.yml (Docker Hub) on the tag
@@ -230,74 +257,64 @@ jobs:
               target/bom.json
           fi
 
+      - name: Dry run summary
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "DRY RUN — all gates passed for $RELEASE_VERSION on $RELEASE_BRANCH, the forward-merge into develop included."
+          echo "Nothing was pushed: no tag, no GitHub Release, no main move, no forward-merge PR."
+          git log --oneline -5 "$RELEASE_BRANCH"
+
+  forward-merge:
+    # its own job, so a forward-merge that needs a human doesn't fail the release
+    # (which is complete at this point) or skip anything after it
+    needs: patch-release
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      RELEASE_BRANCH: ${{ inputs.release_branch }}
+      RELEASE_VERSION: ${{ inputs.release_version }}
+
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v7
+        with:
+          ref: develop
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Forward-merge into develop
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          # A merge, never a cherry-pick: release.yml requires main to be an
-          # ancestor of develop, which only a merge of the release branch gives.
           FM_BRANCH="forward-merge/$RELEASE_VERSION"
-
-          # First align the release branch's pom versions with develop's, on a
-          # commit on top of the release. The version lines then don't conflict,
-          # while the release's other pom changes (a dependency bump fixing a
-          # CVE) still merge, instead of being dropped by taking develop's poms.
-          git show origin/develop:pom.xml > "$RUNNER_TEMP/develop-pom.xml"
-          DEV_VERSION=$(mvn -B -q -N -f "$RUNNER_TEMP/develop-pom.xml" help:evaluate -Dexpression=project.version -DforceStdout)
-          echo "develop is on $DEV_VERSION"
-          git switch -c "$FM_BRANCH-source" "$RELEASE_BRANCH"
-          mvn -B -q versions:set -DnewVersion="$DEV_VERSION" -DgenerateBackupPoms=false
-          git commit -qam "Set version $DEV_VERSION to forward-merge $RELEASE_VERSION into develop"
-
-          git switch -c "$FM_BRANCH" origin/develop
-          if ! git merge --no-ff --no-edit -m "Merge $RELEASE_BRANCH ($RELEASE_VERSION) into develop" "$FM_BRANCH-source"; then
-            CONFLICTS=$(git diff --name-only --diff-filter=U)
-            echo "Merge conflicts:"
-            echo "$CONFLICTS"
-            UNEXPECTED=""
-            while IFS= read -r f; do
-              case "$f" in
-                # develop's changelog, with the patch's section inserted above the newest release
-                CHANGELOG.md)
-                  git checkout --ours -- CHANGELOG.md
-                  scripts/changelog-release.sh insert-section "$RELEASE_VERSION" "$RUNNER_TEMP/notes.md"
-                  git add -- CHANGELOG.md ;;
-                *) UNEXPECTED="$UNEXPECTED $f" ;;
-              esac
-            done <<< "$CONFLICTS"
-            if [ -n "$UNEXPECTED" ]; then
-              git merge --abort
-              if [ "$DRY_RUN" = "true" ]; then
-                echo "::warning::The forward-merge of $RELEASE_BRANCH into develop will need resolving by hand:$UNEXPECTED"
-                exit 0
-              fi
-              git push origin "$FM_BRANCH"
-              echo "::error::The forward-merge of $RELEASE_BRANCH into develop has conflicts to resolve by hand:$UNEXPECTED"
-              echo "The release itself is complete. Pushed $FM_BRANCH (develop, without the merge). To finish:"
-              echo "  git fetch origin && git switch $FM_BRANCH"
-              echo "  git merge --no-ff origin/$RELEASE_BRANCH   # resolve; poms keep develop's version"
-              echo "  git push && gh pr create --base develop --head $FM_BRANCH"
-              echo "Merge the PR with a merge commit, not squash or rebase."
-              exit 1
-            fi
-            git commit --no-edit
+          RC=0
+          scripts/forward-merge.sh --name "$RELEASE_BRANCH" --worktree "$RUNNER_TEMP/forward-merge" \
+            "origin/$RELEASE_BRANCH" "$RELEASE_VERSION" || RC=$?
+          if [ "$RC" -eq 2 ]; then
+            echo "::error::The release is complete; its forward-merge into develop has conflicts to resolve by hand (files above). On a develop checkout:"
+            echo "  git fetch origin && scripts/forward-merge.sh origin/$RELEASE_BRANCH $RELEASE_VERSION"
+            echo "then follow what it prints."
+            exit 1
+          elif [ "$RC" -ne 0 ]; then
+            exit "$RC"
           fi
-          git log --oneline -5
-          if [ "$DRY_RUN" = "true" ]; then
-            echo "DRY RUN: the forward-merge into develop is clean; no branch pushed, no PR opened"
-            exit 0
-          fi
-          git push origin "$FM_BRANCH"
+          git -C "$RUNNER_TEMP/forward-merge" push origin "$FM_BRANCH"
           gh pr create --repo "$GITHUB_REPOSITORY" --base develop --head "$FM_BRANCH" \
             --title "Forward-merge $RELEASE_VERSION into develop" \
             --body "Brings the $RELEASE_VERSION patch release ($RELEASE_BRANCH) into develop. Opened by patch-release.yml.
 
           **Merge with a merge commit, not squash or rebase**: the next minor release (release.yml) requires \`main\` to be an ancestor of \`develop\`."
-
-      - name: Dry run summary
-        if: ${{ inputs.dry_run }}
-        run: |
-          echo "DRY RUN — all gates passed for $RELEASE_VERSION on $RELEASE_BRANCH."
-          echo "Nothing was pushed: no tag, no GitHub Release, no main move, no forward-merge PR."
-          git log --oneline -5 "$RELEASE_BRANCH"
