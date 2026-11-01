@@ -19,12 +19,23 @@ WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 FAILURES=0
 
-G() { git -c commit.gpgsign=false -c user.name=test -c user.email=test@localhost "$@"; }
+# git config of its own: an identity, no signing, nothing from the user's or the runner's config
+export GIT_CONFIG_GLOBAL="$WORK/gitconfig" GIT_CONFIG_NOSYSTEM=1
+git config --global user.name test
+git config --global user.email test@localhost
+git config --global commit.gpgsign false
+git config --global tag.gpgsign false
+
+G() { git "$@"; }
 mvnq() { mvn -B -q "$@" >/dev/null; }
 prop() { sed -n "s#.*<$1>\(.*\)</$1>.*#\1#p" pom.xml | head -1; }
 
 ok() { echo "  ok   $1"; }
-fail() { echo "  FAIL $1"; FAILURES=$((FAILURES + 1)); }
+fail() { # with what the script printed, for a failure on CI
+    echo "  FAIL $1"
+    FAILURES=$((FAILURES + 1))
+    if [ -s "$WORK/out" ]; then sed 's/^/       | /' "$WORK/out" | tail -25; fi
+}
 expect() { # <description> <command...>
     local d=$1; shift
     if "$@" >/dev/null 2>&1; then ok "$d"; else fail "$d"; fi
