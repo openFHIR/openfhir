@@ -31,6 +31,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - the Docker image's base images are pinned by digest and updated through reviewed PRs, and the images of the
   supported lines are scanned for vulnerabilities weekly
 
+## [3.0.4] - 2026-11-01
+### Security
+- embedded Tomcat upgraded from 10.1.55 to 10.1.61, fixing the critical CVE-2026-65182 (security constraint bypass),
+  CVE-2026-65637 (HTTP/2 strict SNI bypass), CVE-2026-65905 (DIGEST authentication replay) and CVE-2026-68525 (FORM
+  authentication bypass)
+
 ## [3.0.3] - 2026-10-26
 ### Added
 - sub-contexts (FHIRconnect-spec PR #100): a mapping may carry `slotContext: <context name>` where
