@@ -118,10 +118,10 @@
              CVE-2026-65182, CVE-2026-65637, CVE-2026-65905 and CVE-2026-68525 -->
         <tomcat.version>10.1.61</tomcat.version>
         <archie.version>3.13.0</archie.version>
-        <hapi-fhir.version>8.12.0</hapi-fhir.version>
-        <jjwt.version>0.12.6</jjwt.version>
+        <hapi-fhir.version>8.12.1</hapi-fhir.version>
+        <jjwt.version>0.13.0</jjwt.version>
         <ucum.version>1.0.10</ucum.version>
-        <ehrbase.version>2.19.0</ehrbase.version>
+        <ehrbase.version>2.35.0</ehrbase.version>
         <json-schema-validator.version>2.2.14</json-schema-validator.version>
         <junit.version>4.13.2</junit.version>
         <mongock.version>5.5.1</mongock.version>
