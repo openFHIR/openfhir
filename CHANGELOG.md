@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.4] - 2026-11-01
 ### Security
 - embedded Tomcat upgraded from 10.1.55 to 10.1.61, fixing the critical CVE-2026-65182 (security constraint bypass),
   CVE-2026-65637 (HTTP/2 strict SNI bypass), CVE-2026-65905 (DIGEST authentication replay) and CVE-2026-68525 (FORM
