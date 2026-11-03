@@ -34,7 +34,15 @@ clearly.
 
 ## FHIR versions
 
-Every change must work for all supported FHIR versions: STU3 (3.0), R4 (4.0), R4B (4.3) and R5 (5.0).
+The engine supports STU3 (3.0), R4 (4.0), R4B (4.3) and R5 (5.0). A mapping, though, runs on exactly
+one version: the `spec.version` its context mapper declares (R4 if unset), and model mappers declare
+theirs too.
+
+* **Engine code** that reads, writes, validates or maps FHIR content, or a REST endpoint that accepts
+  or returns it, must work on all four versions. It is checked on all four, or the report says which
+  were not.
+* **A mapping file** (a context or model mapper) is checked on the version it declares, and only on
+  that one. Don't run it against the other versions or report them as unchecked.
 
 ## Definition of done
 
@@ -42,9 +50,10 @@ A change is done when it was run, not when it reads right. Before calling it don
 
 * **Run the tier the change could break, and name the command in the report.**
   * The modules: `mvn clean verify`, which is what CI runs, with `TZ=Europe/Ljubljana`.
-  * A REST-visible change: also the Newman collection `tests/e2e/1_openFHIR_Test.postman_collection.json`,
-    against a freshly built engine on a spare port. Never use 8080, because a running developer
-    instance may be there and the collection purges all state.
+  * A REST-visible change: also the Newman collection, against a freshly built engine on a spare
+    port: `newman run tests/e2e/1_openFHIR_Test.postman_collection.json --env-var baseUrl=http://localhost:<port>`.
+    Without `--env-var` it targets `http://localhost:8080`, and the collection purges all state, so
+    never run it like that where a developer instance may be on 8080.
   * If a tier could not be run, say which and why.
 * **Never read a result through a pipe.** `mvn … | tail` reports `tail`'s exit status, so a failing
   build reads as passing. Redirect to a file and check `$?`, or use `set -o pipefail`. Quote the
@@ -55,11 +64,11 @@ A change is done when it was run, not when it reads right. Before calling it don
 * **A new test must be able to fail.** Break the code the test guards (the code under test, not your
   fix) and watch the test go red, then restore it. Watch for loops and `allMatch` over collections
   that may be empty.
-* **Every FHIR version and both directions.** A mapping change is checked for STU3, R4, R4B and R5,
-  and for both toFHIR and toOpenEHR, or the report says which were not checked.
+* **Both directions.** A mapping change is checked for both toFHIR and toOpenEHR, or the report says
+  which was not. The FHIR versions are covered under *FHIR versions* above.
 * **Expected-output fixtures are edited, not re-serialised.** The KDS fixtures under
-  `core/src/test/resources/kds/` carry `//` comments, mixed CRLF/LF line endings and their own
-  spacing. Change only the lines that changed, and check that `git diff` shows nothing else.
+  `core/src/test/resources/kds/` carry `//` comments and their own spacing. Change only the lines
+  that changed, and check that `git diff` shows nothing else.
 * **Changelog and documentation** each have an outcome in the report, including "none".
 * **Invented values are named.** The report calls out any limit, timeout or default nobody
   specified as your own choice.
@@ -69,8 +78,7 @@ A change is done when it was run, not when it reads right. Before calling it don
 
 No change is its own only reviewer. Dispatch the `code-reviewer` agent
 (`.claude/agents/code-reviewer.md`) **once, before the change is proposed for commit**. Don't run it
-after every iteration or small follow-up; reviews cost time and tokens. Run it in the background and
-keep working. Hand it:
+after every iteration or small follow-up; reviews cost time and tokens. Hand it:
 
 * the scope: the files to review, and the files other sessions are touching;
 * the build and test commands you ran, with their status;
@@ -78,6 +86,10 @@ keep working. Hand it:
 
 That way it doesn't have to re-derive them.
 
-Fix what it reports as must-change, or push back with evidence where a finding doesn't apply. Don't
-re-review the fixes unless they were substantial. Skip the review for trivial changes (a typo, a
-changelog-only edit, a comment), and say that you skipped it.
+It may run in the background, but **don't edit the files under review until it reports**. It reads
+the working tree, so an edit while it runs gives it half-edited code and stale line numbers.
+
+Fix what it reports as must-change, or push back with evidence where a finding doesn't apply. Re-run
+it on the fixes if they change logic. Otherwise list them in your report as **not reviewed**, so
+nobody takes the committed version for the reviewed one. Skip the review for trivial changes (a
+typo, a changelog-only edit, a comment), and say that you skipped it.

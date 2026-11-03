@@ -29,5 +29,6 @@ restful_ig
 application-gandrejc.yaml
 jmeter-run.jtl
 
-# Claude Code per-user settings; shared agents under .claude/agents are committed
+# Claude Code per-user settings and notes; CLAUDE.md and .claude/agents are committed
 .claude/settings.local.json
+CLAUDE.local.md
