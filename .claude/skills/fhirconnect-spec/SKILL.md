@@ -19,7 +19,7 @@ answer, that gap belongs to the spec's maintainers. Don't settle it quietly in e
 | Source | Where | Authority for |
 |---|---|---|
 | **The specification** | [SevKohler/FHIRconnect-spec](https://github.com/SevKohler/FHIRconnect-spec), branch `main`. Antora/AsciiDoc pages under `modules/ROOT/pages/`: `schema/`, `basics/` (conditions, path operators, preprocessor, variables, followedBy), `types-of-mappings/`, `types-of-mapping-files/` (context, model, extension mappings), `engine/` (bundles, references, ids, defaults, failing), `recurrence/` | What a mapping means. Normative. |
-| **Spec issues and PRs**, open and closed | `gh issue list -R SevKohler/FHIRconnect-spec --state all --search "<term>"`, the same with `gh pr list` | Decisions not yet written into the pages. Issues often end with a "Decision for now". Cite these the way you cite pages, and say they are not yet in the text. |
+| **Spec issues and PRs**, open and closed | `gh issue list -R SevKohler/FHIRconnect-spec --state all --search "<term>"`, the same with `gh pr list --limit 200` | Decisions not yet written into the pages. Issues often end with a "Decision for now". Cite these the way you cite pages, and say they are not yet in the text. |
 | **The mapping library** | [SevKohler/FHIRconnect-mapping-lib](https://github.com/SevKohler/FHIRconnect-mapping-lib), branch `main`. Model mappers under `model/<rm type>/<namespace>/`, project contexts under `projects/<namespace>/<project>/` | How mappings are written in practice, and which of them a semantic change would break. Not normative: a library mapping can be wrong. |
 | **This engine** | The grammar classes in the `fhirconnect` module (what the engine accepts), the mapping engines in `core`, and the mappings and tests under `core/src/test/resources/` | What the engine does today. It is never evidence of what the spec says. |
 
@@ -30,7 +30,7 @@ answer, that gap belongs to the spec's maintainers. Don't settle it quietly in e
   - `git -C <checkout> fetch -q origin`, then `git -C <checkout> show origin/main:<path>`
   - or `git -C <checkout> grep <term> origin/main -- <dir>`
 - **Otherwise clone shallow into a scratch directory outside this repository**, with
-  `git clone --depth 1 <url> <scratch>/<name>`. Never add the spec or the library to this repository.
+  `git -C <scratch>/<name> fetch --depth 1 origin pull/<n>/head:pr-<n>` or `gh pr diff <n> -R SevKohler/FHIRconnect-spec.`. Never add the spec or the library to this repository.
 - **When a feature follows an unmerged spec PR**, read that PR's branch as well, and say that the text
   is not on `main` yet.
 
@@ -59,7 +59,7 @@ Then classify:
 |---|---|
 | Spec, library and engine agree | Proceed. Cite the spec section in the report. |
 | The engine contradicts the spec | An engine bug. Fix it here (test-first). Name the library mappings whose output changes. |
-| The spec is silent, ambiguous or contradicts itself | A **spec issue**. Draft it (below). If the work can't wait, implement the least committal reading, name it in the report as an assumption, and link the issue once it exists. |
+| The spec is silent, ambiguous or contradicts itself | A **spec issue**. Draft it (below). |
 | A library mapping contradicts the spec | A **mapping-library issue**. Draft it. Don't bend the engine to fit the mapping. |
 | The engine follows an open spec issue or PR | Cite it in the code comment, the CHANGELOG entry and the report. |
 

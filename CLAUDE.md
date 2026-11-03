@@ -75,7 +75,7 @@ A change is done when it was run, not when it reads right. Before calling it don
 * **A new test must be able to fail.** Break the code the test guards (the code under test, not your
   fix) and watch the test go red, then restore it. Watch for loops and `allMatch` over collections
   that may be empty.
-* **Both directions.** A mapping change is checked for both toFHIR and toOpenEHR, or the report says
+* **Both directions.** A mapping change is checked for both toFHIR and toOpenEHR (except when unidirectional specifies direction), or the report says
   which was not. The FHIR versions are covered under *FHIR versions* above.
 * **Expected-output fixtures are edited, not re-serialised.** The KDS fixtures under
   `core/src/test/resources/kds/` carry `//` comments and their own spacing. Change only the lines
