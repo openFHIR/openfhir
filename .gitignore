@@ -28,4 +28,7 @@ nimbalyst-local
 restful_ig
 application-gandrejc.yaml
 jmeter-run.jtl
-CLAUDE.md
+
+# Claude Code per-user settings and notes; CLAUDE.md and .claude/agents are committed
+.claude/settings.local.json
+CLAUDE.local.md
