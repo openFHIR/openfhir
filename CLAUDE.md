@@ -44,6 +44,17 @@ theirs too.
 * **A mapping file** (a context or model mapper) is checked on the version it declares, and only on
   that one. Don't run it against the other versions or report them as unchecked.
 
+## FHIRConnect spec
+
+The engine implements the [FHIRConnect specification](https://github.com/SevKohler/FHIRconnect-spec).
+For a change to what a mapping means, or to how the engine runs one, use the `fhirconnect-spec` skill
+(`.claude/skills/fhirconnect-spec/`). It checks the change against the spec, the spec's issues and the
+[mapping library](https://github.com/SevKohler/FHIRconnect-mapping-lib) before anything is decided.
+
+Where the spec is unclear, draft an issue for its maintainers instead of settling the question in
+engine code. Never file an issue, a comment or a PR in either repository without the user's
+explicit go-ahead.
+
 ## Definition of done
 
 A change is done when it was run, not when it reads right. Before calling it done:
