@@ -237,8 +237,8 @@ public class OpenEhrPopulator {
                     return;
                 }
             case FhirConnectConst.DV_CODED_TEXT:
-                final boolean addedCodeText = handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes,
-                                                                constructingFlat,
+                final boolean addedCodeText = handleDvCodedText(mappingHelper, openEhrPath, extractedValue,
+                                                                isMultipleTypes, constructingFlat,
                                                                 terminology);
                 if (addedCodeText) {
                     return;
@@ -259,7 +259,8 @@ public class OpenEhrPopulator {
                 }
             case FhirConnectConst.DV_TEXT:
                 if (isCodeableConcept(extractedValue) && !getCodeableConceptCodings(extractedValue).isEmpty()) {
-                    handleDvCodedText(openEhrPath, extractedValue, isMultipleTypes, constructingFlat, terminology);
+                    handleDvCodedText(mappingHelper, openEhrPath, extractedValue, isMultipleTypes, constructingFlat,
+                                      terminology);
                 } else if (isCodeableConcept(extractedValue) && StringUtils.isNotEmpty(
                         getCodeableConceptText(extractedValue))) {
                     addValuePerFhirType(mappingHelper, primitiveStringValue(getCodeableConceptText(extractedValue)),
@@ -851,12 +852,33 @@ public class OpenEhrPopulator {
         return false;
     }
 
-    private boolean handleDvCodedText(String path, final IBase value, final boolean isMultipleTypes,
+    /**
+     * Whether the element's value is exactly a choice of DV_CODED_TEXT and DV_TEXT. The flat format collapses that
+     * pair into one coded text node at the element's own id, with an {@code |other} input for free text (ehrbase
+     * {@code Filter.mergeDVText}); every other choice keeps its {@code coded_text_value} / {@code text_value} / ...
+     * leaves.
+     */
+    private static boolean isMergedCodedTextChoice(final MappingHelper mappingHelper) {
+        final List<String> types = mappingHelper == null ? null : mappingHelper.getPossibleRmTypes();
+        return types != null && types.size() == 2
+                && types.contains(FhirConnectConst.DV_CODED_TEXT) && types.contains(FhirConnectConst.DV_TEXT);
+    }
+
+    private static boolean offersRmType(final MappingHelper mappingHelper, final String rmType) {
+        return mappingHelper != null && mappingHelper.getPossibleRmTypes() != null
+                && mappingHelper.getPossibleRmTypes().contains(rmType);
+    }
+
+    private boolean handleDvCodedText(final MappingHelper mappingHelper, final String elementPath,
+                                      final IBase value, final boolean isMultipleTypes,
                                       final JsonObject flat,
                                       final Terminology terminology) {
-//        if (isMultipleTypes && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
-//            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
-//        }
+        final boolean mergedPair = isMultipleTypes && isMergedCodedTextChoice(mappingHelper);
+        final boolean isChoice = isMultipleTypes && !mergedPair;
+        String path = elementPath;
+        if (isChoice && !path.endsWith(FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE)) {
+            path = path + "/" + FhirConnectConst.LEAF_TYPE_CODED_TEXT_VALUE;
+        }
         if (isCodeableConcept(value)) {
             List<IBaseCoding> codings = getCodeableConceptCodings(value).stream()
                     .filter(coding -> StringUtils.isNotBlank(coding.getCode()))
@@ -882,9 +904,13 @@ public class OpenEhrPopulator {
                 addAdditionalCodingsAsMappings(path, codings, flat, terminology);
                 addToConstructingFlat(path + "|value", translate(getCodeableConceptText(value), null, terminology),
                                       flat);
-            } else if (isMultipleTypes) {
+            } else if (mergedPair) {
                 addToConstructingFlat(path + "|other", translate(getCodeableConceptText(value), null, terminology),
                                       flat);
+            } else if (isChoice && offersRmType(mappingHelper, FhirConnectConst.DV_TEXT)) {
+                // a choice that is not the merged pair has no |other; free text goes to its text_value leaf
+                addToConstructingFlat(elementPath + "/" + FhirConnectConst.LEAF_TYPE_TEXT_VALUE,
+                                      translate(getCodeableConceptText(value), null, terminology), flat);
             }
             return true;
         } else if (value instanceof IBaseCoding coding) {
@@ -1385,8 +1411,8 @@ public class OpenEhrPopulator {
             handleCodePhrase(mappingHelper, openEhrPath, extractedCoding, false, constructingFlat, openehrType,
                              terminology, availableCodes);
         } else if (isCodeableConcept(fhirValue)) {
-            handleDvCodedText(openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false, constructingFlat,
-                              terminology);
+            handleDvCodedText(mappingHelper, openEhrPath, getCodeableConceptCodingFirstRep(fhirValue), false,
+                              constructingFlat, terminology);
         } else if (fhirValue != null && "dateTime".equals(fhirValue.fhirType())) {
             final String withOffset = getOffsetPreservingDateTimeString(fhirValue);
             if (withOffset != null) {
