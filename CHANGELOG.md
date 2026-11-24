@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - to FHIR: a `DV_DATE` mapped to a FHIR `dateTime` element (`onsetDateTime`, `effectiveDateTime`, ...) was silently
   dropped, on every FHIR version. It is now written as a day-precision dateTime (`2020-05-14`), with no time of day
   or offset added
+- to openEHR: a coded value on a choice element (e.g. `DV_CODED_TEXT | DV_TEXT | DV_BOOLEAN`) was written to the
+  element's own path (`…/presence|code`), which the composition could not be built from. It is now written to the
+  `coded_text_value` leaf, and a CodeableConcept carrying only text to `text_value` (dropped if the choice offers
+  no `DV_TEXT`). Elements that are exactly `DV_CODED_TEXT | DV_TEXT` are unchanged (`|code`, `|other`)
 - the Docker image builds again: its build stage is back on Java 21, after an automated bump to Java 26 broke
   compilation. Dependabot no longer proposes Java version changes for the base images
 

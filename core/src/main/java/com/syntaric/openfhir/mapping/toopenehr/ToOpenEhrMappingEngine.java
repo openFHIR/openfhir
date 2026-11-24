@@ -711,7 +711,7 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
                                          final MappingIssueCollector issueCollector) {
 
         long possibleRmTypes = helper.getPossibleRmTypes().size();
-        boolean isMultipleTypes = possibleRmTypes > 1 && !isOnlyText(helper.getPossibleRmTypes());
+        boolean isMultipleTypes = possibleRmTypes > 1;
         final int before = flatComposition.size();
         if (StringUtils.isNotEmpty(clonedHelper.getManualOpenEhrValue())) {
             log.debug("Hardcoding value {} to path: {}", clonedHelper.getManualOpenEhrValue(), openEhrPathToPopulateTo);
@@ -731,13 +731,6 @@ public class ToOpenEhrMappingEngine extends BidirectionalMappingEngine {
             }
         }
         return flatComposition.size() > before ? MappingOutcome.MAPPED : MappingOutcome.NOTHING_WRITTEN;
-    }
-
-    private boolean isOnlyText(final List<String> possibleRmTypes) {
-//        return possibleRmTypes.size() == 2
-//                && possibleRmTypes.contains(DV_TEXT)
-//                && possibleRmTypes.contains(DV_CODED_TEXT);
-        return false;
     }
 
     /**
