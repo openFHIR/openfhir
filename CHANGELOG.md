@@ -35,6 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - the Docker image's base images are pinned by digest and updated through reviewed PRs, and the images of the
   supported lines are scanned for vulnerabilities weekly
 
+## [3.0.5] - 2026-11-27
+### Security
+- Docker image: runtime base image `eclipse-temurin:21-jre` updated to its current rebuild, fixing CVE-2026-109518
+  (`apt`: remote code execution via hard-link reuse on download retries) and the `libpcre2-8-0` CVEs. On `linux/amd64`
+  it also fixes the `libc6` CVEs; the upstream `linux/arm64` image does not carry that update yet
+
 ## [3.0.4] - 2026-11-01
 ### Security
 - embedded Tomcat upgraded from 10.1.55 to 10.1.61, fixing the critical CVE-2026-65182 (security constraint bypass),
