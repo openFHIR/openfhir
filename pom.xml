@@ -117,7 +117,7 @@
         <!-- above the Spring Boot default: 3.5.16 (the last 3.5.x) manages 10.1.55, which has
              CVE-2026-65182, CVE-2026-65637, CVE-2026-65905 and CVE-2026-68525 -->
         <tomcat.version>10.1.61</tomcat.version>
-        <archie.version>3.13.0</archie.version>
+        <archie.version>4.0.0</archie.version>
         <hapi-fhir.version>8.12.0</hapi-fhir.version>
         <jjwt.version>0.12.6</jjwt.version>
         <ucum.version>1.0.10</ucum.version>
