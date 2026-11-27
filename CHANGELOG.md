@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.5] - 2026-11-27
 ### Security
 - Docker image: runtime base image `eclipse-temurin:21-jre` updated to its current rebuild, fixing CVE-2026-109518
   (`apt`: remote code execution via hard-link reuse on download retries) and the `libpcre2-8-0` CVEs. On `linux/amd64`
