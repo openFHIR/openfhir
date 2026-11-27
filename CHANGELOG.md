@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 ## Unreleased
+
+## [3.0.6] - 2026-11-27
 ### Security
 - the PostgreSQL JDBC driver (42.7.11, CVE-2026-54291) is no longer bundled. The engine never used it: it stores its
   data in MongoDB only. A project that builds on the engine's artifacts and connects to PostgreSQL declares
